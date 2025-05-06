@@ -42,13 +42,12 @@
    cd university_visitor_system
    ```
 2. **Установите зависимости:**
-   (Укажи команды для твоего менеджера пакетов, например, pip, npm, yarn, maven, gradle)
    ```bash
-   # Пример для Python/pip
+   # Пример для Python/pip/poetry
    pip install -r requirements.txt
-   # Пример для Node.js/npm
-   npm install
-   ```
+
+   poetry install --no-dev --no-root
+   
 3. **Настройте конфигурационные файлы:**
    Скопируйте `.env.example` в `.env` и укажите необходимые параметры (например, данные для подключения к БД).
    ```bash
