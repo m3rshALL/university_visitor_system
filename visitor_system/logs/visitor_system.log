@@ -1429,3 +1429,33 @@ WARNING 2025-05-06 15:07:51,522 utils 34472 31164 Department 'Деканат' ha
 INFO 2025-05-06 15:07:53,598 utils 34472 31164 Visit notification email for official ID 15 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
 INFO 2025-05-06 15:07:53,739 utils 58972 56400 Уведомление о новом визите (official ID: 15) успешно отправлено группе безопасности.
 INFO 2025-05-06 16:40:42,948 views 24268 65104 Statistics data prepared for user 'sako'.
+INFO 2025-05-06 17:37:18,526 utils 34472 31164 Attempting to send creation notification for official ID 1
+WARNING 2025-05-06 17:37:18,557 utils 34472 31164 Department 'Научно-Инновационный Центр Industry 4.0' has no director assigned.
+INFO 2025-05-06 17:37:20,730 utils 34472 31164 Visit notification email for official ID 1 SENT successfully to ['Host:yrysbek.adilbekuly@astanait.edu.kz', 'Registrar:yrysbek.adilbekuly@astanait.edu.kz'].
+INFO 2025-05-06 17:37:20,734 utils 34472 31164 Attempting to send creation notification for official ID 2
+WARNING 2025-05-06 17:37:20,786 utils 34472 31164 Department 'Деканат' has no director assigned.
+INFO 2025-05-06 17:37:22,476 utils 34472 31164 Visit notification email for official ID 2 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-06 17:37:22,480 utils 34472 31164 Attempting to send creation notification for student ID 1
+INFO 2025-05-06 17:37:22,480 utils 34472 31164 Notification skipped for StudentVisit ID 1 as per current logic.
+INFO 2025-05-06 17:37:22,483 utils 34472 31164 Attempting to send creation notification for student ID 2
+INFO 2025-05-06 17:37:22,483 utils 34472 31164 Notification skipped for StudentVisit ID 2 as per current logic.
+INFO 2025-05-06 17:38:45,293 utils 34472 31164 Attempting to send creation notification for official ID 1
+WARNING 2025-05-06 17:38:45,323 utils 34472 31164 Department 'Научно-Инновационный Центр Industry 4.0' has no director assigned.
+INFO 2025-05-06 17:38:47,160 utils 34472 31164 Visit notification email for official ID 1 SENT successfully to ['Host:yrysbek.adilbekuly@astanait.edu.kz', 'Registrar:yrysbek.adilbekuly@astanait.edu.kz'].
+INFO 2025-05-06 17:38:47,163 utils 34472 31164 Attempting to send creation notification for official ID 2
+WARNING 2025-05-06 17:38:47,195 utils 34472 31164 Department 'Деканат' has no director assigned.
+INFO 2025-05-06 17:38:48,928 utils 34472 31164 Visit notification email for official ID 2 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-06 17:38:48,932 utils 34472 31164 Attempting to send creation notification for student ID 1
+INFO 2025-05-06 17:38:48,932 utils 34472 31164 Notification skipped for StudentVisit ID 1 as per current logic.
+INFO 2025-05-06 17:38:48,935 utils 34472 31164 Attempting to send creation notification for student ID 2
+INFO 2025-05-06 17:38:48,935 utils 34472 31164 Notification skipped for StudentVisit ID 2 as per current logic.
+INFO 2025-05-06 17:42:36,335 utils 34472 31164 Attempting to send creation notification for official ID 1
+WARNING 2025-05-06 17:42:36,471 utils 34472 31164 Department 'Научно-Инновационный Центр Industry 4.0' has no director assigned.
+INFO 2025-05-06 17:42:38,316 utils 34472 31164 Visit notification email for official ID 1 SENT successfully to ['Host:yrysbek.adilbekuly@astanait.edu.kz', 'Registrar:yrysbek.adilbekuly@astanait.edu.kz'].
+INFO 2025-05-06 17:42:38,320 utils 34472 31164 Attempting to send creation notification for official ID 2
+WARNING 2025-05-06 17:42:38,348 utils 34472 31164 Department 'Деканат' has no director assigned.
+INFO 2025-05-06 17:42:40,116 utils 34472 31164 Visit notification email for official ID 2 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-06 17:42:40,119 utils 34472 31164 Attempting to send creation notification for student ID 1
+INFO 2025-05-06 17:42:40,120 utils 34472 31164 Notification skipped for StudentVisit ID 1 as per current logic.
+INFO 2025-05-06 17:42:40,122 utils 34472 31164 Attempting to send creation notification for student ID 2
+INFO 2025-05-06 17:42:40,122 utils 34472 31164 Notification skipped for StudentVisit ID 2 as per current logic.

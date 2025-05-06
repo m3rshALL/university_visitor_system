@@ -55,23 +55,30 @@ def get_scoped_visits_qs(user):
     official_visits_qs = Visit.objects.select_related('guest', 'employee', 'department', 'registered_by')
     student_visits_qs = StudentVisit.objects.select_related('guest', 'department', 'registered_by')
 
-    is_reception = user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    # Ensure user is authenticated before checking groups
+    is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
     is_staff = user.is_staff
 
     if not is_reception and not is_staff:
-        try:
-            # Пытаемся получить профиль сотрудника и его департамент
-            employee_profile = EmployeeProfile.objects.get(user=user)
-            if employee_profile.department:
-                employee_department = employee_profile.department
-                official_visits_qs = official_visits_qs.filter(department=employee_department)
-                student_visits_qs = student_visits_qs.filter(department=employee_department)
-            else: # Сотрудник без департамента не видит визиты других департаментов
-                official_visits_qs = official_visits_qs.none()
-                student_visits_qs = student_visits_qs.none()
-        except EmployeeProfile.DoesNotExist: # Пользователь без профиля сотрудника
+        # If user is not authenticated (i.e., AnonymousUser) or has no PK,
+        # they cannot have an EmployeeProfile linked.
+        if not user.is_authenticated or user.pk is None:
             official_visits_qs = official_visits_qs.none()
             student_visits_qs = student_visits_qs.none()
+        else:
+            try:
+                # Пытаемся получить профиль сотрудника и его департамент
+                employee_profile = EmployeeProfile.objects.get(user=user)
+                if employee_profile.department:
+                    employee_department = employee_profile.department
+                    official_visits_qs = official_visits_qs.filter(department=employee_department)
+                    student_visits_qs = student_visits_qs.filter(department=employee_department)
+                else: # Сотрудник без департамента не видит визиты других департаментов
+                    official_visits_qs = official_visits_qs.none()
+                    student_visits_qs = student_visits_qs.none()
+            except EmployeeProfile.DoesNotExist: # Пользователь без профиля сотрудника
+                official_visits_qs = official_visits_qs.none()
+                student_visits_qs = student_visits_qs.none()
     
     return official_visits_qs, student_visits_qs
 # -----------------------------------------------------------------------
