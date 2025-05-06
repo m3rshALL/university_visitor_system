@@ -1079,4 +1079,3 @@ def profile_setup_view(request):
     }
     return render(request, 'visitors/profile_setup.html', context)
 # --------------------------------------------------
-

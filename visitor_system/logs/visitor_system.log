@@ -1428,3 +1428,4 @@ INFO 2025-05-06 15:07:51,487 utils 34472 31164 Attempting to send creation notif
 WARNING 2025-05-06 15:07:51,522 utils 34472 31164 Department 'Деканат' has no director assigned.
 INFO 2025-05-06 15:07:53,598 utils 34472 31164 Visit notification email for official ID 15 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
 INFO 2025-05-06 15:07:53,739 utils 58972 56400 Уведомление о новом визите (official ID: 15) успешно отправлено группе безопасности.
+INFO 2025-05-06 16:40:42,948 views 24268 65104 Statistics data prepared for user 'sako'.
