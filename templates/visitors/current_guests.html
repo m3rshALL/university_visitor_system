@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Текущие гости{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>.btn-icon-sm { padding: 0.1rem 0.3rem; font-size: 0.8rem; line-height: 1; }</style>
+{% endblock %}
+
+{% block content %}
+<h2>Гости, находящиеся в здании</h2>
+<hr>
+
+{% if current_visits %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Гость</th>
+                <th>К кому</th>
+                <th>Департамент</th>
+                <th>Цель</th>
+                <th>Время входа</th>
+                <th>Зарегистрировал</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visit in current_visits %}
+    <tr class="{% if visit.status == 'CHECKED_IN' %}table-success{% elif visit.status == 'AWAITING_ARRIVAL' %}table-info{% endif %}">
+        <td>
+            {# Имя гостя/посетителя - общее поле #}
+            {{ visit.guest.full_name }}
+        </td>
+        <td>
+            {# Поле "К кому" зависит от типа визита #}
+            {% if visit.visit_kind == 'official' and visit.employee %}
+                {{ visit.employee.get_full_name|default:visit.employee.username }}
+            {% elif visit.visit_kind == 'student' %}
+                {# Для студента можно вывести "Студент" или детали, если они есть #}
+                Студент/Абит.
+                {# Например: {{ visit.student_id_number|default:'' }} #}
+            {% else %}
+                - {# Если тип не определен или нет данных #}
+            {% endif %}
+        </td>
+        <td>
+            {# Департамент - скорее всего, общее поле #}
+            {{ visit.department.name|default:"-" }}
+        </td>
+        <td>{{ visit.purpose|default:"-"|truncatechars:40 }}</td>
+        <td>
+            {% if visit.status == 'AWAITING_ARRIVAL' and visit.expected_entry_time %}
+                 <span class="text-muted fst-italic" title="Планируемое">Ожид: {{ visit.expected_entry_time|date:"H:i" }}</span>
+            {% elif visit.entry_time %}
+                 {{ visit.entry_time|date:"H:i" }}
+            {% else %} - {% endif %}
+        </td>
+        <td>
+            {# Зарегистрировал - общее поле #}
+            {{ visit.registered_by.get_full_name|default:visit.registered_by.username }}
+        </td>
+        {# --- Действия --- #}
+            <td class="text-center">
+                <div class="btn-group btn-group-sm">
+                {% if visit.status == 'AWAITING_ARRIVAL' %}
+                    <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                         {% csrf_token %}<button type="submit" class="btn btn-outline-primary" title="Зашел"><i class="bi bi-box-arrow-in-right"></i></button>
+                    </form>
+                    <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                         {% csrf_token %}<button type="submit" class="btn btn-outline-danger" title="Отменить" onclick="..."><i class="bi bi-x-circle"></i></button>
+                    </form>
+                {% elif visit.status == 'CHECKED_IN' %}
+                    <form {% if visit.visit_kind == 'official' %} action="{% url 'mark_guest_exit' visit.id %}" {% elif visit.visit_kind == 'student' %} action="{% url 'mark_student_exit' visit.id %}" {% endif %} method="post" class="d-inline">
+                          {% csrf_token %}<button type="submit" class="btn btn-outline-warning" title="Вышел"><i class="bi bi-box-arrow-right"></i></button>
+                     </form>
+                {% else %} - {% endif %}
+                </div>
+            </td>
+            {# --- Конец действий --- #}
+        
+    </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+    <p class="text-center">В данный момент в здании нет зарегистрированных гостей.</p>
+{% endif %}
+{% endblock %}

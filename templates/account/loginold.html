@@ -1,0 +1,35 @@
+
+
+{% extends "base.html" %} {# Наследуем базовый шаблон со стилями и навбаром #}
+{% load socialaccount %} {# Загружаем специальные теги allauth для соц. сетей #}
+
+{% block title %}Вход в систему{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">Вход в систему</h2>
+
+                    <p>Для доступа, пожалуйста, войдите через ваш корпоративный аккаунт Microsoft.</p>
+
+                    {# Эта ссылка - самое главное. Она генерируется allauth и #}
+                    {# отправляет пользователя на страницу входа Microsoft. #}
+                    {# 'microsoft' - имя провайдера, настроенное в settings.py #}
+                    <a href="{% provider_login_url 'microsoft' process='login' %}" class="btn btn-primary btn-lg mt-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-microsoft me-2" viewBox="0 0 16 16">
+                           <path d="M7.462 0H0v7.19h7.462V0zM16 0H8.538v7.19H16V0zM7.462 8.211H0V16h7.462V8.211zm8.538 0H8.538V16H16V8.211z"/>
+                        </svg>
+                        Войти через Microsoft
+                    </a>
+
+                    <hr class="my-4">
+                    <p class="text-muted small">Возникли проблемы? Обратитесь к администратору.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

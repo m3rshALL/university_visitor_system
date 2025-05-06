@@ -1,0 +1,23 @@
+/* static/css/style.css */
+
+body {
+    font-family: 'Montserrat', sans-serif; /* <-- ИЗМЕНЕНО ЗДЕСЬ */
+    /* Остальные настройки для body (font-size, line-height...) */
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Можно оставить или изменить настройки для заголовков/кнопок */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600; /* SemiBold - Montserrat поддерживает это */
+    /* Или можно выбрать другое начертание, если хотите */
+}
+
+input, select, textarea, button {
+      font-family: inherit; /* Наследуем Montserrat от body */
+}
+
+
+

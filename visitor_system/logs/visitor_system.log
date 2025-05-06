@@ -1,0 +1,1369 @@
+WARNING 2025-04-29 10:30:42,010 log 25108 7556 Not Found: /favicon.ico
+INFO 2025-04-29 10:54:29,239 forms 34540 23348 Using guest object: Орынбасаров Ержан (ID: 15), Created: True
+INFO 2025-04-29 10:54:29,239 forms 34540 23348 Visit None created with status AWAITING_ARRIVAL.
+ERROR 2025-04-29 10:54:37,705 redis 34540 23348 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-04-29 10:54:37,705 redis 34540 23348 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-04-29 10:54:41,789 redis 34540 23348 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-04-29 10:54:41,789 redis 34540 23348 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-04-29 10:54:46,864 redis 34540 23348 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-04-29 10:54:46,864 redis 34540 23348 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-04-29 10:54:51,949 redis 34540 23348 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-04-29 10:54:51,949 redis 34540 23348 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-04-29 10:54:57,046 redis 34540 23348 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-04-29 10:54:57,046 redis 34540 23348 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-04-29 10:54:59,062 redis 34540 23348 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-04-29 10:54:59,062 redis 34540 23348 Connection to Redis lost: Retry (5/20) in 1.00 second.
+INFO 2025-04-29 10:55:00,095 forms 34540 23348 Celery task queued for Visit ID 30
+INFO 2025-04-29 10:55:00,095 forms 34540 23348 Saved Visit ID 30, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 11:01:20,461 middleware 34540 39724 [Middleware] User 'pass-system' profile incomplete. Redirecting to setup page.
+INFO 2025-04-29 12:22:29,018 forms 45372 46408 Using guest object: Орынбасаров Ержан (ID: 15), Created: False
+INFO 2025-04-29 12:22:29,019 forms 45372 46408 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 12:22:29,211 forms 45372 46408 Celery task queued for Visit ID 31
+INFO 2025-04-29 12:22:29,211 forms 45372 46408 Saved Visit ID 31, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 12:28:03,757 forms 45372 47000 Using guest object: Амирова Назерке (ID: 11), Created: False
+INFO 2025-04-29 12:28:03,757 forms 45372 47000 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 12:28:03,872 forms 45372 47000 Celery task queued for Visit ID 32
+INFO 2025-04-29 12:28:03,872 forms 45372 47000 Saved Visit ID 32, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 12:28:03,873 utils 45820 46976 Attempting to send creation notification for official ID 32
+INFO 2025-04-29 12:28:03,883 utils 45820 46976 Attempting to send creation notification for official ID 32
+INFO 2025-04-29 12:35:59,223 forms 45864 48496 Using guest object: Таимова Гулия (ID: 11), Created: False
+INFO 2025-04-29 12:35:59,224 forms 45864 48496 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 12:35:59,403 forms 45864 48496 Celery task queued for Visit ID 33
+INFO 2025-04-29 12:35:59,403 forms 45864 48496 Saved Visit ID 33, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 12:35:59,404 utils 48292 49036 Attempting to send creation notification for official ID 33
+WARNING 2025-04-29 12:35:59,408 utils 48292 49036 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 12:35:59,411 utils 48292 49036 Core email sending FAILED for visit official ID 33 to {'pass-system@astanait.edu.kz', 'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 114, in send_visit_creation_notification
+    message_txt = render_to_string('notifications/email/visit_notification.txt', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: notifications/email/visit_notification.txt
+INFO 2025-04-29 12:35:59,426 utils 48292 49036 Attempting to send creation notification for official ID 33
+WARNING 2025-04-29 12:35:59,428 utils 48292 49036 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 12:35:59,428 utils 48292 49036 Core email sending FAILED for visit official ID 33 to {'pass-system@astanait.edu.kz', 'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 114, in send_visit_creation_notification
+    message_txt = render_to_string('notifications/email/visit_notification.txt', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: notifications/email/visit_notification.txt
+INFO 2025-04-29 12:37:06,447 utils 48292 49036 Attempting to send creation notification for student ID 2
+INFO 2025-04-29 12:37:06,447 utils 48292 49036 Notification skipped for StudentVisit ID 2 as per current logic.
+INFO 2025-04-29 12:37:45,137 forms 45864 47424 Using guest object: Петров Александр (ID: 17), Created: True
+INFO 2025-04-29 12:37:45,137 forms 45864 47424 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 12:37:45,243 forms 45864 47424 Saved Visit ID 34, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 12:37:45,244 utils 48292 49036 Attempting to send creation notification for official ID 34
+WARNING 2025-04-29 12:37:45,246 utils 48292 49036 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 12:37:45,246 utils 48292 49036 Core email sending FAILED for visit official ID 34 to {'pass-system@astanait.edu.kz', 'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 114, in send_visit_creation_notification
+    message_txt = render_to_string('notifications/email/visit_notification.txt', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: notifications/email/visit_notification.txt
+INFO 2025-04-29 12:47:17,481 forms 45864 50024 Using guest object: Орынбасаров Ержан (ID: 15), Created: False
+INFO 2025-04-29 12:47:17,481 forms 45864 50024 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 12:47:17,586 forms 45864 50024 Saved Visit ID 35, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 12:47:17,588 utils 49652 46772 Attempting to send creation notification for official ID 35
+WARNING 2025-04-29 12:47:17,593 utils 49652 46772 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 12:47:17,596 utils 49652 46772 Core email sending FAILED for visit official ID 35 to {'sagat.akimbay@astanait.edu.kz', 'pass-system@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 114, in send_visit_creation_notification
+    message_txt = render_to_string('notifications/email/visit_notification.txt', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: notifications/email/visit_notification.txt
+INFO 2025-04-29 12:48:37,268 forms 45864 49872 Using guest object: Корганбаева Лаура (ID: 11), Created: False
+INFO 2025-04-29 12:48:37,268 forms 45864 49872 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 12:48:37,383 forms 45864 49872 Saved Visit ID 36, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 12:48:37,385 utils 49652 46772 Attempting to send creation notification for official ID 36
+WARNING 2025-04-29 12:48:37,387 utils 49652 46772 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 12:48:37,387 utils 49652 46772 Core email sending FAILED for visit official ID 36 to {'sagat.akimbay@astanait.edu.kz', 'pass-system@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 114, in send_visit_creation_notification
+    message_txt = render_to_string('notifications/email/visit_notification.txt', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: notifications/email/visit_notification.txt
+INFO 2025-04-29 12:50:20,724 forms 50728 49508 Using guest object: Таимова Гулия (ID: 15), Created: False
+INFO 2025-04-29 12:50:20,724 forms 50728 49508 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 12:50:20,903 forms 50728 49508 Saved Visit ID 37, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 12:50:20,904 utils 49652 46772 Attempting to send creation notification for official ID 37
+WARNING 2025-04-29 12:50:20,907 utils 49652 46772 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 12:50:20,907 utils 49652 46772 Core email sending FAILED for visit official ID 37 to {'sagat.akimbay@astanait.edu.kz', 'pass-system@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 114, in send_visit_creation_notification
+    message_txt = render_to_string('notifications/email/visit_notification.txt', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: notifications/email/visit_notification.txt
+INFO 2025-04-29 12:56:42,271 forms 50432 48604 Using guest object: Орынбасаров Ержан (ID: 18), Created: True
+INFO 2025-04-29 12:56:42,271 forms 50432 48604 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 12:56:42,448 forms 50432 48604 Saved Visit ID 38, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 12:56:42,449 utils 49652 46772 Attempting to send creation notification for official ID 38
+WARNING 2025-04-29 12:56:42,451 utils 49652 46772 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 12:56:42,452 utils 49652 46772 Core email sending FAILED for visit official ID 38 to {'sagat.akimbay@astanait.edu.kz', 'pass-system@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 114, in send_visit_creation_notification
+    message_txt = render_to_string('notifications/visit_notification.txt', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: notifications/email/visit_notification.txt
+INFO 2025-04-29 12:57:46,288 forms 51308 39476 Using guest object: Амирова Назерке (ID: 19), Created: True
+INFO 2025-04-29 12:57:46,288 forms 51308 39476 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 12:57:46,457 forms 51308 39476 Saved Visit ID 39, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 12:57:46,459 utils 50120 51008 Attempting to send creation notification for official ID 39
+WARNING 2025-04-29 12:57:46,463 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 12:57:48,707 utils 50120 51008 Visit notification email for official ID 39 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+INFO 2025-04-29 12:59:12,900 forms 51308 47384 Using guest object: Орынбасаров Ержан (ID: 18), Created: False
+INFO 2025-04-29 12:59:12,900 forms 51308 47384 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 12:59:13,038 forms 51308 47384 Celery task queued for Visit ID 40
+INFO 2025-04-29 12:59:13,039 forms 51308 47384 Saved Visit ID 40, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 12:59:13,039 utils 50120 51008 Attempting to send creation notification for official ID 40
+WARNING 2025-04-29 12:59:13,042 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 12:59:14,858 utils 50120 51008 Visit notification email for official ID 40 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+INFO 2025-04-29 12:59:14,862 utils 50120 51008 Attempting to send creation notification for official ID 40
+WARNING 2025-04-29 12:59:14,863 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 12:59:16,644 utils 50120 51008 Visit notification email for official ID 40 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+WARNING 2025-04-29 13:11:49,879 log 51336 52048 Not Found: /visitors/exit/30/
+WARNING 2025-04-29 13:11:54,675 log 51336 38580 Not Found: /visitors/exit/30/
+WARNING 2025-04-29 13:15:09,282 log 48496 48444 Not Found: /visitors/exit/30/
+WARNING 2025-04-29 13:15:12,103 log 48496 27792 Not Found: /visitors/exit/30/
+INFO 2025-04-29 13:51:16,436 forms 55524 54608 Using guest object: Орынбасаров Ержан (ID: 20), Created: True
+INFO 2025-04-29 13:51:16,436 forms 55524 54608 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 13:51:16,619 forms 55524 54608 Celery task queued for Visit ID 41
+INFO 2025-04-29 13:51:16,619 forms 55524 54608 Saved Visit ID 41, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 13:51:16,620 utils 50120 51008 Attempting to send creation notification for official ID 41
+WARNING 2025-04-29 13:51:16,622 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 13:51:19,037 utils 50120 51008 Visit notification email for official ID 41 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 13:51:19,041 utils 50120 51008 Attempting to send creation notification for official ID 41
+WARNING 2025-04-29 13:51:19,042 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 13:51:20,861 utils 50120 51008 Visit notification email for official ID 41 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 14:06:13,385 views 56688 23356 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:06:23,718 views 56688 58328 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:06:52,619 forms 56688 57828 Using guest object: Акимбаев Сагат Ганиевич (ID: 21), Created: True
+INFO 2025-04-29 14:06:52,619 forms 56688 57828 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 14:06:52,785 forms 56688 57828 Celery task queued for Visit ID 42
+INFO 2025-04-29 14:06:52,785 forms 56688 57828 Saved Visit ID 42, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 14:06:52,785 utils 50120 51008 Attempting to send creation notification for official ID 42
+WARNING 2025-04-29 14:06:52,787 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 14:06:54,583 views 56688 58200 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:06:54,798 utils 50120 51008 Visit notification email for official ID 42 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 14:06:54,802 utils 50120 51008 Attempting to send creation notification for official ID 42
+WARNING 2025-04-29 14:06:54,803 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 14:06:56,679 utils 50120 51008 Visit notification email for official ID 42 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 14:07:01,357 views 56688 54792 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:07:12,821 views 56688 10664 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:07:14,616 views 56688 57980 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:07:15,853 views 56688 57452 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:07:17,492 views 56688 56596 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:07:18,144 views 56688 57984 User 'sako' accessed current guests/visits view.
+WARNING 2025-04-29 14:07:19,134 log 56688 57672 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:07:43,366 log 56688 58176 Not Found: /visitors/exit/42/
+INFO 2025-04-29 14:07:45,809 views 56688 56584 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:07:46,492 views 56688 57804 User 'sako' accessed current guests/visits view.
+WARNING 2025-04-29 14:07:47,388 log 56688 56884 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:07:49,659 log 56688 55240 Not Found: /visitors/exit/42/
+INFO 2025-04-29 14:07:51,197 views 56688 54820 User 'sako' accessed current guests/visits view.
+INFO 2025-04-29 14:07:56,896 views 56688 57244 User 'sako' accessed current guests/visits view.
+WARNING 2025-04-29 14:08:23,357 log 57708 48808 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:09:12,426 log 58136 54732 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:09:15,605 log 58136 57516 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:11:24,793 log 58136 56824 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:12:11,243 log 58136 54352 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:12:14,167 log 58136 47296 Not Found: /visitors/exit/42/
+WARNING 2025-04-29 14:12:16,502 log 58136 55544 Not Found: /visitors/exit/42/
+INFO 2025-04-29 15:34:11,665 forms 30264 65396 Using guest object: Акимбаев Сагат (ID: 20), Created: False
+INFO 2025-04-29 15:34:11,665 forms 30264 65396 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 15:34:11,845 forms 30264 65396 Celery task queued for Visit ID 43
+INFO 2025-04-29 15:34:11,846 forms 30264 65396 Saved Visit ID 43, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 15:34:11,846 utils 50120 51008 Attempting to send creation notification for official ID 43
+WARNING 2025-04-29 15:34:11,848 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 15:34:14,806 utils 50120 51008 Visit notification email for official ID 43 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 15:34:14,810 utils 50120 51008 Attempting to send creation notification for official ID 43
+WARNING 2025-04-29 15:34:14,811 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 15:34:17,052 utils 50120 51008 Visit notification email for official ID 43 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 16:19:28,234 forms 49404 65844 Using guest object: Акимбаев Сагат (ID: 20), Created: False
+INFO 2025-04-29 16:19:28,235 forms 49404 65844 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-29 16:19:28,419 forms 49404 65844 Celery task queued for Visit ID 44
+INFO 2025-04-29 16:19:28,419 forms 49404 65844 Saved Visit ID 44, Status: AWAITING, Consent Ack: True
+INFO 2025-04-29 16:19:28,419 utils 50120 51008 Attempting to send creation notification for official ID 44
+WARNING 2025-04-29 16:19:28,422 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 16:19:30,750 utils 50120 51008 Visit notification email for official ID 44 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 16:19:30,753 utils 50120 51008 Attempting to send creation notification for official ID 44
+WARNING 2025-04-29 16:19:30,755 utils 50120 51008 Department 'Военная кафедра' has no director assigned.
+INFO 2025-04-29 16:19:32,731 utils 50120 51008 Visit notification email for official ID 44 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sako@sagat.kz'].
+INFO 2025-04-29 16:23:19,757 forms 3332 41960 Using guest object: Проверка SMTP office (ID: 22), Created: True
+INFO 2025-04-29 16:23:19,757 forms 3332 41960 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 16:23:19,949 forms 3332 41960 Saved Visit ID 45, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 16:23:19,951 utils 63280 67592 Attempting to send creation notification for official ID 45
+WARNING 2025-04-29 16:23:19,955 utils 63280 67592 Department 'Военная кафедра' has no director assigned.
+ERROR 2025-04-29 16:23:27,378 utils 63280 67592 Core email sending FAILED for visit official ID 45 to {'sagat.akimbay@astanait.edu.kz', 'sako@sagat.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 750, in login
+    raise last_exception
+  File "C:\Python313\Lib\smtplib.py", line 739, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 662, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.139 Authentication unsuccessful, the request did not meet the criteria to be authenticated successfully. Contact your administrator. [WA1P291CA0002.POLP291.PROD.OUTLOOK.COM 2025-04-29T11:23:26.635Z 08DD84EB8D70B765]')
+INFO 2025-04-29 17:29:00,868 views 73780 77440 User 'sako' checked in official visit ID 44.
+INFO 2025-04-29 17:29:02,960 views 73780 76896 User 'sako' cancelled official visit ID 43.
+INFO 2025-04-29 17:29:23,465 views 73780 64764 Statistics data prepared for user 'sako'.
+INFO 2025-04-29 18:16:47,530 middleware 82076 82788 [Middleware] User 'pass-system' profile incomplete. Redirecting to setup.
+WARNING 2025-04-29 18:18:16,522 log 81332 82068 Not Found: /favicon.ico
+INFO 2025-04-29 18:18:23,117 middleware 81332 82072 [Middleware] User 'pass-system' profile incomplete. Redirecting to setup.
+INFO 2025-04-29 18:18:37,139 middleware 81332 81292 [Middleware] User 'pass-system' profile incomplete. Redirecting to setup.
+INFO 2025-04-29 18:35:41,931 views 81332 81536 Statistics data prepared for user 'sako'.
+INFO 2025-04-29 18:47:20,654 autoreload 39716 86484 Watching for file changes with StatReloader
+INFO 2025-04-29 18:53:34,980 autoreload 84296 74824 Watching for file changes with StatReloader
+INFO 2025-04-29 18:53:55,921 basehttp 84296 85812 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 18:53:56,313 basehttp 84296 85812 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 18:53:56,839 basehttp 84296 87936 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 18:53:57,245 basehttp 84296 87936 "GET /static/css/style.css HTTP/1.1" 404 1985
+INFO 2025-04-29 18:53:57,343 basehttp 84296 87608 "GET /static/img/aitu_logo.jpg HTTP/1.1" 200 25435
+WARNING 2025-04-29 18:53:58,015 log 84296 87608 Not Found: /favicon.ico
+WARNING 2025-04-29 18:53:58,015 basehttp 84296 87608 "GET /favicon.ico HTTP/1.1" 404 3185
+INFO 2025-04-29 18:54:04,011 basehttp 84296 87608 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+WARNING 2025-04-29 18:54:05,414 log 84296 87608 Forbidden (Origin checking failed - https://3964-85-159-27-200.ngrok-free.app does not match any trusted origins.): /accounts/microsoft/login/
+WARNING 2025-04-29 18:54:05,414 basehttp 84296 87608 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 403 2574
+INFO 2025-04-29 18:54:51,998 autoreload 28936 88060 Watching for file changes with StatReloader
+INFO 2025-04-29 18:54:54,901 basehttp 28936 85568 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 18:54:54,907 basehttp 28936 85568 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 18:54:54,942 basehttp 28936 87236 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 18:54:54,966 basehttp 28936 87236 "GET /static/css/style.css HTTP/1.1" 404 1966
+INFO 2025-04-29 18:54:55,121 basehttp 28936 83660 "GET /static/img/aitu_logo.jpg HTTP/1.1" 200 25435
+WARNING 2025-04-29 18:54:55,382 log 28936 83660 Not Found: /favicon.ico
+WARNING 2025-04-29 18:54:55,382 basehttp 28936 83660 "GET /favicon.ico HTTP/1.1" 404 3166
+WARNING 2025-04-29 18:55:02,676 log 28936 86300 Forbidden (Origin checking failed - https://3964-85-159-27-200.ngrok-free.app does not match any trusted origins.): /accounts/microsoft/login/
+WARNING 2025-04-29 18:55:02,676 basehttp 28936 86300 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 403 2574
+INFO 2025-04-29 18:55:04,734 basehttp 28936 86300 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-29 18:55:07,654 basehttp 28936 86300 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 18:55:08,042 basehttp 28936 86300 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 18:55:08,574 basehttp 28936 87816 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 18:55:08,976 basehttp 28936 87816 "GET /static/css/style.css HTTP/1.1" 404 1985
+INFO 2025-04-29 18:55:10,351 basehttp 28936 86268 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+WARNING 2025-04-29 18:55:11,584 log 28936 86268 Forbidden (Origin checking failed - https://3964-85-159-27-200.ngrok-free.app does not match any trusted origins.): /accounts/microsoft/login/
+WARNING 2025-04-29 18:55:11,584 basehttp 28936 86268 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 403 2574
+INFO 2025-04-29 18:55:18,738 basehttp 28936 86268 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 18:55:19,156 basehttp 28936 86268 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 18:55:19,567 basehttp 28936 86268 "GET /static/css/style.css HTTP/1.1" 404 1985
+INFO 2025-04-29 18:55:20,849 basehttp 28936 81024 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+WARNING 2025-04-29 18:55:22,189 log 28936 81024 Forbidden (Origin checking failed - https://3964-85-159-27-200.ngrok-free.app does not match any trusted origins.): /accounts/microsoft/login/
+WARNING 2025-04-29 18:55:22,189 basehttp 28936 81024 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 403 2574
+WARNING 2025-04-29 18:55:50,647 log 28936 81024 Forbidden (Origin checking failed - https://3964-85-159-27-200.ngrok-free.app does not match any trusted origins.): /accounts/microsoft/login/
+WARNING 2025-04-29 18:55:50,648 basehttp 28936 81024 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 403 2574
+INFO 2025-04-29 18:58:44,219 autoreload 85692 87196 Watching for file changes with StatReloader
+INFO 2025-04-29 18:58:47,416 basehttp 85692 28936 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 18:58:47,802 basehttp 85692 28936 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 18:58:48,321 basehttp 85692 84792 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 18:58:48,730 basehttp 85692 84792 "GET /static/css/style.css HTTP/1.1" 404 1985
+INFO 2025-04-29 18:58:48,831 basehttp 85692 86228 "GET /static/img/aitu_logo.jpg HTTP/1.1" 200 25435
+WARNING 2025-04-29 18:58:49,495 log 85692 86228 Not Found: /favicon.ico
+WARNING 2025-04-29 18:58:49,495 basehttp 85692 86228 "GET /favicon.ico HTTP/1.1" 404 3185
+INFO 2025-04-29 18:58:50,457 basehttp 85692 86228 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+WARNING 2025-04-29 18:58:51,782 log 85692 86228 Forbidden (Origin checking failed - https://15f6-85-159-27-200.ngrok-free.app does not match any trusted origins.): /accounts/microsoft/login/
+WARNING 2025-04-29 18:58:51,783 basehttp 85692 86228 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 403 2574
+WARNING 2025-04-29 18:59:02,210 log 85692 86228 Forbidden (Origin checking failed - https://15f6-85-159-27-200.ngrok-free.app does not match any trusted origins.): /accounts/microsoft/login/
+WARNING 2025-04-29 18:59:02,210 basehttp 85692 86228 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 403 2574
+INFO 2025-04-29 18:59:31,293 autoreload 85692 87196 D:\university_visitor_system\visitor_system\visitor_system\settings.py changed, reloading.
+INFO 2025-04-29 18:59:32,598 autoreload 88232 88700 Watching for file changes with StatReloader
+INFO 2025-04-29 19:00:21,686 autoreload 88232 88700 D:\university_visitor_system\visitor_system\visitor_system\settings.py changed, reloading.
+INFO 2025-04-29 19:00:22,674 autoreload 88220 23252 Watching for file changes with StatReloader
+INFO 2025-04-29 19:00:26,284 basehttp 88220 88916 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-04-29 19:02:17,775 autoreload 88220 23252 D:\university_visitor_system\visitor_system\visitor_system\settings.py changed, reloading.
+INFO 2025-04-29 19:02:18,793 autoreload 88904 82752 Watching for file changes with StatReloader
+INFO 2025-04-29 19:04:56,435 basehttp 88904 88144 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 19:04:56,947 basehttp 88904 88144 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 19:04:57,571 basehttp 88904 46600 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 19:04:57,972 basehttp 88904 46600 "GET /static/css/style.css HTTP/1.1" 404 1986
+INFO 2025-04-29 19:04:59,525 basehttp 88904 81264 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-29 19:05:01,055 basehttp 88904 81264 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-04-29 19:05:07,487 middleware 88904 81264 [Middleware] User 'pass-system' profile incomplete. Redirecting to setup.
+INFO 2025-04-29 19:05:07,489 basehttp 88904 81264 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-hoYgBV0af67EuEFIlTds8pZ9N71XYJCG14AbUrMfMS8_JbFfFxQ9YZJsRtDLiNNqLdSEkgeCB5yyWr-Zxiwry1vD3Dnnm9PpXn14HMuGk63IIGmTpuOoROsMoNtSrNhrSjCwcZtWDievlkKmpvoHt4y85GADiGawjVG-QMGy3ENn7B5QiVt9r8P3hY88-V8y54a2cdq8pSDG5Qq3agBR_JD-3ysDKi9ZoDX35mLvFVgZGTeR9Y5S-4kjzNHu-le-27GY-IZWcjWRbb2qp6pTJtO6b0utFVScVctDb8M5tXpSwl5TP7oTzlrAMZC2dYeeCqPTqC0t6wYnafc8yttNUmj7TJcTAS2OxlJJrVOJv33lGQgJm97ZQ9mBqWv3y-RoXBm7EXdbppP1OPbCdMvm6cSCKcjCvuHFxTJ9sF7LmIhQ_lRIzLwrUsGMi49zbDw2ptgaxvPHugKX1uvDRXOpNoQehsBq5066j9o7E6QEy0U34KBGlcijeUfwVPwYveqnXdiNEyh7Aa0AJWYk6hgS7MJWLiZ9cBJHYwJwm7abFtpeO3-dYVsyc2gC4Dn3J3TU_gdovHf803IEzAcWE78V5YB2JeiiH_X4mbD8j3GeAAsOI-hLar8srS3MEvyCN_F6xYb9o5lorIns0X8EHxXOiEZU5dhXHK4nMpXtOWJKsBJECebDfmBDbEOcfobetFRaA6RYgUvEGtKEURQFsj0KQCaOJI5MrDijgtkomyjw3QMkmWR6sCn261oEloHHPU3qfqCnvnWeJ&state=R1Mh5wzjKdMhJBbb&session_state=00417db9-ae24-a405-c9a2-169d26b36f34 HTTP/1.1" 302 0
+INFO 2025-04-29 19:05:07,913 basehttp 88904 81264 "GET /visitors/profile/setup/?next=/accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-hoYgBV0af67EuEFIlTds8pZ9N71XYJCG14AbUrMfMS8_JbFfFxQ9YZJsRtDLiNNqLdSEkgeCB5yyWr-Zxiwry1vD3Dnnm9PpXn14HMuGk63IIGmTpuOoROsMoNtSrNhrSjCwcZtWDievlkKmpvoHt4y85GADiGawjVG-QMGy3ENn7B5QiVt9r8P3hY88-V8y54a2cdq8pSDG5Qq3agBR_JD-3ysDKi9ZoDX35mLvFVgZGTeR9Y5S-4kjzNHu-le-27GY-IZWcjWRbb2qp6pTJtO6b0utFVScVctDb8M5tXpSwl5TP7oTzlrAMZC2dYeeCqPTqC0t6wYnafc8yttNUmj7TJcTAS2OxlJJrVOJv33lGQgJm97ZQ9mBqWv3y-RoXBm7EXdbppP1OPbCdMvm6cSCKcjCvuHFxTJ9sF7LmIhQ_lRIzLwrUsGMi49zbDw2ptgaxvPHugKX1uvDRXOpNoQehsBq5066j9o7E6QEy0U34KBGlcijeUfwVPwYveqnXdiNEyh7Aa0AJWYk6hgS7MJWLiZ9cBJHYwJwm7abFtpeO3-dYVsyc2gC4Dn3J3TU_gdovHf803IEzAcWE78V5YB2JeiiH_X4mbD8j3GeAAsOI-hLar8srS3MEvyCN_F6xYb9o5lorIns0X8EHxXOiEZU5dhXHK4nMpXtOWJKsBJECebDfmBDbEOcfobetFRaA6RYgUvEGtKEURQFsj0KQCaOJI5MrDijgtkomyjw3QMkmWR6sCn261oEloHHPU3qfqCnvnWeJ&state=R1Mh5wzjKdMhJBbb&session_state=00417db9-ae24-a405-c9a2-169d26b36f34 HTTP/1.1" 200 11878
+INFO 2025-04-29 19:05:17,808 views 88904 81264 User 'pass-system' completed profile setup.
+INFO 2025-04-29 19:05:17,809 basehttp 88904 81264 "POST /visitors/profile/setup/?next=/accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-hoYgBV0af67EuEFIlTds8pZ9N71XYJCG14AbUrMfMS8_JbFfFxQ9YZJsRtDLiNNqLdSEkgeCB5yyWr-Zxiwry1vD3Dnnm9PpXn14HMuGk63IIGmTpuOoROsMoNtSrNhrSjCwcZtWDievlkKmpvoHt4y85GADiGawjVG-QMGy3ENn7B5QiVt9r8P3hY88-V8y54a2cdq8pSDG5Qq3agBR_JD-3ysDKi9ZoDX35mLvFVgZGTeR9Y5S-4kjzNHu-le-27GY-IZWcjWRbb2qp6pTJtO6b0utFVScVctDb8M5tXpSwl5TP7oTzlrAMZC2dYeeCqPTqC0t6wYnafc8yttNUmj7TJcTAS2OxlJJrVOJv33lGQgJm97ZQ9mBqWv3y-RoXBm7EXdbppP1OPbCdMvm6cSCKcjCvuHFxTJ9sF7LmIhQ_lRIzLwrUsGMi49zbDw2ptgaxvPHugKX1uvDRXOpNoQehsBq5066j9o7E6QEy0U34KBGlcijeUfwVPwYveqnXdiNEyh7Aa0AJWYk6hgS7MJWLiZ9cBJHYwJwm7abFtpeO3-dYVsyc2gC4Dn3J3TU_gdovHf803IEzAcWE78V5YB2JeiiH_X4mbD8j3GeAAsOI-hLar8srS3MEvyCN_F6xYb9o5lorIns0X8EHxXOiEZU5dhXHK4nMpXtOWJKsBJECebDfmBDbEOcfobetFRaA6RYgUvEGtKEURQFsj0KQCaOJI5MrDijgtkomyjw3QMkmWR6sCn261oEloHHPU3qfqCnvnWeJ&state=R1Mh5wzjKdMhJBbb&session_state=00417db9-ae24-a405-c9a2-169d26b36f34 HTTP/1.1" 302 0
+INFO 2025-04-29 19:05:18,226 basehttp 88904 81264 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-hoYgBV0af67EuEFIlTds8pZ9N71XYJCG14AbUrMfMS8_JbFfFxQ9YZJsRtDLiNNqLdSEkgeCB5yyWr-Zxiwry1vD3Dnnm9PpXn14HMuGk63IIGmTpuOoROsMoNtSrNhrSjCwcZtWDievlkKmpvoHt4y85GADiGawjVG-QMGy3ENn7B5QiVt9r8P3hY88-V8y54a2cdq8pSDG5Qq3agBR_JD-3ysDKi9ZoDX35mLvFVgZGTeR9Y5S-4kjzNHu-le-27GY-IZWcjWRbb2qp6pTJtO6b0utFVScVctDb8M5tXpSwl5TP7oTzlrAMZC2dYeeCqPTqC0t6wYnafc8yttNUmj7TJcTAS2OxlJJrVOJv33lGQgJm97ZQ9mBqWv3y-RoXBm7EXdbppP1OPbCdMvm6cSCKcjCvuHFxTJ9sF7LmIhQ_lRIzLwrUsGMi49zbDw2ptgaxvPHugKX1uvDRXOpNoQehsBq5066j9o7E6QEy0U34KBGlcijeUfwVPwYveqnXdiNEyh7Aa0AJWYk6hgS7MJWLiZ9cBJHYwJwm7abFtpeO3-dYVsyc2gC4Dn3J3TU_gdovHf803IEzAcWE78V5YB2JeiiH_X4mbD8j3GeAAsOI-hLar8srS3MEvyCN_F6xYb9o5lorIns0X8EHxXOiEZU5dhXHK4nMpXtOWJKsBJECebDfmBDbEOcfobetFRaA6RYgUvEGtKEURQFsj0KQCaOJI5MrDijgtkomyjw3QMkmWR6sCn261oEloHHPU3qfqCnvnWeJ HTTP/1.1" 200 1928
+INFO 2025-04-29 19:05:24,598 basehttp 88904 81264 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-hoYgBV0af67EuEFIlTds8pZ9N71XYJCG14AbUrMfMS8_JbFfFxQ9YZJsRtDLiNNqLdSEkgeCB5yyWr-Zxiwry1vD3Dnnm9PpXn14HMuGk63IIGmTpuOoROsMoNtSrNhrSjCwcZtWDievlkKmpvoHt4y85GADiGawjVG-QMGy3ENn7B5QiVt9r8P3hY88-V8y54a2cdq8pSDG5Qq3agBR_JD-3ysDKi9ZoDX35mLvFVgZGTeR9Y5S-4kjzNHu-le-27GY-IZWcjWRbb2qp6pTJtO6b0utFVScVctDb8M5tXpSwl5TP7oTzlrAMZC2dYeeCqPTqC0t6wYnafc8yttNUmj7TJcTAS2OxlJJrVOJv33lGQgJm97ZQ9mBqWv3y-RoXBm7EXdbppP1OPbCdMvm6cSCKcjCvuHFxTJ9sF7LmIhQ_lRIzLwrUsGMi49zbDw2ptgaxvPHugKX1uvDRXOpNoQehsBq5066j9o7E6QEy0U34KBGlcijeUfwVPwYveqnXdiNEyh7Aa0AJWYk6hgS7MJWLiZ9cBJHYwJwm7abFtpeO3-dYVsyc2gC4Dn3J3TU_gdovHf803IEzAcWE78V5YB2JeiiH_X4mbD8j3GeAAsOI-hLar8srS3MEvyCN_F6xYb9o5lorIns0X8EHxXOiEZU5dhXHK4nMpXtOWJKsBJECebDfmBDbEOcfobetFRaA6RYgUvEGtKEURQFsj0KQCaOJI5MrDijgtkomyjw3QMkmWR6sCn261oEloHHPU3qfqCnvnWeJ HTTP/1.1" 200 1684
+INFO 2025-04-29 19:05:33,227 basehttp 88904 81264 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-hoYgBV0af67EuEFIlTds8pZ9N71XYJCG14AbUrMfMS8_JbFfFxQ9YZJsRtDLiNNqLdSEkgeCB5yyWr-Zxiwry1vD3Dnnm9PpXn14HMuGk63IIGmTpuOoROsMoNtSrNhrSjCwcZtWDievlkKmpvoHt4y85GADiGawjVG-QMGy3ENn7B5QiVt9r8P3hY88-V8y54a2cdq8pSDG5Qq3agBR_JD-3ysDKi9ZoDX35mLvFVgZGTeR9Y5S-4kjzNHu-le-27GY-IZWcjWRbb2qp6pTJtO6b0utFVScVctDb8M5tXpSwl5TP7oTzlrAMZC2dYeeCqPTqC0t6wYnafc8yttNUmj7TJcTAS2OxlJJrVOJv33lGQgJm97ZQ9mBqWv3y-RoXBm7EXdbppP1OPbCdMvm6cSCKcjCvuHFxTJ9sF7LmIhQ_lRIzLwrUsGMi49zbDw2ptgaxvPHugKX1uvDRXOpNoQehsBq5066j9o7E6QEy0U34KBGlcijeUfwVPwYveqnXdiNEyh7Aa0AJWYk6hgS7MJWLiZ9cBJHYwJwm7abFtpeO3-dYVsyc2gC4Dn3J3TU_gdovHf803IEzAcWE78V5YB2JeiiH_X4mbD8j3GeAAsOI-hLar8srS3MEvyCN_F6xYb9o5lorIns0X8EHxXOiEZU5dhXHK4nMpXtOWJKsBJECebDfmBDbEOcfobetFRaA6RYgUvEGtKEURQFsj0KQCaOJI5MrDijgtkomyjw3QMkmWR6sCn261oEloHHPU3qfqCnvnWeJ HTTP/1.1" 200 1684
+INFO 2025-04-29 19:05:46,040 basehttp 88904 81264 "GET /accounts/3rdparty/ HTTP/1.1" 200 3035
+INFO 2025-04-29 19:05:50,076 basehttp 88904 81264 "GET /accounts/password/change/ HTTP/1.1" 302 0
+INFO 2025-04-29 19:05:50,507 basehttp 88904 81264 "GET /accounts/password/set/ HTTP/1.1" 200 2692
+INFO 2025-04-29 19:05:52,495 basehttp 88904 81264 "GET /accounts/logout/ HTTP/1.1" 200 1951
+INFO 2025-04-29 19:06:22,425 basehttp 88904 81264 "GET /accounts/logout/ HTTP/1.1" 200 1951
+INFO 2025-04-29 19:06:24,846 basehttp 88904 81264 "GET /accounts/3rdparty/ HTTP/1.1" 200 3035
+INFO 2025-04-29 19:06:26,910 basehttp 88904 81264 "GET /accounts/microsoft/login/?process=connect HTTP/1.1" 200 1977
+INFO 2025-04-29 19:06:28,533 basehttp 88904 81264 "POST /accounts/microsoft/login/?process=connect HTTP/1.1" 302 0
+INFO 2025-04-29 19:06:32,618 basehttp 88904 81264 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-rxoZaY2L5nkXUx4esbiRQaRphK-jvKPvaurkGglrQV-cASjf2RzgcXdgT38SA4Ie2DjCwwak3ryAmxOyOrauKzqQM1UCQb8QucCUM00yEPOWwFA_XFJuYDNfSnH2skTMSD_3MEyXn1UFZBBXI_8BvsqWTbs7g4V_cU533j1sr7hTSeoBA1vbAGCX8eN2Wc2fV6kds8CF0Z-fHrvLHBiom4XDeR6J5k7lNb8dDzm14SWL7CDk2W0KeEZmtmvXtxwwbfyYqcVY61XbgGKtFxabnckua5R9KbArwEOKzUdi-wMcFHBYMSWzF5QHtYh1jW4SNfw4WuYoFFfA5-RbkmfMSfkAwiuaBk5SwiR_w7-z83B-Mo_yDO45dHcylolpvH-n6dezsL9z9aVvsi1MjKvXCX6D9Sbkib2lVKoQq2IudYS11a-ft6JtMMD0Ei8JIc9g0RR713vL6uIj2umFGe2aNfP-qw992MK94j5rwG-Lj1YTr1BmdWS6Ih-FgPnx7c67tC30p8lBrj9nLSVzhwHqzScsxucF1xkrPxDDlITH4Zss2Vk23tfT9ZTwJqjua54L7W7gmChQOsLsw2KSdNAhsS51ZGxkmMv0J0ceWA2BsmcQqvbP5vqiTUzZQVT5jOcUUhV2uJbWqE1SYBTrstIwLQhsGhmaeV_f_nWPVJBI8FqmnRG9T8YRbJUUZ8hf8eZggXb3g6tY6VU8xLJNV2EG1m85mQCxbYmRQCf47D5sj5Ij2JZNxmgPITYrPb6BYafVyltvUsw8z&state=UutUH8r9xoOIZWvP&session_state=00417db9-ae24-a405-c9a2-169d26b36f34 HTTP/1.1" 302 0
+INFO 2025-04-29 19:06:33,034 basehttp 88904 81264 "GET /accounts/3rdparty/ HTTP/1.1" 200 3268
+INFO 2025-04-29 19:06:37,639 basehttp 88904 81264 "GET /accounts/microsoft/login/?process=connect HTTP/1.1" 200 1977
+INFO 2025-04-29 19:06:41,414 basehttp 88904 81264 "POST /accounts/microsoft/login/?process=connect HTTP/1.1" 302 0
+INFO 2025-04-29 19:06:44,435 basehttp 88904 81264 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8L6rYf_-upJbxAgOQqzhE5EyrbqRtzessndpGqpe6VdrmrABfbs7APf6WnJx5E3XnSH_ctkpco0nHh3TsSRuH8PjPCooUeNvAZ6mzBQXgopq8y0NjjtGT566NQdvidYdsGl0Tbz4uWvfx64C2eCTkxpj29dhM_iASGUSbYvL5mSyZjHkdpuVcsYqeHB_yMgtQ8A1r5rFecaD3jFh0KkqhvQsoVGOE2SQLM7EBoZk6XUPj_DVBKb1zQnl4vd5NuHDS4tg8ZKYDUoliN_j47j7AIzJJPXkL25MRReoCtq-SySSvajtgdQHeSVkXZE6L4hXOaSf6ui5EvPQYgNVQeM09JzqtF8I98gy-_PyFxtaOU8EsRnaI-FmBsMalzypTOHFlu2hWu22CsgDtyrco8doL10xUk4XtNZ3jZ0xdqYVtMNnSowQm_GoSQolSqWA-DlnJtvkL0YYGs4z7rf3Io-6PwTPX2_HWTwhOOFGUCt3Je5fR_LWVDdpjiXcFL-K3GO9c8cEWnB5KmTEeam4DHlv-7QCrYFhoOgqyl9dNhQBYim_aE-s2qZJWqtlDgV3o7A1mGjMFq0j-G0Krf6JzcD40zLpPGpIo1_loYafDopsvTY2EGe-xe0mhQpmrhOZeQHGqgfE58ASuQ4_dW1WnZbJ1iJ7KSHdt-GzdwOSG8ab-ESxNnR8h6FRBgk2axSN-rQ9LxNJWeLf4jqZsluh8EiYqSLg7po3cizJiywYiNrJTk-iVTthy1XUJmvz02fCI7YI_WvJAU5SDzVQ&state=kRUSzEB97Rq9aF4q&session_state=00417db9-736d-6184-8c05-907f2b5f01ee HTTP/1.1" 200 1684
+INFO 2025-04-29 19:09:12,559 autoreload 88904 82752 D:\university_visitor_system\visitor_system\visitor_system\settings.py changed, reloading.
+INFO 2025-04-29 19:09:13,474 autoreload 89804 78360 Watching for file changes with StatReloader
+INFO 2025-04-29 19:09:14,550 basehttp 89804 32444 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8L6rYf_-upJbxAgOQqzhE5EyrbqRtzessndpGqpe6VdrmrABfbs7APf6WnJx5E3XnSH_ctkpco0nHh3TsSRuH8PjPCooUeNvAZ6mzBQXgopq8y0NjjtGT566NQdvidYdsGl0Tbz4uWvfx64C2eCTkxpj29dhM_iASGUSbYvL5mSyZjHkdpuVcsYqeHB_yMgtQ8A1r5rFecaD3jFh0KkqhvQsoVGOE2SQLM7EBoZk6XUPj_DVBKb1zQnl4vd5NuHDS4tg8ZKYDUoliN_j47j7AIzJJPXkL25MRReoCtq-SySSvajtgdQHeSVkXZE6L4hXOaSf6ui5EvPQYgNVQeM09JzqtF8I98gy-_PyFxtaOU8EsRnaI-FmBsMalzypTOHFlu2hWu22CsgDtyrco8doL10xUk4XtNZ3jZ0xdqYVtMNnSowQm_GoSQolSqWA-DlnJtvkL0YYGs4z7rf3Io-6PwTPX2_HWTwhOOFGUCt3Je5fR_LWVDdpjiXcFL-K3GO9c8cEWnB5KmTEeam4DHlv-7QCrYFhoOgqyl9dNhQBYim_aE-s2qZJWqtlDgV3o7A1mGjMFq0j-G0Krf6JzcD40zLpPGpIo1_loYafDopsvTY2EGe-xe0mhQpmrhOZeQHGqgfE58ASuQ4_dW1WnZbJ1iJ7KSHdt-GzdwOSG8ab-ESxNnR8h6FRBgk2axSN-rQ9LxNJWeLf4jqZsluh8EiYqSLg7po3cizJiywYiNrJTk-iVTthy1XUJmvz02fCI7YI_WvJAU5SDzVQ&state=kRUSzEB97Rq9aF4q&session_state=00417db9-736d-6184-8c05-907f2b5f01ee HTTP/1.1" 200 1684
+INFO 2025-04-29 19:09:16,734 basehttp 89804 32444 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8L6rYf_-upJbxAgOQqzhE5EyrbqRtzessndpGqpe6VdrmrABfbs7APf6WnJx5E3XnSH_ctkpco0nHh3TsSRuH8PjPCooUeNvAZ6mzBQXgopq8y0NjjtGT566NQdvidYdsGl0Tbz4uWvfx64C2eCTkxpj29dhM_iASGUSbYvL5mSyZjHkdpuVcsYqeHB_yMgtQ8A1r5rFecaD3jFh0KkqhvQsoVGOE2SQLM7EBoZk6XUPj_DVBKb1zQnl4vd5NuHDS4tg8ZKYDUoliN_j47j7AIzJJPXkL25MRReoCtq-SySSvajtgdQHeSVkXZE6L4hXOaSf6ui5EvPQYgNVQeM09JzqtF8I98gy-_PyFxtaOU8EsRnaI-FmBsMalzypTOHFlu2hWu22CsgDtyrco8doL10xUk4XtNZ3jZ0xdqYVtMNnSowQm_GoSQolSqWA-DlnJtvkL0YYGs4z7rf3Io-6PwTPX2_HWTwhOOFGUCt3Je5fR_LWVDdpjiXcFL-K3GO9c8cEWnB5KmTEeam4DHlv-7QCrYFhoOgqyl9dNhQBYim_aE-s2qZJWqtlDgV3o7A1mGjMFq0j-G0Krf6JzcD40zLpPGpIo1_loYafDopsvTY2EGe-xe0mhQpmrhOZeQHGqgfE58ASuQ4_dW1WnZbJ1iJ7KSHdt-GzdwOSG8ab-ESxNnR8h6FRBgk2axSN-rQ9LxNJWeLf4jqZsluh8EiYqSLg7po3cizJiywYiNrJTk-iVTthy1XUJmvz02fCI7YI_WvJAU5SDzVQ&state=kRUSzEB97Rq9aF4q&session_state=00417db9-736d-6184-8c05-907f2b5f01ee HTTP/1.1" 200 1684
+INFO 2025-04-29 19:09:21,486 basehttp 89804 32444 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8L6rYf_-upJbxAgOQqzhE5EyrbqRtzessndpGqpe6VdrmrABfbs7APf6WnJx5E3XnSH_ctkpco0nHh3TsSRuH8PjPCooUeNvAZ6mzBQXgopq8y0NjjtGT566NQdvidYdsGl0Tbz4uWvfx64C2eCTkxpj29dhM_iASGUSbYvL5mSyZjHkdpuVcsYqeHB_yMgtQ8A1r5rFecaD3jFh0KkqhvQsoVGOE2SQLM7EBoZk6XUPj_DVBKb1zQnl4vd5NuHDS4tg8ZKYDUoliN_j47j7AIzJJPXkL25MRReoCtq-SySSvajtgdQHeSVkXZE6L4hXOaSf6ui5EvPQYgNVQeM09JzqtF8I98gy-_PyFxtaOU8EsRnaI-FmBsMalzypTOHFlu2hWu22CsgDtyrco8doL10xUk4XtNZ3jZ0xdqYVtMNnSowQm_GoSQolSqWA-DlnJtvkL0YYGs4z7rf3Io-6PwTPX2_HWTwhOOFGUCt3Je5fR_LWVDdpjiXcFL-K3GO9c8cEWnB5KmTEeam4DHlv-7QCrYFhoOgqyl9dNhQBYim_aE-s2qZJWqtlDgV3o7A1mGjMFq0j-G0Krf6JzcD40zLpPGpIo1_loYafDopsvTY2EGe-xe0mhQpmrhOZeQHGqgfE58ASuQ4_dW1WnZbJ1iJ7KSHdt-GzdwOSG8ab-ESxNnR8h6FRBgk2axSN-rQ9LxNJWeLf4jqZsluh8EiYqSLg7po3cizJiywYiNrJTk-iVTthy1XUJmvz02fCI7YI_WvJAU5SDzVQ&state=kRUSzEB97Rq9aF4q&session_state=00417db9-736d-6184-8c05-907f2b5f01ee HTTP/1.1" 200 1684
+INFO 2025-04-29 19:09:28,441 basehttp 89804 32444 "GET / HTTP/1.1" 200 9494
+INFO 2025-04-29 19:09:40,121 basehttp 89804 37912 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 19:09:40,738 basehttp 89804 37912 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 19:09:41,687 basehttp 89804 89008 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 19:09:42,331 log 89804 89008 Not Found: /favicon.ico
+WARNING 2025-04-29 19:09:42,331 basehttp 89804 89008 "GET /favicon.ico HTTP/1.1" 404 179
+INFO 2025-04-29 19:09:59,307 basehttp 89804 47736 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 19:09:59,935 basehttp 89804 47736 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 19:10:01,639 basehttp 89804 88340 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 19:10:02,293 basehttp 89804 88340 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 19:10:03,142 basehttp 89804 89520 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 19:10:03,898 log 89804 89520 Not Found: /static/css/style.css
+WARNING 2025-04-29 19:10:03,899 basehttp 89804 89520 "GET /static/css/style.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:10:04,100 log 89804 88732 Not Found: /static/img/aitu_logo.jpg
+WARNING 2025-04-29 19:10:04,100 basehttp 89804 88732 "GET /static/img/aitu_logo.jpg HTTP/1.1" 404 179
+INFO 2025-04-29 19:10:25,894 basehttp 89804 84624 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 19:10:26,206 basehttp 89804 84624 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 19:10:26,639 basehttp 89804 72268 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+INFO 2025-04-29 19:10:40,970 basehttp 89804 6880 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 19:10:41,357 basehttp 89804 6880 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 19:10:41,872 basehttp 89804 43148 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 19:10:42,285 log 89804 43148 Not Found: /static/css/style.css
+WARNING 2025-04-29 19:10:42,285 basehttp 89804 43148 "GET /static/css/style.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:10:42,394 log 89804 47044 Not Found: /static/img/aitu_logo.jpg
+WARNING 2025-04-29 19:10:42,395 basehttp 89804 47044 "GET /static/img/aitu_logo.jpg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:10:42,785 log 89804 47044 Not Found: /favicon.ico
+WARNING 2025-04-29 19:10:42,786 basehttp 89804 47044 "GET /favicon.ico HTTP/1.1" 404 179
+INFO 2025-04-29 19:10:44,771 basehttp 89804 47044 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-29 19:10:46,515 basehttp 89804 47044 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-04-29 19:11:14,281 basehttp 89804 13424 "GET /accounts/microsoft/login/callback/ HTTP/1.1" 200 1119
+INFO 2025-04-29 19:11:19,132 middleware 89804 47044 [Middleware] User 'yrysbek.adilbekuly' profile incomplete. Redirecting to setup.
+INFO 2025-04-29 19:11:19,133 basehttp 89804 47044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA&state=9AzI0SwQPUHGSvBQ&session_state=6347d25f-0cc4-490f-b470-7a9d0d235918 HTTP/1.1" 302 0
+INFO 2025-04-29 19:11:19,675 basehttp 89804 47044 "GET /visitors/profile/setup/?next=/accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA&state=9AzI0SwQPUHGSvBQ&session_state=6347d25f-0cc4-490f-b470-7a9d0d235918 HTTP/1.1" 200 11910
+INFO 2025-04-29 19:11:41,778 views 89804 47044 User 'yrysbek.adilbekuly' completed profile setup.
+INFO 2025-04-29 19:11:41,779 basehttp 89804 47044 "POST /visitors/profile/setup/?next=/accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA&state=9AzI0SwQPUHGSvBQ&session_state=6347d25f-0cc4-490f-b470-7a9d0d235918 HTTP/1.1" 302 0
+INFO 2025-04-29 19:11:42,199 basehttp 89804 47044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA HTTP/1.1" 200 1928
+INFO 2025-04-29 19:11:44,441 basehttp 89804 47044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA HTTP/1.1" 200 1684
+INFO 2025-04-29 19:11:46,736 basehttp 89804 47044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA HTTP/1.1" 200 1684
+INFO 2025-04-29 19:11:47,616 basehttp 89804 47044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA HTTP/1.1" 200 1684
+INFO 2025-04-29 19:11:49,143 basehttp 89804 47044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA HTTP/1.1" 200 1684
+INFO 2025-04-29 19:11:50,035 basehttp 89804 47044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAZc8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_3WJrTbgU-ZsxbfJW8zFNggr5JAvmFoil0eOSpPYaHJxarjELc3Oi5qpwCXQRbcRaA7A345kKwd40BgL5bnqZ7GfAse8CRqNup4ne3048zBLW9QvnBrORtA85OYKY6zG-3frKvjzw3aw67W_OF5D6Rj629TjEjafxBXncdocPftEGawX3Hxza6vujBAq4VSOCUKu9Gxr9tqzv_XlTqJzIcwpc0CmppwXQtqBNauec70vfdSJgl-cE9hGhQRL5Pz6lJ1609jP33S14OYSjIGmcskpUoGn34SD43ct1Kbu0hXrat4k8--La_G3TbjdJa9KBOmgKuNPH90BXwXtflTiEXZCHzqeN4bXAcj4zMJS1GCq_DfxEHHCX0LZlGEs7Dp560HdJ3gUV1x7vMUReK4ydyExIWSShK5oZVdeo6uYah700TL7-3mmFBLPLbQsZ-b-5Oakf1wZO1VBOdvm2kCBfa-NkIvO5xshGhNeglGRYoMJRNeIyIlcf28sdjU_xUFENnJa3kdbZ_3cM3CG1JQXbFMpI_MIcxSADDmzarti0o7dY15-jNI4RvTPih1swZUQaq1HLQC-9kTBIiNLTpelOJLhxBpkFb8jlQ8MSjba-VmxBk_ki4twrCAzJoJb5Kgrql-RgWHh50o6jyIIrnp8ldJbtUgOw3mlylDVWYlq7Jl6yAUbtxnFDJ6LK06fBk4EJo6AooriRwxnv8ALzZDLFtxXMfWnSI7n5P7Uxx7lhgqLgNACVUlll6S6qaua21JYwg41zkA_h3xRCQrRl1OdckhMAxsA HTTP/1.1" 200 1684
+INFO 2025-04-29 19:11:52,390 basehttp 89804 47044 "GET / HTTP/1.1" 200 9508
+INFO 2025-04-29 19:11:56,852 basehttp 89804 47044 "GET /visitors/register/ HTTP/1.1" 200 32125
+WARNING 2025-04-29 19:11:57,296 log 89804 43148 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:11:57,296 basehttp 89804 43148 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:11:57,297 log 89804 47044 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:11:57,297 basehttp 89804 47044 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:11:57,475 log 89804 85588 Not Found: /static/admin/js/vendor/select2/i18n/en.js
+WARNING 2025-04-29 19:11:57,476 basehttp 89804 85588 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:11:57,477 log 89804 88560 Not Found: /static/django_select2/django_select2.js
+WARNING 2025-04-29 19:11:57,478 basehttp 89804 88560 "GET /static/django_select2/django_select2.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:11:57,487 log 89804 88436 Not Found: /static/admin/js/vendor/select2/select2.full.min.js
+WARNING 2025-04-29 19:11:57,487 basehttp 89804 88436 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 404 179
+INFO 2025-04-29 19:13:24,282 forms 89804 47044 Using guest object: Азаматов Максат Серикулы (ID: 1), Created: True
+INFO 2025-04-29 19:13:24,283 forms 89804 47044 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 19:13:24,334 forms 89804 47044 Saved Visit ID 1, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 19:13:24,336 utils 73908 75712 Attempting to send creation notification for official ID 1
+INFO 2025-04-29 19:13:24,337 basehttp 89804 47044 "POST /visitors/register/ HTTP/1.1" 302 0
+ERROR 2025-04-29 19:13:24,339 utils 73908 75712 Visit official with ID 1 not found for sending notification.
+INFO 2025-04-29 19:13:24,762 basehttp 89804 47044 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 10334
+INFO 2025-04-29 19:13:27,217 basehttp 89804 47044 "GET /visitors/history/ HTTP/1.1" 200 14802
+INFO 2025-04-29 19:13:33,804 basehttp 89804 47044 "GET /visitors/history/ HTTP/1.1" 200 14802
+INFO 2025-04-29 19:14:25,483 basehttp 89804 75364 "GET /visitors/register/ HTTP/1.1" 200 32111
+WARNING 2025-04-29 19:14:25,905 log 89804 75364 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:14:25,905 basehttp 89804 75364 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:14:26,008 log 89804 66584 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:14:26,009 basehttp 89804 66584 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:14:26,086 log 89804 88896 Not Found: /static/admin/js/vendor/select2/i18n/en.js
+WARNING 2025-04-29 19:14:26,086 basehttp 89804 88896 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:14:26,193 log 89804 84216 Not Found: /static/admin/js/vendor/select2/select2.full.min.js
+WARNING 2025-04-29 19:14:26,194 log 89804 32444 Not Found: /static/django_select2/django_select2.js
+WARNING 2025-04-29 19:14:26,194 basehttp 89804 84216 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:14:26,194 basehttp 89804 32444 "GET /static/django_select2/django_select2.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:14:33,262 log 89804 66584 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:14:33,263 basehttp 89804 66584 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:14:33,275 log 89804 75364 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:14:33,276 basehttp 89804 75364 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+INFO 2025-04-29 19:16:36,101 autoreload 89804 78360 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-04-29 19:16:37,213 autoreload 44956 85216 Watching for file changes with StatReloader
+INFO 2025-04-29 19:16:40,851 basehttp 44956 78028 "GET /visitors/register/ HTTP/1.1" 200 32111
+WARNING 2025-04-29 19:16:41,273 log 44956 78028 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:16:41,274 basehttp 44956 78028 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:16:41,375 log 44956 89572 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:16:41,375 basehttp 44956 89572 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:16:41,459 log 44956 86976 Not Found: /static/django_select2/django_select2.js
+WARNING 2025-04-29 19:16:41,459 log 44956 28948 Not Found: /static/admin/js/vendor/select2/select2.full.min.js
+WARNING 2025-04-29 19:16:41,459 basehttp 44956 86976 "GET /static/django_select2/django_select2.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:16:41,459 basehttp 44956 28948 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:16:41,557 log 44956 87700 Not Found: /static/admin/js/vendor/select2/i18n/en.js
+WARNING 2025-04-29 19:16:41,558 basehttp 44956 87700 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 404 179
+INFO 2025-04-29 19:17:19,015 autoreload 44956 85216 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-04-29 19:17:20,249 autoreload 72776 65424 Watching for file changes with StatReloader
+INFO 2025-04-29 19:17:26,916 autoreload 72776 65424 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-04-29 19:17:27,821 autoreload 90028 47724 Watching for file changes with StatReloader
+INFO 2025-04-29 19:17:29,093 basehttp 90028 89532 "GET /visitors/register/ HTTP/1.1" 200 32111
+WARNING 2025-04-29 19:17:29,621 log 90028 68512 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:17:29,621 log 90028 89532 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:17:29,621 basehttp 90028 68512 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:29,622 basehttp 90028 89532 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:29,692 log 90028 73556 Not Found: /static/admin/js/vendor/select2/select2.full.min.js
+WARNING 2025-04-29 19:17:29,692 basehttp 90028 73556 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:29,718 log 90028 89480 Not Found: /static/admin/js/vendor/select2/i18n/en.js
+WARNING 2025-04-29 19:17:29,718 log 90028 77844 Not Found: /static/django_select2/django_select2.js
+INFO 2025-04-29 19:17:29,718 basehttp 90028 89480 - Broken pipe from ('127.0.0.1', 61731)
+WARNING 2025-04-29 19:17:29,718 basehttp 90028 77844 "GET /static/django_select2/django_select2.js HTTP/1.1" 404 179
+INFO 2025-04-29 19:17:31,514 basehttp 90028 85764 "GET /visitors/register/ HTTP/1.1" 200 32111
+WARNING 2025-04-29 19:17:31,934 log 90028 85764 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:17:31,934 basehttp 90028 85764 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:32,040 log 90028 65424 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:17:32,041 basehttp 90028 65424 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:32,119 log 90028 84956 Not Found: /static/admin/js/vendor/select2/select2.full.min.js
+WARNING 2025-04-29 19:17:32,119 basehttp 90028 84956 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:32,222 log 90028 87376 Not Found: /static/admin/js/vendor/select2/i18n/en.js
+WARNING 2025-04-29 19:17:32,222 log 90028 87924 Not Found: /static/django_select2/django_select2.js
+WARNING 2025-04-29 19:17:32,222 basehttp 90028 87376 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:32,222 basehttp 90028 87924 "GET /static/django_select2/django_select2.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:17:32,692 log 90028 65424 Not Found: /favicon.ico
+WARNING 2025-04-29 19:17:32,692 basehttp 90028 65424 "GET /favicon.ico HTTP/1.1" 404 179
+INFO 2025-04-29 19:17:53,049 autoreload 90028 47724 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-04-29 19:17:53,825 autoreload 84784 89484 Watching for file changes with StatReloader
+INFO 2025-04-29 19:17:55,313 autoreload 84784 89484 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-04-29 19:17:56,154 autoreload 84708 85640 Watching for file changes with StatReloader
+INFO 2025-04-29 19:18:16,111 basehttp 84708 77520 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-04-29 19:18:16,537 basehttp 84708 77520 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 3708
+WARNING 2025-04-29 19:18:17,077 log 84708 77520 Not Found: /static/admin/css/base.css
+WARNING 2025-04-29 19:18:17,077 basehttp 84708 77520 "GET /static/admin/css/base.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,159 log 84708 83052 Not Found: /static/admin/css/login.css
+WARNING 2025-04-29 19:18:17,159 log 84708 66116 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:17,159 basehttp 84708 83052 "GET /static/admin/css/login.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,159 basehttp 84708 66116 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,257 log 84708 89404 Not Found: /static/admin/js/theme.js
+WARNING 2025-04-29 19:18:17,258 basehttp 84708 89404 "GET /static/admin/js/theme.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,261 log 84708 2264 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:18:17,261 basehttp 84708 2264 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,369 log 84708 89848 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-04-29 19:18:17,369 basehttp 84708 89848 "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,786 log 84708 66116 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-04-29 19:18:17,786 basehttp 84708 66116 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,789 log 84708 77520 Not Found: /static/admin/css/login.css
+WARNING 2025-04-29 19:18:17,790 log 84708 89848 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:18:17,790 basehttp 84708 89848 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,790 basehttp 84708 77520 "GET /static/admin/css/login.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:17,886 log 84708 88292 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:17,886 basehttp 84708 88292 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+INFO 2025-04-29 19:18:25,672 basehttp 84708 77520 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-04-29 19:18:26,095 basehttp 84708 77520 "GET /admin/ HTTP/1.1" 200 18699
+WARNING 2025-04-29 19:18:26,545 log 84708 77520 Not Found: /static/admin/css/dashboard.css
+WARNING 2025-04-29 19:18:26,545 log 84708 66116 Not Found: /static/admin/css/base.css
+WARNING 2025-04-29 19:18:26,546 basehttp 84708 77520 "GET /static/admin/css/dashboard.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:26,546 basehttp 84708 66116 "GET /static/admin/css/base.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:26,653 log 84708 86516 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:18:26,653 basehttp 84708 86516 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:26,728 log 84708 89692 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-04-29 19:18:26,729 basehttp 84708 89692 "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:26,731 log 84708 48968 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:26,731 log 84708 78620 Not Found: /static/admin/js/theme.js
+WARNING 2025-04-29 19:18:26,732 basehttp 84708 48968 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:26,732 basehttp 84708 78620 "GET /static/admin/js/theme.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:27,139 log 84708 66116 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-04-29 19:18:27,139 log 84708 77520 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:18:27,139 basehttp 84708 66116 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:27,139 basehttp 84708 77520 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:27,247 log 84708 84500 Not Found: /static/admin/css/dashboard.css
+WARNING 2025-04-29 19:18:27,247 log 84708 88976 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:27,248 basehttp 84708 84500 "GET /static/admin/css/dashboard.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:27,248 basehttp 84708 88976 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+INFO 2025-04-29 19:18:50,077 basehttp 84708 77520 "GET /admin/auth/user/ HTTP/1.1" 200 24187
+WARNING 2025-04-29 19:18:50,506 log 84708 77520 Not Found: /static/admin/css/base.css
+WARNING 2025-04-29 19:18:50,506 basehttp 84708 77520 "GET /static/admin/css/base.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,509 log 84708 66116 Not Found: /static/admin/js/theme.js
+WARNING 2025-04-29 19:18:50,509 basehttp 84708 66116 "GET /static/admin/js/theme.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,631 log 84708 72268 Not Found: /static/admin/js/urlify.js
+WARNING 2025-04-29 19:18:50,631 basehttp 84708 72268 "GET /static/admin/js/urlify.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,689 log 84708 84792 Not Found: /static/admin/js/vendor/jquery/jquery.min.js
+WARNING 2025-04-29 19:18:50,690 basehttp 84708 84792 "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,691 log 84708 70608 Not Found: /static/admin/js/jquery.init.js
+WARNING 2025-04-29 19:18:50,692 log 84708 65088 Not Found: /static/admin/js/actions.js
+WARNING 2025-04-29 19:18:50,692 basehttp 84708 70608 "GET /static/admin/js/jquery.init.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,692 basehttp 84708 65088 "GET /static/admin/js/actions.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,709 log 84708 73936 Not Found: /static/admin/css/changelists.css
+WARNING 2025-04-29 19:18:50,709 basehttp 84708 73936 "GET /static/admin/css/changelists.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,802 log 84708 86636 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:18:50,808 basehttp 84708 86636 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,818 log 84708 47020 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-04-29 19:18:50,819 basehttp 84708 47020 "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 179
+INFO 2025-04-29 19:18:50,825 basehttp 84708 89668 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+WARNING 2025-04-29 19:18:50,830 log 84708 89496 Not Found: /static/admin/img/icon-no.svg
+WARNING 2025-04-29 19:18:50,831 log 84708 78620 Not Found: /static/admin/js/admin/RelatedObjectLookups.js
+WARNING 2025-04-29 19:18:50,831 log 84708 65588 Not Found: /static/admin/js/prepopulate.js
+WARNING 2025-04-29 19:18:50,832 log 84708 88784 Not Found: /static/admin/js/core.js
+WARNING 2025-04-29 19:18:50,832 basehttp 84708 89496 "GET /static/admin/img/icon-no.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,832 log 84708 67524 Not Found: /static/admin/js/vendor/xregexp/xregexp.min.js
+WARNING 2025-04-29 19:18:50,832 basehttp 84708 78620 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,833 log 84708 87284 Not Found: /static/admin/img/search.svg
+WARNING 2025-04-29 19:18:50,833 basehttp 84708 65588 "GET /static/admin/js/prepopulate.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,833 basehttp 84708 88784 "GET /static/admin/js/core.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,834 basehttp 84708 67524 "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,834 log 84708 47724 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:50,834 basehttp 84708 87284 "GET /static/admin/img/search.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:50,835 basehttp 84708 47724 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:51,228 log 84708 66116 Not Found: /static/admin/css/changelists.css
+WARNING 2025-04-29 19:18:51,229 basehttp 84708 66116 "GET /static/admin/css/changelists.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:51,233 log 84708 77520 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:18:51,233 basehttp 84708 77520 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:51,354 log 84708 89216 Not Found: /static/admin/img/icon-yes.svg
+WARNING 2025-04-29 19:18:51,354 basehttp 84708 89216 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:51,642 log 84708 77520 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-04-29 19:18:51,643 log 84708 66116 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:51,643 basehttp 84708 77520 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:51,643 basehttp 84708 66116 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:51,679 log 84708 89216 Not Found: /static/admin/js/filters.js
+WARNING 2025-04-29 19:18:51,680 basehttp 84708 89216 "GET /static/admin/js/filters.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:51,742 log 84708 79108 Not Found: /static/admin/img/icon-no.svg
+WARNING 2025-04-29 19:18:51,742 basehttp 84708 79108 "GET /static/admin/img/icon-no.svg HTTP/1.1" 404 179
+INFO 2025-04-29 19:18:56,090 basehttp 84708 77520 "GET /admin/auth/user/4/change/ HTTP/1.1" 200 42517
+WARNING 2025-04-29 19:18:56,517 log 84708 89692 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-04-29 19:18:56,517 log 84708 77520 Not Found: /static/admin/css/base.css
+WARNING 2025-04-29 19:18:56,518 basehttp 84708 89692 "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,518 basehttp 84708 77520 "GET /static/admin/css/base.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,724 log 84708 65424 Not Found: /static/admin/js/vendor/select2/i18n/en.js
+INFO 2025-04-29 19:18:56,725 basehttp 84708 88904 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+WARNING 2025-04-29 19:18:56,726 basehttp 84708 65424 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,728 log 84708 87720 Not Found: /static/admin/js/prepopulate.js
+WARNING 2025-04-29 19:18:56,729 basehttp 84708 87720 "GET /static/admin/js/prepopulate.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,730 log 84708 87624 Not Found: /static/admin/js/urlify.js
+WARNING 2025-04-29 19:18:56,731 log 84708 29376 Not Found: /static/admin/css/autocomplete.css
+WARNING 2025-04-29 19:18:56,731 basehttp 84708 87624 "GET /static/admin/js/urlify.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,731 basehttp 84708 29376 "GET /static/admin/css/autocomplete.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,732 log 84708 46716 Not Found: /static/admin/js/admin/RelatedObjectLookups.js
+WARNING 2025-04-29 19:18:56,732 basehttp 84708 46716 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,734 log 84708 85764 Not Found: /static/admin/css/forms.css
+WARNING 2025-04-29 19:18:56,735 basehttp 84708 85764 "GET /static/admin/css/forms.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,736 log 84708 88408 Not Found: /static/admin/js/theme.js
+WARNING 2025-04-29 19:18:56,737 basehttp 84708 88408 "GET /static/admin/js/theme.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,738 log 84708 87376 Not Found: /static/admin/js/SelectBox.js
+WARNING 2025-04-29 19:18:56,739 basehttp 84708 87376 "GET /static/admin/js/SelectBox.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,814 log 84708 22956 Not Found: /static/admin/js/actions.js
+WARNING 2025-04-29 19:18:56,816 basehttp 84708 22956 "GET /static/admin/js/actions.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,844 log 84708 89264 Not Found: /static/admin/js/autocomplete.js
+WARNING 2025-04-29 19:18:56,846 basehttp 84708 89264 "GET /static/admin/js/autocomplete.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,850 log 84708 86060 Not Found: /static/admin/js/calendar.js
+WARNING 2025-04-29 19:18:56,854 basehttp 84708 86060 "GET /static/admin/js/calendar.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,855 log 84708 89584 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:18:56,855 log 84708 88764 Not Found: /static/admin/js/admin/DateTimeShortcuts.js
+WARNING 2025-04-29 19:18:56,856 basehttp 84708 89584 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,857 basehttp 84708 88764 "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,857 log 84708 88560 Not Found: /static/admin/js/vendor/select2/select2.full.min.js
+WARNING 2025-04-29 19:18:56,858 log 84708 86348 Not Found: /static/admin/js/SelectFilter2.js
+WARNING 2025-04-29 19:18:56,859 basehttp 84708 88560 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,860 basehttp 84708 86348 "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,865 log 84708 44544 Not Found: /static/admin/js/jquery.init.js
+WARNING 2025-04-29 19:18:56,865 log 84708 85236 Not Found: /static/admin/js/inlines.js
+WARNING 2025-04-29 19:18:56,866 log 84708 84084 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:56,867 log 84708 89208 Not Found: /static/admin/js/vendor/jquery/jquery.min.js
+WARNING 2025-04-29 19:18:56,867 basehttp 84708 44544 "GET /static/admin/js/jquery.init.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,867 basehttp 84708 85236 "GET /static/admin/js/inlines.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,867 basehttp 84708 84084 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,868 basehttp 84708 89208 "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,871 log 84708 78752 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:18:56,872 basehttp 84708 78752 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,877 log 84708 90020 Not Found: /static/admin/js/vendor/xregexp/xregexp.min.js
+WARNING 2025-04-29 19:18:56,877 basehttp 84708 90020 "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,877 log 84708 88344 Not Found: /static/admin/js/core.js
+WARNING 2025-04-29 19:18:56,877 basehttp 84708 88344 "GET /static/admin/js/core.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:56,890 log 84708 83052 Not Found: /static/admin/js/prepopulate_init.js
+WARNING 2025-04-29 19:18:56,891 basehttp 84708 83052 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:57,141 log 84708 89692 Not Found: /static/admin/css/forms.css
+WARNING 2025-04-29 19:18:57,142 basehttp 84708 89692 "GET /static/admin/css/forms.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:57,304 log 84708 89264 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-04-29 19:18:57,304 basehttp 84708 89264 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:57,556 log 84708 89692 Not Found: /static/admin/css/autocomplete.css
+WARNING 2025-04-29 19:18:57,556 log 84708 77520 Not Found: /static/admin/img/icon-addlink.svg
+WARNING 2025-04-29 19:18:57,556 basehttp 84708 77520 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:57,556 basehttp 84708 89692 "GET /static/admin/css/autocomplete.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:57,721 log 84708 89264 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:18:57,721 basehttp 84708 89264 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:57,962 log 84708 89692 Not Found: /static/admin/img/icon-changelink.svg
+WARNING 2025-04-29 19:18:57,962 basehttp 84708 89692 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:58,133 log 84708 89264 Not Found: /static/admin/img/icon-deletelink.svg
+WARNING 2025-04-29 19:18:58,133 log 84708 88960 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:18:58,133 basehttp 84708 89264 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:58,133 basehttp 84708 88960 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:58,238 log 84708 85952 Not Found: /static/admin/js/change_form.js
+WARNING 2025-04-29 19:18:58,239 log 84708 89056 Not Found: /static/admin/img/icon-viewlink.svg
+WARNING 2025-04-29 19:18:58,239 basehttp 84708 85952 "GET /static/admin/js/change_form.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:58,239 basehttp 84708 89056 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:18:58,339 log 84708 47724 Not Found: /static/admin/img/icon-addlink.svg
+WARNING 2025-04-29 19:18:58,340 basehttp 84708 47724 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 404 179
+INFO 2025-04-29 19:19:15,000 basehttp 84708 88960 "GET /admin/auth/user/ HTTP/1.1" 200 24187
+INFO 2025-04-29 19:19:46,179 autoreload 84708 85640 D:\university_visitor_system\visitor_system\visitor_system\settings.py changed, reloading.
+INFO 2025-04-29 19:20:53,397 autoreload 11600 89412 Watching for file changes with StatReloader
+INFO 2025-04-29 19:20:57,035 basehttp 11600 88832 "GET /admin/auth/user/ HTTP/1.1" 200 24187
+WARNING 2025-04-29 19:20:57,453 log 11600 88832 Not Found: /static/admin/css/base.css
+WARNING 2025-04-29 19:20:57,454 basehttp 11600 88832 "GET /static/admin/css/base.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,552 log 11600 82752 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:20:57,553 basehttp 11600 82752 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,642 log 11600 86668 Not Found: /static/admin/js/jquery.init.js
+WARNING 2025-04-29 19:20:57,643 log 11600 88164 Not Found: /static/admin/js/vendor/xregexp/xregexp.min.js
+WARNING 2025-04-29 19:20:57,643 basehttp 11600 86668 "GET /static/admin/js/jquery.init.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,644 basehttp 11600 88164 "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,645 log 11600 82900 Not Found: /static/admin/js/theme.js
+INFO 2025-04-29 19:20:57,645 basehttp 11600 87700 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+WARNING 2025-04-29 19:20:57,645 basehttp 11600 82900 "GET /static/admin/js/theme.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,758 log 11600 89852 Not Found: /static/admin/js/actions.js
+WARNING 2025-04-29 19:20:57,759 basehttp 11600 89852 "GET /static/admin/js/actions.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,764 log 11600 89480 Not Found: /static/admin/js/core.js
+WARNING 2025-04-29 19:20:57,764 basehttp 11600 89480 "GET /static/admin/js/core.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,776 log 11600 85180 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-04-29 19:20:57,777 basehttp 11600 85180 "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,778 log 11600 84436 Not Found: /static/admin/js/vendor/jquery/jquery.min.js
+WARNING 2025-04-29 19:20:57,779 log 11600 89716 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:20:57,779 basehttp 11600 84436 "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,779 basehttp 11600 89716 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,780 log 11600 89704 Not Found: /static/admin/img/search.svg
+WARNING 2025-04-29 19:20:57,781 basehttp 11600 89704 "GET /static/admin/img/search.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,786 log 11600 87432 Not Found: /static/admin/js/prepopulate.js
+WARNING 2025-04-29 19:20:57,787 basehttp 11600 87432 "GET /static/admin/js/prepopulate.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,788 log 11600 87284 Not Found: /static/admin/js/urlify.js
+WARNING 2025-04-29 19:20:57,788 basehttp 11600 87284 "GET /static/admin/js/urlify.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,791 log 11600 23252 Not Found: /static/admin/img/icon-no.svg
+WARNING 2025-04-29 19:20:57,792 log 11600 2244 Not Found: /static/admin/js/admin/RelatedObjectLookups.js
+WARNING 2025-04-29 19:20:57,792 log 11600 87676 Not Found: /static/admin/css/changelists.css
+WARNING 2025-04-29 19:20:57,792 basehttp 11600 23252 "GET /static/admin/img/icon-no.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,792 basehttp 11600 2244 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:57,793 basehttp 11600 87676 "GET /static/admin/css/changelists.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:58,185 log 11600 82752 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:20:58,185 basehttp 11600 82752 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:58,188 log 11600 88832 Not Found: /static/admin/img/icon-yes.svg
+WARNING 2025-04-29 19:20:58,188 basehttp 11600 88832 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:58,591 log 11600 88832 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-04-29 19:20:58,591 basehttp 11600 88832 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:58,613 log 11600 82752 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:20:58,613 basehttp 11600 82752 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:58,699 log 11600 88644 Not Found: /static/admin/img/icon-no.svg
+WARNING 2025-04-29 19:20:58,699 log 11600 88256 Not Found: /static/admin/js/filters.js
+WARNING 2025-04-29 19:20:58,700 basehttp 11600 88256 "GET /static/admin/js/filters.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:20:58,700 basehttp 11600 88644 "GET /static/admin/img/icon-no.svg HTTP/1.1" 404 179
+INFO 2025-04-29 19:22:46,432 autoreload 11600 89412 D:\university_visitor_system\visitor_system\visitor_system\urls.py changed, reloading.
+INFO 2025-04-29 19:22:47,319 autoreload 90284 90288 Watching for file changes with StatReloader
+INFO 2025-04-29 19:22:56,976 autoreload 90284 90288 D:\university_visitor_system\visitor_system\visitor_system\urls.py changed, reloading.
+INFO 2025-04-29 19:22:57,683 autoreload 91092 84792 Watching for file changes with StatReloader
+INFO 2025-04-29 19:23:33,153 autoreload 91092 84792 D:\university_visitor_system\visitor_system\visitor_system\settings.py changed, reloading.
+INFO 2025-04-29 19:23:34,023 autoreload 90944 91004 Watching for file changes with StatReloader
+INFO 2025-04-29 19:26:00,542 autoreload 88388 84920 Watching for file changes with StatReloader
+INFO 2025-04-29 19:26:02,829 basehttp 88388 90152 "GET /admin/auth/user/ HTTP/1.1" 200 24187
+WARNING 2025-04-29 19:26:03,250 log 88388 90152 Not Found: /static/admin/css/base.css
+WARNING 2025-04-29 19:26:03,250 basehttp 88388 90152 "GET /static/admin/css/base.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,354 log 88388 77072 Not Found: /static/admin/js/admin/RelatedObjectLookups.js
+WARNING 2025-04-29 19:26:03,354 log 88388 85216 Not Found: /static/admin/js/urlify.js
+WARNING 2025-04-29 19:26:03,355 basehttp 88388 85216 "GET /static/admin/js/urlify.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,355 basehttp 88388 77072 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,440 log 88388 83744 Not Found: /static/admin/js/prepopulate.js
+WARNING 2025-04-29 19:26:03,440 basehttp 88388 83744 "GET /static/admin/js/prepopulate.js HTTP/1.1" 404 179
+INFO 2025-04-29 19:26:03,548 basehttp 88388 89844 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+WARNING 2025-04-29 19:26:03,569 log 88388 89888 Not Found: /static/admin/js/vendor/jquery/jquery.min.js
+WARNING 2025-04-29 19:26:03,573 basehttp 88388 89888 "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,573 log 88388 86928 Not Found: /static/admin/css/changelists.css
+WARNING 2025-04-29 19:26:03,574 basehttp 88388 86928 "GET /static/admin/css/changelists.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,578 log 88388 89480 Not Found: /static/admin/js/core.js
+WARNING 2025-04-29 19:26:03,579 basehttp 88388 89480 "GET /static/admin/js/core.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,581 log 88388 87924 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:26:03,582 basehttp 88388 87924 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,583 log 88388 89380 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:26:03,583 basehttp 88388 89380 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,587 log 88388 88880 Not Found: /static/admin/js/vendor/xregexp/xregexp.min.js
+WARNING 2025-04-29 19:26:03,588 log 88388 78112 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-04-29 19:26:03,588 log 88388 90724 Not Found: /static/admin/js/jquery.init.js
+WARNING 2025-04-29 19:26:03,589 basehttp 88388 88880 "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,589 basehttp 88388 78112 "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,589 basehttp 88388 90724 "GET /static/admin/js/jquery.init.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,590 log 88388 79324 Not Found: /static/admin/img/icon-no.svg
+WARNING 2025-04-29 19:26:03,591 log 88388 90716 Not Found: /static/admin/js/actions.js
+WARNING 2025-04-29 19:26:03,591 basehttp 88388 79324 "GET /static/admin/img/icon-no.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,591 basehttp 88388 90716 "GET /static/admin/js/actions.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,593 log 88388 88284 Not Found: /static/admin/img/search.svg
+WARNING 2025-04-29 19:26:03,593 basehttp 88388 88284 "GET /static/admin/img/search.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:03,597 log 88388 83168 Not Found: /static/admin/js/theme.js
+WARNING 2025-04-29 19:26:03,597 basehttp 88388 83168 "GET /static/admin/js/theme.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:04,057 log 88388 90152 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-04-29 19:26:04,058 basehttp 88388 90152 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:04,058 log 88388 77072 Not Found: /static/admin/img/icon-yes.svg
+WARNING 2025-04-29 19:26:04,066 basehttp 88388 77072 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:04,157 log 88388 85924 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-04-29 19:26:04,158 basehttp 88388 85924 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:04,158 log 88388 89208 Not Found: /static/admin/css/changelists.css
+WARNING 2025-04-29 19:26:04,158 basehttp 88388 89208 "GET /static/admin/css/changelists.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:04,567 log 88388 77072 Not Found: /static/admin/js/filters.js
+WARNING 2025-04-29 19:26:04,567 basehttp 88388 77072 "GET /static/admin/js/filters.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:04,568 log 88388 90152 Not Found: /static/admin/css/responsive.css
+WARNING 2025-04-29 19:26:04,569 basehttp 88388 90152 "GET /static/admin/css/responsive.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:26:04,666 log 88388 86008 Not Found: /static/admin/img/icon-no.svg
+WARNING 2025-04-29 19:26:04,666 basehttp 88388 86008 "GET /static/admin/img/icon-no.svg HTTP/1.1" 404 179
+INFO 2025-04-29 19:26:07,224 basehttp 88388 90152 "POST /admin/logout/ HTTP/1.1" 302 0
+INFO 2025-04-29 19:26:07,604 basehttp 88388 90152 "GET / HTTP/1.1" 302 0
+INFO 2025-04-29 19:26:07,985 basehttp 88388 90152 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-29 19:26:08,394 basehttp 88388 77072 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-29 19:26:08,792 log 88388 77072 Not Found: /static/css/style.css
+WARNING 2025-04-29 19:26:08,793 basehttp 88388 77072 "GET /static/css/style.css HTTP/1.1" 404 179
+INFO 2025-04-29 19:26:26,122 basehttp 88388 77072 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-29 19:26:27,727 basehttp 88388 77072 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-04-29 19:26:32,227 middleware 88388 77072 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-04-29 19:26:32,228 basehttp 88388 77072 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g&state=EIYEryQulY6PNVmo&session_state=00417db9-736d-6184-8c05-907f2b5f01ee HTTP/1.1" 302 0
+INFO 2025-04-29 19:26:32,645 basehttp 88388 77072 "GET /visitors/profile/setup/?next=/accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g&state=EIYEryQulY6PNVmo&session_state=00417db9-736d-6184-8c05-907f2b5f01ee HTTP/1.1" 200 11885
+INFO 2025-04-29 19:26:39,492 views 88388 77072 User 'sagat.akimbay' completed profile setup.
+INFO 2025-04-29 19:26:39,493 basehttp 88388 77072 "POST /visitors/profile/setup/?next=/accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g&state=EIYEryQulY6PNVmo&session_state=00417db9-736d-6184-8c05-907f2b5f01ee HTTP/1.1" 302 0
+INFO 2025-04-29 19:26:39,904 basehttp 88388 77072 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g HTTP/1.1" 200 1928
+INFO 2025-04-29 19:26:42,070 basehttp 88388 77072 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g HTTP/1.1" 200 1684
+INFO 2025-04-29 19:26:43,454 basehttp 88388 77072 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g HTTP/1.1" 200 1684
+INFO 2025-04-29 19:26:45,421 basehttp 88388 77072 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g HTTP/1.1" 200 1684
+INFO 2025-04-29 19:26:46,407 basehttp 88388 77072 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P8M3xzCNfPnRK05x-xBeSpMQDixVRGMAON2W5EhoUNAfTT-uzQEZo5AaRxcUJR58Ng8vljX1U0IURluaWvfgaja3o1m52VbhlFwWOEoJqV4o7OZUWm4WfdqfHIIuSxwD0Zf0EVC9ZqeBEpzF3HoCpas382eW3n_2fG1ZmzlbN-f8FU2X-s4_9TsmJOY5redNd8-UPLzbmxRE0eL_2ul5_r2b0qelkZxE0Y2CN7wk_oTXbAHCDrRb0sSgLplNg3CjqHpDqZHsJ33u2fJ0ceE7UiAs2Bp5L2aqbtOJ2CAYdo2XahzzAiEEI8S_nYmiSOuqwHQCWiJSVzIfjzrzr1ntLFEOlHUlJO63ceyquOVTGsoD290y4tJx0dLqVp6XwmFn3dLUuJLRdHLoUgJh5KxXzQ0m72T5aUcE2xSZuLeDZJqoYrLlbVN_ryBhNEmr_fE-A0_5gJfEEtUEho2hmrtnSqP5U0B-L9vJCUp9VEFpgPZsPhPGDrtITN9Zoi_gyJ7VycJfQ65pavIdwjQdtrQ-jOymogN90c62j_mS-M93mRgXukv7BHQ122Snzx4_G3BCNyQMgz79VkJSakGoZ_w2byDi9VURBxbeEnhMGZf6_G3kpJWUt1TP_McmYk7Cj36oAKwd4l1ET_ABCJH7jJ2NCKm6kgkostlbmyNL47GCtS1Owut0zi-5UFO_Lb3HbE-O3Z8d2abesdJTHuqjGxMOE22baHjDfdhBDg3-wWTIY634mXbePWJ2GftEUdSBQm9brTHFFxy7iAuj4g HTTP/1.1" 200 1684
+INFO 2025-04-29 19:26:54,263 basehttp 88388 77072 "GET / HTTP/1.1" 200 9498
+INFO 2025-04-29 19:26:57,484 basehttp 88388 77072 "GET / HTTP/1.1" 200 9498
+INFO 2025-04-29 19:27:00,310 basehttp 88388 77072 "GET /visitors/register/ HTTP/1.1" 200 32159
+WARNING 2025-04-29 19:27:00,732 log 88388 77072 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:27:00,732 basehttp 88388 77072 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:27:00,838 log 88388 91048 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:27:00,838 basehttp 88388 91048 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:27:00,914 log 88388 90172 Not Found: /static/admin/js/vendor/select2/i18n/en.js
+WARNING 2025-04-29 19:27:00,915 basehttp 88388 90172 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:27:01,014 log 88388 90944 Not Found: /static/django_select2/django_select2.js
+WARNING 2025-04-29 19:27:01,014 basehttp 88388 90944 "GET /static/django_select2/django_select2.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:27:01,037 log 88388 89484 Not Found: /static/admin/js/vendor/select2/select2.full.min.js
+WARNING 2025-04-29 19:27:01,037 basehttp 88388 89484 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 404 179
+WARNING 2025-04-29 19:27:07,416 log 88388 77072 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:27:07,416 log 88388 91048 Not Found: /static/admin/css/vendor/select2/select2.min.css
+WARNING 2025-04-29 19:27:07,417 basehttp 88388 91048 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:27:07,417 basehttp 88388 77072 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+WARNING 2025-04-29 19:27:10,991 log 88388 77072 Not Found: /static/django_select2/django_select2.css
+WARNING 2025-04-29 19:27:10,992 basehttp 88388 77072 "GET /static/django_select2/django_select2.css HTTP/1.1" 404 179
+INFO 2025-04-29 19:31:47,758 autoreload 5040 88076 Watching for file changes with StatReloader
+INFO 2025-04-29 19:31:49,769 basehttp 5040 85972 "GET /visitors/register/ HTTP/1.1" 200 32159
+INFO 2025-04-29 19:31:50,180 basehttp 5040 85972 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 200 14966
+INFO 2025-04-29 19:31:50,286 basehttp 5040 90276 "GET /static/django_select2/django_select2.css HTTP/1.1" 200 54
+INFO 2025-04-29 19:31:50,353 basehttp 5040 80400 "GET /static/django_select2/django_select2.js HTTP/1.1" 200 2561
+INFO 2025-04-29 19:31:50,353 basehttp 5040 80960 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 200 844
+INFO 2025-04-29 19:31:50,359 basehttp 5040 90488 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 200 79212
+INFO 2025-04-29 19:31:55,074 basehttp 5040 90276 "GET /visitors/ajax/department-details/?department_id=9 HTTP/1.1" 200 82
+INFO 2025-04-29 19:31:55,796 basehttp 5040 90276 "GET /visitors/ajax/employee-autocomplete/?department_id=9 HTTP/1.1" 200 93
+INFO 2025-04-29 19:31:56,956 basehttp 5040 90276 "GET /visitors/ajax/employee-details/5/ HTTP/1.1" 200 32
+INFO 2025-04-29 19:32:36,113 forms 5040 90276 Using guest object: Акимбаев Сагат Ганиевич (ID: 2), Created: True
+INFO 2025-04-29 19:32:36,113 forms 5040 90276 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 19:32:36,170 forms 5040 90276 Saved Visit ID 2, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 19:32:36,172 utils 90232 88736 Attempting to send creation notification for official ID 2
+INFO 2025-04-29 19:32:36,173 basehttp 5040 90276 "POST /visitors/register/ HTTP/1.1" 302 0
+WARNING 2025-04-29 19:32:36,225 utils 90232 88736 Department 'Деканат' has no director assigned.
+INFO 2025-04-29 19:32:36,596 basehttp 5040 90276 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 10320
+INFO 2025-04-29 19:32:38,556 utils 90232 88736 Visit notification email for official ID 2 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-04-29 19:33:15,609 basehttp 5040 89424 "GET / HTTP/1.1" 200 9508
+INFO 2025-04-29 19:33:18,018 basehttp 5040 89424 "GET /visitors/register/ HTTP/1.1" 200 32169
+INFO 2025-04-29 19:33:18,447 basehttp 5040 89424 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 200 14966
+INFO 2025-04-29 19:33:18,551 basehttp 5040 90648 "GET /static/django_select2/django_select2.css HTTP/1.1" 200 54
+INFO 2025-04-29 19:33:18,625 basehttp 5040 46340 "GET /static/django_select2/django_select2.js HTTP/1.1" 200 2561
+INFO 2025-04-29 19:33:18,625 basehttp 5040 83168 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 200 79212
+INFO 2025-04-29 19:33:18,728 basehttp 5040 91972 "GET /static/admin/js/vendor/select2/i18n/en.js HTTP/1.1" 200 844
+INFO 2025-04-29 19:33:24,425 basehttp 5040 90648 "GET /visitors/ajax/department-details/?department_id=29 HTTP/1.1" 200 82
+INFO 2025-04-29 19:33:25,556 basehttp 5040 90648 "GET /visitors/ajax/employee-autocomplete/?department_id=29 HTTP/1.1" 200 167
+INFO 2025-04-29 19:33:31,431 basehttp 5040 90648 "GET /visitors/ajax/employee-details/1/ HTTP/1.1" 200 32
+INFO 2025-04-29 19:33:53,545 forms 5040 90648 Using guest object: YRYSBEK ADILBEKULY (ID: 3), Created: True
+INFO 2025-04-29 19:33:53,546 forms 5040 90648 Visit None created with status CHECKED_IN.
+INFO 2025-04-29 19:33:53,574 forms 5040 90648 Saved Visit ID 3, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-29 19:33:53,576 utils 90232 88736 Attempting to send creation notification for official ID 3
+INFO 2025-04-29 19:33:53,577 basehttp 5040 90648 "POST /visitors/register/ HTTP/1.1" 302 0
+WARNING 2025-04-29 19:33:53,605 utils 90232 88736 Department 'Медиа студия' has no director assigned.
+INFO 2025-04-29 19:33:54,007 basehttp 5040 90648 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 10278
+INFO 2025-04-29 19:33:55,493 utils 90232 88736 Visit notification email for official ID 3 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:yrysbek.adilbekuly@astanait.edu.kz'].
+INFO 2025-04-29 19:33:56,573 basehttp 5040 90648 "GET /visitors/history/ HTTP/1.1" 200 17858
+INFO 2025-04-29 19:33:58,672 basehttp 5040 90648 "GET /visitors/current/ HTTP/1.1" 200 7547
+INFO 2025-04-29 19:34:00,885 basehttp 5040 90648 "GET /visitors/register/student/ HTTP/1.1" 200 14877
+INFO 2025-04-29 19:34:03,331 basehttp 5040 90648 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 9508
+INFO 2025-04-29 19:34:04,522 basehttp 5040 90648 "GET /visitors/register/ HTTP/1.1" 200 32169
+INFO 2025-04-29 19:35:47,899 autoreload 5040 88076 D:\university_visitor_system\visitor_system\visitor_system\urls.py changed, reloading.
+INFO 2025-04-29 19:35:48,691 autoreload 92040 87280 Watching for file changes with StatReloader
+INFO 2025-04-29 19:36:17,011 basehttp 92040 90204 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 9498
+INFO 2025-04-29 19:36:18,358 basehttp 92040 90204 "GET /visitors/register/ HTTP/1.1" 200 32159
+INFO 2025-04-29 19:36:19,425 basehttp 92040 90204 "GET /visitors/current/ HTTP/1.1" 200 7542
+INFO 2025-04-29 19:36:20,837 basehttp 92040 90204 "POST /visitors/exit/3/ HTTP/1.1" 302 0
+INFO 2025-04-29 19:36:21,283 basehttp 92040 90204 "GET /visitors/current/ HTTP/1.1" 200 6959
+INFO 2025-04-29 19:36:23,224 basehttp 92040 90204 "GET /visitors/current/ HTTP/1.1" 200 6577
+INFO 2025-04-29 19:36:24,176 basehttp 92040 90204 "GET /visitors/history/ HTTP/1.1" 200 17381
+INFO 2025-04-29 19:36:28,151 basehttp 92040 90204 "GET /visitors/history/detail/3/ HTTP/1.1" 200 6986
+INFO 2025-04-29 19:36:29,687 basehttp 92040 90204 "GET /visitors/history/ HTTP/1.1" 200 17381
+INFO 2025-04-29 19:36:31,397 basehttp 92040 90204 "GET /visitors/history/ HTTP/1.1" 200 17381
+INFO 2025-04-30 09:11:41,382 autoreload 76544 55372 Watching for file changes with StatReloader
+INFO 2025-04-30 09:13:13,552 basehttp 76544 78900 "GET / HTTP/1.1" 302 0
+INFO 2025-04-30 09:13:13,952 basehttp 76544 78900 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-30 09:13:14,481 basehttp 76544 95408 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+INFO 2025-04-30 09:13:14,905 basehttp 76544 95408 "GET /static/img/aitu_logo.jpg HTTP/1.1" 200 25435
+WARNING 2025-04-30 09:13:15,010 basehttp 76544 93740 "GET /static/css/style.css HTTP/1.1" 404 1986
+WARNING 2025-04-30 09:13:15,609 log 76544 95408 Not Found: /favicon.ico
+WARNING 2025-04-30 09:13:15,610 basehttp 76544 95408 "GET /favicon.ico HTTP/1.1" 404 3186
+INFO 2025-04-30 09:13:24,700 basehttp 76544 95408 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-30 09:13:26,157 basehttp 76544 95408 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-04-30 09:13:51,870 basehttp 76544 95408 "GET / HTTP/1.1" 302 0
+INFO 2025-04-30 09:13:52,293 basehttp 76544 95408 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-30 09:13:52,827 basehttp 76544 90532 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-30 09:13:53,248 basehttp 76544 90532 "GET /static/css/style.css HTTP/1.1" 404 1986
+INFO 2025-04-30 09:13:54,839 basehttp 76544 94104 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-30 09:13:56,162 basehttp 76544 94104 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-04-30 09:14:20,834 autoreload 90568 96160 Watching for file changes with StatReloader
+INFO 2025-04-30 09:14:43,802 basehttp 90568 9764 "GET / HTTP/1.1" 302 0
+INFO 2025-04-30 09:14:44,200 basehttp 90568 9764 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-30 09:14:44,718 basehttp 90568 45248 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-30 09:14:45,120 basehttp 90568 45248 "GET /static/css/style.css HTTP/1.1" 404 1986
+INFO 2025-04-30 09:14:45,221 basehttp 90568 95128 "GET /static/img/aitu_logo.jpg HTTP/1.1" 200 25435
+WARNING 2025-04-30 09:14:45,885 log 90568 95128 Not Found: /favicon.ico
+WARNING 2025-04-30 09:14:45,885 basehttp 90568 95128 "GET /favicon.ico HTTP/1.1" 404 3186
+INFO 2025-04-30 09:14:46,791 basehttp 90568 95128 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-30 09:14:48,117 basehttp 90568 95128 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-04-30 09:15:07,874 basehttp 90568 95128 "GET / HTTP/1.1" 302 0
+INFO 2025-04-30 09:15:08,289 basehttp 90568 95128 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-04-30 09:15:08,805 basehttp 90568 83052 "GET /accounts/login/?next=/ HTTP/1.1" 200 2659
+WARNING 2025-04-30 09:15:09,209 basehttp 90568 83052 "GET /static/css/style.css HTTP/1.1" 404 1986
+INFO 2025-04-30 09:15:10,598 basehttp 90568 30516 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 200 1418
+INFO 2025-04-30 09:15:12,482 basehttp 90568 30516 "POST /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+WARNING 2025-04-30 09:17:16,098 log 83168 94096 Not Found: /favicon.ico
+WARNING 2025-04-30 09:19:21,233 log 90784 94080 Not Found: /favicon.ico
+WARNING 2025-04-30 09:37:18,084 log 90784 156936 Not Found: /favicon.ico
+WARNING 2025-04-30 09:38:23,193 log 90784 165512 Not Found: /favicon.ico
+INFO 2025-04-30 09:38:41,218 middleware 90784 168760 [Middleware] User 'nurzhan.mustafin' profile incomplete. Redirecting to setup.
+INFO 2025-04-30 09:38:55,394 views 90784 170176 User 'nurzhan.mustafin' completed profile setup.
+WARNING 2025-04-30 13:28:05,381 log 1556108 1681732 Not Found: /favicon.ico
+WARNING 2025-04-30 13:28:06,614 log 1556108 1681904 Not Found: /favicon.ico
+INFO 2025-04-30 13:30:45,463 forms 1665732 1679636 Using guest object: Маргулан Сейсембай (ID: 4), Created: True
+INFO 2025-04-30 13:30:45,463 forms 1665732 1679636 Visit None created with status CHECKED_IN.
+INFO 2025-04-30 13:30:45,503 forms 1665732 1679636 Saved Visit ID 4, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-30 13:30:45,506 utils 95176 12988 Attempting to send creation notification for official ID 4
+WARNING 2025-04-30 13:30:45,548 utils 95176 12988 Department 'Медиа студия' has no director assigned.
+INFO 2025-04-30 13:30:48,168 utils 95176 12988 Visit notification email for official ID 4 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-04-30 14:06:51,781 log 1665732 1880736 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:06:51,995 log 1665732 1881040 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:06:52,026 log 1665732 1880992 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:06:56,808 log 1665732 1881680 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:06:57,003 log 1665732 1881836 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:06:57,109 log 1665732 1881936 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:07:10,443 log 1665732 1882024 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:07:10,443 log 1665732 1878484 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:07:10,718 log 1665732 1881228 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:14:22,805 log 1665732 1915948 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:14:22,929 log 1665732 1916032 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:14:22,933 log 1665732 1916036 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:15:17,297 log 1665732 1919648 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:15:17,454 log 1665732 1919416 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:15:17,608 log 1665732 1919340 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:15:32,736 log 1665732 1920988 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:15:32,808 log 1665732 1920696 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:15:33,042 log 1665732 1920736 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:15:49,539 log 1665732 1921316 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:15:49,629 log 1665732 1921792 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:15:49,857 log 1665732 1921272 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:16:03,082 log 1665732 1899952 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:16:03,285 log 1665732 1922636 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:16:03,416 log 1665732 1922708 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:16:33,327 log 1665732 1924596 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:16:33,492 log 1665732 1925000 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:16:33,620 log 1665732 1924236 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:16:35,642 log 1665732 1906556 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:16:35,724 log 1665732 1924212 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:16:35,943 log 1665732 1925016 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:17:11,436 log 1665732 1927824 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:17:11,491 log 1665732 1928052 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:17:11,721 log 1665732 1928152 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:17:25,975 log 1665732 1926780 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:17:26,142 log 1665732 1927504 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:17:26,281 log 1665732 1927808 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:17:31,062 log 1665732 1928228 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:17:31,155 log 1665732 1927752 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:17:31,534 log 1665732 1927464 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:19:33,773 log 1665732 1937796 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:19:33,775 log 1665732 1938052 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:19:33,777 log 1665732 1938416 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:20:21,653 log 1665732 1941188 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:20:21,820 log 1665732 1940176 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:20:21,960 log 1665732 1941376 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:20:24,026 log 1665732 1926916 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:20:24,201 log 1665732 1941684 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:20:24,360 log 1665732 1941988 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:21:02,824 log 1665732 1942096 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:21:03,022 log 1665732 1944732 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:21:03,122 log 1665732 1944844 Not Found: /visitors/assets/img/avatars/7.png
+WARNING 2025-04-30 14:21:33,126 log 1665732 1945864 Not Found: /visitors/assets/img/avatars/5.png
+WARNING 2025-04-30 14:21:33,324 log 1665732 1946208 Not Found: /visitors/assets/img/avatars/6.png
+WARNING 2025-04-30 14:21:33,473 log 1665732 1945796 Not Found: /visitors/assets/img/avatars/7.png
+INFO 2025-04-30 15:28:16,920 forms 2251396 2253736 Using guest object: Орынбасаров Ержан (ID: 5), Created: True
+INFO 2025-04-30 15:28:16,920 forms 2251396 2253736 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-30 15:28:16,955 forms 2251396 2253736 Celery task queued for Visit ID 5
+INFO 2025-04-30 15:28:16,956 forms 2251396 2253736 Saved Visit ID 5, Status: AWAITING, Consent Ack: True
+INFO 2025-04-30 15:28:16,958 utils 2249384 2249680 Attempting to send creation notification for official ID 5
+WARNING 2025-04-30 15:28:16,999 utils 2249384 2249680 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:28:23,542 utils 2249384 2249680 Core email sending FAILED for visit official ID 5 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 750, in login
+    raise last_exception
+  File "C:\Python313\Lib\smtplib.py", line 739, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 662, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.3 Authentication unsuccessful [WA1P291CA0017.POLP291.PROD.OUTLOOK.COM 2025-04-30T10:28:22.905Z 08DD84DB147F1564]')
+INFO 2025-04-30 15:28:23,606 utils 2249384 2249680 Attempting to send creation notification for official ID 5
+WARNING 2025-04-30 15:28:23,647 utils 2249384 2249680 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:28:30,126 utils 2249384 2249680 Core email sending FAILED for visit official ID 5 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 750, in login
+    raise last_exception
+  File "C:\Python313\Lib\smtplib.py", line 739, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 662, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.3 Authentication unsuccessful [WA2P291CA0040.POLP291.PROD.OUTLOOK.COM 2025-04-30T10:28:29.492Z 08DD8521616B96E7]')
+INFO 2025-04-30 15:30:31,995 forms 2254520 2261092 Using guest object: Орынбасаров Ержан (ID: 5), Created: False
+INFO 2025-04-30 15:30:31,995 forms 2254520 2261092 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-30 15:30:32,030 forms 2254520 2261092 Celery task queued for Visit ID 6
+INFO 2025-04-30 15:30:32,030 forms 2254520 2261092 Saved Visit ID 6, Status: AWAITING, Consent Ack: True
+INFO 2025-04-30 15:30:32,031 utils 2249384 2249680 Attempting to send creation notification for official ID 6
+WARNING 2025-04-30 15:30:32,067 utils 2249384 2249680 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:30:38,700 utils 2249384 2249680 Core email sending FAILED for visit official ID 6 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 750, in login
+    raise last_exception
+  File "C:\Python313\Lib\smtplib.py", line 739, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 662, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.3 Authentication unsuccessful [WA1P291CA0009.POLP291.PROD.OUTLOOK.COM 2025-04-30T10:30:38.050Z 08DD85234CA84BB8]')
+INFO 2025-04-30 15:30:38,709 utils 2249384 2249680 Attempting to send creation notification for official ID 6
+WARNING 2025-04-30 15:30:38,857 utils 2249384 2249680 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:30:45,417 utils 2249384 2249680 Core email sending FAILED for visit official ID 6 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 750, in login
+    raise last_exception
+  File "C:\Python313\Lib\smtplib.py", line 739, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 662, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.3 Authentication unsuccessful [WA2P291CA0047.POLP291.PROD.OUTLOOK.COM 2025-04-30T10:30:44.768Z 08DD84E311C3E92B]')
+INFO 2025-04-30 15:38:07,404 forms 2294276 2297152 Using guest object: Проверка емайл outlook (ID: 6), Created: True
+INFO 2025-04-30 15:38:07,404 forms 2294276 2297152 Visit None created with status CHECKED_IN.
+INFO 2025-04-30 15:38:07,455 forms 2294276 2297152 Saved Visit ID 7, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-30 15:38:07,458 utils 2293148 2294136 Attempting to send creation notification for official ID 7
+WARNING 2025-04-30 15:38:07,504 utils 2293148 2294136 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:38:07,929 utils 2293148 2294136 Core email sending FAILED for visit official ID 7 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 716, in login
+    raise SMTPNotSupportedError(
+        "SMTP AUTH extension not supported by server.")
+smtplib.SMTPNotSupportedError: SMTP AUTH extension not supported by server.
+INFO 2025-04-30 15:38:54,172 forms 2297948 2300788 Using guest object: Проверка outlook (ID: 7), Created: True
+INFO 2025-04-30 15:38:54,172 forms 2297948 2300788 Visit None created with status CHECKED_IN.
+INFO 2025-04-30 15:38:54,213 forms 2297948 2300788 Saved Visit ID 8, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-30 15:38:54,215 utils 2293148 2294136 Attempting to send creation notification for official ID 8
+WARNING 2025-04-30 15:38:54,247 utils 2293148 2294136 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:38:54,713 utils 2293148 2294136 Core email sending FAILED for visit official ID 8 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 716, in login
+    raise SMTPNotSupportedError(
+        "SMTP AUTH extension not supported by server.")
+smtplib.SMTPNotSupportedError: SMTP AUTH extension not supported by server.
+INFO 2025-04-30 15:39:46,643 forms 2299140 2303452 Using guest object: Проверка outlook (ID: 7), Created: False
+INFO 2025-04-30 15:39:46,643 forms 2299140 2303452 Visit None created with status CHECKED_IN.
+INFO 2025-04-30 15:39:46,674 forms 2299140 2303452 Saved Visit ID 9, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-30 15:39:46,676 utils 2301092 2299160 Attempting to send creation notification for official ID 9
+WARNING 2025-04-30 15:39:46,712 utils 2301092 2299160 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:39:47,134 utils 2301092 2299160 Core email sending FAILED for visit official ID 9 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 716, in login
+    raise SMTPNotSupportedError(
+        "SMTP AUTH extension not supported by server.")
+smtplib.SMTPNotSupportedError: SMTP AUTH extension not supported by server.
+INFO 2025-04-30 15:40:51,682 forms 2306432 2308856 Using guest object: Проверка outlook (ID: 7), Created: False
+INFO 2025-04-30 15:40:51,682 forms 2306432 2308856 Visit None created with status CHECKED_IN.
+INFO 2025-04-30 15:40:51,732 forms 2306432 2308856 Saved Visit ID 10, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-04-30 15:40:51,734 utils 2301092 2299160 Attempting to send creation notification for official ID 10
+WARNING 2025-04-30 15:40:51,768 utils 2301092 2299160 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 15:40:52,157 utils 2301092 2299160 Core email sending FAILED for visit official ID 10 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 716, in login
+    raise SMTPNotSupportedError(
+        "SMTP AUTH extension not supported by server.")
+smtplib.SMTPNotSupportedError: SMTP AUTH extension not supported by server.
+INFO 2025-04-30 16:23:32,150 forms 2495608 2493696 Using guest object: Проверка outlook (ID: 7), Created: False
+INFO 2025-04-30 16:23:32,150 forms 2495608 2493696 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-30 16:23:32,193 forms 2495608 2493696 Celery task queued for Visit ID 11
+INFO 2025-04-30 16:23:32,194 forms 2495608 2493696 Saved Visit ID 11, Status: AWAITING, Consent Ack: True
+INFO 2025-04-30 16:23:32,194 utils 2301092 2299160 Attempting to send creation notification for official ID 11
+WARNING 2025-04-30 16:23:32,229 utils 2301092 2299160 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 16:23:32,677 utils 2301092 2299160 Core email sending FAILED for visit official ID 11 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 716, in login
+    raise SMTPNotSupportedError(
+        "SMTP AUTH extension not supported by server.")
+smtplib.SMTPNotSupportedError: SMTP AUTH extension not supported by server.
+INFO 2025-04-30 16:23:32,683 utils 2301092 2299160 Attempting to send creation notification for official ID 11
+WARNING 2025-04-30 16:23:32,736 utils 2301092 2299160 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 16:23:33,086 utils 2301092 2299160 Core email sending FAILED for visit official ID 11 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 716, in login
+    raise SMTPNotSupportedError(
+        "SMTP AUTH extension not supported by server.")
+smtplib.SMTPNotSupportedError: SMTP AUTH extension not supported by server.
+INFO 2025-04-30 16:33:10,244 views 2495608 2529300 User 'sagat.akimbay' cancelled official visit ID 11.
+INFO 2025-04-30 16:45:27,472 forms 2569596 2575064 Using guest object: Проверка outlook.com (ID: 2), Created: False
+INFO 2025-04-30 16:45:27,473 forms 2569596 2575064 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-30 16:45:27,524 forms 2569596 2575064 Celery task queued for Visit ID 12
+INFO 2025-04-30 16:45:27,525 forms 2569596 2575064 Saved Visit ID 12, Status: AWAITING, Consent Ack: True
+INFO 2025-04-30 16:45:27,526 utils 2572904 2573020 Attempting to send creation notification for official ID 12
+WARNING 2025-04-30 16:45:27,572 utils 2572904 2573020 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 16:45:34,637 utils 2572904 2573020 Core email sending FAILED for visit official ID 12 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 750, in login
+    raise last_exception
+  File "C:\Python313\Lib\smtplib.py", line 739, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 662, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.139 Authentication unsuccessful, basic authentication is disabled. [WA1P291CA0001.POLP291.PROD.OUTLOOK.COM 2025-04-30T11:45:33.894Z 08DD84ED37BDB490]')
+INFO 2025-04-30 16:45:34,660 utils 2572904 2573020 Attempting to send creation notification for official ID 12
+WARNING 2025-04-30 16:45:34,697 utils 2572904 2573020 Department 'Деканат' has no director assigned.
+ERROR 2025-04-30 16:45:41,543 utils 2572904 2573020 Core email sending FAILED for visit official ID 12 to {'sagat.akimbay@astanait.edu.kz'}.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\notifications\utils.py", line 117, in send_visit_creation_notification
+    send_mail(
+    ~~~~~~~~~^
+        subject, message_txt, settings.DEFAULT_FROM_EMAIL,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        list(recipients), fail_silently=False#, html_message=message_html
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\__init__.py", line 92, in send_mail
+    return mail.send()
+           ~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\message.py", line 307, in send
+    return self.get_connection(fail_silently).send_messages([self])
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 128, in send_messages
+    new_conn_created = self.open()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\mail\backends\smtp.py", line 95, in open
+    self.connection.login(self.username, self.password)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 750, in login
+    raise last_exception
+  File "C:\Python313\Lib\smtplib.py", line 739, in login
+    (code, resp) = self.auth(
+                   ~~~~~~~~~^
+        authmethod, getattr(self, method_name),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        initial_response_ok=initial_response_ok)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\smtplib.py", line 662, in auth
+    raise SMTPAuthenticationError(code, resp)
+smtplib.SMTPAuthenticationError: (535, b'5.7.139 Authentication unsuccessful, basic authentication is disabled. [WA1P291CA0002.POLP291.PROD.OUTLOOK.COM 2025-04-30T11:45:40.803Z 08DD84EB8D8050C2]')
+WARNING 2025-04-30 17:07:47,715 log 2667932 2669364 Not Found: /favicon.ico
+WARNING 2025-04-30 17:09:37,480 log 2672372 2673444 Not Found: /favicon.ico
+WARNING 2025-04-30 17:15:27,345 log 2672372 2695228 Not Found: /favicon.ico
+INFO 2025-04-30 17:21:56,219 middleware 2672372 2719028 [Middleware] User 'Arslan.Abilov' profile incomplete. Redirecting to setup.
+INFO 2025-04-30 17:22:18,718 views 2672372 2719856 User 'Arslan.Abilov' completed profile setup.
+INFO 2025-04-30 17:25:01,735 forms 2672372 2724856 Using guest object: Fdfgldslk (ID: 8), Created: True
+INFO 2025-04-30 17:25:01,735 forms 2672372 2724856 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-04-30 17:25:01,765 forms 2672372 2724856 Celery task queued for Visit ID 13
+INFO 2025-04-30 17:25:01,766 forms 2672372 2724856 Saved Visit ID 13, Status: AWAITING, Consent Ack: True
+INFO 2025-04-30 17:25:01,767 utils 2663508 2663280 Attempting to send creation notification for official ID 13
+WARNING 2025-04-30 17:25:01,802 utils 2663508 2663280 Department 'Юридический департамент' has no director assigned.
+INFO 2025-04-30 17:25:04,004 utils 2663508 2663280 Visit notification email for official ID 13 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:arslan.abilov@astanait.edu.kz'].
+INFO 2025-04-30 17:25:04,019 utils 2663508 2663280 Attempting to send creation notification for official ID 13
+WARNING 2025-04-30 17:25:04,049 utils 2663508 2663280 Department 'Юридический департамент' has no director assigned.
+INFO 2025-04-30 17:25:06,100 utils 2663508 2663280 Visit notification email for official ID 13 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:arslan.abilov@astanait.edu.kz'].
+WARNING 2025-05-02 10:54:09,389 log 21600 20540 Not Found: /favicon.ico
+WARNING 2025-05-05 14:29:32,661 log 1850860 1851748 Not Found: /favicon.ico
+WARNING 2025-05-05 14:59:58,045 log 2748 27524 Not Found: /favicon.ico
+INFO 2025-05-05 15:39:59,290 middleware 2748 12456 [Middleware] User 'pass-system' profile incomplete. Redirecting to setup.
+INFO 2025-05-05 15:40:12,515 views 2748 33212 User 'pass-system' completed profile setup.
+INFO 2025-05-05 15:43:11,474 forms 2748 32164 Using guest object: Максатов Нурлан (ID: 9), Created: True
+INFO 2025-05-05 15:43:11,475 forms 2748 32164 Visit None created with status CHECKED_IN.
+INFO 2025-05-05 15:43:11,552 forms 2748 32164 Saved Visit ID 14, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-05 15:43:11,556 utils 26284 28420 Attempting to send creation notification for official ID 14
+WARNING 2025-05-05 15:43:11,609 utils 26284 28420 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-05 15:43:13,836 utils 26284 28420 Visit notification email for official ID 14 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+INFO 2025-05-05 15:53:00,835 views 2748 35144 Statistics data prepared for user 'sako'.

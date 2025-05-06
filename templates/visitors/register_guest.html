@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Регистрация гостя{% endblock %}
+
+{% block extra_head %}
+    {# Используем ПРАВИЛЬНОЕ имя переменной формы #}
+    {{ guest_form.media.css }}
+    <style>
+        /* Стили для скрытия/показа секций */
+        .expected-time-field { display: none; } 
+        .expected-time-field.active { display: block; }
+        #guest_purpose_other_wrapper { display: none; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h2>Регистрация нового визита гостя к сотруднику</h2>
+<hr>
+
+{# Используем ПРАВИЛЬНОЕ имя переменной формы #}
+{% if guest_form.non_field_errors %}
+<div class="alert alert-danger">
+    {% for error in guest_form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+</div>
+{% endif %}
+
+{# --- Информационный блок для сотрудника --- #}
+<div class="alert alert-dismissible alert-info">
+    <h5 class="alert-heading"><strong>Информирование гостя!</strong></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <p>Пожалуйста, <strong>устно проинформируйте</strong> гостя о том, что Astana IT University будет обрабатывать его персональные данные (ФИО, ИИН, контакты, цель и время визита) для целей учета посетителей и обеспечения безопасности.</p>
+    <hr>
+    <p class="mb-0">Вы можете сослаться на <a href="#" class="alert-link">ссылку на Политику конфиденциальности.</a></p>
+</div>
+{# -------------------------------------- #}
+
+{# --- НАЧАЛО ЕДИНОЙ ВНЕШНЕЙ ФОРМЫ --- #}
+<form method="post" novalidate class="needs-validation">
+    {% csrf_token %}
+
+    {# Передаем guest_form как form для удобства внутри with #}
+    {% with form=guest_form %}
+        {# --- Выбор Времени Регистрации --- #}
+        <div class="mb-3 p-3 border rounded bg-light-subtle time-options active">
+             <h6>Время регистрации:</h6>
+             <div class="form-check form-check-inline">
+                 <input class="form-check-input reg-time-radio" type="radio" name="guest_reg_time" id="guest_reg_now" value="now" checked="">
+                 <label class="form-check-label" for="guest_reg_now">Сейчас</label>
+             </div>
+             <div class="form-check form-check-inline">
+                 <input class="form-check-input reg-time-radio" type="radio" name="guest_reg_time" id="guest_reg_later" value="later">
+                 <label class="form-check-label" for="guest_reg_later">Заранее</label>
+             </div>
+              <div class="mt-2 expected-time-field" id="guest_expected_time_wrapper"> {# JS будет управлять классом active #}
+                 <label for="{{ form.expected_entry_time.id_for_label }}" class="form-label">{{ form.expected_entry_time.label }}:</label>
+                 {{ form.expected_entry_time }}
+                 {% if form.expected_entry_time.errors %} <div class="invalid-feedback d-block">{% for e in form.expected_entry_time.errors %}{{ e }}{% endfor %}</div> {% endif %}
+              </div>
+        </div>
+
+        {# --- Карта: Данные гостя --- #}
+        <div class="card mb-4">
+            <div class="card-header">Данные гостя</div>
+            <div class="card-body">
+                {# ФИО Гостя #}
+                <div class="mb-3">
+                    <label for="{{ form.guest_full_name.id_for_label }}" class="form-label">{{ form.guest_full_name.label }}:</label>
+                    {{ form.guest_full_name }}
+                    {% if form.guest_full_name.errors %}<div class="invalid-feedback d-block">{% for e in form.guest_full_name.errors %}{{ e }}{% endfor %}</div>{% else %}<div class="form-text">Обязательное поле.</div>{% endif %}
+                </div>
+                {# ИИН Гостя #}
+                <div class="mb-3">
+                    <label for="{{ form.guest_iin.id_for_label }}" class="form-label">{{ form.guest_iin.label }}:</label>
+                    {{ form.guest_iin }}
+                    {% if form.guest_iin.errors %}<div class="invalid-feedback d-block">{% for e in form.guest_iin.errors %}{{ e }}{% endfor %}</div>{% else %}<div class="form-text">12 цифр.</div>{% endif %}
+                </div>
+                {# Email и Телефон Гостя #}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                         <label for="{{ form.guest_phone.id_for_label }}" class="form-label">{{ form.guest_phone.label }}:</label>
+                        {{ form.guest_phone }}
+                        {% if form.guest_phone.errors %}<div class="invalid-feedback d-block">{% for e in form.guest_phone.errors %}{{ e }}{% endfor %}</div>{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>{# /card #}
+
+        {# --- Карта: Детали визита к сотруднику --- #}
+        <div class="card mb-4">
+            <div class="card-header">Детали визита</div>
+            <div class="card-body">
+                 {# Департамент #}
+                 <div class="mb-3">
+                      <label for="{{ form.department.id_for_label }}" class="form-label">{{ form.department.label }}:</label>
+                      {{ form.department }}
+                      {% if form.department.errors %}<div class="invalid-feedback d-block">{% for e in form.department.errors %}{{ e }}{% endfor %}</div>{% else %}<div class="form-text">Обязательное поле.</div>{% endif %}
+                      {# --- Место для отображения директора --- #}
+                      <div class="form-text" id="director_info_wrapper" style="display: none; margin-top: 5px;">
+                        <strong>Директор департамента:</strong> <span id="director_name_display">-</span>
+                    </div>
+                    {# ------------------------------------ #}
+                  </div>
+                  {# Принимающий сотрудник (Select2) #}
+                  <div class="mb-3">
+                       <label for="{{ form.employee.id_for_label }}" class="form-label">{{ form.employee.label }}:</label>
+                       {{ form.employee }}
+                       {% if form.employee.errors %}<div class="invalid-feedback d-block">{% for e in form.employee.errors %}{{ e }}{% endfor %}</div>{% else %}<div class="form-text">Начните вводить ФИО/email. Зависит от Департамента.</div>{% endif %}
+                   </div>
+                   {# Контактный телефон сотрудника #}
+                   <div class="mb-3">
+                        <label for="{{ form.employee_contact_phone_form.id_for_label }}" class="form-label">{{ form.employee_contact_phone_form.label }}:</label>
+                        {{ form.employee_contact_phone_form }}
+                        {% if form.employee_contact_phone_form.errors %}<div class="invalid-feedback d-block">{% for e in form.employee_contact_phone_form.errors %}{{ e }}{% endfor %}</div>{% endif %}
+                    </div>
+                    {# Цель визита (выбор) #}
+                    <div class="mb-3">
+                        <label for="{{ form.purpose.id_for_label }}" class="form-label">{{ form.purpose.label }}:</label>
+                        {{ form.purpose }}
+                        {% if form.purpose.errors %}<div class="invalid-feedback d-block">{% for e in form.purpose.errors %}{{ e }}{% endfor %}</div>{% else %}<div class="form-text">Обязательное поле.</div>{% endif %}
+                    </div>
+                    {# Цель визита (Другое - текст) #}
+                    <div class="mb-3" id="guest_purpose_other_wrapper"> {# Уникальный ID #}
+                        <label for="{{ form.purpose_other_text.id_for_label }}" class="form-label">{{ form.purpose_other_text.label }}:</label>
+                        {{ form.purpose_other_text }}
+                        {% if form.purpose_other_text.errors %}<div class="invalid-feedback d-block">{% for e in form.purpose_other_text.errors %}{{ e }}{% endfor %}</div>{% else %}<div class="form-text">Заполните, если выбрали "Другое".</div>{% endif %}
+                    </div>
+                    {# --- Конец блока Подтверждения Информирования --- #}
+                <p class="text-muted small mt-3">Гость будет зарегистрирован от вашего имени: {{ user.get_full_name|default:user.username }}.</p>
+            </div>
+        </div> {# /card #}
+        {# --- Блок Подтверждения Информирования --- #}
+        <div class="card mb-4">
+            <div class="card-header">Подтверждение информирования</div>
+            <div class="card-body">
+                <div class="form-check">
+                    {# Выводим чекбокс. Используем form-check-input напрямую для Bootstrap стилизации #}
+                    {{ form.consent_acknowledged.errors }} {# Ошибки для поля #}
+                    <input type="checkbox" name="{{ form.consent_acknowledged.html_name }}"
+                            class="form-check-input {% if form.consent_acknowledged.errors %}is-invalid{% endif %}"
+                            required id="{{ form.consent_acknowledged.id_for_label }}">
+                    <label class="form-check-label" for="{{ form.consent_acknowledged.id_for_label }}">
+                        {{ form.consent_acknowledged.label }}
+                    </label>
+                    {# Отображение ошибки под чекбоксом #}
+                    {% if form.consent_acknowledged.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.consent_acknowledged.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="form-text">Это поле обязательно для завершения регистрации.</div>
+                </div>
+            </div>
+        </div>
+        {# --------------------------------------- #}
+    {% endwith %} {# Конец with form=guest_form #}
+
+    {# --- Кнопки --- #}
+    <div class="mt-4 mb-5">
+        <button type="submit" class="btn btn-primary">Зарегистрировать визит</button>
+        <a href="{% url 'employee_dashboard' %}" class="btn btn-secondary">Отмена</a>
+    </div>
+    {# ------------- #}
+
+</form> {# --- КОНЕЦ ЕДИНОЙ ВНЕШНЕЙ ФОРМЫ --- #}
+{% endblock %}
+
+
+{% block extra_scripts %}
+    {# --- СНАЧАЛА Медиа формы гостя (включая JS для Select2) --- #}
+    {# Убедитесь, что jQuery загружен в base.html ДО этого блока! #}
+    {{ guest_form.media.js }}
+    {# ------------------------------------------------------ #}
+
+    {# --- Теперь ВСЕ пользовательские скрипты --- #}
+
+    {# --- JS для переключения поля времени (с исправленными селекторами) --- #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ищем радиокнопки по name внутри всей страницы (более надежно)
+            const timeRadios = document.querySelectorAll('input[type="radio"][name="guest_reg_time"]');
+            // Ищем обертку поля времени по ЕЁ ID
+            const expectedTimeFieldWrapper = document.getElementById('guest_expected_time_wrapper');
+    
+            // Проверяем, что нашли и радиокнопки И обертку
+            if (timeRadios.length > 0 && expectedTimeFieldWrapper) {
+                 console.log("Найдены элементы времени для гостя."); // Отладочное сообщение
+    
+                 function toggleGuestExpectedTime() {
+                     const selectedTimeType = document.querySelector('input[name="guest_reg_time"]:checked');
+                     const isLater = selectedTimeType && selectedTimeType.value === 'later';
+    
+                     // Показываем/скрываем обертку
+                     expectedTimeFieldWrapper.style.display = isLater ? 'block' : 'none';
+                     expectedTimeFieldWrapper.classList.toggle('active', isLater);
+    
+                     // Управление required для поля ввода внутри обертки
+                     const timeInput = expectedTimeFieldWrapper.querySelector('input'); // Ищем input внутри
+                     if(timeInput) {
+                         timeInput.required = isLater;
+                         console.log(`Поле expected_entry_time required: ${isLater}`);
+                     } else {
+                          console.warn("Не найден input внутри guest_expected_time_wrapper");
+                     }
+                 }
+                 // Привязываем обработчик к каждой радиокнопке
+                 timeRadios.forEach(radio => { radio.addEventListener('change', toggleGuestExpectedTime); });
+                 // Устанавливаем начальное состояние
+                 toggleGuestExpectedTime();
+            } else {
+                 // Если что-то не найдено - выводим более подробное сообщение
+                 console.error("ОШИБКА: Элементы времени для гостя не найдены!");
+                 if (!timeRadios.length) console.error(" - Не найдены радиокнопки с name='guest_reg_time'");
+                 if (!expectedTimeFieldWrapper) console.error(" - Не найдена обертка с ID 'guest_expected_time_wrapper'");
+                 // Проверьте ID 'guest_expected_time_wrapper' в HTML части шаблона!
+            }
+        });
+        </script>
+        {# --------------------------------------- #}
+
+    {# --- JS для поля "Другое" цели визита --- #}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Используем ID поля purpose из формы guest_form
+        const gpSelect = document.getElementById('{{ guest_form.purpose.id_for_label }}');
+        const gpWrapper = document.getElementById('guest_purpose_other_wrapper'); // Используем ID обертки
+        if (gpSelect && gpWrapper) {
+             const gpInput = gpWrapper.querySelector('input, textarea');
+             function toggleGuestOther() {
+                 if (gpSelect.value === 'Other') { gpWrapper.style.display = 'block'; }
+                 else { gpWrapper.style.display = 'none'; if (gpInput) gpInput.value = ''; }
+             }
+             toggleGuestOther();
+             gpSelect.addEventListener('change', toggleGuestOther);
+        } else {
+            console.warn("Элементы для 'Другой цели' не найдены.");
+        }
+    });
+    </script>
+    {# ---------------------------------------- #}
+
+    {# --- JS для стилей Bootstrap (без изменений) --- #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form.needs-validation');
+            if (form) {
+                 const formControls = form.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="hidden"]), textarea, select');
+                 formControls.forEach(function(control) {
+                     if (control.tagName === 'SELECT') {
+                          control.classList.add('form-select');
+                     } else if (!control.classList.contains('btn')) {
+                         control.classList.add('form-control');
+                     }
+                    // Добавляем класс is-invalid, если Django добавил ошибки к полю
+                     const errorDiv = control.closest('.mb-3')?.querySelector('.invalid-feedback');
+                     if (errorDiv && errorDiv.innerText.trim() !== '') {
+                          control.classList.add('is-invalid');
+                     }
+                 });
+             }
+        });
+    </script>
+
+    {# --- JS для Select2 / Телефона / ОТОБРАЖЕНИЯ ДИРЕКТОРА --- #}
+    <script>
+        // Убедитесь, что jQuery ($) доступен
+        if (typeof jQuery == 'undefined') { console.error("jQuery НЕ ЗАГРУЖЕН!"); }
+        else {
+           (function($) {
+                $(document).ready(function() {
+                   console.log("Select2/Phone/Director Script: DOM готов.");
+                   // --- Селекторы ---
+                   const departmentSelect = $('#{{ guest_form.department.id_for_label }}');
+                   const employeeSelect = $('#{{ guest_form.employee.id_for_label }}');
+                   const phoneInput = $('#{{ guest_form.employee_contact_phone_form.id_for_label }}');
+                   const directorDisplaySpan = $('#director_name_display'); // <-- Селектор для span директора
+                   const directorDisplayWrapper = $('#director_info_wrapper'); // <-- Селектор для div-обертки директора
+
+                   // Проверка элементов...
+                   if (!departmentSelect.length) console.error("НЕ НАЙДЕН Департамент:", '#{{ guest_form.department.id_for_label }}');
+                   if (!employeeSelect.length) console.error("НЕ НАЙДЕН Сотрудник:", '#{{ guest_form.employee.id_for_label }}');
+                   if (!directorDisplayWrapper.length) console.warn("Не найдена ОБЕРТКА для директора ('#director_info_wrapper').");
+                   if (!directorDisplaySpan.length) console.warn("Не найден SPAN для директора ('#director_name_display').");
+
+
+                   if (employeeSelect.length && departmentSelect.length) {
+                    console.log("Select2/Phone: Поля найдены. Попытка инициализации Select2...");
+                    try {
+                        // --- Инициализация Select2 (Один раз) ---
+                        employeeSelect.select2({
+                            ajax: { url: "{% url 'employee_autocomplete' %}", dataType: 'json', delay: 250, data: function (params) { const dId = departmentSelect.val(); let d = { term: params.term, page: params.page }; if (dId) { d.department_id = dId; } console.log("[AJAX Data] Sending:", d); return d; }, processResults: function (data, params) { console.log("[Select2 AJAX] Received:", data); return { results: data.results, pagination: {more: (params.page||1)*20 < data.count} }; } },
+                            placeholder: 'Сначала выберите департамент...', // Начальный плейсхолдер
+                            minimumInputLength: 1,
+                            allowClear: true,
+                            disabled: !departmentSelect.val() // Начальное состояние
+                        });
+                        console.log("Select2 инициализирован.");
+
+
+                           // --- ОБНОВЛЕННЫЙ Обработчик изменения департамента ---
+                           departmentSelect.on('change', function() {
+                               const selectedDepartmentId = $(this).val();
+                               console.log(`EVENT: Department changed to: ${selectedDepartmentId}`);
+
+                               // 1. Обработка поля сотрудника и телефона (как было)
+                               employeeSelect.val(null).trigger('change');
+                               if(phoneInput.length) { phoneInput.val(''); }
+                               employeeSelect.prop('disabled', !selectedDepartmentId);
+                               console.log("EVENT: Employee field disabled:", !selectedDepartmentId);
+
+                               // 2. Запрос и отображение Директора
+                               console.log("Attempting to fetch Director info...");
+                               if (selectedDepartmentId && directorDisplaySpan.length && directorDisplayWrapper.length) {
+                                   directorDisplaySpan.text('Загрузка...'); // Индикатор
+                                   directorDisplayWrapper.show(); // Показываем обертку
+                                   $.ajax({
+                                       url: "{% url 'get_department_details' %}", // URL для деталей департамента
+                                       data: { 'department_id': selectedDepartmentId },
+                                       dataType: 'json',
+                                       success: function(data) {
+                                           console.log("AJAX Success (Department Details):", data);
+                                           directorDisplaySpan.text(data.director_name || 'Не назначен');
+                                       },
+                                       error: function(xhr, status, error) {
+                                           console.error("AJAX Error fetching Department Details:", status, error);
+                                           directorDisplaySpan.text('Ошибка загрузки');
+                                       }
+                                   });
+                               } else {
+                                   // Скрываем, если департамент не выбран или элементы не найдены
+                                   if(directorDisplayWrapper.length) directorDisplayWrapper.hide();
+                                   if(directorDisplaySpan.length) directorDisplaySpan.text('-');
+                                   if (!selectedDepartmentId) console.log("Department not selected, hiding director info.");
+                               }
+                               // --- Конец блока Директора ---
+
+                           }); // --- Конец обработчика смены департамента ---
+                           console.log("Обработчик 'change' для Департамента ПРИВЯЗАН.");
+
+                            // --- Обработчик выбора сотрудника (с логами) ---
+                            if (phoneInput.length) {
+                                console.log("Попытка привязки обработчика select2:select...");
+                                employeeSelect.on('select2:select', function (e) {
+                                    // --- Логи внутри обработчика ---
+                                    console.log("==== Обработчик select2:select СРАБОТАЛ ====");
+                                    console.log("Event Object 'e':", e);
+                                    const selectedData = e.params.data;
+                                    console.log("Selected data 'e.params.data':", selectedData);
+                                    if (selectedData && selectedData.id) {
+                                        const userId = selectedData.id;
+                                        console.log("Извлечен User ID:", userId);
+                                        const detailUrl = `/visitors/ajax/employee-details/${userId}/`;
+                                        console.log("Сформирован URL для AJAX:", detailUrl);
+                                        console.log(">>> Сейчас должен идти AJAX-запрос");
+                                        try {
+                                             console.log("Attempting AJAX call...");
+                                             $.ajax({
+                                                 url: detailUrl, type: 'GET', dataType: 'json',
+                                                 success: function(response) { console.log("AJAX Success:", response); phoneInput.val(response.phone_number || ''); },
+                                                 error: function(xhr, status, error) { console.error('AJAX Error:', status, error); phoneInput.val(''); }
+                                             });
+                                             console.log("AJAX call initiated.");
+                                         } catch (ajaxError) { console.error("Sync error during AJAX:", ajaxError); phoneInput.val(''); }
+                                    } else { console.warn("Нет данных или ID в событии select."); phoneInput.val(''); }
+                                    console.log("==== Обработчик select2:select ЗАВЕРШЕН ====");
+                                });
+                                console.log("Обработчик select2:select ПРИВЯЗАН.");
+ 
+                                employeeSelect.on('select2:unselect', function (e) { console.log("EVENT: Employee unselected."); phoneInput.val(''); });
+                                departmentSelect.on('change', function() { if(phoneInput.length) phoneInput.val(''); });
+                            } else { console.warn("Поле телефона не найдено, автозаполнение не привязано."); }
+                            // -----------------------------------------------
+ 
+                            // Начальное состояние блокировки
+                            employeeSelect.prop('disabled', !departmentSelect.val());
+ 
+                         } catch(e) { console.error("RUNTIME ERROR during Select2/Phone setup:", e); }
+                     } else { console.error("ERROR: Не могу настроить Select2 - не найдены поля Сотрудника или Департамента!");}
+                 }); // end document.ready
+             })(jQuery); // end wrapper
+         } // end if jQuery defined
+     </script>
+    {# -------------------------------------------------------- #}
+
+{% endblock %}

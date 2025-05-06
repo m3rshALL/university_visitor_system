@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Панель сотрудника{% endblock %}
+
+{% block content %}
+<h2>Панель сотрудника: {{ user.get_full_name|default:user.username }}</h2>
+<hr>
+
+<div class="row">
+    <div class="col-md-8"> {# Сделаем блок шире для доп. информации #}
+        <h4>Мои текущие гости (ожидают меня)</h4>
+        {% if my_current_guests %}
+            <div class="list-group"> {# Используем div вместо ul для лучшей структуры #}
+                {% for visit in my_current_guests %}
+                    <div class="list-group-item list-group-item-action flex-column align-items-start mb-2">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ visit.guest.full_name }}</h5>
+                            <small class="text-muted">Прибыл: {{ visit.entry_time|date:"H:i" }}</small>
+                        </div>
+                        <p class="mb-1"><strong>Цель:</strong> {{ visit.purpose }}</p>
+                        {# --- Отображение новых данных --- #}
+                        <p class="mb-1">
+                            <strong>ИИН гостя:</strong> {{ visit.guest.iin|default:"Не указан" }} <br>
+                            <strong>Тел. гостя:</strong> {{ visit.guest.phone_number|default:"Не указан" }} <br>
+                            {# Отображаем телефон сотрудника, указанный для этого визита #}
+                            <strong>Контактный тел. сотрудника (визит):</strong> {{ visit.employee_contact_phone|default:"Не указан" }}
+                        </p>
+                        {# ------------------------------ #}
+                        <div class="mt-2">
+                            <form action="{% url 'mark_guest_exit' visit.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning btn-sm">Гость вышел</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>В данный момент у вас нет активных гостей.</p>
+        {% endif %}
+        <div class="mt-3">
+             <a href="{% url 'register_guest' %}" class="btn btn-primary">Зарегистрировать нового гостя</a>
+        </div>
+    </div>
+    <div class="col-md-4"> {# Оставим этот блок для истории #}
+        <h4>Моя недавняя история визитов (последние 20)</h4>
+        {% if my_visit_history %}
+            <ul class="list-group list-group-flush">
+                 {% for visit in my_visit_history %}
+                    <li class="list-group-item">
+                        <strong>{{ visit.guest.full_name }}</strong>
+                         {% if visit.employee == user %} (Принимающий) {% endif %}
+                         {% if visit.registered_by == user and visit.employee != user %} (Регистрировал) {% endif %}
+                        <br><small class="text-muted">
+                            {{ visit.entry_time|date:"Y-m-d H:i" }}
+                            {% if visit.exit_time %} - {{ visit.exit_time|date:"H:i" }} {% else %} (В здании) {% endif %}
+                        </small>
+                         {# Можно добавить ИИН/телефоны и сюда, если нужно #}
+                         {# <br><small class="text-muted">ИИН: {{ visit.guest.iin|default:"-" }}</small> #}
+                    </li>
+                 {% endfor %}
+             </ul>
+             <div class="mt-2">
+                 <a href="{% url 'visit_history' %}" >Смотреть всю историю</a>
+            </div>
+        {% else %}
+            <p>У вас еще нет записей в истории визитов.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

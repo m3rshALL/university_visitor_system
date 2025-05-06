@@ -1,0 +1,143 @@
+{% load static %} {# Загружаем теги для статических файлов #}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Система пропусков Университета{% endblock %}</title>
+
+    {# --- Подключение CSS --- #}
+    {# Bootstrap CSS (используем CDN для простоты) #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    {# --- ВСТАВКА КОДА GOOGLE FONTS --- #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {# ---------------------------------- #}
+
+    {# Ваш основной CSS #}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {# Блок для дополнительных CSS файлов из дочерних шаблонов (например, для виджетов) #}
+    {% block extra_head %}{% endblock %}
+    {# --------------------- #}
+
+</head>
+<body>
+    {# --- Навигационная панель --- #}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4"> {# Сделал темной для разнообразия #}
+        <div class="container">
+            <a class="navbar-brand" href="#">Система Пропусков</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                {# Ссылки слева #}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'employee_dashboard' %}">Моя панель</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Регистрация</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'register_guest' %}">Регистрация гостя</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'register_student_visit' %}">Регистрация студента/абитуриента</a>
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'current_guests' %}">Текущие гости</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'visit_history' %}">История визитов</a>
+                        </li>
+                        {# --- Ссылка на статистику --- #}
+                        {% if user.is_staff or perms.visitors.can_view_visit_statistics %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'visit_statistics' %}">Статистика</a>
+                        </li>
+                        {% endif %}
+                        {% if user.is_staff %} {# Ссылки для админов #}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin_dashboard' %}">Панель Админа</a>
+                        </li>
+                        <li class="nav-item">
+                            {# Используем прямой URL для стандартной админки Django #}
+                            <a class="nav-link" href="/admin/" target="_blank">Django Admin</a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+
+
+                {# Статус пользователя и кнопки справа #}
+                <ul class="navbar-nav">
+                     {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ user.get_full_name|default:user.username }}
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                {# Форма для кнопки Выход (использует POST) #}
+                                <form action="{% url 'account_logout' %}" method="post" class="px-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link dropdown-item text-danger">Выйти</button>
+                                </form>
+                            </li>
+                          </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            {# Ссылка на страницу входа allauth #}
+                            <a class="btn btn-outline-light" href="{% url 'account_login' %}">Войти</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div> {# end collapse #}
+        </div> {# end container #}
+    </nav>
+    {# -------------------------- #}
+
+
+    {# --- Основной контент страницы --- #}
+    <div class="container">
+        {# Отображение сообщений Django (success, error, warning) #}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {# Блок для основного содержимого из дочерних шаблонов #}
+        {% block content %}
+        {% endblock %}
+    </div>
+    {# -------------------------------- #}
+
+    
+
+
+    {# --- Футер (Подвал) --- #}
+    <footer class="mt-5 py-3 text-center text-muted border-top">
+        <p>&copy; {% now "Y" %} Astana IT University</p>
+    </footer>
+    {# --------------------- #}
+
+
+    {# --- Подключение JavaScript --- #}
+    {# Bootstrap JS Bundle (включает Popper) #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    {# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
+    {% block extra_scripts %}{% endblock %}
+    {# -------------------------- #}
+
+</body>
+</html>

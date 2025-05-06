@@ -1,0 +1,32 @@
+{# templates/notifications/email/visit_notification.txt #}
+Уважаемый(ая) коллега,
+
+Информируем вас о зарегистрированном планируемом визите ({% if visit.status == 'AWAITING' %}ожидает прибытия{% else %}статус: {{ visit.get_status_display }}{% endif %}).
+
+Посетитель: {{ visit.guest.full_name|default:"Не указано" }}
+{% if visit.guest.iin %}ИИН: {{ visit.guest.iin }}{% endif %}
+{% if visit.guest.phone_number %}Телефон: {{ visit.guest.phone_number }}{% endif %}
+{% if visit.guest.email %}Email: {{ visit.guest.email }}{% endif %}
+
+{% if visit_kind == 'official' and visit.employee %}
+Принимающий сотрудник: {{ visit.employee.get_full_name|default:visit.employee.username }}
+Контактный тел. (визит): {{ visit.employee_contact_phone|default:"Не указан" }}
+{% elif visit_kind == 'student' %}
+Студент ID: {{ visit.student_id_number|default:"Не указан" }}
+Группа: {{ visit.student_group|default:"Не указана" }}
+Курс: {{ visit.student_course|default:"Не указан" }}
+{% endif %}
+
+Департамент назначения: {{ visit.department.name|default:"Не указан" }}
+Цель визита: {{ visit.purpose|default:"Не указана" }}
+{% if visit.expected_entry_time %}
+Планируемое время входа: {{ visit.expected_entry_time|date:"d.m.Y H:i" }}
+{% endif %}
+{% if visit.entry_time %}
+Фактическое время входа: {{ visit.entry_time|date:"d.m.Y H:i" }}
+{% endif %}
+
+Заявку зарегистрировал: {{ visit.registered_by.get_full_name|default:visit.registered_by.username }}
+
+С уважением,
+Система управления посетителями AITU

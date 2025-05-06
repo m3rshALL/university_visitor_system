@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Регистрация визита студента/абитуриента{% endblock %}
+
+{% block extra_head %}
+    {{ student_form.media.css }}
+    <style>
+        /* Обертка для поля "Другое" цели визита */
+        #student_purpose_other_wrapper { display: none; } /* Используем уникальный ID */
+        /* Стили для Floating Labels */
+    </style>
+{% endblock %}
+
+{% block content %}
+<h2>Регистрация визита студента/абитуриента</h2>
+<hr>
+
+{% if student_form.non_field_errors %}
+    <div class="alert alert-danger">
+        {% for error in student_form.non_field_errors %}
+             {{ error }}{% if not forloop.last %}<br>{% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="post" novalidate class="needs-validation" id="student-reg-form">
+    {% csrf_token %}
+
+    {% with form=student_form %}
+    {# --- Карта: Данные посетителя (Гостя) --- #}
+    <div class="card mb-4">
+        <div class="card-header">Данные посетителя</div>
+        <div class="card-body">
+            {# ФИО #}
+            <div class="mb-3">
+                <label for="{{ form.guest_full_name.id_for_label }}" class="form-label">{{ form.guest_full_name.label }}:</label>
+                {{ form.guest_full_name }}
+                {% if form.guest_full_name.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.guest_full_name.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% else %}
+                     <div class="form-text">Обязательное поле.</div>
+                {% endif %}
+            </div>
+            {# ИИН #}
+             <div class="mb-3">
+                <label for="{{ form.guest_iin.id_for_label }}" class="form-label">{{ form.guest_iin.label }}:</label>
+                {{ form.guest_iin }}
+                {% if form.guest_iin.errors %}
+                     <div class="invalid-feedback d-block">
+                         {% for error in form.guest_iin.errors %}{{ error }}{% endfor %}
+                     </div>
+                 {% else %}
+                     <div class="form-text">12 цифр.</div>
+                {% endif %}
+            </div>
+             {# Email и Телефон #}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                      <label for="{{ form.guest_phone.id_for_label }}" class="form-label">{{ form.guest_phone.label }}:</label>
+                     {{ form.guest_phone }}
+                     {% if form.guest_phone.errors %}
+                         <div class="invalid-feedback d-block">
+                            {% for error in form.guest_phone.errors %}{{ error }}{% endfor %}
+                         </div>
+                     {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {# ------------------------------------ #}
+
+    {# --- Карта: Детали визита студента --- #}
+     <div class="card mb-4">
+        <div class="card-header">Детали визита студента/абитуриента</div>
+        <div class="card-body">
+
+             {# ID Студента #}
+            <div class="mb-3">
+                <label for="{{ form.student_id_number.id_for_label }}" class="form-label">{{ form.student_id_number.label }}:</label>
+                {{ form.student_id_number }}
+                {% if form.student_id_number.errors %}
+                     <div class="invalid-feedback d-block">
+                         {% for error in form.student_id_number.errors %}{{ error }}{% endfor %}
+                     </div>
+                {% endif %}
+            </div>
+             {# Группа и Курс #}
+            <div class="row">
+                <div class="col-md-8 mb-3">
+                     <label for="{{ form.student_group.id_for_label }}" class="form-label">{{ form.student_group.label }}:</label>
+                     {{ form.student_group }}
+                     {% if form.student_group.errors %}
+                         <div class="invalid-feedback d-block">
+                             {% for error in form.student_group.errors %}{{ error }}{% endfor %}
+                         </div>
+                     {% endif %}
+                </div>
+                 <div class="col-md-4 mb-3">
+                      <label for="{{ form.student_course.id_for_label }}" class="form-label">{{ form.student_course.label }}:</label>
+                      {{ form.student_course }}
+                      {% if form.student_course.errors %}
+                          <div class="invalid-feedback d-block">
+                              {% for error in form.student_course.errors %}{{ error }}{% endfor %}
+                          </div>
+                      {% endif %}
+                 </div>
+            </div>
+            {# Департамент назначения #}
+            <div class="mb-3">
+                 <label for="{{ form.department.id_for_label }}" class="form-label">{{ form.department.label }}:</label>
+                 {{ form.department }}
+                 {# --- ИСПРАВЛЕНО ЗДЕСЬ --- #}
+                 {% if form.department.errors %}
+                     <div class="invalid-feedback d-block">
+                         {% for error in form.department.errors %}{{ error }}{% endfor %}
+                     </div>
+                 {% else %}
+                    <div class="form-text">Обязательное поле.</div>
+                 {% endif %}
+                 {# --- КОНЕЦ ИСПРАВЛЕНИЯ --- #}
+            </div>
+             {# Цель визита (выбор) #}
+            <div class="mb-3">
+                 <label for="{{ form.purpose.id_for_label }}" class="form-label">{{ form.purpose.label }}:</label>
+                 {{ form.purpose }}
+                 {# --- ИСПРАВЛЕНО ЗДЕСЬ --- #}
+                 {% if form.purpose.errors %}
+                     <div class="invalid-feedback d-block">
+                         {% for error in form.purpose.errors %}{{ error }}{% endfor %}
+                     </div>
+                 {% else %}
+                    <div class="form-text">Обязательное поле.</div>
+                 {% endif %}
+                 {# --- КОНЕЦ ИСПРАВЛЕНИЯ --- #}
+            </div>
+             {# Цель визита (Другое - текст) #}
+             <div class="mb-3" id="student_purpose_other_wrapper"> {# Уникальный ID #}
+                <label for="{{ form.purpose_other_text.id_for_label }}" class="form-label">{{ form.purpose_other_text.label }}:</label>
+                {{ form.purpose_other_text }}
+                {% if form.purpose_other_text.errors %}<div class="invalid-feedback d-block">{% for e in form.purpose_other_text.errors %}{{e}}{% endfor %}</div>{% else %}<div class="form-text">Заполните, если выбрали "Другое".</div>{% endif %}
+            </div>
+
+            <p class="text-muted small mt-3">Визит будет зарегистрирован от вашего имени: {{ user.get_full_name|default:user.username }}.</p>
+
+        </div> {# /card-body #}
+    </div> {# /card #}
+    {% endwith %}
+    {# ----------------------------------- #}
+
+    {# --- Кнопки --- #}
+    <div class="mt-4 mb-5">
+        <button type="submit" class="btn btn-primary">Зарегистрировать визит студента</button>
+        <a href="{% url 'employee_dashboard' %}" class="btn btn-secondary">Отмена</a>
+    </div>
+    {# ------------- #}
+
+</form>
+{% endblock %}
+
+
+{% block extra_scripts %}
+    {# --- JS для виджетов формы (используем правильное имя) --- #}
+    {{ student_form.media.js }}
+
+    {# --- JS для поля "Другое" цели визита (исправлены селекторы) --- #}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Используем ID из student_form и уникальный ID обертки
+        const spSelect = document.getElementById('{{ student_form.purpose.id_for_label }}');
+        const spWrapper = document.getElementById('student_purpose_other_wrapper');
+        if (spSelect && spWrapper) {
+            const spInput = spWrapper.querySelector('input, textarea');
+            function toggleStudentOther() {
+                if (spSelect.value === 'Other') { spWrapper.style.display = 'block'; }
+                else { spWrapper.style.display = 'none'; if (spInput) spInput.value = ''; }
+            }
+             toggleStudentOther();
+             spSelect.addEventListener('change', toggleStudentOther);
+        } else { console.warn("Элементы 'Другой цели' для студента не найдены."); }
+    });
+    </script>
+    {# ---------------------------------------- #}
+
+
+    {# --- JS для стилей Bootstrap (используем ID формы) --- #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('student-reg-form'); // ID этой формы
+            if (form) {
+                const formControls = form.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="hidden"]), textarea, select');
+                formControls.forEach(function(control) {
+                    if (control.tagName === 'SELECT') { control.classList.add('form-select'); }
+                    else if (!control.classList.contains('btn')) { control.classList.add('form-control'); }
+                    // Добавление is-invalid по наличию ошибки
+                    const errorDiv = control.closest('.mb-3')?.querySelector('.invalid-feedback');
+                    if (errorDiv && errorDiv.innerText.trim() !== '') { control.classList.add('is-invalid'); }
+                    else { control.classList.remove('is-invalid'); }
+                });
+             } else { console.warn("Форма #student-reg-form не найдена для стилизации.");}
+        });
+    </script>
+    {# ----------------------------- #}
+
+{% endblock %}

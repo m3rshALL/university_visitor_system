@@ -1,0 +1,88 @@
+{% extends "base.html" %} {# Или ваш базовый шаблон, или просто HTML #}
+{% load static %}
+
+{% block title %}Настройка профиля{% endblock %}
+
+{% block extra_head %}
+<style>
+    .form-floating .form-select { padding-top: 1.625rem; padding-bottom: .625rem; }
+    .form-floating > label { padding: 1rem .75rem;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Завершение настройки профиля</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Пожалуйста, укажите ваш рабочий телефон и выберите департамент для завершения настройки.</p>
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {# Скрытое поле next, если оно есть в GET параметрах #}
+                        {% if request.GET.next %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+
+                        {# Рендеринг полей формы (можно вручную для лучшего контроля) #}
+                        <div class="form-floating mb-3">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
+                            {{ form.phone_number }} {# ВиджетTextInput #}
+                            {% if form.phone_number.errors %}
+                                <div class="invalid-feedback d-block">{% for e in form.phone_number.errors %}{{e}}{% endfor %}</div>
+                            {% endif %}
+                            <div class="form-text">Введите ваш рабочий номер телефона.</div>
+                        </div>
+
+                         <div class="mb-3">
+                            <label for="{{ form.department.id_for_label }}" class="form-label">{{ form.department.label }}</label>
+                            {{ form.department }} {# Виджет Select #}
+                            {% if form.department.errors %}
+                                <div class="invalid-feedback d-block">{% for e in form.department.errors %}{{e}}{% endfor %}</div>
+                            {% endif %}
+                            <div class="form-text">Выберите ваш департамент.</div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                             <button type="submit" class="btn btn-primary">Сохранить и продолжить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+             <div class="text-center mt-3">
+                 {# Добавим возможность выйти, если пользователь не хочет настраивать #}
+                  <form action="{% url 'account_logout' %}" method="post" class="d-inline">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-link btn-sm text-muted">Выйти</button>
+                  </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Скрипт для стилей Bootstrap, если не наследуется от base.html #}
+<script>
+    // Простой скрипт для добавления классов, если этот шаблон не наследует base.html
+    document.addEventListener('DOMContentLoaded', function() {
+       const formControls = document.querySelectorAll('form input:not([type=hidden]), form select');
+       formControls.forEach(function(control) {
+           if (control.tagName === 'SELECT') { control.classList.add('form-select'); }
+           else { control.classList.add('form-control'); }
+           // Добавление is-invalid по наличию ошибки
+           const errorDiv = control.closest('.mb-3')?.querySelector('.invalid-feedback');
+           if (errorDiv && errorDiv.innerText.trim() !== '') { control.classList.add('is-invalid'); }
+           else { control.classList.remove('is-invalid'); }
+       });
+    });
+</script>
+{% endblock %}
