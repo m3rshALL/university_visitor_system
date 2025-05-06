@@ -66,4 +66,3 @@ admin.site.register(User, UserAdmin)
 
 # Отдельная регистрация EmployeeProfile (опционально, т.к. есть inline)
 # admin.site.register(EmployeeProfile)
-

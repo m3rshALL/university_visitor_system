@@ -86,9 +86,8 @@
 {{ visit_group_form.media.js }}
 {{ member_formset.media.js }}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('DOMContentLoaded', function() {
-        // Применяем классы Bootstrap к полям форм, если они еще не имеют их (особенно для empty_form)
+        // Функция для применения классов Bootstrap к полям формы
         function styleFormControls(formElement) {
             formElement.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="hidden"]), textarea, select').forEach(function(control) {
                 if (control.tagName === 'SELECT' && !control.classList.contains('form-select')) {
@@ -98,51 +97,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-    });
 
-    // Стилизуем уже существующие формы
+    // Стилизуем начальные формы (если они есть) и основную форму группы
     document.querySelectorAll('.formset-member').forEach(styleFormControls);
-    styleFormControls(document.querySelector('form')); // Для основной формы группы
+    styleFormControls(document.querySelector('form[method="post"]'));
 
-    const addMemberButton = document.getElementById('add-member-form');
-    const formsContainer = document.getElementById('member-forms-container'); // Контейнер для форм участников
-    const emptyFormTemplateHolder = document.getElementById('empty-member-form');
-    const totalFormsInput = document.querySelector('input[name="members-TOTAL_FORMS"]');
-    const formsetPrefix = 'members'; // Префикс вашего формсета
-
-    if (addMemberButton && formsContainer && emptyFormTemplateHolder && totalFormsInput) {
-        addMemberButton.addEventListener('click', function() {
-            let currentFormCount = parseInt(totalFormsInput.value);
-
-            // Клонируем содержимое шаблона пустой формы
-            let newFormHtml = emptyFormTemplateHolder.innerHTML;
-            // Заменяем __prefix__ на текущий индекс формы
-            newFormHtml = newFormHtml.replace(/__prefix__/g, currentFormCount);
-
-            // Создаем div-обертку для новой формы
-            let newFormDiv = document.createElement('div');
-            newFormDiv.classList.add('formset-member');
-            newFormDiv.id = `member-${currentFormCount}`;
-                
-            // Добавляем заголовок
-            let title = document.createElement('h5');
-            title.textContent = `Участник #${currentFormCount + 1}`;
-            newFormDiv.appendChild(title);
-            
-            newFormDiv.innerHTML += newFormHtml; // Добавляем поля формы
-
-            // Стилизуем контролы в новой форме
-            styleFormControls(newFormDiv);
-
-            // Вставляем новую форму перед кнопкой "Добавить участника"
-            formsContainer.insertBefore(newFormDiv, addMemberButton);
-
-            // Увеличиваем счетчик TOTAL_FORMS
-            totalFormsInput.value = currentFormCount + 1;
-        });
-    } else {
-        console.warn("Необходимые элементы для добавления форм участников не найдены. Проверьте ID и префикс формсета.");
-    }
-});
+    
 </script>
 {% endblock %}

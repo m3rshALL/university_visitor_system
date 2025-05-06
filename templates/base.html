@@ -56,10 +56,12 @@
                             <a class="nav-link" href="{% url 'register_guest' %}">Регистрация гостя</a>
                         </li>
                         {# --- Ссылка на регистрацию группы визита --- #}
-                        {% if perms.visitors.can_register_group_visit %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register_group_visit' %}">Регистрация группы визита</a>
-                        {% endif %}
+                        {% comment %}
+                            {% if perms.visitors.can_register_group_visit %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'register_group_visit' %}">Регистрация группы визита</a>
+                            {% endif %}
+                        {% endcomment %}
                         {% if perms.visitors.can_register_student_visit %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'register_student_visit' %}">Регистрация студента/абитуриента</a>

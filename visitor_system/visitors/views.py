@@ -6,9 +6,9 @@ from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 
 from django.contrib import messages # Для показа сообщений пользователю
-from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, VisitGroup, \
+from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
     STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED # Импортируем модели
-from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm, VisitGroupForm, GroupMemberFormSet # Импортируем формы
+from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm
 from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
 from django.http import JsonResponse, HttpResponse
@@ -1080,80 +1080,3 @@ def profile_setup_view(request):
     return render(request, 'visitors/profile_setup.html', context)
 # --------------------------------------------------
 
-@login_required
-# @permission_required('visitors.can_register_group_visit', raise_exception=True) # Добавьте разрешение, если нужно
-def register_group_visit_view(request):
-    if request.method == 'POST':
-        visit_group_form = VisitGroupForm(request.POST, prefix="group")
-        member_formset = GroupMemberFormSet(request.POST, prefix="members")
-
-        if visit_group_form.is_valid() and member_formset.is_valid():
-            try:
-                visit_group = visit_group_form.save(commit=False)
-                visit_group.registered_by = request.user
-                visit_group.save() # Сначала сохраняем группу
-
-                created_visits_count = 0
-                for member_form in member_formset:
-                    if member_form.cleaned_data and not member_form.cleaned_data.get('DELETE', False):
-                        guest_full_name = member_form.cleaned_data.get('guest_full_name')
-                        guest_iin = member_form.cleaned_data.get('guest_iin')
-
-                        if not guest_full_name: # Пропускаем пустые формы в формсете
-                            continue
-
-                        # Создаем или получаем гостя
-                        guest, _ = Guest.objects.get_or_create(
-                            iin=guest_iin if guest_iin else None, # Уникальность по ИИН, если он есть
-                            defaults={'full_name': guest_full_name}
-                        )
-                        if not guest_iin and guest.full_name != guest_full_name: # Если ИИН нет, но ФИО другое - новый гость
-                            guest = Guest.objects.create(full_name=guest_full_name)
-                        elif guest.full_name != guest_full_name: # Если ИИН есть, но ФИО отличается - обновляем
-                            guest.full_name = guest_full_name
-                            guest.save()
-
-
-                        # Создаем индивидуальный визит для члена группы
-                        Visit.objects.create(
-                            guest=guest,
-                            visit_group=visit_group,
-                            department=visit_group.department, # Копируем из группы
-                            employee=visit_group.employee,     # Копируем из группы
-                            purpose=visit_group.purpose,       # Копируем из группы
-                            purpose_other_text=visit_group.purpose_other_text, # Копируем
-                            expected_entry_time=visit_group.expected_entry_time, # Копируем
-                            registered_by=request.user,
-                            status=STATUS_AWAITING_ARRIVAL # Или другой начальный статус
-                        )
-                        created_visits_count += 1
-                
-                if created_visits_count > 0:
-                    # Отправка уведомления службе безопасности (нужно адаптировать функцию)
-                    try:
-                        # Передаем объект VisitGroup, функция должна уметь его обработать
-                        send_new_visit_notification_to_security(visit_group, 'group')
-                    except Exception as e:
-                        logger.error(f"Ошибка при вызове send_new_visit_notification_to_security для группы: {e}")
-
-                    messages.success(request, f"Групповой визит '{visit_group}' с {created_visits_count} участниками успешно зарегистрирован.")
-                    return redirect('employee_dashboard') # Или на страницу деталей группы
-                else:
-                    messages.warning(request, "Не было добавлено ни одного участника в группу.")
-                    # Можно удалить созданную пустую группу visit_group.delete() или оставить
-                    # visit_group_form = VisitGroupForm(instance=visit_group, prefix="group") # Показать форму снова
-
-            except Exception as e:
-                messages.error(request, f"Произошла ошибка при регистрации группы: {e}")
-        else:
-            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
-    else:
-        visit_group_form = VisitGroupForm(prefix="group")
-        member_formset = GroupMemberFormSet(prefix="members")
-
-    context = {
-        'visit_group_form': visit_group_form,
-        'member_formset': member_formset,
-        'page_title': "Регистрация группового визита"
-    }
-    return render(request, 'visitors/register_group_visit.html', context)
