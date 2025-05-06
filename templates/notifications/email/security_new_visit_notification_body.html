@@ -1,0 +1,37 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Уведомление о новом визите</title>
+</head>
+<body>
+    <p>Уважаемый сотрудник службы безопасности,</p>
+    <p>В системе был зарегистрирован новый визит:</p>
+    <ul>
+        <li><strong>Тип визита:</strong> {{ visit_kind_display }}</li>
+        <li><strong>ФИО Посетителя:</strong> {{ visit.guest.full_name }}</li>
+        {% if visit.guest.iin %}
+            <li><strong>ИИН Посетителя:</strong> {{ visit.guest.iin }}</li>
+        {% endif %}
+        {% if visit_kind == 'official' and visit.employee %}
+            <li><strong>К сотруднику:</strong> {{ visit.employee.get_full_name|default:visit.employee.username }}</li>
+        {% elif visit_kind == 'student' and visit.student_id_number %}
+            <li><strong>ID Студента:</strong> {{ visit.student_id_number }}</li>
+        {% endif %}
+        <li><strong>Департамент/Цель:</strong> {{ visit.department.name|default:"-" }}</li>
+        <li><strong>Цель визита:</strong> {{ visit.purpose_display|default:visit.purpose|default:"Не указана" }}</li>
+        {% if visit.purpose_other_text %}
+            <li><strong>Уточнение цели:</strong> {{ visit.purpose_other_text }}</li>
+        {% endif %}
+        <li><strong>Зарегистрировал:</strong> {{ visit.registered_by.get_full_name|default:visit.registered_by.username }}</li>
+        {% if visit.expected_entry_time %}
+            <li><strong>Планируемое время входа:</strong> {{ visit.expected_entry_time|date:"Y-m-d H:i" }}</li>
+        {% else %}
+            <li><strong>Время регистрации:</strong> {{ visit.registration_time|date:"Y-m-d H:i" }} (Сейчас)</li>
+        {% endif %}
+    </ul>
+    <p>Вы можете просмотреть детали визита в системе.</p>
+    <p>С уважением,<br>Система управления посетителями AITU</p>
+</body>
+</html>
+{% endautoescape %}
