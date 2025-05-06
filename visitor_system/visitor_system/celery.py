@@ -14,7 +14,7 @@ app = Celery('visitor_system')
 # Префикс 'CELERY_' в настройках Django.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Автоматически обнаруживать задачи в файлах tasks.py ваших приложений Django.
+# Автоматически обнаруживать задачи в файлах tasks.py приложений Django.
 app.autodiscover_tasks()
 
 @app.task(bind=True, ignore_result=True)
