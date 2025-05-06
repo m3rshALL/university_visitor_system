@@ -27,6 +27,8 @@ urlpatterns = [
     path('exit/<int:visit_id>/', views.mark_guest_exit_view, name='mark_guest_exit'),
     path('exit/student/<int:visit_id>/', views.mark_student_exit_view, name='mark_student_exit'),
     
+    path('special-feature/', views.example_special_feature_view, name='special_feature'),
+    
     path('dashboard/employee/', views.employee_dashboard_view, name='employee_dashboard'),
     path('dashboard/admin/', views.admin_dashboard_view, name='admin_dashboard'),
     path('ajax/employee-autocomplete/', views.employee_autocomplete_view, name='employee_autocomplete'),

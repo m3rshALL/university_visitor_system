@@ -154,6 +154,9 @@ class StudentVisit(models.Model):
         verbose_name = "Визит студента/абитуриента"
         verbose_name_plural = "Визиты студентов/абитуриентов"
         ordering = ['-entry_time']
+        permissions = [
+            ("can_register_student_visit", "Может регистрировать визиты студентов/абитуриентов"),
+        ]
 # ---------------------------------------------------
 
 # --- Новая модель Профиля Сотрудника ---

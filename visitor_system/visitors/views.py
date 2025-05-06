@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
+
 from django.contrib import messages # Для показа сообщений пользователю
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED # Импортируем модели
 from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm # Импортируем формы
@@ -13,6 +14,8 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from datetime import timedelta
 import json
+
+from django.contrib.auth.models import Group # Импорт модели группы пользователей
 from django.db.models import Count, Avg, F, DurationField
 from django.db.models.functions import TruncDate, TruncMonth
 from .filters import VisitFilter # Импорт фильтров для поиска
@@ -350,6 +353,43 @@ def employee_dashboard_view(request):
     }
     return render(request, 'visitors/admin_dashboard.html', context)
 
+FUNCTIONAL_ACCESS_GROUP_NAME = "FunctionalManager" # Например, "FunctionalManager" или "РасширенныйДоступ"
+
+def has_functional_access(user):
+    """
+    Проверяет, имеет ли пользователь расширенный функциональный доступ.
+    Доступ предоставляется, если:
+    1. Пользователь аутентифицирован.
+    2. Пользователь является администратором (is_staff = True).
+    3. Пользователь состоит в группе FUNCTIONAL_ACCESS_GROUP_NAME.
+    """
+    if not user.is_authenticated:
+        return False
+    if user.is_staff: # Администраторы всегда имеют доступ
+        return True
+    try:
+        return user.groups.filter(name=FUNCTIONAL_ACCESS_GROUP_NAME).exists()
+    except Group.DoesNotExist: # На случай, если группа была удалена или еще не создана
+        logger.warning(f"Группа '{FUNCTIONAL_ACCESS_GROUP_NAME}' не найдена в базе данных. "
+                       f"Функциональный доступ для пользователя {user.username} не предоставлен по группе.")
+        return False
+# -----------------------------------------
+
+# --- Пример использования нового уровня доступа ---
+@login_required
+@user_passes_test(has_functional_access) # Используем новую проверку
+def example_special_feature_view(request):
+    """
+    Пример представления, доступного администраторам (is_staff)
+    и пользователям из группы FUNCTIONAL_ACCESS_GROUP_NAME.
+    """
+    # Ваша логика для этой специальной функции
+    context = {
+        'message': f"Добро пожаловать, {request.user.username}! У вас есть доступ к этой специальной функции."
+    }
+    return render(request, 'visitors/special_feature_example.html', context) # Создайте этот шаблон
+# --------------------------------------------------
+
 # Проверка, является ли пользователь администратором (staff)
 def is_admin(user):
     return user.is_authenticated and user.is_staff
@@ -490,6 +530,10 @@ def visit_statistics_view(request):
 
 # --- Представление для регистрации визита студента ---
 @login_required
+@permission_required('visitors.can_register_student_visit', raise_exception=True)
+# `raise_exception=True` вызовет ошибку 403 Forbidden, если пользователь аутентифицирован, но не имеет права.
+# Если False (по умолчанию) или не указано, пользователя перенаправит на страницу входа (LOGIN_URL).
+# Вы можете также указать login_url: @permission_required('visitors.can_register_student_visit', login_url='/accounts/login/')
 def register_student_visit_view(request):
     if request.method == 'POST':
         form = StudentVisitRegistrationForm(request.POST, prefix="student") # Используем префикс

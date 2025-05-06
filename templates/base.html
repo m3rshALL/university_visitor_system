@@ -39,14 +39,27 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'employee_dashboard' %}">Моя панель</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Регистрация</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{% url 'register_guest' %}">Регистрация гостя</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'register_student_visit' %}">Регистрация студента/абитуриента</a>
-                            </div>
+                        {% comment %}
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Регистрация</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{% url 'register_guest' %}">Регистрация гостя</a>
+                                    {% if perms.visitors.can_register_student_visit %}
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'register_student_visit' %}">Регистрация студента/абитуриента</a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endcomment %}
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register_guest' %}">Регистрация гостя</a>
                         </li>
+                        {% if perms.visitors.can_register_student_visit %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register_student_visit' %}">Регистрация студента/абитуриента</a>
+                        </li>
+                        {% endif %}
                         
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'current_guests' %}">Текущие гости</a>
