@@ -61,7 +61,7 @@
 5. **Запустите приложение:**
    ```bash
    # Пример для Django
-   python manage.py runserver
+   poetry run py manage.py runserver
    
 После этого приложение будет доступно по адресу `http://localhost:8000`
 
