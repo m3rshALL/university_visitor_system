@@ -104,5 +104,5 @@
 
 Sagat Akimbay – @annymars – sagat.akimbay@astanait.edu.kz
 
-Ссылка на проект: https://github.com/your-username/university_visitor_system
+Ссылка на проект: https://github.com/m3rshALL/university_visitor_system
 
