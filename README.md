@@ -38,7 +38,7 @@
 
 1. **Клонируйте репозиторий:**
    ```bash
-   git clone https://github.com/your-username/university_visitor_system.git
+   git clone https://github.com/m3rshALL/university_visitor_system.git
    cd university_visitor_system
    ```
 2. **Установите зависимости:**
