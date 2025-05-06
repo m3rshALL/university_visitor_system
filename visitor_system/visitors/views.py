@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from django.contrib import messages # Для показа сообщений пользователю
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
-    STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED # Импортируем модели
+    STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED
 from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm
 from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
@@ -35,7 +35,7 @@ from django.views.decorators.http import require_POST # Для ограниче�
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
 from django.views.decorators.cache import cache_page
 
-from notifications.utils import send_new_visit_notification_to_security # <--- Импортируем новую функцию
+from notifications.utils import send_new_visit_notification_to_security
 
 logger = logging.getLogger(__name__)
 
@@ -55,13 +55,10 @@ def get_scoped_visits_qs(user):
     official_visits_qs = Visit.objects.select_related('guest', 'employee', 'department', 'registered_by')
     student_visits_qs = StudentVisit.objects.select_related('guest', 'department', 'registered_by')
 
-    # Ensure user is authenticated before checking groups
     is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
     is_staff = user.is_staff
 
     if not is_reception and not is_staff:
-        # If user is not authenticated (i.e., AnonymousUser) or has no PK,
-        # they cannot have an EmployeeProfile linked.
         if not user.is_authenticated or user.pk is None:
             official_visits_qs = official_visits_qs.none()
             student_visits_qs = student_visits_qs.none()
