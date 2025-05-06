@@ -1,1 +1,1 @@
-{% autoescape off %}Новый визит зарегистрирован: {{ visit.guest.full_name }}{% endautoescape %}
+{% autoescape off %}Новый визит зарегистрирован: {{ subject_guest_name }}{% endautoescape %}

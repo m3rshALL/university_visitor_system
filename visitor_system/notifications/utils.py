@@ -130,7 +130,7 @@ def send_visit_creation_notification(visit_id, visit_kind):
         logger.exception(f"Core email sending FAILED for visit {visit_kind} ID {visit_id} to {recipients}.")
         return False
 
-def send_new_visit_notification_to_security(visit_instance, visit_kind):
+def send_new_visit_notification_to_security(visit_or_group_instance, visit_kind):
     """
     Отправляет уведомление о новом зарегистрированном визите
     членам группы SECURITY_NOTIFICATION_GROUP_NAME.
@@ -160,14 +160,30 @@ def send_new_visit_notification_to_security(visit_instance, visit_kind):
     # text_body_template_name = 'notifications/email/security_new_visit_notification_body.txt' # Опционально
 
     context = {
-        'visit': visit_instance,
-        'visit_kind_display': "Гость к сотруднику" if visit_kind == 'official' else "Студент/Абитуриент",
-        'site_url': settings.SITE_URL if hasattr(settings, 'SITE_URL') else 'http://localhost:8000', # Пример URL сайта
+        'site_url': settings.SITE_URL if hasattr(settings, 'SITE_URL') else 'http://localhost:8000',
     }
+    
+    if visit_kind == 'group':
+        visit_group = visit_or_group_instance
+        context.update({
+            'visit_group': visit_group,
+            'visit_kind_display': f"Групповой визит: {visit_group.group_name or 'Без названия'}",
+            'guests_list': visit_group.individual_visits.select_related('guest').all() # Получаем всех гостей группы
+        })
+        # Для темы письма можно использовать имя группы или первого гостя
+        subject_context_name = visit_group.group_name or (visit_group.individual_visits.first().guest.full_name + " и др." if visit_group.individual_visits.exists() else "Группа")
+    else: # official или student
+        visit_instance = visit_or_group_instance
+        context.update({
+            'visit': visit_instance,
+            'visit_kind_display': "Гость к сотруднику" if visit_kind == 'official' else "Студент/Абитуриент",
+        })
+        subject_context_name = visit_instance.guest.full_name
 
-    subject = render_to_string(subject_template_name, context).strip()
+    # Обновляем контекст для темы письма
+    subject_render_context = {'subject_guest_name': subject_context_name}
+    subject = render_to_string(subject_template_name, subject_render_context).strip()
     html_message = render_to_string(html_body_template_name, context)
-    # plain_message = render_to_string(text_body_template_name, context) # Опционально
 
     try:
         send_mail(

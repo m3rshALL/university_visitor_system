@@ -1,6 +1,6 @@
 # visitors/forms.py
 from django import forms
-from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile
+from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile, VisitGroup
 from departments.models import Department
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
@@ -10,6 +10,11 @@ from django.urls import reverse_lazy
 import logging
 from django.utils import timezone
 from notifications.tasks import send_visit_notification_task # Импортируем задачу Celery
+
+from django.forms import formset_factory # Импортируем formset_factory для создания форм с несколькими экземплярами
+
+from django.utils.translation import gettext_lazy as _
+
 
 logger = logging.getLogger(__name__)
 
@@ -433,3 +438,50 @@ class ProfileSetupForm(forms.ModelForm):
         model = EmployeeProfile
         fields = ['phone_number', 'department'] # Только эти поля
 # -------------------------------------
+
+class VisitGroupForm(forms.ModelForm):
+    class Meta:
+        model = VisitGroup
+        fields = [
+            'group_name', 'department', 'employee',
+            'purpose', 'purpose_other_text', 'expected_entry_time', 'notes'
+        ]
+        labels = {
+            'group_name': _("Название группы/мероприятия"),
+            'department': _("Департамент назначения (общий для группы)"),
+            'employee': _("Принимающий сотрудник (основной контакт группы)"),
+            'purpose': _("Основная цель визита группы"),
+            'purpose_other_text': _("Уточнение цели (если выбрано 'Другое')"),
+            'expected_entry_time': _("Планируемое время входа группы"),
+            'notes': _("Примечания по группе"),
+        }
+        widgets = {
+            'expected_entry_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'notes': forms.Textarea(attrs={'rows': 3, 'class':'form-control'}),
+            # Применяем классы Bootstrap к остальным полям, если они не ModelChoiceField с form-select
+            'group_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'purpose_other_text': forms.Textarea(attrs={'rows': 2, 'class': 'form-control'}),
+        }
+    # Можно добавить __init__ для настройки виджетов, как в других формах
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['department'].widget.attrs.update({'class': 'form-select'})
+        self.fields['employee'].widget.attrs.update({'class': 'form-select'})
+        self.fields['purpose'].widget.attrs.update({'class': 'form-select'})
+
+class GroupMemberGuestForm(forms.Form): # Не ModelForm, т.к. Guest создается отдельно
+    guest_full_name = forms.CharField(label=_("ФИО гостя"), max_length=255)
+    guest_iin = forms.CharField(
+        label=_("ИИН гостя (12 цифр)"),
+        max_length=12,
+        required=False, # Сделать необязательным, если применимо для групп
+        validators=[RegexValidator(r'^\d{12}$', _('ИИН должен состоять из 12 цифр.'))]
+    )
+    # Можно добавить другие поля для гостя, если они индивидуальны в группе
+
+# Создаем FormSet
+# extra=1 означает, что по умолчанию будет отображаться одна пустая форма для гостя
+GroupMemberFormSet = formset_factory(GroupMemberGuestForm, extra=1, can_delete=False)
+# -----------------------------------
+

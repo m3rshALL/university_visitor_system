@@ -8,27 +8,61 @@
     <p>Уважаемый сотрудник службы безопасности,</p>
     <p>В системе был зарегистрирован новый визит:</p>
     <ul>
-        <li><strong>Тип визита:</strong> {{ visit_kind_display }}</li>
-        <li><strong>ФИО Посетителя:</strong> {{ visit.guest.full_name }}</li>
-        {% if visit.guest.iin %}
-            <li><strong>ИИН Посетителя:</strong> {{ visit.guest.iin }}</li>
+        <li><strong>Тип события:</strong> {{ visit_kind_display }}</li>
+
+        {% if visit_group %} {# Это групповой визит #}
+            <li><strong>Название группы:</strong> {{ visit_group.group_name|default:"Не указано" }}</li>
+            {% if visit_group.employee %}
+                <li><strong>К сотруднику (основной контакт):</strong> {{ visit_group.employee.get_full_name|default:visit_group.employee.username }}</li>
+            {% endif %}
+            <li><strong>Департамент:</strong> {{ visit_group.department.name|default:"-" }}</li>
+            <li><strong>Цель визита группы:</strong> {{ visit_group.purpose.name|default:visit_group.purpose_other_text|default:"Не указана" }}</li>
+            {% if visit_group.purpose_other_text and visit_group.purpose.name != visit_group.purpose_other_text %}
+                <li><strong>Уточнение цели:</strong> {{ visit_group.purpose_other_text }}</li>
+            {% endif %}
+            <li><strong>Зарегистрировал группу:</strong> {{ visit_group.registered_by.get_full_name|default:visit_group.registered_by.username }}</li>
+            {% if visit_group.expected_entry_time %}
+                <li><strong>Планируемое время входа группы:</strong> {{ visit_group.expected_entry_time|date:"Y-m-d H:i" }}</li>
+            {% else %}
+                <li><strong>Время регистрации группы:</strong> {{ visit_group.registration_time|date:"Y-m-d H:i" }}</li>
+            {% endif %}
+            
+            {% if guests_list %}
+                <p style="margin-top: 15px;"><strong>Участники группы:</strong></p>
+                <ol>
+                    {% for individual_visit in guests_list %}
+                        <li>
+                            {{ individual_visit.guest.full_name }}
+                            {% if individual_visit.guest.iin %}(ИИН: {{ individual_visit.guest.iin }}){% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p><em>Участники группы не указаны.</em></p>
+            {% endif %}
+        {% else %} {# Это отдельный визит #}
+            {# Это индивидуальный визит (official или student) #}
+            <li><strong>ФИО Посетителя:</strong> {{ visit.guest.full_name }}</li>
+            {% if visit.guest.iin %}
+                <li><strong>ИИН Посетителя:</strong> {{ visit.guest.iin }}</li>
+            {% endif %}
+            {% if visit_kind == 'official' and visit.employee %}
+                <li><strong>К сотруднику:</strong> {{ visit.employee.get_full_name|default:visit.employee.username }}</li>
+            {% elif visit_kind == 'student' and visit.student_id_number %}
+                <li><strong>ID Студента:</strong> {{ visit.student_id_number }}</li>
+            {% endif %}
+            <li><strong>Департамент/Цель:</strong> {{ visit.department.name|default:"-" }}</li>
+            <li><strong>Цель визита:</strong> {{ visit.purpose_display|default:visit.purpose|default:"Не указана" }}</li>
+            {% if visit.purpose_other_text %}
+                <li><strong>Уточнение цели:</strong> {{ visit.purpose_other_text }}</li>
+            {% endif %}
+            <li><strong>Зарегистрировал:</strong> {{ visit.registered_by.get_full_name|default:visit.registered_by.username }}</li>
+            {% if visit.expected_entry_time %}
+                <li><strong>Планируемое время входа:</strong> {{ visit.expected_entry_time|date:"Y-m-d H:i" }}</li>
+            {% else %}
+                <li><strong>Время регистрации:</strong> {{ visit.registration_time|date:"Y-m-d H:i" }} (Сейчас)</li>
         {% endif %}
-        {% if visit_kind == 'official' and visit.employee %}
-            <li><strong>К сотруднику:</strong> {{ visit.employee.get_full_name|default:visit.employee.username }}</li>
-        {% elif visit_kind == 'student' and visit.student_id_number %}
-            <li><strong>ID Студента:</strong> {{ visit.student_id_number }}</li>
-        {% endif %}
-        <li><strong>Департамент/Цель:</strong> {{ visit.department.name|default:"-" }}</li>
-        <li><strong>Цель визита:</strong> {{ visit.purpose_display|default:visit.purpose|default:"Не указана" }}</li>
-        {% if visit.purpose_other_text %}
-            <li><strong>Уточнение цели:</strong> {{ visit.purpose_other_text }}</li>
-        {% endif %}
-        <li><strong>Зарегистрировал:</strong> {{ visit.registered_by.get_full_name|default:visit.registered_by.username }}</li>
-        {% if visit.expected_entry_time %}
-            <li><strong>Планируемое время входа:</strong> {{ visit.expected_entry_time|date:"Y-m-d H:i" }}</li>
-        {% else %}
-            <li><strong>Время регистрации:</strong> {{ visit.registration_time|date:"Y-m-d H:i" }} (Сейчас)</li>
-        {% endif %}
+        
     </ul>
     <p>Вы можете просмотреть детали визита в системе.</p>
     <p>С уважением,<br>Система управления посетителями AITU</p>

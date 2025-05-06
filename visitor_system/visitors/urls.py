@@ -10,6 +10,8 @@ urlpatterns = [
     path('register/', views.register_guest_view, name='register_guest'),
     # --- Новый путь для регистрации студентов/абитуриентов ---
     path('register/student/', views.register_student_visit_view, name='register_student_visit'),
+    path('register-group/', views.register_group_visit_view, name='register_group_visit'),
+    
     # --- Новый URL для настройки профиля ---
     path('profile/setup/', views.profile_setup_view, name='profile_setup'),
     
