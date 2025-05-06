@@ -21,7 +21,9 @@
 
 {# --- Блок с кнопками управления --- #}
 {# Убрали justify-content-between, чтобы кнопки были рядом #}
+
 <div class="mb-3 d-flex align-items-center">
+    {% if show_filters %}
     {# Кнопка для показа/скрытия фильтра #}
     <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter me-1" viewBox="0 0 16 16">
@@ -29,11 +31,12 @@
         </svg>
         Фильтр / Поиск
     </button>
+    {% endif %}
 
     {# --- Кнопка Экспорта --- #}
     {% if user.is_staff or perms.visitors.can_view_visit_statistics %}
         {# Добавили ms-2 для отступа слева #}
-        <a href="{% url 'export_visits_xlsx' %}?{{ request.GET.urlencode }}" class="btn btn-success btn-sm ms-2">
+        <a href="{% url 'export_visits_xlsx' %}?{{ request.GET.urlencode }}" class="btn btn-success btn-sm {% if show_filters %}ms-2{% endif %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel me-1" viewBox="0 0 16 16">
                 <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.64L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z"/>
                 <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
@@ -46,7 +49,7 @@
 {# -------------------------------- #}
 
 
-
+{% if show_filters %}
 {# --- Сворачиваемый блок с формой фильтра --- #}
 <div class="collapse mb-4" id="filterCollapse">
     <div class="card card-body bg-light">
@@ -104,6 +107,7 @@
         </form>
     </div> {# /card #}
 </div> {# /collapse #}
+{% endif %}
 {# --------------------------------------- #}
 
 

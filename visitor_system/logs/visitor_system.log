@@ -1421,3 +1421,10 @@ Traceback (most recent call last):
   File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
     raise PermissionDenied
 django.core.exceptions.PermissionDenied
+INFO 2025-05-06 15:07:51,431 forms 58972 56400 Using guest object: Проверка email СБ отправка (ID: 4), Created: False
+INFO 2025-05-06 15:07:51,431 forms 58972 56400 Visit None created with status CHECKED_IN.
+INFO 2025-05-06 15:07:51,484 forms 58972 56400 Saved Visit ID 15, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-06 15:07:51,487 utils 34472 31164 Attempting to send creation notification for official ID 15
+WARNING 2025-05-06 15:07:51,522 utils 34472 31164 Department 'Деканат' has no director assigned.
+INFO 2025-05-06 15:07:53,598 utils 34472 31164 Visit notification email for official ID 15 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-06 15:07:53,739 utils 58972 56400 Уведомление о новом визите (official ID: 15) успешно отправлено группе безопасности.

@@ -4,6 +4,12 @@ import json
 from django.conf import settings
 from django.template.loader import render_to_string # Для HTML писем (опционально)
 from django.core.mail import send_mail
+from django.contrib.auth.models import User, Group # Добавляем Group
+
+logger = logging.getLogger(__name__)
+
+# Имя группы, члены которой будут получать уведомления о регистрации визитов
+SECURITY_NOTIFICATION_GROUP_NAME = "Security Notifications" # Убедитесь, что это имя совпадает с созданным в админке
 
 # Импортируем нужные модели из приложения visitors
 try:
@@ -123,3 +129,55 @@ def send_visit_creation_notification(visit_id, visit_kind):
     except Exception as e:
         logger.exception(f"Core email sending FAILED for visit {visit_kind} ID {visit_id} to {recipients}.")
         return False
+
+def send_new_visit_notification_to_security(visit_instance, visit_kind):
+    """
+    Отправляет уведомление о новом зарегистрированном визите
+    членам группы SECURITY_NOTIFICATION_GROUP_NAME.
+    """
+    try:
+        security_group = Group.objects.get(name=SECURITY_NOTIFICATION_GROUP_NAME)
+        recipients = User.objects.filter(groups=security_group, is_active=True).exclude(email__exact='')
+    except Group.DoesNotExist:
+        logger.error(f"Группа '{SECURITY_NOTIFICATION_GROUP_NAME}' не найдена. Уведомления безопасности не будут отправлены.")
+        return
+    except Exception as e:
+        logger.error(f"Ошибка при получении пользователей из группы безопасности: {e}")
+        return
+
+    if not recipients.exists():
+        logger.info(f"В группе '{SECURITY_NOTIFICATION_GROUP_NAME}' нет активных пользователей с email для отправки уведомлений.")
+        return
+
+    recipient_emails = [user.email for user in recipients if user.email]
+
+    if not recipient_emails:
+        logger.info(f"Не найдено email адресов у пользователей группы '{SECURITY_NOTIFICATION_GROUP_NAME}'.")
+        return
+
+    subject_template_name = 'notifications/email/security_new_visit_notification_subject.txt'
+    html_body_template_name = 'notifications/email/security_new_visit_notification_body.html'
+    # text_body_template_name = 'notifications/email/security_new_visit_notification_body.txt' # Опционально
+
+    context = {
+        'visit': visit_instance,
+        'visit_kind_display': "Гость к сотруднику" if visit_kind == 'official' else "Студент/Абитуриент",
+        'site_url': settings.SITE_URL if hasattr(settings, 'SITE_URL') else 'http://localhost:8000', # Пример URL сайта
+    }
+
+    subject = render_to_string(subject_template_name, context).strip()
+    html_message = render_to_string(html_body_template_name, context)
+    # plain_message = render_to_string(text_body_template_name, context) # Опционально
+
+    try:
+        send_mail(
+            subject,
+            '', # Используем html_message, поэтому plain_message можно оставить пустым или использовать text_body_template_name
+            settings.DEFAULT_FROM_EMAIL,
+            recipient_emails,
+            html_message=html_message,
+            fail_silently=False,
+        )
+        logger.info(f"Уведомление о новом визите ({visit_kind} ID: {visit_instance.id}) успешно отправлено группе безопасности.")
+    except Exception as e:
+        logger.error(f"Ошибка при отправке уведомления о новом визите группе безопасности: {e}")

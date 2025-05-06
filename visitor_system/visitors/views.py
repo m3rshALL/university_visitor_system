@@ -34,7 +34,46 @@ from django.views.decorators.http import require_POST # Для ограниче�
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
 from django.views.decorators.cache import cache_page
 
+from notifications.utils import send_new_visit_notification_to_security # <--- Импортируем новую функцию
+
 logger = logging.getLogger(__name__)
+
+# Имя группы для сотрудников ресепшн
+RECEPTION_GROUP_NAME = "Reception"
+
+FUNCTIONAL_ACCESS_GROUP_NAME = "FunctionalManager" # Например, "FunctionalManager" или "РасширенныйДоступ"
+
+# --- Вспомогательная функция для получения визитов с учетом прав доступа ---
+def get_scoped_visits_qs(user):
+    """
+    Возвращает QuerySet'ы для официальных и студенческих визитов,
+    отфильтрованные в соответствии с правами пользователя.
+    - Администраторы (is_staff) и члены группы RECEPTION_GROUP_NAME видят все визиты.
+    - Остальные сотрудники видят визиты только своего департамента.
+    """
+    official_visits_qs = Visit.objects.select_related('guest', 'employee', 'department', 'registered_by')
+    student_visits_qs = StudentVisit.objects.select_related('guest', 'department', 'registered_by')
+
+    is_reception = user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    is_staff = user.is_staff
+
+    if not is_reception and not is_staff:
+        try:
+            # Пытаемся получить профиль сотрудника и его департамент
+            employee_profile = EmployeeProfile.objects.get(user=user)
+            if employee_profile.department:
+                employee_department = employee_profile.department
+                official_visits_qs = official_visits_qs.filter(department=employee_department)
+                student_visits_qs = student_visits_qs.filter(department=employee_department)
+            else: # Сотрудник без департамента не видит визиты других департаментов
+                official_visits_qs = official_visits_qs.none()
+                student_visits_qs = student_visits_qs.none()
+        except EmployeeProfile.DoesNotExist: # Пользователь без профиля сотрудника
+            official_visits_qs = official_visits_qs.none()
+            student_visits_qs = student_visits_qs.none()
+    
+    return official_visits_qs, student_visits_qs
+# -----------------------------------------------------------------------
 
 @login_required
 def register_guest_view(request):
@@ -48,14 +87,19 @@ def register_guest_view(request):
             if registration_type == 'later' and not form.cleaned_data.get('expected_entry_time'):
                 form.add_error('expected_entry_time', 'Укажите планируемое время для регистрации заранее.')
             else:
-                 try:
-                     visit = form.save(request.user, registration_type=registration_type)
-                     messages.success(request, f"Визит гостя {visit.guest.full_name} успешно зарегистрирован ({'сейчас' if registration_type == 'now' else 'заранее'})!")
-                     return redirect('employee_dashboard')
-                 except Exception as e:
-                     messages.error(request, f"Ошибка при регистрации визита: {e}")
+                try:
+                    visit = form.save(request.user, registration_type=registration_type)
+                    try:
+                        send_new_visit_notification_to_security(visit, 'official')
+                    except Exception as e:
+                        logger.error(f"Ошибка при вызове send_new_visit_notification_to_security для гостя: {e}")
+                    # --------------------------------------------
+                    messages.success(request, f"Визит гостя {visit.guest.full_name} успешно зарегистрирован ({'сейчас' if registration_type == 'now' else 'заранее'})!")
+                    return redirect('employee_dashboard')
+                except Exception as e:
+                    messages.error(request, f"Ошибка при регистрации визита: {e}")
         else:
-             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
+            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
     else:
         form = GuestRegistrationForm(prefix="guest")
 
@@ -67,25 +111,35 @@ def register_guest_view(request):
 def current_guests_view(request):
     """Отображение списка гостей, которые сейчас находятся в здании."""
     # Фильтруем визиты по статусу 'CHECKED_IN'
-    current_visits = Visit.objects.filter(
-        status=STATUS_CHECKED_IN # <-- Изменено условие фильтрации
-    ).select_related(
-        'guest', 'employee', 'department', 'registered_by' # Оптимизация запроса
-    )
+    #current_visits = Visit.objects.filter(
+    #    status=STATUS_CHECKED_IN # <-- Изменено условие фильтрации
+    #).select_related(
+    #    'guest', 'employee', 'department', 'registered_by' # Оптимизация запроса
+    #)
     # --- Добавим фильтрацию для StudentVisit ---
-    current_student_visits = StudentVisit.objects.filter(
-        status=STATUS_CHECKED_IN # <-- То же условие
-    ).select_related(
-        'guest', 'department', 'registered_by'
-    )
+    #current_student_visits = StudentVisit.objects.filter(
+    #    status=STATUS_CHECKED_IN # <-- То же условие
+    #).select_related(
+    #    'guest', 'department', 'registered_by'
+    #)
+    
+    user = request.user
+    # Получаем базовые QuerySet'ы с учетом прав доступа
+    official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)
+
+    # Теперь фильтруем их по статусу "В здании"
+    current_official_visits = official_visits_qs.filter(status=STATUS_CHECKED_IN)
+    current_student_visits = student_visits_qs.filter(status=STATUS_CHECKED_IN)
 
     # Добавляем атрибут для различения в шаблоне (если нужно)
-    for v in current_visits: v.visit_kind = 'official'
+    #for v in current_visits: v.visit_kind = 'official'
+    for v in current_official_visits: v.visit_kind = 'official'
     for v in current_student_visits: v.visit_kind = 'student'
 
     # Объединяем и сортируем (например, по времени входа)
     combined_list = sorted(
-        chain(current_visits, current_student_visits),
+        #chain(current_visits, current_student_visits),
+        chain(current_official_visits, current_student_visits),
         key=attrgetter('entry_time'), # Сортируем по времени входа
         reverse=True # Самые недавние вверху
     )
@@ -101,19 +155,25 @@ def current_guests_view(request):
 @login_required
 def visit_history_view(request):
     """Отображение И общей истории визитов с фильтрацией."""
+    user = request.user # Получаем текущего пользователя
+    # Получаем визиты с учетом прав доступа пользователя
+    official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)
+    
+    # Определяем, должен ли пользователь видеть полные фильтры
+    is_reception_or_staff = user.is_staff or user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
 
     # Инициализируем форму фильтра GET-данными
     filter_form = HistoryFilterForm(request.GET or None)
     
     # relevant_statuses = [STATUS_CHECKED_IN, STATUS_CHECKED_OUT] # Статусы для истории
 
-    official_visits_qs = Visit.objects.select_related(
-        'guest', 'employee', 'department', 'registered_by', 'department__director' # Добавим director для возможного использования
-    )# .filter(status__in=relevant_statuses) # <-- Добавлен фильтр по статусу
+    #official_visits_qs = Visit.objects.select_related(
+    #    'guest', 'employee', 'department', 'registered_by', 'department__director' # Добавим director для возможного использования
+    #)# .filter(status__in=relevant_statuses) # <-- Добавлен фильтр по статусу
 
-    student_visits_qs = StudentVisit.objects.select_related(
-        'guest', 'department', 'registered_by' # Добавим director для возможного использования
-    )# .filter(status__in=relevant_statuses) # <-- Добавлен фильтр по статусу
+    #student_visits_qs = StudentVisit.objects.select_related(
+    #    'guest', 'department', 'registered_by' # Добавим director для возможного использования
+    #)# .filter(status__in=relevant_statuses) # <-- Добавлен фильтр по статусу
     # ---------------------------------------------
 
     # Применяем фильтры, если форма была отправлена (есть GET параметры)
@@ -219,7 +279,8 @@ def visit_history_view(request):
         #'all_visits': combined_list, # Передаем объединенный список
         'page_obj': page_obj,
         'filter_form': filter_form,   # Передаем форму для отображения
-        'filter_params_url': filter_params_url
+        'filter_params_url': filter_params_url,
+        'show_filters': is_reception_or_staff # <--- Передаем флаг в шаблон
     }
     return render(request, 'visitors/visit_history.html', context)
 # ---------------------------------
@@ -352,8 +413,6 @@ def employee_dashboard_view(request):
         'my_visit_history': my_visit_history,
     }
     return render(request, 'visitors/admin_dashboard.html', context)
-
-FUNCTIONAL_ACCESS_GROUP_NAME = "FunctionalManager" # Например, "FunctionalManager" или "РасширенныйДоступ"
 
 def has_functional_access(user):
     """
@@ -540,6 +599,11 @@ def register_student_visit_view(request):
         if form.is_valid():
             try:
                 student_visit = form.save(request.user) # Вызываем save без типа регистрации
+                try:
+                    send_new_visit_notification_to_security(student_visit, 'student')
+                except Exception as e:
+                    logger.error(f"Ошибка при вызове send_new_visit_notification_to_security для студента: {e}")
+                # --------------------------------------------
                 messages.success(request, f"Визит студента {student_visit.guest.full_name} успешно зарегистрирован!")
                 return redirect('employee_dashboard')
             except Exception as e:
@@ -557,21 +621,31 @@ def register_student_visit_view(request):
 # --- Представление для экспорта в Excel ---
 @login_required
 def export_visits_xlsx(request):
+    user = request.user # Получаем текущего пользователя
     # --- Проверка прав доступа ---
-    if not (request.user.is_staff or request.user.has_perm('visitors.can_view_visit_statistics')):
+    #if not (request.user.is_staff or request.user.has_perm('visitors.can_view_visit_statistics')):
+        # Можно вернуть ошибку 403 или редирект
+        #return HttpResponse("У вас нет прав для экспорта данных.", status=403)
+    # ---------------------------
+    
+    # Эта проверка остается, так как она для общей возможности просмотра статистики/экспорта
+    if not (user.is_staff or user.has_perm('visitors.can_view_visit_statistics')):
         # Можно вернуть ошибку 403 или редирект
         return HttpResponse("У вас нет прав для экспорта данных.", status=403)
     # ---------------------------
+    
+    # Получаем визиты с учетом прав доступа пользователя
+    official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)
 
     # --- Применяем фильтры (логика копируется из visit_history_view) ---
     filter_form = HistoryFilterForm(request.GET or None) # Получаем GET параметры
 
-    official_visits_qs = Visit.objects.select_related(
-        'guest', 'employee', 'department', 'registered_by'
-    ).all()
-    student_visits_qs = StudentVisit.objects.select_related(
-        'guest', 'department', 'registered_by'
-    ).all()
+    # official_visits_qs = Visit.objects.select_related(
+    #    'guest', 'employee', 'department', 'registered_by'
+    #).all()
+    #student_visits_qs = StudentVisit.objects.select_related(
+    #    'guest', 'department', 'registered_by'
+    #).all()
 
     # Применяем фильтры, если они есть в запросе
     if request.GET and filter_form.is_valid():
