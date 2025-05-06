@@ -1367,3 +1367,5 @@ INFO 2025-05-05 15:43:11,556 utils 26284 28420 Attempting to send creation notif
 WARNING 2025-05-05 15:43:11,609 utils 26284 28420 Department 'Медиа студия' has no director assigned.
 INFO 2025-05-05 15:43:13,836 utils 26284 28420 Visit notification email for official ID 14 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
 INFO 2025-05-05 15:53:00,835 views 2748 35144 Statistics data prepared for user 'sako'.
+WARNING 2025-05-06 11:56:40,651 log 30912 30584 Not Found: /favicon.ico
+WARNING 2025-05-06 11:56:53,426 log 30912 32544 Not Found: /favicon.ico
