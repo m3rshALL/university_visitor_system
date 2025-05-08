@@ -88,7 +88,6 @@
 
 ## 📞 Контакты
 
-Sagat Akimbay – @annymars – sagat.akimbay@astanait.edu.kz
-
+Sagat Akimbay – @annymars – maroccocombo@gmail.com
 Ссылка на проект: https://github.com/m3rshALL/university_visitor_system
 
