@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#206bc4"> <!-- Должен совпадать с theme_color в manifest.json -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- или default, black -->
+    <meta name="apple-mobile-web-app-title" content="Пропуска"> <!-- Короткое имя для iOS -->
+
     <title>{% block title %}Система пропусков Университета{% endblock %}</title>
 
     {# --- Подключение CSS --- #}
@@ -18,6 +23,10 @@
 
     {# Ваш основной CSS #}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="manifest" href="{% url 'manifest.json' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/icons/icon-192x192.png' %}">
+
 
     {# Блок для дополнительных CSS файлов из дочерних шаблонов (например, для виджетов) #}
     {% block extra_head %}{% endblock %}
@@ -149,6 +158,21 @@
         <p>&copy; {% now "Y" %}. Astana IT University. Pass system. <strong>Soft by Sagat Akimbay (Media Studio).</strong></p>
     </footer>
     {# --------------------- #}
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register("{% url 'sw.js' %}") // Используем Django URL
+            .then(function(registration) {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch(function(err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+      }
+    </script>
+    
 
 
     {# --- Подключение JavaScript --- #}
