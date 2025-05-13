@@ -23,6 +23,7 @@ django-redis = "^5.4.0"
 psycopg2-binary = "^2.9.10"
 pyngrok = "^7.2.5"
 gunicorn = "^23.0.0"
+django-pwa = "^2.0.1"
 
 
 [build-system]

@@ -1505,3 +1505,12 @@ WARNING 2025-05-13 15:58:15,168 log 71752 73092 Not Found: /apple-touch-icon-120
 WARNING 2025-05-13 15:58:16,012 log 71752 71696 Not Found: /apple-touch-icon-120x120.png
 WARNING 2025-05-13 15:58:16,851 log 71752 72804 Not Found: /apple-touch-icon.png
 WARNING 2025-05-13 15:58:17,697 log 71752 73608 Not Found: /apple-touch-icon.png
+WARNING 2025-05-13 16:43:33,098 log 77268 77004 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-13 16:43:33,101 log 77268 76892 Not Found: /favicon.ico
+WARNING 2025-05-13 16:43:33,287 log 77268 75780 Not Found: /apple-touch-icon.png
+WARNING 2025-05-13 16:49:13,422 log 77020 44348 Not Found: /favicon.ico
+WARNING 2025-05-13 16:49:13,425 log 77020 68384 Not Found: /apple-touch-icon.png
+WARNING 2025-05-13 16:49:13,612 log 77020 71104 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-13 16:51:27,180 log 77020 75816 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-13 16:51:27,370 log 77020 55088 Not Found: /apple-touch-icon.png
+WARNING 2025-05-13 16:51:27,372 log 77020 75396 Not Found: /favicon.ico

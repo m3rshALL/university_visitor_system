@@ -1,12 +1,16 @@
-{% load static %} {# Загружаем теги для статических файлов #}
+{% load static pwa %} {# load both static and pwa tag-libs #}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#206bc4"> <!-- Должен совпадать с theme_color в manifest.json -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- или default, black -->
+    <meta name="apple-mobile-web-app-title" content="Пропуска"> <!-- Короткое имя для iOS -->
     <title>{% block title %}Система пропусков Университета{% endblock %}</title>
 
-    {# --- Подключение CSS --- #}
+        {# --- Подключение CSS --- #}
     {# Bootstrap CSS (используем CDN для простоты) #}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
@@ -19,9 +23,14 @@
     {# Ваш основной CSS #}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
+
     {# Блок для дополнительных CSS файлов из дочерних шаблонов (например, для виджетов) #}
     {% block extra_head %}{% endblock %}
     {# --------------------- #}
+
+    {% progressive_web_app_meta %}
+
 
 </head>
 <body>
@@ -158,6 +167,9 @@
     {# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
     {% block extra_scripts %}{% endblock %}
     {# -------------------------- #}
+
+    {# PWA service-worker registration #}
+    
 
 </body>
 </html>

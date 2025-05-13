@@ -30,6 +30,7 @@ urlpatterns = [
     path('', visitor_views.employee_dashboard_view, name='home'),
     
     path("select2/", include("django_select2.urls")),
+    path('', include('pwa.urls')),  # <- добавляем PWA
 
     # Можно добавить другие корневые URL, если нужно
 ]

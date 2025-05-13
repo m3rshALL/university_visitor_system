@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'django_select2',
     'django_filters',
     
+    'pwa',
+    
     #My Apps
     'authentication',
     'visitors',
@@ -60,6 +62,8 @@ INSTALLED_APPS = [
     'notifications',
     
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -397,3 +401,73 @@ CACHES = {
 # SESSION_CACHE_ALIAS = "default"
 # ------------------------------------------
 
+
+# ========== PWA SETTINGS ==========
+PWA_APP_NAME = 'AITU Visitor Pass'
+PWA_APP_DESCRIPTION = "Система управления пропусками для Astana IT University"
+PWA_APP_THEME_COLOR = '#206bc4' # Примерный синий цвет AITU, подберите точнее
+PWA_APP_BACKGROUND_COLOR = '#ffffff' # Белый фон
+PWA_APP_DISPLAY = 'standalone' # Как приложение будет отображаться (standalone, fullscreen, minimal-ui)
+PWA_APP_ORIENTATION = 'any' # Предпочтительная ориентация (portrait, landscape, any)
+PWA_APP_START_URL = '/' # Начальный URL при запуске из PWA
+PWA_APP_SCOPE = '/' # Область действия PWA
+
+# --- Иконки ---
+# Вам нужно создать эти иконки и разместить их в папке static/images/icons/ (или другом пути)
+# Пути указываются относительно папки static.
+# Пример: static/images/icons/icon-72x72.png
+PWA_APP_ICONS = [
+    {
+        'src': '/static/images/icons/icon-72x72.png', # Замените на ваш путь и имя файла
+        'sizes': '72x72'
+    },
+    {
+        'src': '/static/images/icons/icon-96x96.png',
+        'sizes': '96x96'
+    },
+    {
+        'src': '/static/images/icons/icon-128x128.png',
+        'sizes': '128x128'
+    },
+    {
+        'src': '/static/images/icons/icon-144x144.png',
+        'sizes': '144x144'
+    },
+    {
+        'src': '/static/images/icons/icon-152x152.png',
+        'sizes': '152x152'
+    },
+    {
+        'src': '/static/images/icons/icon-192x192.png',
+        'sizes': '192x192'
+    },
+    {
+        'src': '/static/images/icons/icon-384x384.png',
+        'sizes': '384x384'
+    },
+    {
+        'src': '/static/images/icons/icon-512x512.png',
+        'sizes': '512x512'
+    }
+]
+# Иконка для Apple Touch (необязательно, но рекомендуется)
+PWA_APP_APPLE_TOUCH_ICON = '/static/images/icons/apple-touch-icon.png' # Размер 180x180 или похожий
+
+# Splash screen (необязательно, но улучшает вид при запуске)
+# PWA_APP_SPLASH_SCREEN = [
+#    {
+#        'src': '/static/images/icons/splash-640x1136.png',
+#        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+#    }
+# ]
+
+# Настройки Service Worker (можно оставить по умолчанию)
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js') # Путь, куда будет сгенерирован serviceworker
+#PWA_SERVICE_WORKER_PATH = STATIC_ROOT + '/js/serviceworker.js'
+# PWA_SERVICE_WORKER_EXCLUDE_URLS = [] # URL, которые не должны кэшироваться
+# PWA_DEBUG = DEBUG # Использовать DEBUG настройку Django для PWA
+
+# Имя файла манифеста
+PWA_MANIFEST_FILENAME = 'manifest.json'
+
+# ===============================

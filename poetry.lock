@@ -501,6 +501,20 @@ files = [
 Django = ">=4.2"
 
 [[package]]
+name = "django-pwa"
+version = "2.0.1"
+description = "A Django app to include a manifest.json and Service Worker instance to enable progressive web app behavior"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_pwa-2.0.1-py3-none-any.whl", hash = "sha256:41dc931c645c6125c556bd753205ca051aa48e5d46edbf281003594f3d76d4a3"},
+    {file = "django_pwa-2.0.1.tar.gz", hash = "sha256:5539fabb41fe189cc2a82cb1f0f889b45671a8144d7b5bb5206a9ddd0fddb3c2"},
+]
+
+[package.dependencies]
+django = ">=3.2"
+
+[[package]]
 name = "django-redis"
 version = "5.4.0"
 description = "Full featured redis cache backend for Django."
@@ -1172,4 +1186,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "f11a6847cc16435e10da6d5dd3b2323ad3a500168bd94cf463657a7d61b2b906"
+content-hash = "55731ba714dca5036caa25489a17911f5851926e3ac9d392583074ef5ce79b27"
