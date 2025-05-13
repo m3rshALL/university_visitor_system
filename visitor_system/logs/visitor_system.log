@@ -1459,3 +1459,41 @@ INFO 2025-05-06 17:42:40,119 utils 34472 31164 Attempting to send creation notif
 INFO 2025-05-06 17:42:40,120 utils 34472 31164 Notification skipped for StudentVisit ID 1 as per current logic.
 INFO 2025-05-06 17:42:40,122 utils 34472 31164 Attempting to send creation notification for student ID 2
 INFO 2025-05-06 17:42:40,122 utils 34472 31164 Notification skipped for StudentVisit ID 2 as per current logic.
+WARNING 2025-05-08 12:42:42,583 log 44856 45212 Not Found: /favicon.ico
+WARNING 2025-05-13 10:35:16,448 log 32704 28132 Not Found: /favicon.ico
+INFO 2025-05-13 10:36:28,809 middleware 32704 36544 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-13 10:36:47,603 views 32704 33752 User 'sagat.akimbay' completed profile setup.
+INFO 2025-05-13 10:43:16,441 forms 32704 31176 Using guest object: Акимбай Сагат Ганиулы (ID: 10), Created: False
+INFO 2025-05-13 10:43:16,442 forms 32704 31176 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-13 10:43:16,497 forms 32704 31176 Celery task queued for Visit ID 16
+INFO 2025-05-13 10:43:16,497 forms 32704 31176 Saved Visit ID 16, Status: AWAITING, Consent Ack: True
+INFO 2025-05-13 10:43:16,499 utils 30964 30032 Attempting to send creation notification for official ID 16
+ERROR 2025-05-13 10:43:16,503 views 32704 31176 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-13 10:43:16,531 utils 30964 30032 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-13 10:43:19,138 utils 30964 30032 Visit notification email for official ID 16 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-13 10:43:19,155 utils 30964 30032 Attempting to send creation notification for official ID 16
+WARNING 2025-05-13 10:43:19,207 utils 30964 30032 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-13 10:43:20,997 utils 30964 30032 Visit notification email for official ID 16 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-13 10:49:59,191 forms 32704 36368 Using guest object: Акимбай Сагат (ID: 10), Created: False
+INFO 2025-05-13 10:49:59,191 forms 32704 36368 Visit None created with status CHECKED_IN.
+INFO 2025-05-13 10:49:59,218 forms 32704 36368 Saved Visit ID 17, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-13 10:49:59,220 utils 30964 30032 Attempting to send creation notification for official ID 17
+ERROR 2025-05-13 10:49:59,224 views 32704 36368 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-13 10:49:59,253 utils 30964 30032 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-13 10:50:01,185 utils 30964 30032 Visit notification email for official ID 17 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+INFO 2025-05-13 10:51:32,246 views 32704 34476 Statistics data prepared for user 'sako'.
+WARNING 2025-05-13 11:51:48,801 log 39900 43524 Not Found: /favicon.ico
+INFO 2025-05-13 12:18:51,627 autoreload 39756 45132 Watching for file changes with StatReloader
+INFO 2025-05-13 12:18:59,061 basehttp 39756 16808 "GET / HTTP/1.1" 200 5533
+INFO 2025-05-13 12:19:01,050 basehttp 39756 16808 "GET / HTTP/1.1" 200 5533
+WARNING 2025-05-13 12:20:30,550 log 40852 46780 Not Found: /favicon.ico
+WARNING 2025-05-13 12:33:34,743 log 48012 47508 Not Found: /favicon.ico
+WARNING 2025-05-13 12:52:16,913 log 45492 50224 Not Found: /favicon.ico
+WARNING 2025-05-13 12:52:25,326 log 45492 49984 Not Found: /favicon.ico
+WARNING 2025-05-13 12:53:41,932 log 32928 50316 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-13 12:53:42,111 log 32928 45920 Not Found: /favicon.ico
+WARNING 2025-05-13 12:53:42,113 log 32928 50840 Not Found: /apple-touch-icon.png
+WARNING 2025-05-13 12:53:45,580 log 32928 39924 Not Found: /apple-touch-icon-120x120-precomposed.png
+WARNING 2025-05-13 12:55:51,875 log 32928 44516 Not Found: /favicon.ico
+INFO 2025-05-13 12:56:29,361 middleware 32928 48604 [Middleware] User 'azat.absadyk' profile incomplete. Redirecting to setup.
+INFO 2025-05-13 12:57:48,755 views 32928 48476 User 'azat.absadyk' completed profile setup.
