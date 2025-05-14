@@ -2205,3 +2205,149 @@ Traceback (most recent call last):
     raise PermissionDenied
 django.core.exceptions.PermissionDenied
 WARNING 2025-05-14 19:57:15,950 log 47836 108980 Not Found: /visitors/dashboard/employees/
+WARNING 2025-05-14 19:58:28,976 log 30020 96144 Not Found: /visitors/dashboard/employees/
+ERROR 2025-05-14 19:58:31,745 log 30020 71956 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+ERROR 2025-05-14 19:58:48,063 log 30020 79712 Internal Server Error: /visitors/dashboard/employees/
+ERROR 2025-05-14 19:59:11,169 log 30020 3764 Internal Server Error: /visitors/dashboard/employees/
+ERROR 2025-05-14 19:59:12,054 log 30020 111648 Internal Server Error: /visitors/dashboard/employees/
+ERROR 2025-05-14 19:59:28,931 log 30020 103012 Internal Server Error: /visitors/dashboard/employees/
+ERROR 2025-05-14 19:59:29,583 log 30020 103688 Internal Server Error: /visitors/dashboard/employees/
+ERROR 2025-05-14 19:59:34,494 log 30020 50092 Internal Server Error: /visitors/dashboard/employees/
+WARNING 2025-05-14 19:59:54,223 log 30020 107712 Not Found: /visitors/dashboard/employees/
+WARNING 2025-05-14 20:00:21,198 log 30020 65212 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 20:01:59,203 log 30020 105936 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 20:01:59,831 log 30020 103452 Not Found: /static/dist/css/tabler-flags.min.css
+WARNING 2025-05-14 20:01:59,910 log 30020 76476 Not Found: /static/dist/css/tabler.min.css
+WARNING 2025-05-14 20:01:59,911 log 30020 111468 Not Found: /static/dist/js/tabler.min.js
+WARNING 2025-05-14 20:01:59,913 log 30020 102720 Not Found: /static/dist/css/tabler-vendors.min.css
+WARNING 2025-05-14 20:01:59,914 log 30020 103220 Not Found: /static/css/demo.min.css
+WARNING 2025-05-14 20:01:59,925 log 30020 65212 Not Found: /static/dist/css/tabler-payments.min.css
+WARNING 2025-05-14 20:02:07,981 log 30020 51556 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 20:02:08,497 log 30020 24840 Not Found: /static/dist/css/tabler-vendors.min.css
+WARNING 2025-05-14 20:02:08,688 log 30020 49964 Not Found: /static/dist/js/tabler.min.js
+WARNING 2025-05-14 20:02:08,688 log 30020 89772 Not Found: /static/dist/css/tabler.min.css
+WARNING 2025-05-14 20:02:08,688 log 30020 31860 Not Found: /static/css/demo.min.css
+WARNING 2025-05-14 20:02:08,691 log 30020 109312 Not Found: /static/dist/css/tabler-payments.min.css
+WARNING 2025-05-14 20:02:08,692 log 30020 77976 Not Found: /static/dist/css/tabler-flags.min.css
+WARNING 2025-05-14 20:02:13,708 log 30020 110304 Not Found: /visitors/dashboard/employыee/
+WARNING 2025-05-14 20:02:14,230 log 30020 64428 Not Found: /static/dist/js/tabler.min.js
+WARNING 2025-05-14 20:02:14,231 log 30020 107372 Not Found: /static/dist/css/tabler.min.css
+WARNING 2025-05-14 20:02:14,231 log 30020 69644 Not Found: /static/css/demo.min.css
+WARNING 2025-05-14 20:02:14,406 log 30020 46112 Not Found: /static/dist/css/tabler-flags.min.css
+WARNING 2025-05-14 20:02:14,406 log 30020 49852 Not Found: /static/dist/css/tabler-vendors.min.css
+WARNING 2025-05-14 20:02:14,408 log 30020 109680 Not Found: /static/dist/css/tabler-payments.min.css
+WARNING 2025-05-14 20:02:21,513 log 30020 107080 Not Found: /visitors/dashboard/employыee/
+WARNING 2025-05-14 20:02:26,019 log 30020 3764 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 20:03:08,515 log 104104 3764 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 20:06:43,458 log 111788 51896 Not Found: /static/admin/js/theme.js
+WARNING 2025-05-14 20:06:43,463 log 111788 97276 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-05-14 20:06:43,483 log 111788 106456 Not Found: /static/admin/css/login.css
+WARNING 2025-05-14 20:06:43,484 log 111788 46856 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-05-14 20:06:43,632 log 111788 3760 Not Found: /static/admin/css/base.css
+WARNING 2025-05-14 20:06:43,633 log 111788 33364 Not Found: /static/admin/css/responsive.css
+WARNING 2025-05-14 20:06:44,135 log 111788 111032 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-05-14 20:06:44,141 log 111788 61948 Not Found: /static/admin/css/login.css
+WARNING 2025-05-14 20:06:44,251 log 111788 72232 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-05-14 20:06:52,121 log 111788 107140 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-05-14 20:06:52,122 log 111788 9092 Not Found: /static/admin/css/responsive.css
+WARNING 2025-05-14 20:06:52,122 log 111788 111900 Not Found: /static/admin/css/dashboard.css
+WARNING 2025-05-14 20:06:52,298 log 111788 33340 Not Found: /static/admin/js/theme.js
+WARNING 2025-05-14 20:06:52,299 log 111788 31024 Not Found: /static/admin/css/base.css
+WARNING 2025-05-14 20:06:52,299 log 111788 102636 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-05-14 20:06:52,798 log 111788 104068 Not Found: /static/admin/js/nav_sidebar.js
+WARNING 2025-05-14 20:06:52,803 log 111788 111444 Not Found: /static/admin/css/dashboard.css
+WARNING 2025-05-14 20:06:52,804 log 111788 107332 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-05-14 20:06:52,806 log 111788 49852 Not Found: /static/admin/css/responsive.css
+WARNING 2025-05-14 20:07:34,182 log 111788 3792 Not Found: /static/admin/css/base.css
+WARNING 2025-05-14 20:07:34,183 log 111788 34660 Not Found: /static/admin/js/theme.js
+WARNING 2025-05-14 20:07:34,325 log 111788 12420 Not Found: /static/admin/css/responsive.css
+WARNING 2025-05-14 20:07:34,326 log 111788 111036 Not Found: /static/admin/css/dashboard.css
+WARNING 2025-05-14 20:07:34,330 log 111788 107420 Not Found: /static/admin/css/dark_mode.css
+WARNING 2025-05-14 20:07:34,332 log 111788 108260 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-05-14 20:07:34,855 log 111788 1116 Not Found: /static/admin/css/responsive.css
+WARNING 2025-05-14 20:07:34,858 log 111788 26328 Not Found: /static/admin/css/nav_sidebar.css
+WARNING 2025-05-14 20:07:34,860 log 111788 107140 Not Found: /static/admin/css/dashboard.css
+WARNING 2025-05-14 20:07:34,860 log 111788 105104 Not Found: /static/admin/js/nav_sidebar.js
+INFO 2025-05-14 20:08:58,605 middleware 52712 50340 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-14 20:09:01,391 middleware 52712 79360 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-14 20:10:02,718 middleware 52712 29380 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-14 20:11:36,126 middleware 52712 107176 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-14 20:11:52,254 middleware 52712 32444 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-14 20:12:41,536 middleware 52712 111936 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-14 20:12:44,365 middleware 52712 108648 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-14 20:12:59,001 views 52712 111984 User 'sagat.akimbay' completed profile setup.
+WARNING 2025-05-14 20:17:47,071 log 103704 49528 Not Found: /visitors/dashboard/employee/static/avatars/000m.jpg
+WARNING 2025-05-14 20:17:56,801 log 103704 102636 Not Found: /visitors/current/static/avatars/000m.jpg
+WARNING 2025-05-14 20:18:51,023 log 103704 69288 Not Found: /visitors/current/static/avatars/000m.jpg

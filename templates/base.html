@@ -82,9 +82,7 @@
 	<div class="d-none d-md-flex">
 	<div class="nav-item dropdown">
 		<a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-			{% comment %}
-                <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
-            {% endcomment %}
+                <span class="avatar avatar-sm bg-azure-lt rounded me-2">{{ user.get_full_name|slice:":2" }}</span>
 			<div class="d-none d-xl-block ps-2">
 				<div>{{ user.get_full_name|default:user.username }}</div>
 				<div class="mt-1 small text-secondary">Сотрудник</div>

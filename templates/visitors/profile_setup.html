@@ -1,88 +1,179 @@
-{% extends "base.html" %} {# Или ваш базовый шаблон, или просто HTML #}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Настройка профиля{% endblock %}
 
-{% block extra_head %}
-<style>
-    .form-floating .form-select { padding-top: 1.625rem; padding-bottom: .625rem; }
-    .form-floating > label { padding: 1rem .75rem;}
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Завершение настройки профиля</h4>
-                </div>
-                <div class="card-body">
-                    <p class="text-muted">Пожалуйста, укажите ваш рабочий телефон и выберите департамент для завершения настройки.</p>
-
-                    {% if form.non_field_errors %}
-                    <div class="alert alert-danger">
-                        {% for error in form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {# Скрытое поле next, если оно есть в GET параметрах #}
-                        {% if request.GET.next %}
-                            <input type="hidden" name="next" value="{{ request.GET.next }}">
-                        {% endif %}
-
-                        {# Рендеринг полей формы (можно вручную для лучшего контроля) #}
-                        <div class="form-floating mb-3">
-                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
-                            {{ form.phone_number }} {# ВиджетTextInput #}
-                            {% if form.phone_number.errors %}
-                                <div class="invalid-feedback d-block">{% for e in form.phone_number.errors %}{{e}}{% endfor %}</div>
-                            {% endif %}
-                            <div class="form-text">Введите ваш рабочий номер телефона.</div>
-                        </div>
-
-                         <div class="mb-3">
-                            <label for="{{ form.department.id_for_label }}" class="form-label">{{ form.department.label }}</label>
-                            {{ form.department }} {# Виджет Select #}
-                            {% if form.department.errors %}
-                                <div class="invalid-feedback d-block">{% for e in form.department.errors %}{{e}}{% endfor %}</div>
-                            {% endif %}
-                            <div class="form-text">Выберите ваш департамент.</div>
-                        </div>
-
-                        <div class="d-grid mt-4">
-                             <button type="submit" class="btn btn-primary">Сохранить и продолжить</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-             <div class="text-center mt-3">
-                 {# Добавим возможность выйти, если пользователь не хочет настраивать #}
-                  <form action="{% url 'account_logout' %}" method="post" class="d-inline">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-link btn-sm text-muted">Выйти</button>
-                  </form>
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">Настройка профиля</h2>
+                <div class="text-muted mt-1">Завершите настройку вашего аккаунта</div>
             </div>
         </div>
     </div>
 </div>
 
-{# Скрипт для стилей Bootstrap, если не наследуется от base.html #}
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            <div class="col-lg-6 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">Завершение настройки профиля</div>
+                        <div class="text-muted mb-4">Пожалуйста, укажите ваш рабочий телефон и выберите департамент для завершения настройки.</div>
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            {% if request.GET.next %}
+                                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                            {% endif %}                            <div class="mb-3">
+                                <label class="form-label" for="phone_masked">
+                                    {{ form.phone_number.label }}
+                                    <span class="form-label-description">Рабочий</span>
+                                </label>
+                                <div class="input-group input-group-flat">
+                                    <span class="input-group-text">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
+                                        </svg>
+                                    </span>
+                                    <input type="text" id="phone_masked" class="form-control" data-mask="+7 (000) 000-00-00" placeholder="+7 (___) ___-__-__">
+                                    <!-- Скрытое поле для фактического значения -->
+                                    <input type="hidden" name="{{ form.phone_number.html_name }}" id="{{ form.phone_number.id_for_label }}" value="{{ form.phone_number.value|default:'' }}">
+                                </div>
+                                {% if form.phone_number.errors %}
+                                    <div class="invalid-feedback d-block">{% for e in form.phone_number.errors %}{{e}}{% endfor %}</div>
+                                {% else %}
+                                    
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="{{ form.department.id_for_label }}">
+                                    {{ form.department.label }}
+                                </label>
+                                <div class="input-group input-group-flat">
+                                    <span class="input-group-text">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3 21l18 0"></path>
+                                            <path d="M9 8l1 0"></path>
+                                            <path d="M9 12l1 0"></path>
+                                            <path d="M9 16l1 0"></path>
+                                            <path d="M14 8l1 0"></path>
+                                            <path d="M14 12l1 0"></path>
+                                            <path d="M14 16l1 0"></path>
+                                            <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16"></path>
+                                        </svg>
+                                    </span>
+                                    {{ form.department }}
+                                </div>
+                                {% if form.department.errors %}
+                                    <div class="invalid-feedback d-block">{% for e in form.department.errors %}{{e}}{% endfor %}</div>
+                                {% else %}
+                                    
+                                {% endif %}
+                            </div>
+
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5 12l5 5l10 -10"></path>
+                                    </svg>
+                                    Сохранить и продолжить
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <form action="{% url 'account_logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+                                <path d="M9 12h12l-3 -3"></path>
+                                <path d="M18 15l3 -3"></path>
+                            </svg>
+                            Выйти
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Простой скрипт для добавления классов, если этот шаблон не наследует base.html
     document.addEventListener('DOMContentLoaded', function() {
-       const formControls = document.querySelectorAll('form input:not([type=hidden]), form select');
-       formControls.forEach(function(control) {
-           if (control.tagName === 'SELECT') { control.classList.add('form-select'); }
-           else { control.classList.add('form-control'); }
-           // Добавление is-invalid по наличию ошибки
-           const errorDiv = control.closest('.mb-3')?.querySelector('.invalid-feedback');
-           if (errorDiv && errorDiv.innerText.trim() !== '') { control.classList.add('is-invalid'); }
-           else { control.classList.remove('is-invalid'); }
-       });
+        // Add required classes to form controls if they don't have them already
+        document.querySelectorAll('form input:not([type=hidden]), form select').forEach(function(control) {
+            if (control.tagName === 'SELECT') {
+                if (!control.classList.contains('form-select')) {
+                    control.classList.add('form-select');
+                }
+            } else {
+                if (!control.classList.contains('form-control')) {
+                    control.classList.add('form-control');
+                }
+            }
+            
+            // Add is-invalid class if errors exist
+            const errorDiv = control.closest('.mb-3')?.querySelector('.invalid-feedback');
+            if (errorDiv && errorDiv.innerText.trim() !== '') {
+                control.classList.add('is-invalid');
+            } else {
+                control.classList.remove('is-invalid');
+            }
+        });
+
+        // Обработка маски телефона
+        const phoneMaskedElement = document.getElementById('phone_masked');
+        const phoneHiddenElement = document.getElementById('{{ form.phone_number.id_for_label }}');
+        
+        if (phoneMaskedElement && phoneHiddenElement) {
+            // Установить начальное значение маски из скрытого поля, если оно есть
+            if (phoneHiddenElement.value) {
+                let phoneValue = phoneHiddenElement.value.replace(/\D/g, '');
+                
+                // Если начинается с 7, убираем её из unmaskedValue
+                if (phoneValue.startsWith('7')) {
+                    phoneValue = phoneValue.substring(1);
+                }
+                
+                // Форматируем номер для отображения
+                if (phoneValue.length === 10) {
+                    phoneMaskedElement.value = '+7 (' + phoneValue.substring(0, 3) + ') ' + 
+                        phoneValue.substring(3, 6) + '-' + 
+                        phoneValue.substring(6, 8) + '-' + 
+                        phoneValue.substring(8, 10);
+                }
+            }
+            
+            // Обновление скрытого поля при изменении маскированного поля
+            phoneMaskedElement.addEventListener('input', function() {
+                // Получаем только цифры из введенного номера
+                const digits = this.value.replace(/\D/g, '');
+                
+                // Добавляем +7 спереди и сохраняем в скрытое поле
+                if (digits.length > 0) {
+                    phoneHiddenElement.value = '+7' + digits.substring(digits.startsWith('7') ? 1 : 0);
+                } else {
+                    phoneHiddenElement.value = '';
+                }
+            });
+        }
     });
 </script>
 {% endblock %}
