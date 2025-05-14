@@ -2110,3 +2110,30 @@ Traceback (most recent call last):
   File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
     raise PermissionDenied
 django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 19:50:09,366 log 90300 29076 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 19:50:09,907 log 90300 109440 Not Found: /favicon.ico
+WARNING 2025-05-14 19:50:11,600 log 90300 26404 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied

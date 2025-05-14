@@ -1,15 +1,15 @@
 {% extends "_base_error.html" %}
 {% load static %}
 
-{% block error_page_title_tag %}Страница не найдена (404){% endblock %}
+{% block error_page_title_tag %}Произошла ошибка{% endblock %}
 
-{% block error_code %}404{% endblock %}
+{% block error_code %}Ошибка{% endblock %}
 
-{% block error_title_main %}Упс... Вы только что нашли страницу ошибки.{% endblock %}
+{% block error_title_main %}Произошла непредвиденная ошибка{% endblock %}
 
 {% block error_message_subtitle %}
-Сожалеем, но страница, которую вы ищете, не была найдена.
-Возможно, она была перемещена, удалена или вы просто ошиблись в адресе.
+Сожалеем, что-то пошло не так. Мы уже работаем над решением проблемы.
+Пожалуйста, попробуйте позже или свяжитесь со службой поддержки, если проблема не исчезнет.
 {% endblock %}
 
 {% block error_actions %}

@@ -1,0 +1,39 @@
+{% extends "_base_error.html" %}
+{% load static %}
+
+{% block error_page_title_tag %}Доступ запрещен (403){% endblock %}
+
+{% block error_code %}403{% endblock %}
+
+{% block error_title_main %}Доступ запрещен{% endblock %}
+
+{% block error_message_subtitle %}
+К сожалению, у вас нет разрешения на доступ к этой странице или ресурсу.
+Если вы считаете, что это ошибка, пожалуйста, свяжитесь с администратором.
+{% endblock %}
+
+{% block error_actions %}
+    <a href="{% url 'employee_dashboard' %}" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+           <path d="M5 12l14 0"></path>
+           <path d="M5 12l6 6"></path>
+           <path d="M5 12l6 -6"></path>
+        </svg>
+        Вернуться на панель управления
+    </a>
+    {% if user.is_authenticated %}
+    <form action="{% url 'account_logout' %}" method="post" class="d-inline ms-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+               <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+               <path d="M9 12h12l-3 -3"></path>
+               <path d="M18 15l3 -3"></path>
+            </svg>
+            Выйти
+        </button>
+    </form>
+    {% endif %}
+{% endblock %}

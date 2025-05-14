@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% block error_page_title_tag %}Ошибка{% endblock %}{% endblock %}
+
+{% block content %}
+<div class="col-12"> {# Take full width of the row from base.html #}
+    <div class="page page-center"> {# Ensure content is centered on the page, similar to Tabler's standalone error pages #}
+        <div class="container-tight py-4">
+            <div class="empty">
+                <div class="empty-header">{% block error_code %}Код Ошибки{% endblock %}</div>
+                <p class="empty-title">{% block error_title_main %}Заголовок Ошибки{% endblock %}</p>
+                <p class="empty-subtitle text-muted">
+                    {% block error_message_subtitle %}Подробное сообщение об ошибке.{% endblock %}
+                </p>
+                <div class="empty-action">
+                    {% block error_actions %}
+                    <a href="{% url 'employee_dashboard' %}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path d="M5 12l14 0"></path>
+                           <path d="M5 12l6 6"></path>
+                           <path d="M5 12l6 -6"></path>
+                        </svg>
+                        Вернуться на панель управления
+                    </a>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

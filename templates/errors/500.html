@@ -1,0 +1,33 @@
+{% extends "_base_error.html" %}
+{% load static %}
+
+{% block error_page_title_tag %}Ошибка сервера (500){% endblock %}
+
+{% block error_code %}500{% endblock %}
+
+{% block error_title_main %}Упс... Что-то пошло не так на сервере.{% endblock %}
+
+{% block error_message_subtitle %}
+Мы приносим извинения за неудобства. На нашей стороне произошла внутренняя ошибка.
+Мы уже уведомлены и работаем над ее устранением. Пожалуйста, попробуйте обновить страницу через некоторое время.
+{% endblock %}
+
+{% block error_actions %}
+    <a href="{{ request.path }}" class="btn btn-primary"> {# Allow refreshing the current page #}
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+           <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+           <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
+        </svg>
+        Попробовать снова
+    </a>
+    <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary ms-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+           <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+           <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+           <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+        </svg>
+        Вернуться на панель управления
+    </a>
+{% endblock %}
