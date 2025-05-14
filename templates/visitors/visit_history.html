@@ -4,173 +4,236 @@
 {% block title %}История визитов{% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* Доп. стили для маленьких иконок-кнопок */
-        .btn-icon-sm { padding: 0.1rem 0.3rem; font-size: 0.8rem; line-height: 1; }
-        /* Убираем рамку у кнопок в группе для лучшего вида */
-        .btn-group-sm > .btn-icon-sm { border-radius: .2rem !important; }
-        .btn-group-sm > .btn-icon-sm:not(:last-child) { margin-right: 2px; }
+        .highlight {
+            background-color: yellow;
+            padding: 2px;
+        }
+        .spinner-border {
+            width: 1rem;
+            height: 1rem;
+            margin-left: 0.5rem;
+            display: none;
+        }
+        .search-controls {
+            margin-bottom: 1.5rem;
+        }
+        .search-box {
+            position: relative;
+        }
+        .search-box .input-group-text {
+            background-color: transparent;
+            border-right: 0;
+        }
+        .search-box .form-control {
+            border-left: 0;
+        }
+        .search-box .spinner-border {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
     </style>
+   
 {% endblock %}
 
-{% block content %}
-<h2>История визитов</h2>
-<hr>
+{% block content %}    
 
-
-{# --- Блок с кнопками управления --- #}
-{# Убрали justify-content-between, чтобы кнопки были рядом #}
-
-<div class="mb-3 d-flex align-items-center">
-    {% if show_filters %}
-    {# Кнопка для показа/скрытия фильтра #}
-    <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter me-1" viewBox="0 0 16 16">
-            <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-        </svg>
-        Фильтр / Поиск
-    </button>
-    {% endif %}
-
-    {# --- Кнопка Экспорта --- #}
-    {% if user.is_staff or perms.visitors.can_view_visit_statistics %}
-        {# Добавили ms-2 для отступа слева #}
-        <a href="{% url 'export_visits_xlsx' %}?{{ request.GET.urlencode }}" class="btn btn-success btn-sm {% if show_filters %}ms-2{% endif %}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-excel me-1" viewBox="0 0 16 16">
-                <path d="M5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.64L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z"/>
-                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
-            </svg>
-            Экспорт в Excel
-        </a>
-    {% endif %}
-    {# ------------------------ #}
-</div>
-{# -------------------------------- #}
-
-
-{% if show_filters %}
-{# --- Сворачиваемый блок с формой фильтра --- #}
-<div class="collapse mb-4" id="filterCollapse">
-    <div class="card card-body bg-light">
-        <form method="get" class="row g-3 align-items-end">
-
-            {# --- Ряд 1: Гость, ИИН, Сотрудник --- #}
-            <div class="col-md-4 form-floating">
-                <label for="{{ filter_form.guest_name.id_for_label }}" class="form-label">{{ filter_form.guest_name.label }}</label>
-                {{ filter_form.guest_name }}
-            </div>
-             <div class="col-md-5">
-                <label for="{{ filter_form.employee_info.id_for_label }}" class="form-label">{{ filter_form.employee_info.label }}</label>
-                {{ filter_form.employee_info }}
-                 <div class="form-text small text-muted">Только для визитов к сотрудникам.</div>
-            </div>
-            {# -------------------------------- #}
-
-            {# --- Ряд 2: Департамент, Дата, Цель, Статус --- #}
-            <div class="col-md-3">
-                <label for="{{ filter_form.department.id_for_label }}" class="form-label">{{ filter_form.department.label }}</label>
-                {{ filter_form.department }}
-            </div>
-             <div class="col-md-4">
-                 <label class="form-label">Дата входа</label>
-                 <div class="input-group input-group-sm"> {# Уменьшил группу #}
-                     {{ filter_form.entry_date_from }}
-                     <span class="input-group-text">до</span>
-                     {{ filter_form.entry_date_to }}
-                 </div>
-             </div>
-             <div class="col-md-2">
-                <label for="{{ filter_form.status.id_for_label }}" class="form-label">{{ filter_form.status.label }}</label>
-                {{ filter_form.status }}
-            </div>
-            {# ---------------------------------------- #}
-
-            {# --- Ряд 3: Поля для поиска студентов (НОВЫЕ) --- #}
-            <div class="col-md-4">
-                <label for="{{ filter_form.student_id_number.id_for_label }}" class="form-label">{{ filter_form.student_id_number.label }}</label>
-                {{ filter_form.student_id_number }}
-                 <div class="form-text small text-muted">Только для визитов студентов.</div>
-            </div>
-            {# --------------------------------------------- #}
-
-
-            {# --- Кнопки формы фильтра --- #}
-            <div class="col-12 d-flex justify-content-end pt-3"> {# Добавил отступ сверху #}
-                <button type="submit" class="btn btn-primary btn-sm me-2"> {# Уменьшил кнопки #}
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">...</svg>
-                     Найти
-                </button>
-                <a href="{% url 'visit_history' %}" class="btn btn-secondary btn-sm">Сбросить</a> {# Уменьшил кнопки #}
-            </div>
-            {# --------------------------- #}
-        </form>
-    </div> {# /card #}
-</div> {# /collapse #}
-{% endif %}
-{# --------------------------------------- #}
-
-
-{# --- Таблица с результатами (восстановлена условная логика) --- #}
 {% if page_obj.object_list %}
+{# --- Пагинация --- #}
+<div class="card">
+   <div class="card-table">
+      <div class="card-header">
+         <div class="row w-full">
+            <div class="col">
+               <h3 class="card-title mb-0">
+                  Employee
+               </h3>
+               <p class="text-secondary m-0">
+                  Table description.
+               </p>
+            </div>
+            <div class="col-md-auto col-sm-12">
+               <div class="ms-auto d-flex flex-wrap btn-list">
+                  <div class="input-group input-group-flat w-auto">
+                     <span class="input-group-text">
+                        <!-- Download SVG icon from http://tabler.io/icons/icon/search -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                           <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                           <path d="M21 21l-6 -6" />
+                         </span>
+                         <input id="advanced-table-search" type="text" class="form-control" autocomplete="off" placeholder="Поиск">
+                         <span class="input-group-text">
+                            <kbd>Поиск</kbd>
+                         </span>
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const searchInput = document.getElementById('advanced-table-search');
+                                const tableRows = document.querySelectorAll('.table-tbody tr');
 
-<div class="table-responsive ">
-    <table class="table table-striped table-hover table-sm table-bordered">
-        <thead class="table-light">
-            <tr>
-                <th>Тип</th>
-                <th scope="col">Посетитель</th>
-                <th scope="col">К кому</th>
-                <th scope="col">Департамент</th>
-                <th scope="col">Время входа</th>
-                <th scope="col">Время выхода</th> {# Теперь здесь только время или статус #}
-                <th scope="col">Зарегистрировал</th>
-                <th scope="col" class="text-center">Действие</th> {# <-- Новый заголовок колонки #}
-            </tr>
-        </thead>
-        <tbody>
-            {% for visit in page_obj %}
-            <tr>
-                <td>
-                    {% if visit.visit_kind == 'official' %} <span class="badge bg-info text-dark" title="Гость к сотруднику/другое">Гость</span>
-                    {% elif visit.visit_kind == 'student' %} <span class="badge bg-success" title="Студент/Абитуриент">Студент</span>
-                    {% else %} <span class="badge bg-secondary">Неизв.</span> {% endif %}
-                </td>
-                <td>
-                     {% if visit.visit_kind == 'official' %} <a href="{% url 'visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
-                     {% elif visit.visit_kind == 'student' %} <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
-                     {% else %} {{ visit.guest.full_name }} {% endif %}
-                 </td>
-                 <td>
-                     {% if visit.visit_kind == 'official' and visit.employee %} {{ visit.employee.get_full_name|default:visit.employee.username }}
+                                searchInput.addEventListener('input', function() {
+                                    const query = searchInput.value.toLowerCase();
+
+                                    tableRows.forEach(row => {
+                                        const visitor = row.querySelector('.sort-name')?.textContent.toLowerCase() || '';
+                                        const department = row.querySelector('.sort-status')?.textContent.toLowerCase() || '';
+                                        const employee = row.querySelector('.sort-city')?.textContent.toLowerCase() || '';
+                                        const purpose = row.querySelector('.sort-tags')?.textContent.toLowerCase() || '';
+
+                                        if (visitor.includes(query) || department.includes(query) || employee.includes(query) || purpose.includes(query)) {
+                                            row.style.display = '';
+                                        } else {
+                                            row.style.display = 'none';
+                                        }
+                                    });
+                                });
+                            });
+                            </script>
+                  </div>
+                  <a href="#" class="btn btn-icon" aria-label="Button">
+                     <!-- Download SVG icon from http://tabler.io/icons/icon/dots -->
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                        <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                        <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                     </svg>
+                  </a>
+                  <div class="dropdown">
+                    <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
+                        Статусы
+                    </a>
+                     
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item {% if not request.GET.status %}active{% endif %}" 
+                           href="{% url 'visit_history' %}{% if request.GET.urlencode and '&status=' not in request.GET.urlencode and 'status=' not in request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}">
+                            Все статусы
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item {% if request.GET.status == 'AWAITING' %}active{% endif %}" 
+                           href="?status=AWAITING{% if request.GET.urlencode and 'status=' not in request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                            <span class="badge bg-purple-lt">Ожидается</span>
+                        </a>
+                        <a class="dropdown-item {% if request.GET.status == 'CHECKED_IN' %}active{% endif %}"
+                           href="?status=CHECKED_IN{% if request.GET.urlencode and 'status=' not in request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                            <span class="badge bg-success-lt">В здании</span>
+                        </a>
+                        <a class="dropdown-item {% if request.GET.status == 'CHECKED_OUT' %}active{% endif %}"
+                           href="?status=CHECKED_OUT{% if request.GET.urlencode and 'status=' not in request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                            <span class="badge bg-secondary-lt">Покинул</span>
+                        </a>
+                        <a class="dropdown-item {% if request.GET.status == 'CANCELLED' %}active{% endif %}"
+                           href="?status=CANCELLED{% if request.GET.urlencode and 'status=' not in request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                            <span class="badge bg-danger-lt">Отменен</span>
+                        </a>
+                    </div>
+                  </div>
+                  <a href="{% url 'export_visits_xlsx' %}?{{ request.GET.urlencode }}" class="btn btn-0 {% if show_filters %}ms-2{% endif %}">
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-excel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>
+                    {% if user.is_staff or perms.visitors.can_view_visit_statistics %}                    
+                        Экспорт в Excel
+                    </a>
+                    {% endif %}
+                  </a>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id="advanced-table">
+         <div class="table-responsive">
+            <table class="table table-vcenter table-selectable">
+               <thead>
+                  <tr>
+                     <th class="w-1"></th>
+                     <th>
+                        <button class="table-sort d-flex justify-content-between" data-sort="sort-name">
+                        Посетитель
+                        </button>
+                     </th>
+                     <th>
+                        <button class="table-sort d-flex justify-content-between" data-sort="sort-whom">
+                        К кому
+                        </button>
+                     </th>
+                     <th>
+                        <button class="table-sort d-flex justify-content-between" data-sort="sort-dep">
+                        Департамент
+                        </button>
+                     </th>
+                     <th>
+                        <button class="table-sort d-flex justify-content-between" data-sort="sort-entry">
+                        Время входа
+                        </button>
+                     </th>
+                     <th>
+                        <button class="table-sort d-flex justify-content-between" data-sort="sort-exit">
+                        Время выхода
+                        </button>
+                     </th>
+                     <th>
+                        <button class="table-sort d-flex justify-content-between" data-sort="sort-purpose">
+                        Цель визита
+                        </button>
+                     </th>
+                     <th>
+                        <button class="table-sort d-flex justify-content-between" data-sort="sort-actions">
+                        Действие
+                        </button>
+                     </th>
+                  </tr>
+               </thead>
+               <tbody class="table-tbody">
+                {% for visit in page_obj %}
+                  <tr>
+                     <td>
+                        {% comment %}
+                            <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true">
+                        {% endcomment %}
+                     </td>
+                     <td class="sort-name">
+                        </span>
+                        {% if visit.visit_kind == 'official' %} <a href="{% url 'visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
+                        {% elif visit.visit_kind == 'student' %} <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
+                        {% else %} {{ visit.guest.full_name }} {% endif %}
+                     </td>
+                     <td class="sort-city">
+                        {% if visit.visit_kind == 'official' and visit.employee %} {{ visit.employee.get_full_name|default:visit.employee.username }}
                      {% elif visit.visit_kind == 'student' %} ID: {{ visit.student_id_number|default:"-" }} <br> Гр: {{ visit.student_group|default:"-" }} К: {{ visit.student_course|default:"-" }}
                      {% else %} - {% endif %}
-                 </td>
-                 <td>{{ visit.department.name|default:"-" }}</td>
-                 {# --- Обновленная ячейка для Времени Входа --- #}
-                <td>
-                    {% if visit.entry_time %} {{ visit.entry_time|date:"Y-m-d H:i" }}
-                    {% elif visit.status == 'AWAITING' %} {# Используйте ваше значение STATUS_AWAITING_ARRIVAL #}
-                        {% if visit.expected_entry_time %} <span class="text-muted fst-italic" title="Планируемое">Ожид: {{ visit.expected_entry_time|date:"Y-m-d H:i" }}</span>
-                        {% else %} <span class="text-muted fst-italic">Ожидается</span> {% endif %}
-                    {% elif visit.status == 'CANCELLED' %} {# Используйте ваше значение STATUS_CANCELLED #}
-                        <span class="badge bg-danger">Отменен</span>
-                    {% else %} - {% endif %}
-                </td>
-                {# --- ИСПРАВЛЕННАЯ Ячейка для Времени Выхода --- #}
-                <td>
-                    {% if visit.exit_time %} {{ visit.exit_time|date:"Y-m-d H:i" }}
-                    {% elif visit.status == 'CHECKED_IN' %} <span class="badge bg-success">В здании</span>
+                     </td>
+                     <td class="sort-status">
+                        <span class="">{{ visit.department.name|default:"-" }}</span>									
+                     </td>
+                     <td class="">
+                        <span class="">
+                            {% if visit.entry_time %} {{ visit.entry_time|date:"Y-m-d H:i" }}
+                            {% elif visit.status == 'AWAITING' %} {# Используйте ваше значение STATUS_AWAITING_ARRIVAL #}
+                            {% if visit.expected_entry_time %} <span class="badge" title="Планируемое">Ожид: {{ visit.expected_entry_time|date:"Y-m-d H:i" }}</span>
+                            {% else %} <span class="badge bg-purple-lt">Ожидается</span> {% endif %}
+                            {% elif visit.status == 'CANCELLED' %} {# Используйте ваше значение STATUS_CANCELLED #}
+                        <span class="badge bg-danger-lt">Отменен</span>
+                            {% else %} - {% endif %}
+                        </span>									
+                     </td>
+                     <td class="sort-date">
+                        {% if visit.exit_time %} {{ visit.exit_time|date:"Y-m-d H:i" }}
+                    {% elif visit.status == 'CHECKED_IN' %} <span class="badge bg-success-lt">В здании</span>
                     {% elif visit.status == 'AWAITING' %} <span class="text-muted">-</span> {# Ожидающим не показываем статус выхода #}
                     {% elif visit.status == 'CANCELLED' %} <span class="text-muted">-</span> {# Отмененным тоже #}
                     {% else %} <span class="text-muted">-</span> {% endif %}
-                </td>
-                {# ------------------------------------------- #}
-                <td>{{ visit.registered_by.get_full_name|default:visit.registered_by.username }}</td>
-                
-                {# --- ОБНОВЛЕННАЯ КОЛОНКА "Действие" с иконками --- #}
-                <td class="text-center"> {# Центрируем #}
-                    <div class="btn-group btn-group-sm" role="group"> {# Объединяем в группу #}
+                     </td>
+                     <td class="sort-tags">
+                        <div class="badges-list">
+                           {% if visit.purpose %}
+                              <span class="badge">{{ visit.purpose }}</span>
+                           {% else %}
+                              <span class="text-muted">-</span>
+                           {% endif %}
+                        </div>
+                     </td>
+                     <td class="sort-category py-0">
+                        <span class="on-unchecked">
                         {% if visit.status == 'AWAITING' %}
                             {# Кнопка Check-in #}
                             <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
@@ -202,99 +265,147 @@
                         {% else %}
                             <span class="text-muted">-</span>
                         {% endif %}
-                    </div> {# /btn-group #}
-                </td>
-                {# --- КОНЕЦ КОЛОНКИ "Действие" --- #}
-            </tr>
-            {% empty %}
-            <tr>
-                {# Увеличиваем colspan на 1 (было 8, стало 9) #}
-                <td colspan="9" class="text-center">По вашему запросу ничего не найдено.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                        </span>
+                        <div class="on-checked">
+                           <div class="d-flex justify-content-end">
+                           </div>
+                        </div>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+         <div class="card-footer d-flex align-items-center">
+            <p class="m-0 text-secondary">Показано <span>{{ page_obj.start_index }}-{{ page_obj.end_index }}</span> из <span>{{ page_obj.paginator.count }}</span> записей</p>
+            <div class="dropdown ms-3">
+               <a class="btn dropdown-toggle" data-bs-toggle="dropdown">
+               <span id="page-count" class="me-1">{{ page_obj.paginator.per_page }}</span>
+               <span>записей на странице</span>
+               </a>
+               <div class="dropdown-menu">
+                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="10">10 записей</a>
+                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="20">20 записей</a>
+                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="50">50 записей</a>
+                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="100">100 записей</a>
+               </div>
+            </div>
+            <ul class="pagination m-0 ms-auto">
+               {% if page_obj.has_previous %}
+                  <li class="page-item">
+                     <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                           <path d="M15 6l-6 6l6 6" />
+                        </svg>
+                        prev
+                     </a>
+                  </li>
+               {% else %}
+                  <li class="page-item disabled">
+                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                           <path d="M15 6l-6 6l6 6" />
+                        </svg>
+                        prev
+                     </a>
+                  </li>
+               {% endif %}
+
+               {% if page_obj.number > 3 %}
+                  <li class="page-item">
+                     <a class="page-link" href="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">1</a>
+                  </li>
+                  {% if page_obj.number > 4 %}
+                     <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                     </li>
+                  {% endif %}
+               {% endif %}
+
+               {% for i in page_obj.paginator.page_range %}
+                  {% if i > page_obj.number|add:"-3" and i < page_obj.number|add:"3" %}
+                     {% if i == page_obj.number %}
+                        <li class="page-item active">
+                           <span class="page-link">{{ i }}</span>
+                        </li>
+                     {% else %}
+                        <li class="page-item">
+                           <a class="page-link" href="?page={{ i }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">{{ i }}</a>
+                        </li>
+                     {% endif %}
+                  {% endif %}
+               {% endfor %}
+
+               {% if page_obj.number < page_obj.paginator.num_pages|add:"-2" %}
+                  {% if page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+                     <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                     </li>
+                  {% endif %}
+                  <li class="page-item">
+                     <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">{{ page_obj.paginator.num_pages }}</a>
+                  </li>
+               {% endif %}
+
+               {% if page_obj.has_next %}
+                  <li class="page-item">
+                     <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                        next
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                           <path d="M9 6l6 6l-6 6" />
+                        </svg>
+                     </a>
+                  </li>
+               {% else %}
+                  <li class="page-item disabled">
+                     <a class="page-link" href="#" aria-disabled="true">
+                        next
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                           <path d="M9 6l6 6l-6 6" />
+                        </svg>
+                     </a>
+                  </li>
+               {% endif %}
+            </ul>
+         </div>
+      </div>
+   </div>
 </div>
-</div>
-
-
-{# --- БЛОК ПАГИНАЦИИ --- #}
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-
-        {# --- Кнопка "Назад" --- #}
-        {% if page_obj.has_previous %}
-            <li class="page-item">
-                {# Добавляем параметры фильтра к ссылке #}
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <span class="page-link" aria-hidden="true">&laquo;</span>
-            </li>
-        {% endif %}
-        {# -------------------- #}
-
-        {# --- Номера страниц (можно добавить логику для показа ограниченного диапазона) --- #}
-        {# Простой вариант: текущая страница из общего числа #}
-         <li class="page-item active" aria-current="page">
-             <span class="page-link">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
-         </li>
-        {# TODO: Добавить ссылки на другие номера страниц, если нужно #}
-        {# ------------------------------------------------------------- #}
-
-
-        {# --- Кнопка "Вперед" --- #}
-        {% if page_obj.has_next %}
-            <li class="page-item">
-                 {# Добавляем параметры фильтра к ссылке #}
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        {% else %}
-             <li class="page-item disabled">
-                <span class="page-link" aria-hidden="true">&raquo;</span>
-            </li>
-        {% endif %}
-        {# ------------------- #}
-
-    </ul>
-</nav>
-{# --- КОНЕЦ БЛОКА ПАГИНАЦИИ --- #}
-
-
-{% elif request.GET %} {# Если применялся фильтр, но на текущей странице пусто #}
-    <p>По вашему запросу ничего не найдено на этой странице. Попробуйте <a href="{% url 'visit_history' %}">сбросить фильтр</a> или перейти на другую страницу.</p>
-    {# Можно добавить блок пагинации и сюда, если записей 0, но страниц больше 1 #}
-{% else %} {# Если записей нет вообще #}
-    <p>История визитов пока пуста.</p>
 {% endif %}
+<!-- END PAGE BODY -->
+
+
+{% comment %}
+    {% elif request.GET %} {# Если применялся фильтр, но на текущей странице пусто #}
+        <p>По вашему запросу ничего не найдено на этой странице. Попробуйте <a href="{% url 'visit_history' %}">сбросить фильтр</a> или перейти на другую страницу.</p>
+        {# Можно добавить блок пагинации и сюда, если записей 0, но страниц больше 1 #}
+    {% else %} {# Если записей нет вообще #}
+        <p>История визитов пока пуста.</p>
+    {% endif %}
+{% endcomment %}
 
 {% endblock %}
 
 
 {% block extra_scripts %}
-{# --- Скрипт для стилизации полей формы ФИЛЬТРА (добавлены классы sm) --- #}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filterForm = document.querySelector('form[method="get"]');
-        if (filterForm) {
-             const formControls = filterForm.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="hidden"]), textarea, select');
-             formControls.forEach(function(control) {
-                 if (control.tagName === 'SELECT') {
-                      control.classList.add('form-select', 'form-select-sm'); // Добавлен form-select-sm
-                 } else if (!control.classList.contains('btn')) {
-                     control.classList.add('form-control', 'form-control-sm'); // Добавлен form-control-sm
-                 }
-                 if (control.name.includes('entry_date')) {
-                     control.type = 'date';
-                 }
-             });
-         }
-    });
+function setPageListItems(event) {
+    event.preventDefault();
+    const value = event.target.getAttribute('data-value');
+    
+    // Get current URL and parameters
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    
+    // Update or add the per_page parameter
+    params.set('per_page', value);
+    // Reset to first page when changing items per page
+    params.set('page', '1');
+    
+    // Update URL and reload page
+    url.search = params.toString();
+    window.location.href = url.toString();
+}
 </script>
-{# -------------------------------------------------- #}
+
 {% endblock %}

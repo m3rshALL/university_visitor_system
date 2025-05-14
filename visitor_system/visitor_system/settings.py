@@ -152,7 +152,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
@@ -180,6 +180,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Allauth settings
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 client_id = os.getenv('client_id')
 client_secret = os.getenv('client_secret')
@@ -218,7 +219,7 @@ SESSION_COOKIE_SECURE = True
 # Замените '15f6-85-159-27-200.ngrok-free.app' на ваш ТЕКУЩИЙ ngrok URL,
 # но без 'https://' в начале.
 CSRF_TRUSTED_ORIGINS = [
-    'https://2846-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
+    'https://75b6-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
     # Можно добавить и другие доверенные хосты, если нужно, например,
     # 'http://localhost:8000',
     # 'http://127.0.0.1:8000'

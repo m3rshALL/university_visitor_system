@@ -236,6 +236,19 @@ def visit_history_view(request):
     # Добавляем атрибут для различения в шаблоне
     for v in official_visits_qs: v.visit_kind = 'official'
     for v in student_visits_qs: v.visit_kind = 'student'
+    
+    def get_sort_key(visit):
+        # Сортируем по релевантному времени: фактическое > планируемое
+        # None ставим в самый конец (самое старое время)
+        relevant_time = None
+        if visit.entry_time:
+            relevant_time = visit.entry_time
+        elif hasattr(visit, 'expected_entry_time') and visit.expected_entry_time:
+            relevant_time = visit.expected_entry_time
+
+        # Даем очень старую дату для None, чтобы они были последними при reverse=True
+        very_old_time = timezone.make_aware(datetime.datetime.min, timezone.get_default_timezone())
+        return relevant_time if relevant_time else very_old_time
 
     combined_list = sorted(
         chain(official_visits_qs, student_visits_qs),

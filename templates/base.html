@@ -11,8 +11,14 @@
     <title>{% block title %}Система пропусков Университета{% endblock %}</title>
 
         {# --- Подключение CSS --- #}
-    {# Bootstrap CSS (используем CDN для простоты) #}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    
+    {# Tabler CSS#}
+    <link rel="stylesheet" href="{% static 'tabler/css/tabler.css' %}"/>
+    <link rel="stylesheet" href="{% static 'tabler/css/tabler-flags.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-socials.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-payments.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-vendors.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-marketing.css' %}"/>
 
     {# --- ВСТАВКА КОДА GOOGLE FONTS --- #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,143 +39,248 @@
 
 
 </head>
-<body>
-    {# --- Навигационная панель --- #}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4"> {# Сделал темной для разнообразия #}
-        <div class="container">
-            <a class="navbar-brand" href="#">Система Пропусков</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                {# Ссылки слева #}
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'employee_dashboard' %}">Моя панель</a>
-                        </li>
-                        {% comment %}
-                            <li class="nav-item">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Регистрация</a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{% url 'register_guest' %}">Регистрация гостя</a>
-                                    {% if perms.visitors.can_register_student_visit %}
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{% url 'register_student_visit' %}">Регистрация студента/абитуриента</a>
-                                    {% endif %}
-                                </div>
-                            </li>
-                        {% endcomment %}
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register_guest' %}">Регистрация гостя</a>
-                        </li>
-                        {# --- Ссылка на регистрацию группы визита --- #}
-                        {% comment %}
-                            {% if perms.visitors.can_register_group_visit %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'register_group_visit' %}">Регистрация группы визита</a>
-                            {% endif %}
-                        {% endcomment %}
-                        {% if perms.visitors.can_register_student_visit %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register_student_visit' %}">Регистрация студента/абитуриента</a>
-                        </li>
-                        {% endif %}
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'current_guests' %}">Текущие гости</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'visit_history' %}">История визитов</a>
-                        </li>
-                        {# --- Ссылка на статистику --- #}
-                        {% if user.is_staff or perms.visitors.can_view_visit_statistics %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'visit_statistics' %}">Статистика</a>
-                        </li>
-                        {% endif %}
-                        {% if user.is_staff %} {# Ссылки для админов #}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'admin_dashboard' %}">Панель Админа</a>
-                        </li>
-                        <li class="nav-item">
-                            {# Используем прямой URL для стандартной админки Django #}
-                            <a class="nav-link" href="/admin/" target="_blank">Django Admin</a>
-                        </li>
-                        {% endif %}
-                    {% endif %}
-                </ul>
+<body>   
+    <!-- BEGIN GLOBAL THEME SCRIPT -->
+	<script src="{% static 'tabler/js/tabler-theme.js' %}"></script>
+	<!-- END GLOBAL THEME SCRIPT -->
+
+<div class="page">
+		<!-- BEGIN NAVBAR  -->
+	<header class="navbar navbar-expand-md d-print-none" >
+		<div class="container-xl">
+			<!-- BEGIN NAVBAR TOGGLER -->
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+</button>
+<!-- END NAVBAR TOGGLER -->
+<!-- BEGIN NAVBAR LOGO -->
+<div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+	<a>Система Пропусков</a>
+</div><!-- END NAVBAR LOGO -->
 
 
-                {# Статус пользователя и кнопки справа #}
-                <ul class="navbar-nav">
-                     {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ user.get_full_name|default:user.username }}
-                          </a>
-                          <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                {# Форма для кнопки Выход (использует POST) #}
-                                <form action="{% url 'account_logout' %}" method="post" class="px-2">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-link dropdown-item text-danger">Выйти</button>
-                                </form>
-                            </li>
-                          </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            {# Ссылка на страницу входа allauth #}
-                            <a class="btn btn-outline-light" href="{% url 'account_login' %}">Войти</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div> {# end collapse #}
-        </div> {# end container #}
-    </nav>
-    {# -------------------------- #}
+<div class="navbar-nav flex-row order-md-last">
+	<div class="nav-item d-none d-md-flex me-3">
+		<div class="btn-list">
+<a href="#" class="btn btn-5" target="_blank" rel="noreferrer">
+<!-- Download SVG icon from http://tabler.io/icons/icon/brand-github -->
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-2"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+Text me
+</a>
 
+<a href="#" class="btn btn-6" target="_blank" rel="noreferrer">
+<!-- Download SVG icon from http://tabler.io/icons/icon/heart -->
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-pink icon-2"><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+Text me 2
+</a>
+		</div>
+	</div>
 
-    {# --- Основной контент страницы --- #}
-    <div class="container">
-        {# Отображение сообщений Django (success, error, warning) #}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
+    {% if user.is_authenticated %}
+	<div class="d-none d-md-flex">
+	<div class="nav-item dropdown">
+		<a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
+			{% comment %}
+                <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+            {% endcomment %}
+			<div class="d-none d-xl-block ps-2">
+				<div>{{ user.get_full_name|default:user.username }}</div>
+				<div class="mt-1 small text-secondary">Сотрудник</div>
+			</div>
+		</a>
+		<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+			<a href="{% url 'current_guests' %}" class="dropdown-item">Текущие гости</a>
+
+            {% if user.is_staff or perms.visitors.can_view_visit_statistics %}
+			<a href="{% url 'visit_statistics' %}" class="dropdown-item">Статистика</a>
+            {% endif %}
+
+            {% if user.is_staff %}
+			<a href="{% url 'admin_dashboard' %}" class="dropdown-item">Панель Админа</a>
+			<div class="dropdown-divider"></div>
+			<a href="/admin/" class="dropdown-item">Django Admin</a>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            {# Форма для кнопки Выход (использует POST) #}
+            <form action="{% url 'account_logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item">Выйти</button>
+            </form>
+            {% else %}
+            <a href="{% url 'account_login' %}" class="dropdown-item">Войти</a>
+            {% endif %}
+		</div>
+	</div>
+</div>
+		</div>
+	</header>
+    {% if user.is_authenticated %}
+	<header class="navbar-expand-md">
+		<div class="collapse navbar-collapse" id="navbar-menu">
+			<div class="navbar">
+				<div class="container-xl">
+					<div class="row flex-column flex-md-row flex-fill align-items-center">
+						<div class="col">
+							<!-- BEGIN NAVBAR MENU -->
+<ul class="navbar-nav">
+		<li class="nav-item {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
+			<a class="nav-link" href="{% url 'employee_dashboard' %}" >
+				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/home -->
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg></span>
+
+				<span class="nav-link-title">
+					Dashboard
+				</span>
+			</a>
+		</li>
+		{% comment %}
+            <li class="nav-item dropdown">
+            			<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+            				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/package -->
+            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /><path d="M16 5.25l-8 4.5" /></svg></span>
+            				<span class="nav-link-title">
+            					Text me
+            				</span>
+            			</a>
+            			<div class="dropdown-menu">
+            					<div class="dropdown-menu-columns">
+            					<div class="dropdown-menu-column">
+            					<a class="dropdown-item" href="./accordion.html">
+            						Accordion
+            						<span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+            					</a>
+            					<a class="dropdown-item" href="./alerts.html">
+            						AlertsS
+            					</a>
+            					<div class="dropend">
+            					</div>	
+            				</div>
+            		</li>
+        {% endcomment %}
+		<li class="nav-item {% if request.resolver_match.url_name == 'register_guest' %}active{% endif %}">
+			<a class="nav-link" href="{% url 'register_guest' %}" >
+				
+				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M9 11l3 3l8 -8" /><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg></span>
+				
+				<span class="nav-link-title">
+					Регистрация гостя
+				</span>
+			</a>
+		</li>
+
+        {% if perms.visitors.can_register_student_visit %}
+        <li class="nav-item {% if request.resolver_match.url_name == 'register_student_visit' %}active{% endif %}">
+			<a class="nav-link" href="{% url 'register_student_visit' %}" >
+				
+				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+	<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg></span>
+				
+				<span class="nav-link-title">
+					Регистрация студента/абитуриента
+				</span>
+			</a>
+		</li>
         {% endif %}
-
-        {# Блок для основного содержимого из дочерних шаблонов #}
-        {% block content %}
-        {% endblock %}
+        
+        <li class="nav-item {% if request.resolver_match.url_name == 'visit_history' %}active{% endif %}">
+			<a class="nav-link" href="{% url 'visit_history' %}" >
+				
+				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+	<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-history"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 8l0 4l2 2" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></svg></span>
+				
+				<span class="nav-link-title">
+					История визитов
+				</span>
+			</a>
+		</li>
+    {% endif %}
+    {% endif %}
+</ul>
+</div>
+<!-- END NAVBAR MENU -->
+						{% comment %}
+                            <div class="col col-md-auto">
+                            							<ul class="navbar-nav">
+                            								<li class="nav-item">
+                            									<a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
+                            										<span class="badge badge-sm bg-red text-red-fg">New</span>
+                            										<span class="nav-link-icon d-md-none d-lg-inline-block">
+                            											<!-- Download SVG icon from http://tabler.io/icons/icon/settings -->
+                            	                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
+                            										</span>
+                            										<span class="nav-link-title">
+                            											Settings
+                            										</span>
+                            									</a>
+                            								</li>
+                            							</ul>
+                            						</div>
+                        {% endcomment %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+		<!-- END NAVBAR  -->
+    <div class="page-body">					
+			<div class="container-xl">
+                <div class="row row-deck row-cards">
+                    {# Отображение сообщений Django (success, error, warning) - Перемещено сюда #}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert"> {# Удаляем fade show #}
+                                {{ message }}
+                                <a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"></a> {# Используем a.btn-close как в login.html #}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
     </div>
-    {# -------------------------------- #}
-
-    
-
 
     {# --- Футер (Подвал) --- #}
-    <footer class="mt-5 py-3 text-center text-muted border-top">
-        <p>&copy; {% now "Y" %}. Astana IT University. Pass system. <strong>Soft by Sagat Akimbay (Media Studio).</strong></p>
+    <footer class="footer footer-transparent d-print-none">
+        <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+                <div class="col-lg-auto ms-lg-auto">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item">Astana IT University. Pass system.</li>
+                    </ul>
+                </div>
+                <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item">&copy; {% now "Y" %} <strong>Soft by Sagat Akimbay (Media Studio).</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </footer>
     {# --------------------- #}
+</div> {# Закрываем div.page #}
 
+{# --- Подключение JavaScript --- #}
+{# Удаляем jQuery CDN #}
 
-    {# --- Подключение JavaScript --- #}
-    {# Bootstrap JS Bundle (включает Popper) #}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    {# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
-    {% block extra_scripts %}{% endblock %}
-    {# -------------------------- #}
+{# Tabler Core JS (из CDN) - Должен быть после всех элементов DOM, которыми он управляет #}
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js" defer></script>
+{# Опционально: Tabler Demo JS, если используете его функции. Обычно не нужен для продакшена. #}
+{# <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/demo.min.js" defer></script> #}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{# Скрипт для показа тела документа после загрузки DOM, аналогично login.html #}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.body.style.display = "block";
+    // themeConfig уже определен в head
+  });
+</script>
 
-    {# PWA service-worker registration #}
-    
+{# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
+{% block extra_scripts %}{% endblock %}
 
 </body>
+
 </html>
