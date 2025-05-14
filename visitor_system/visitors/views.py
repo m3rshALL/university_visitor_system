@@ -401,6 +401,18 @@ def mark_student_exit_view(request, visit_id):
 def employee_dashboard_view(request):
     """Панель управления для обычного сотрудника."""
     user = request.user
+    
+    today = timezone.now().date()
+    upcoming_visits_qs = Visit.objects.filter(
+        employee=user,
+        expected_entry_time__date=today,
+        status=STATUS_AWAITING_ARRIVAL, # Ожидаемая регистрация
+    ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
+    
+    # Convert queryset to list and add visit_kind for template URL generation
+    upcoming_visits_today_list = list(upcoming_visits_qs)
+    for visit_obj in upcoming_visits_today_list:
+        visit_obj.visit_kind = 'official'
 
     # Гости, которых ожидает данный сотрудник и которые еще не вышли
     my_current_guests = Visit.objects.filter(
@@ -414,10 +426,11 @@ def employee_dashboard_view(request):
     ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20
 
     context = {
+        'upcoming_visits': upcoming_visits_today_list, # Визиты на сегодня
         'my_current_guests': my_current_guests,
         'my_visit_history': my_visit_history,
     }
-    return render(request, 'visitors/admin_dashboard.html', context)
+    return render(request, 'visitors/employee_dashboard.html', context)
 
 def has_functional_access(user):
     """

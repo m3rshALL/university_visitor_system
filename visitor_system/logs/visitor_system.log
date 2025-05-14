@@ -2049,3 +2049,64 @@ ERROR 2025-05-14 17:26:12,189 views 109132 107136 Ошибка при вызов
 WARNING 2025-05-14 17:26:12,218 utils 104316 104408 Department 'Медиа студия' has no director assigned.
 INFO 2025-05-14 17:26:14,236 utils 104316 104408 Visit notification email for official ID 21 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
 WARNING 2025-05-14 18:01:02,973 log 109132 3140 Forbidden: /visitors/history/export/xlsx/
+INFO 2025-05-14 19:16:48,655 forms 109180 103144 Using guest object: Унсиз Болмас Дуние (ID: 13), Created: True
+INFO 2025-05-14 19:16:48,656 forms 109180 103144 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-14 19:16:48,690 forms 109180 103144 Celery task queued for Visit ID 22
+INFO 2025-05-14 19:16:48,690 forms 109180 103144 Saved Visit ID 22, Status: AWAITING, Consent Ack: True
+INFO 2025-05-14 19:16:48,690 utils 104316 104408 Attempting to send creation notification for official ID 22
+ERROR 2025-05-14 19:16:48,695 views 109180 103144 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-14 19:16:48,721 utils 104316 104408 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-14 19:16:51,460 utils 104316 104408 Visit notification email for official ID 22 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-14 19:16:51,464 utils 104316 104408 Attempting to send creation notification for official ID 22
+WARNING 2025-05-14 19:16:51,494 utils 104316 104408 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-14 19:16:53,754 utils 104316 104408 Visit notification email for official ID 22 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-14 19:30:22,136 forms 104024 111040 Using guest object: Проверка Время Ожидаемых (ID: 14), Created: True
+INFO 2025-05-14 19:30:22,136 forms 104024 111040 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-14 19:30:22,187 forms 104024 111040 Celery task queued for Visit ID 23
+INFO 2025-05-14 19:30:22,187 forms 104024 111040 Saved Visit ID 23, Status: AWAITING, Consent Ack: True
+INFO 2025-05-14 19:30:22,187 utils 104316 104408 Attempting to send creation notification for official ID 23
+ERROR 2025-05-14 19:30:22,193 views 104024 111040 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-14 19:30:22,219 utils 104316 104408 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-14 19:30:24,307 utils 104316 104408 Visit notification email for official ID 23 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-14 19:30:24,311 utils 104316 104408 Attempting to send creation notification for official ID 23
+WARNING 2025-05-14 19:30:24,358 utils 104316 104408 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-14 19:30:26,245 utils 104316 104408 Visit notification email for official ID 23 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-14 19:36:15,134 log 90300 43880 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 19:36:23,864 log 90300 78024 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-14 19:38:08,821 log 90300 12124 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
