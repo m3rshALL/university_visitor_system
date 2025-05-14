@@ -2034,3 +2034,18 @@ WARNING 2025-05-14 14:52:59,008 log 107388 100456 Not Found: /visitors/history/d
 WARNING 2025-05-14 14:53:07,766 log 107388 111308 Not Found: /visitors/history/detail/18/static/avatars/000m.jpg
 WARNING 2025-05-14 14:53:09,723 log 107388 104996 Not Found: /visitors/history/static/avatars/000m.jpg
 WARNING 2025-05-14 14:54:51,342 log 107388 112392 Not Found: /visitors/history/static/avatars/000m.jpg
+INFO 2025-05-14 17:10:11,328 forms 109132 106364 Using guest object: Акимбаев Сагат Ганиевич (ID: 10), Created: False
+INFO 2025-05-14 17:10:11,328 forms 109132 106364 Visit None created with status CHECKED_IN.
+INFO 2025-05-14 17:10:11,360 forms 109132 106364 Saved Visit ID 20, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-14 17:10:11,361 utils 104316 104408 Attempting to send creation notification for official ID 20
+ERROR 2025-05-14 17:10:11,365 views 109132 106364 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-14 17:10:11,395 utils 104316 104408 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-14 17:10:13,825 utils 104316 104408 Visit notification email for official ID 20 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-14 17:26:12,159 forms 109132 107136 Using guest object: Фамилия Имя Отчество (ID: 10), Created: False
+INFO 2025-05-14 17:26:12,160 forms 109132 107136 Visit None created with status CHECKED_IN.
+INFO 2025-05-14 17:26:12,184 forms 109132 107136 Saved Visit ID 21, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-14 17:26:12,185 utils 104316 104408 Attempting to send creation notification for official ID 21
+ERROR 2025-05-14 17:26:12,189 views 109132 107136 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-14 17:26:12,218 utils 104316 104408 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-14 17:26:14,236 utils 104316 104408 Visit notification email for official ID 21 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-14 18:01:02,973 log 109132 3140 Forbidden: /visitors/history/export/xlsx/

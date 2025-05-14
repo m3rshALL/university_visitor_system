@@ -34,6 +34,28 @@
             top: 50%;
             transform: translateY(-50%);
         }
+
+        /* Добавляем стили для пустого состояния */
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #adb5bd;
+        }
+        .empty-state-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .empty-state-description {
+            font-size: 16px;
+            color: #6c757d;
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
     </style>
    
 {% endblock %}
@@ -129,9 +151,9 @@
                         </a>
                     </div>
                   </div>
+                  {% if user.is_staff or perms.visitors.can_view_visit_statistics %}  
                   <a href="{% url 'export_visits_xlsx' %}?{{ request.GET.urlencode }}" class="btn btn-0 {% if show_filters %}ms-2{% endif %}">
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-excel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>
-                    {% if user.is_staff or perms.visitors.can_view_visit_statistics %}                    
+                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-excel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>                   
                         Экспорт в Excel
                     </a>
                     {% endif %}
@@ -238,17 +260,27 @@
                             {# Кнопка Check-in #}
                             <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-success btn-icon-sm" title="Зарегистрировать вход">
-                                    <i class="bi bi-box-arrow-in-right"></i> {# Иконка Вход #}
-                                </button>
+                                <button type="submit" class="badge bg-success-lt btn btn-sm" title="Зарегистрировать вход">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                       <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                                       <polyline points="10 17 15 12 10 7" />
+                                       <line x1="15" y1="12" x2="3" y2="12" />
+                                    </svg>
+                                    Вход
+                              </button>
                             </form>
                             {# Кнопка Cancel #}
                             <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-danger btn-icon-sm" title="Отменить визит"
-                                        onclick="return confirm('Отменить этот визит?');">
-                                    <i class="bi bi-x-circle"></i> {# Иконка Отмена #}
-                                </button>
+                                <button type="submit" class="badge bg-danger-lt btn btn-sm" title="Отменить визит"
+                                       onclick="return confirm('Отменить этот визит?');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                       <circle cx="12" cy="12" r="10" />
+                                       <line x1="15" y1="9" x2="9" y2="15" />
+                                       <line x1="9" y1="9" x2="15" y2="15" />
+                                    </svg>
+                                    Отменить
+                              </button>
                             </form>
 
                         {% elif visit.status == 'CHECKED_IN' %}
@@ -257,8 +289,13 @@
                                    {% elif visit.visit_kind == 'student' %} action="{% url 'mark_student_exit' visit.id %}"
                                    {% endif %} method="post" class="d-inline">
                                  {% csrf_token %}
-                                 <button type="submit" class="btn btn-outline-warning btn-icon-sm" title="Отметить выход">
-                                     <i class="bi bi-box-arrow-right"></i> {# Иконка Выход #}
+                                 <button type="submit" class="badge bg-secondary-lt btn btn-sm" title="Отметить выход">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                       <polyline points="16 17 21 12 16 7" />
+                                       <line x1="21" y1="12" x2="9" y2="12" />
+                                    </svg>
+                                    Выход
                                  </button>
                              </form>
 
@@ -371,18 +408,74 @@
       </div>
    </div>
 </div>
-{% endif %}
 <!-- END PAGE BODY -->
+{% else %}
 
-
-{% comment %}
-    {% elif request.GET %} {# Если применялся фильтр, но на текущей странице пусто #}
-        <p>По вашему запросу ничего не найдено на этой странице. Попробуйте <a href="{% url 'visit_history' %}">сбросить фильтр</a> или перейти на другую страницу.</p>
-        {# Можно добавить блок пагинации и сюда, если записей 0, но страниц больше 1 #}
-    {% else %} {# Если записей нет вообще #}
-        <p>История визитов пока пуста.</p>
-    {% endif %}
-{% endcomment %}
+<div class="card">
+   <div class="card-body empty-state">
+      <div class="empty-state-icon">
+         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+         </svg>
+      </div>
+      
+      {% if request.GET.status %}
+         <h3 class="empty-state-title">Нет визитов со статусом "{{ request.GET.status|default:"" }}"</h3>
+         <p class="empty-state-description">
+            {% if request.GET.status == 'AWAITING' %}
+               На данный момент нет ожидающих визитов.
+            {% elif request.GET.status == 'CHECKED_IN' %}
+               На данный момент нет посетителей, находящихся в здании.
+            {% elif request.GET.status == 'CHECKED_OUT' %}
+               На данный момент нет завершенных визитов.
+            {% elif request.GET.status == 'CANCELLED' %}
+               На данный момент нет отмененных визитов.
+            {% else %}
+               По вашему запросу ничего не найдено.
+            {% endif %}
+         </p>
+         <div class="mt-4">
+            <a href="{% url 'visit_history' %}" class="btn btn-primary">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-2">
+                  <path d="M9 14l-5-5 5-5"></path>
+                  <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+               </svg>
+               Вернуться ко всем визитам
+            </a>
+         </div>
+      {% elif request.GET %}
+         <h3 class="empty-state-title">По вашему запросу ничего не найдено</h3>
+         <p class="empty-state-description">
+            Попробуйте изменить параметры поиска или фильтрации.
+         </p>
+         <div class="mt-4">
+            <a href="{% url 'visit_history' %}" class="btn btn-primary">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-2">
+                  <path d="M9 14l-5-5 5-5"></path>
+                  <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+               </svg>
+               Сбросить все фильтры
+            </a>
+         </div>
+      {% else %}
+         <h3 class="empty-state-title">История визитов пуста</h3>
+         <p class="empty-state-description">
+            В данный момент в системе нет зарегистрированных визитов.
+         </p>
+         <div class="mt-4">
+            <a href="{% url 'employee_dashboard' %}" class="btn btn-primary">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+               </svg>
+               Вернуться на главную
+            </a>
+         </div>
+      {% endif %}
+   </div>
+</div>
+{% endif %}
 
 {% endblock %}
 
