@@ -20,6 +20,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from visitors import views as visitor_views # Главная страница - панель сотрудника
+from django.views.defaults import permission_denied, page_not_found, server_error
+from django.shortcuts import render
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,3 +42,8 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if not settings.DEBUG:
+    handler403 = lambda request, exception: render(request, 'errors/403.html', status=403)
+    handler404 = lambda request, exception: render(request, 'errors/404.html', status=404)
+    handler500 = lambda request: render(request, 'errors/500.html', status=500)
