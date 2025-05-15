@@ -2351,3 +2351,239 @@ INFO 2025-05-14 20:12:59,001 views 52712 111984 User 'sagat.akimbay' completed p
 WARNING 2025-05-14 20:17:47,071 log 103704 49528 Not Found: /visitors/dashboard/employee/static/avatars/000m.jpg
 WARNING 2025-05-14 20:17:56,801 log 103704 102636 Not Found: /visitors/current/static/avatars/000m.jpg
 WARNING 2025-05-14 20:18:51,023 log 103704 69288 Not Found: /visitors/current/static/avatars/000m.jpg
+WARNING 2025-05-15 09:29:10,352 log 22236 20920 Not Found: /favicon.ico
+INFO 2025-05-15 09:30:47,637 middleware 22236 4380 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:30:50,460 middleware 22236 29268 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:30:57,873 views 22236 2344 User 'sagat.akimbay' completed profile setup.
+WARNING 2025-05-15 09:33:36,019 log 22236 776 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:33:53,358 log 27036 9848 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:34:00,374 log 27036 22788 Not Found: /visitors/dashboard/employees/
+WARNING 2025-05-15 09:40:42,310 log 19272 13024 Forbidden (CSRF token from POST incorrect.): /admin/login/
+WARNING 2025-05-15 09:40:52,922 log 23484 2752 Forbidden (CSRF token from POST incorrect.): /admin/login/
+INFO 2025-05-15 09:41:17,504 middleware 23484 28852 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:41:20,219 middleware 23484 20176 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:41:22,328 middleware 23484 25296 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:41:22,931 middleware 23484 27428 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:41:23,510 middleware 23484 26848 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:41:24,362 middleware 23484 26428 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:41:26,244 middleware 23484 26516 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-15 09:41:32,205 views 23484 3952 User 'sagat.akimbay' completed profile setup.
+WARNING 2025-05-15 09:41:49,718 log 9972 22212 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:44:10,127 log 9972 25824 Not Found: /favicon.ico
+WARNING 2025-05-15 09:45:03,814 log 21676 28840 Not Found: /favicon.ico
+WARNING 2025-05-15 09:45:44,606 log 21676 26536 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-15 09:45:44,609 log 21676 9848 Not Found: /favicon.ico
+WARNING 2025-05-15 09:45:44,785 log 21676 7768 Not Found: /apple-touch-icon.png
+WARNING 2025-05-15 09:46:14,116 log 21676 12724 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:46:53,395 log 13672 26168 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:46:54,341 log 13672 480 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:46:54,344 log 13672 28500 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:46:54,510 log 13672 22848 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:46:54,519 log 13672 3788 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:46:54,524 log 13672 5300 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:46:54,524 log 13672 13552 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:46:54,525 log 13672 22712 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:46:54,525 log 13672 3256 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:47:14,073 log 13672 29624 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:47:14,279 log 13672 4068 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:47:14,280 log 13672 4388 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:47:14,286 log 13672 28840 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:47:14,290 log 13672 28468 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:47:14,291 log 13672 28568 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:47:14,293 log 13672 24188 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:47:14,294 log 13672 29084 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:47:21,826 log 13672 5192 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:47:21,929 log 13672 11600 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:47:22,023 log 13672 1800 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:47:22,029 log 13672 2480 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:47:22,038 log 13672 22704 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:47:22,039 log 13672 26636 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:47:22,040 log 13672 11288 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:47:22,043 log 13672 7660 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:47:37,258 log 13672 21172 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:50:36,739 log 13672 20848 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:50:36,741 log 13672 2188 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:50:36,920 log 13672 22964 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:50:36,921 log 13672 11788 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:50:36,922 log 13672 10140 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:50:36,923 log 13672 28012 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:50:36,924 log 13672 9740 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:50:36,925 log 13672 11636 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:50:38,004 log 13672 28480 Not Found: /favicon.ico
+WARNING 2025-05-15 09:50:50,986 log 13672 12576 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:50:51,182 log 13672 4228 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:50:51,184 log 13672 20652 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:50:51,189 log 13672 28012 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:50:51,189 log 13672 22964 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:50:51,191 log 13672 20848 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:50:51,191 log 13672 9740 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:50:51,274 log 13672 6024 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:50:52,510 log 13672 4656 Not Found: /static/images/icons/icon-512x512.png
+WARNING 2025-05-15 09:50:55,108 log 13672 13880 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:50:55,283 log 13672 26088 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:50:55,284 log 13672 29400 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:50:55,285 log 13672 29528 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:50:55,287 log 13672 21540 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:50:55,293 log 13672 2780 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:50:55,294 log 13672 9576 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:50:55,295 log 13672 9600 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:51:01,125 log 13672 3600 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:51:01,127 log 13672 1740 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:51:01,312 log 13672 25152 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:51:01,319 log 13672 7380 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:51:01,323 log 13672 6600 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:51:01,324 log 13672 26596 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:51:01,326 log 13672 21112 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:51:01,327 log 13672 25156 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:51:02,535 log 13672 16372 Not Found: /static/images/icons/icon-512x512.png
+WARNING 2025-05-15 09:51:59,806 log 13672 24284 Not Found: /static/tabler/css/tabler.css
+WARNING 2025-05-15 09:51:59,993 log 13672 5192 Not Found: /static/tabler/css/tabler-vendors.css
+WARNING 2025-05-15 09:52:00,005 log 13672 10476 Not Found: /static/tabler/css/tabler-socials.css
+WARNING 2025-05-15 09:52:00,006 log 13672 24672 Not Found: /static/tabler/css/tabler-marketing.css
+WARNING 2025-05-15 09:52:00,011 log 13672 25092 Not Found: /static/tabler/js/tabler-theme.js
+WARNING 2025-05-15 09:52:00,012 log 13672 28096 Not Found: /static/tabler/css/tabler-flags.css
+WARNING 2025-05-15 09:52:00,015 log 13672 28988 Not Found: /static/tabler/css/tabler-payments.css
+WARNING 2025-05-15 09:52:00,016 log 13672 24220 Not Found: /static/css/style.css
+WARNING 2025-05-15 09:55:41,446 log 23556 6548 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:56:53,277 log 23556 20912 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-15 09:56:54,460 log 23556 26620 Not Found: /favicon.ico
+INFO 2025-05-15 09:59:18,954 forms 23556 13676 Using guest object: Сарматов Надир (ID: 15), Created: True
+INFO 2025-05-15 09:59:18,954 forms 23556 13676 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-15 09:59:19,009 forms 23556 13676 Celery task queued for Visit ID 24
+INFO 2025-05-15 09:59:19,009 forms 23556 13676 Saved Visit ID 24, Status: AWAITING, Consent Ack: True
+INFO 2025-05-15 09:59:19,010 utils 27968 27836 Attempting to send creation notification for official ID 24
+ERROR 2025-05-15 09:59:19,014 views 23556 13676 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-15 09:59:19,041 utils 27968 27836 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-15 09:59:20,845 utils 27968 27836 Visit notification email for official ID 24 SENT successfully to ['Host:azat.absadyk@astanait.edu.kz', 'Registrar:azat.absadyk@astanait.edu.kz'].
+INFO 2025-05-15 09:59:20,850 utils 27968 27836 Attempting to send creation notification for official ID 24
+WARNING 2025-05-15 09:59:20,882 utils 27968 27836 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-15 09:59:22,910 utils 27968 27836 Visit notification email for official ID 24 SENT successfully to ['Host:azat.absadyk@astanait.edu.kz', 'Registrar:azat.absadyk@astanait.edu.kz'].
+INFO 2025-05-15 10:46:58,767 forms 33628 25080 Using guest object: Сарматов Самат (ID: 10), Created: False
+INFO 2025-05-15 10:46:58,767 forms 33628 25080 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-15 10:46:58,819 forms 33628 25080 Celery task queued for Visit ID 25
+INFO 2025-05-15 10:46:58,819 forms 33628 25080 Saved Visit ID 25, Status: AWAITING, Consent Ack: True
+INFO 2025-05-15 10:46:58,819 utils 27968 27836 Attempting to send creation notification for official ID 25
+ERROR 2025-05-15 10:46:58,823 views 33628 25080 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-15 10:46:58,849 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 10:47:00,972 utils 27968 27836 Visit notification email for official ID 25 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-15 10:47:00,976 utils 27968 27836 Attempting to send creation notification for official ID 25
+WARNING 2025-05-15 10:47:01,110 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 10:47:02,902 utils 27968 27836 Visit notification email for official ID 25 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-15 10:52:41,126 forms 35284 37240 Using guest object: Проверка Время (ID: 10), Created: False
+INFO 2025-05-15 10:52:41,126 forms 35284 37240 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-15 10:52:41,170 forms 35284 37240 Celery task queued for Visit ID 26
+INFO 2025-05-15 10:52:41,170 forms 35284 37240 Saved Visit ID 26, Status: AWAITING, Consent Ack: True
+INFO 2025-05-15 10:52:41,171 utils 27968 27836 Attempting to send creation notification for official ID 26
+ERROR 2025-05-15 10:52:41,175 views 35284 37240 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-15 10:52:41,199 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 10:52:43,123 utils 27968 27836 Visit notification email for official ID 26 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-15 10:52:43,127 utils 27968 27836 Attempting to send creation notification for official ID 26
+WARNING 2025-05-15 10:52:43,159 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 10:52:44,821 utils 27968 27836 Visit notification email for official ID 26 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-15 10:53:20,133 forms 35284 27672 Using guest object: Проверка Имя (ID: 16), Created: True
+INFO 2025-05-15 10:53:20,133 forms 35284 27672 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-15 10:53:20,150 forms 35284 27672 Celery task queued for Visit ID 27
+INFO 2025-05-15 10:53:20,150 forms 35284 27672 Saved Visit ID 27, Status: AWAITING, Consent Ack: True
+INFO 2025-05-15 10:53:20,151 utils 27968 27836 Attempting to send creation notification for official ID 27
+ERROR 2025-05-15 10:53:20,156 views 35284 27672 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-15 10:53:20,182 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 10:53:21,951 utils 27968 27836 Visit notification email for official ID 27 SENT successfully to ['Host:yrysbek.adilbekuly@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-15 10:53:21,956 utils 27968 27836 Attempting to send creation notification for official ID 27
+WARNING 2025-05-15 10:53:21,991 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 10:53:24,429 utils 27968 27836 Visit notification email for official ID 27 SENT successfully to ['Host:yrysbek.adilbekuly@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].

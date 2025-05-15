@@ -2,8 +2,7 @@
 {% block title %}Панель сотрудника{% endblock %}
 
 {% block content %}
-
-<div class="page-wrapper">
+                
     <!-- BEGIN PAGE HEADER -->
     <div class="page-header d-print-none">
         <div class="container-xl">
@@ -96,8 +95,7 @@
 
 <div class="row mb-3">
     <div class="col-12">
-        <div class="card">
-            <div class="card-header">
+        <div class="card">            <div class="card-header">
                 <h3 class="card-title">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -108,7 +106,7 @@
                         <path d="M3 11h16"></path>
                         <path d="M18 16.496v1.504l1 1"></path>
                     </svg>
-                    Ожидаемые визиты сегодня
+                    Ожидаемые визиты на неделю (Департамент: {{ department_name }})
                 </h3>
                 <div class="card-actions">
                     <a href="{% url 'register_guest' %}" class="btn btn-primary btn-sm">
@@ -122,10 +120,10 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-vcenter card-table">
-                    <thead>
+                <table class="table table-vcenter card-table">                    <thead>
                         <tr>
                             <th>Гость</th>
+                            <th>Дата</th>
                             <th>Время</th>
                             <th>К кому</th>
                             <th>Департамент</th>
@@ -145,7 +143,19 @@
                                         <div class="text-muted small">ИИН: {{ visit.guest_iin }}</div>
                                         {% endif %}
                                     </div>
-                                </div>
+                                </div>                            </td>
+                            <td class="text-nowrap">
+                                <span class="badge {% if visit.expected_entry_time.date == today %}bg-blue-lt{% else %}bg-purple-lt{% endif %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
+                                        <path d="M16 3l0 4"></path>
+                                        <path d="M8 3l0 4"></path>
+                                        <path d="M4 11l16 0"></path>
+                                        <path d="M8 15h2v2h-2z"></path>
+                                    </svg>
+                                    {{ visit.expected_entry_time|date:"d.m.Y" }}
+                                </span>
                             </td>
                             <td class="text-nowrap">
                                 <span class="badge bg-yellow-lt">
@@ -156,9 +166,19 @@
                                     </svg>
                                     {{ visit.expected_entry_time|date:"H:i" }}
                                 </span>
-                            </td>
-                            <td>
+                            </td>                            <td>
                                 {% if visit.visit_kind == 'official' and visit.employee %}
+                                    {% if visit.employee == user %}
+                                        <span class="badge bg-green-lt me-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                                <path d="M15 19l2 2l4 -4"></path>
+                                            </svg>
+                                            К вам
+                                        </span>
+                                    {% endif %}
                                     {{ visit.employee.get_full_name|default:visit.employee.username }}
                                 {% elif visit.visit_kind == 'student' %}
                                     <span class="badge bg-blue-lt">Студент/Абит.</span>
@@ -207,10 +227,9 @@
                                             <path d="M4 11h7m4 0h5"></path>
                                             <path d="M3 3l18 18"></path>
                                         </svg>
-                                    </div>
-                                    <p class="empty-title">Нет ожидаемых визитов</p>
+                                    </div>                                    <p class="empty-title">Нет ожидаемых визитов</p>
                                     <p class="empty-subtitle text-muted">
-                                        На сегодня не запланировано предварительных визитов
+                                        На ближайшую неделю не запланировано предварительных визитов ни для вас, ни для ваших коллег по департаменту
                                     </p>
                                 </div>
                             </td>

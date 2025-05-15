@@ -403,15 +403,40 @@ def employee_dashboard_view(request):
     user = request.user
     
     today = timezone.now().date()
-    upcoming_visits_qs = Visit.objects.filter(
-        employee=user,
-        expected_entry_time__date=today,
-        status=STATUS_AWAITING_ARRIVAL, # Ожидаемая регистрация
-    ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
+    one_week_later = today + timedelta(days=7)
+    
+    # Получаем департамент текущего сотрудника
+    try:
+        user_department = user.employee_profile.department
+    except (AttributeError, EmployeeProfile.DoesNotExist):
+        user_department = None
+    
+    # Получаем визиты на ближайшую неделю для сотрудников своего департамента
+    if user_department:
+        # Получаем всех сотрудников департамента
+        department_employee_ids = User.objects.filter(
+            employee_profile__department=user_department
+        ).values_list('id', flat=True)
+        
+        # Получаем визиты всех сотрудников департамента
+        upcoming_visits_qs = Visit.objects.filter(
+            employee_id__in=department_employee_ids,  # Фильтруем по списку ID сотрудников департамента
+            expected_entry_time__date__gte=today,
+            expected_entry_time__date__lt=one_week_later,
+            status=STATUS_AWAITING_ARRIVAL,  # Ожидаемая регистрация
+        ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
+    else:
+        # Если у пользователя нет департамента, показываем только его визиты
+        upcoming_visits_qs = Visit.objects.filter(
+            employee=user,
+            expected_entry_time__date__gte=today,
+            expected_entry_time__date__lt=one_week_later,
+            status=STATUS_AWAITING_ARRIVAL,  # Ожидаемая регистрация
+        ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
     
     # Convert queryset to list and add visit_kind for template URL generation
-    upcoming_visits_today_list = list(upcoming_visits_qs)
-    for visit_obj in upcoming_visits_today_list:
+    upcoming_visits_week_list = list(upcoming_visits_qs)
+    for visit_obj in upcoming_visits_week_list:
         visit_obj.visit_kind = 'official'
 
     # Гости, которых ожидает данный сотрудник и которые еще не вышли
@@ -426,9 +451,11 @@ def employee_dashboard_view(request):
     ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20
 
     context = {
-        'upcoming_visits': upcoming_visits_today_list, # Визиты на сегодня
+        'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
         'my_visit_history': my_visit_history,
+        'today': today,  # Добавляем переменную today для условного форматирования в шаблоне
+        'department_name': user_department.name if user_department else "Нет департамента",
     }
     return render(request, 'visitors/employee_dashboard.html', context)
 
