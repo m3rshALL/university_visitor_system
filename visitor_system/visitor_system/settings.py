@@ -459,7 +459,7 @@ PWA_APP_ICONS = [
     }
 ]
 # Иконка для Apple Touch (необязательно, но рекомендуется)
-PWA_APP_APPLE_TOUCH_ICON = '/static/images/icons/apple-touch-icon.png' # Размер 180x180 или похожий
+PWA_APP_APPLE_TOUCH_ICON = '/static/img/icons/apple-touch-icon.png' # Размер 180x180 или похожий
 
 # Splash screen (необязательно, но улучшает вид при запуске)
 PWA_APP_SPLASH_SCREEN = [
