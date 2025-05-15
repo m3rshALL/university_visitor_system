@@ -255,13 +255,18 @@ def visit_history_view(request):
         chain(official_visits_qs, student_visits_qs),
         key=get_sort_key, # Используем новую функцию ключа
         reverse=True # Самые свежие (по фактическому или планируемому входу) - вверху
-    )
-    # ---------------------------------------------
+    )    # ---------------------------------------------
     # TODO: Добавить пагинацию для combined_list, если данных много
     # --- Логика пагинации ---
-    items_per_page = 20 # Установите желаемое количество записей на странице
+    try:
+        items_per_page = int(request.GET.get('per_page', 20))  # Получаем количество записей из GET параметра
+        if items_per_page not in [10, 20, 50, 100]:  # Разрешаем только определенные значения
+            items_per_page = 20  # Значение по умолчанию
+    except (ValueError, TypeError):
+        items_per_page = 20  # Если параметр невалидный, используем значение по умолчанию
+        
     paginator = Paginator(combined_list, items_per_page)
-    page_number = request.GET.get('page') # Получаем номер страницы из GET параметра 'page'
+    page_number = request.GET.get('page')  # Получаем номер страницы из GET параметра 'page'
 
     try:
         page_obj = paginator.get_page(page_number)
@@ -449,14 +454,14 @@ def employee_dashboard_view(request):
     # История визитов, связанных с этим сотрудником (как принимающий или регистрирующий)
     my_visit_history = Visit.objects.filter(
         Q(employee=user) | Q(registered_by=user)
-    ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20
-
-    # Данные для графика активности визитов
+    ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20    # Данные для графика активности визитов
     # Генерируем данные для разных периодов (сегодня, неделя, месяц)
     visit_chart_data = {}
     
     # Фильтр по текущему департаменту пользователя
     department_filter = Q(department=user_department) if user_department else Q(employee=user)
+    # Для StudentVisit нет employee, поэтому создаем отдельный фильтр
+    student_department_filter = Q(department=user_department) if user_department else Q()
     
     # Данные для графика по часам (сегодня)
     today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
@@ -470,21 +475,41 @@ def employee_dashboard_view(request):
         entry_time__lt=today_end
     ).values('entry_time__hour').annotate(count=Count('id'))
     
-    # Суммируем данные
+    # Добавляем данные студенческих визитов
+    today_student_visits = StudentVisit.objects.filter(
+        student_department_filter,
+        entry_time__gte=today_start,
+        entry_time__lt=today_end
+    ).values('entry_time__hour').annotate(count=Count('id'))
+    
+    # Суммируем данные официальных визитов
     for visit in today_visits:
         hour = visit['entry_time__hour']
         if 0 <= hour < 24:  # Проверка на всякий случай
             hourly_data[hour] += visit['count']
     
-    visit_chart_data['today'] = hourly_data
+    # Суммируем данные студенческих визитов
+    for visit in today_student_visits:
+        hour = visit['entry_time__hour']
+        if 0 <= hour < 24:  # Проверка на всякий случай
+            hourly_data[hour] += visit['count']
     
-    # Данные для графика по дням недели
+    visit_chart_data['today'] = hourly_data
+      # Данные для графика по дням недели
     week_start = today_start - timedelta(days=today_start.weekday())  # Понедельник текущей недели
     week_end = week_start + timedelta(days=7)
     weekly_data = [0] * 7  # Пн, Вт, Ср, Чт, Пт, Сб, Вс
     
+    # Получаем данные официальных визитов по дням недели
     week_visits = Visit.objects.filter(
         department_filter,
+        entry_time__gte=week_start,
+        entry_time__lt=week_end
+    ).values('entry_time__week_day').annotate(count=Count('id'))
+    
+    # Получаем данные студенческих визитов по дням недели
+    week_student_visits = StudentVisit.objects.filter(
+        student_department_filter,
         entry_time__gte=week_start,
         entry_time__lt=week_end
     ).values('entry_time__week_day').annotate(count=Count('id'))
@@ -497,9 +522,15 @@ def employee_dashboard_view(request):
         idx = (day - 2) % 7
         weekly_data[idx] += visit['count']
     
-    visit_chart_data['week'] = weekly_data
+    # Добавляем данные студенческих визитов
+    for visit in week_student_visits:
+        day = visit['entry_time__week_day']
+        # Переводим из Django недельного дня в индекс массива (0-6, Пн-Вс)
+        idx = (day - 2) % 7
+        weekly_data[idx] += visit['count']
     
-    # Данные для графика по дням месяца
+    visit_chart_data['week'] = weekly_data
+      # Данные для графика по дням месяца
     month_start = today_start.replace(day=1)  # Первый день текущего месяца
     next_month = month_start.month + 1 if month_start.month < 12 else 1
     next_month_year = month_start.year if month_start.month < 12 else month_start.year + 1
@@ -508,18 +539,33 @@ def employee_dashboard_view(request):
     # Инициализируем массив с нулями для каждого дня месяца (максимум 31 день)
     monthly_data = [0] * 31
     
+    # Получаем данные официальных визитов по дням месяца
     month_visits = Visit.objects.filter(
         department_filter,
         entry_time__gte=month_start,
         entry_time__lt=month_end
     ).values('entry_time__day').annotate(count=Count('id'))
     
+    # Получаем данные студенческих визитов по дням месяца
+    month_student_visits = StudentVisit.objects.filter(
+        student_department_filter,
+        entry_time__gte=month_start,
+        entry_time__lt=month_end
+    ).values('entry_time__day').annotate(count=Count('id'))
+    
+    # Суммируем данные официальных визитов
     for visit in month_visits:
         day = visit['entry_time__day']
         if 1 <= day <= 31:  # Проверка на всякий случай
             monthly_data[day-1] += visit['count']  # -1 т.к. индексы начинаются с 0
     
-    visit_chart_data['month'] = monthly_data    # Конвертируем в JSON для передачи в шаблон
+    # Суммируем данные студенческих визитов
+    for visit in month_student_visits:
+        day = visit['entry_time__day']
+        if 1 <= day <= 31:  # Проверка на всякий случай
+            monthly_data[day-1] += visit['count']  # -1 т.к. индексы начинаются с 0
+    
+    visit_chart_data['month'] = monthly_data# Конвертируем в JSON для передачи в шаблон
     import json
     visit_chart_data_json = json.dumps(visit_chart_data)
     

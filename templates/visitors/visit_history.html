@@ -315,9 +315,8 @@
                   {% endfor %}
                </tbody>
             </table>
-         </div>
-         <div class="card-footer d-flex align-items-center">
-            <p class="m-0 text-secondary">Показано <span>{{ page_obj.start_index }}-{{ page_obj.end_index }}</span> из <span>{{ page_obj.paginator.count }}</span> записей</p>            <div class="dropdown ms-3">
+         </div>         <div class="card-footer d-flex align-items-center">            <p class="m-0 text-secondary">Показано <span>{{ page_obj.start_index }}-{{ page_obj.end_index }}</span> из <span>{{ page_obj.paginator.count }}</span> записей</p>
+            <div class="dropdown ms-3">
                <a class="btn dropdown-toggle" data-bs-toggle="dropdown">
                <span id="page-count" class="me-1">{{ request.GET.per_page|default:page_obj.paginator.per_page }}</span>
                <span>записей на странице</span>
@@ -329,10 +328,9 @@
                   <a class="dropdown-item {% if request.GET.per_page == '100' or not request.GET.per_page and page_obj.paginator.per_page == 100 %}active{% endif %}" onclick="setPageListItems(event)" data-value="100">100 записей</a>
                </div>
             </div>
-            <ul class="pagination m-0 ms-auto">
-               {% if page_obj.has_previous %}
+            <ul class="pagination m-0 ms-auto">               {% if page_obj.has_previous %}
                   <li class="page-item">
-                     <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" tabindex="-1">
+                     <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}" tabindex="-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
                            <path d="M15 6l-6 6l6 6" />
                         </svg>
@@ -348,11 +346,9 @@
                         prev
                      </a>
                   </li>
-               {% endif %}
-
-               {% if page_obj.number > 3 %}
+               {% endif %}               {% if page_obj.number > 3 %}
                   <li class="page-item">
-                     <a class="page-link" href="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">1</a>
+                     <a class="page-link" href="?page=1{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">1</a>
                   </li>
                   {% if page_obj.number > 4 %}
                      <li class="page-item disabled">
@@ -367,9 +363,8 @@
                         <li class="page-item active">
                            <span class="page-link">{{ i }}</span>
                         </li>
-                     {% else %}
-                        <li class="page-item">
-                           <a class="page-link" href="?page={{ i }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">{{ i }}</a>
+                     {% else %}                        <li class="page-item">
+                           <a class="page-link" href="?page={{ i }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">{{ i }}</a>
                         </li>
                      {% endif %}
                   {% endif %}
@@ -380,15 +375,12 @@
                      <li class="page-item disabled">
                         <span class="page-link">...</span>
                      </li>
-                  {% endif %}
-                  <li class="page-item">
-                     <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">{{ page_obj.paginator.num_pages }}</a>
+                  {% endif %}                  <li class="page-item">
+                     <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">{{ page_obj.paginator.num_pages }}</a>
                   </li>
-               {% endif %}
-
-               {% if page_obj.has_next %}
+               {% endif %}               {% if page_obj.has_next %}
                   <li class="page-item">
-                     <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                     <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">
                         next
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
                            <path d="M9 6l6 6l-6 6" />
@@ -495,7 +487,19 @@ function setPageListItems(event) {
     // Update or add the per_page parameter
     params.set('per_page', value);
     // Reset to first page when changing items per page
-    params.set('page', '1');
+    if (params.has('page')) {
+        params.set('page', '1');
+    }
+    
+    // Handle filter_params_url
+    if ('{{ filter_params_url }}') {
+        const filterParams = new URLSearchParams('{{ filter_params_url }}');
+        filterParams.forEach((value, key) => {
+            if (key !== 'per_page' && key !== 'page') {
+                params.set(key, value);
+            }
+        });
+    }
     
     // Update URL and reload page
     url.search = params.toString();
