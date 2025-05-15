@@ -2606,3 +2606,2254 @@ Traceback (most recent call last):
   File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
     raise PermissionDenied
 django.core.exceptions.PermissionDenied
+ERROR 2025-05-15 12:46:53,672 populate_faker_data 52772 46808 Error creating official visit for Оксана Тимуровна Дмитриева: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (28, Мероприятие, 2025-05-08 12:28:00+00, 2025-05-08 12:54:00+00, null, 21, 17, 2, +7 (030) 527-44-80, 2025-05-08 12:30:00+00, CHECKED_OUT, t).
+. Data: {'guest': <Guest: Оксана Тимуровна Дмитриева>, 'employee': <User: ананий_лазарев70>, 'department': None, 'purpose': 'Мероприятие', 'expected_entry_time': datetime.datetime(2025, 5, 8, 12, 30, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_OUT', 'entry_time': datetime.datetime(2025, 5, 8, 12, 28, tzinfo=datetime.timezone.utc), 'exit_time': datetime.datetime(2025, 5, 8, 12, 54, tzinfo=datetime.timezone.utc), 'registered_by': <User: sako>, 'employee_contact_phone': '+7 (030) 527-44-80', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (28, Мероприятие, 2025-05-08 12:28:00+00, 2025-05-08 12:54:00+00, null, 21, 17, 2, +7 (030) 527-44-80, 2025-05-08 12:30:00+00, CHECKED_OUT, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (28, Мероприятие, 2025-05-08 12:28:00+00, 2025-05-08 12:54:00+00, null, 21, 17, 2, +7 (030) 527-44-80, 2025-05-08 12:30:00+00, CHECKED_OUT, t).
+
+INFO 2025-05-15 12:46:53,800 utils 27968 27836 Attempting to send creation notification for official ID 29
+ERROR 2025-05-15 12:46:53,804 populate_faker_data 52772 46808 Error creating official visit for Фомичева София Григорьевна: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (30, Получение справки, 2025-04-15 09:05:00+00, null, null, 18, 20, 2, +7 (083) 901-27-79, 2025-04-15 09:15:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Фомичева София Григорьевна>, 'employee': <User: виктория_ермакова57>, 'department': None, 'purpose': 'Получение справки', 'expected_entry_time': datetime.datetime(2025, 4, 15, 9, 15, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 4, 15, 9, 5, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 (083) 901-27-79', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (30, Получение справки, 2025-04-15 09:05:00+00, null, null, 18, 20, 2, +7 (083) 901-27-79, 2025-04-15 09:15:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (30, Получение справки, 2025-04-15 09:05:00+00, null, null, 18, 20, 2, +7 (083) 901-27-79, 2025-04-15 09:15:00+00, CHECKED_IN, t).
+
+ERROR 2025-05-15 12:46:53,815 populate_faker_data 52772 46808 Error creating official visit for Ирина Ждановна Моисеева: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (31, Мероприятие, 2025-04-24 10:27:00+00, 2025-04-24 14:16:00+00, null, 21, 22, 2, +75829220677, 2025-04-24 10:45:00+00, CHECKED_OUT, t).
+. Data: {'guest': <Guest: Ирина Ждановна Моисеева>, 'employee': <User: ананий_лазарев70>, 'department': None, 'purpose': 'Мероприятие', 'expected_entry_time': datetime.datetime(2025, 4, 24, 10, 45, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_OUT', 'entry_time': datetime.datetime(2025, 4, 24, 10, 27, tzinfo=datetime.timezone.utc), 'exit_time': datetime.datetime(2025, 4, 24, 14, 16, tzinfo=datetime.timezone.utc), 'registered_by': <User: sako>, 'employee_contact_phone': '+75829220677', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (31, Мероприятие, 2025-04-24 10:27:00+00, 2025-04-24 14:16:00+00, null, 21, 22, 2, +75829220677, 2025-04-24 10:45:00+00, CHECKED_OUT, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (31, Мероприятие, 2025-04-24 10:27:00+00, 2025-04-24 14:16:00+00, null, 21, 22, 2, +75829220677, 2025-04-24 10:45:00+00, CHECKED_OUT, t).
+
+ERROR 2025-05-15 12:46:53,820 populate_faker_data 52772 46808 Error creating official visit for Елизавета Валентиновна Нестерова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (32, Мероприятие, 2025-04-26 14:41:00+00, null, null, 22, 23, 2, 88367183543, 2025-04-26 14:45:00+00, CHECKED_IN, f).
+. Data: {'guest': <Guest: Елизавета Валентиновна Нестерова>, 'employee': <User: севастьян_ситникова54>, 'department': None, 'purpose': 'Мероприятие', 'expected_entry_time': datetime.datetime(2025, 4, 26, 14, 45, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 4, 26, 14, 41, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '88367183543', 'consent_acknowledged': False}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (32, Мероприятие, 2025-04-26 14:41:00+00, null, null, 22, 23, 2, 88367183543, 2025-04-26 14:45:00+00, CHECKED_IN, f).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (32, Мероприятие, 2025-04-26 14:41:00+00, null, null, 22, 23, 2, 88367183543, 2025-04-26 14:45:00+00, CHECKED_IN, f).
+
+WARNING 2025-05-15 12:46:53,834 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+ERROR 2025-05-15 12:46:53,834 populate_faker_data 52772 46808 Error creating official visit for Терентьев Порфирий Игнатьевич: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (33, Собеседование, 2025-04-27 14:10:00+00, 2025-04-27 15:48:00+00, null, 27, 27, 2, +7 059 532 0682, 2025-04-27 14:15:00+00, CHECKED_OUT, t).
+. Data: {'guest': <Guest: Терентьев Порфирий Игнатьевич>, 'employee': <User: исидор_попова91>, 'department': None, 'purpose': 'Собеседование', 'expected_entry_time': datetime.datetime(2025, 4, 27, 14, 15, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_OUT', 'entry_time': datetime.datetime(2025, 4, 27, 14, 10, tzinfo=datetime.timezone.utc), 'exit_time': datetime.datetime(2025, 4, 27, 15, 48, tzinfo=datetime.timezone.utc), 'registered_by': <User: sako>, 'employee_contact_phone': '+7 059 532 0682', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (33, Собеседование, 2025-04-27 14:10:00+00, 2025-04-27 15:48:00+00, null, 27, 27, 2, +7 059 532 0682, 2025-04-27 14:15:00+00, CHECKED_OUT, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (33, Собеседование, 2025-04-27 14:10:00+00, 2025-04-27 15:48:00+00, null, 27, 27, 2, +7 059 532 0682, 2025-04-27 14:15:00+00, CHECKED_OUT, t).
+
+ERROR 2025-05-15 12:46:53,840 populate_faker_data 52772 46808 Error creating official visit for Зыкова Кира Леонидовна: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (34, Подача документов, 2025-05-12 10:44:00+00, null, null, 21, 28, 2, +7 (097) 118-0399, 2025-05-12 10:45:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Зыкова Кира Леонидовна>, 'employee': <User: ананий_лазарев70>, 'department': None, 'purpose': 'Подача документов', 'expected_entry_time': datetime.datetime(2025, 5, 12, 10, 45, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 5, 12, 10, 44, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 (097) 118-0399', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (34, Подача документов, 2025-05-12 10:44:00+00, null, null, 21, 28, 2, +7 (097) 118-0399, 2025-05-12 10:45:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (34, Подача документов, 2025-05-12 10:44:00+00, null, null, 21, 28, 2, +7 (097) 118-0399, 2025-05-12 10:45:00+00, CHECKED_IN, t).
+
+ERROR 2025-05-15 12:46:53,852 populate_faker_data 52772 46808 Error creating official visit for Ананий Тарасович Колобов: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (35, Собеседование, 2025-04-28 11:06:00+00, null, null, 22, 32, 2, +7 982 006 17 11, 2025-04-28 11:30:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Ананий Тарасович Колобов>, 'employee': <User: севастьян_ситникова54>, 'department': None, 'purpose': 'Собеседование', 'expected_entry_time': datetime.datetime(2025, 4, 28, 11, 30, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 4, 28, 11, 6, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 982 006 17 11', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (35, Собеседование, 2025-04-28 11:06:00+00, null, null, 22, 32, 2, +7 982 006 17 11, 2025-04-28 11:30:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (35, Собеседование, 2025-04-28 11:06:00+00, null, null, 22, 32, 2, +7 982 006 17 11, 2025-04-28 11:30:00+00, CHECKED_IN, t).
+
+ERROR 2025-05-15 12:46:53,862 populate_faker_data 52772 46808 Error creating official visit for Кононова Ангелина Львовна: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (36, Личный вопрос, null, null, null, 15, 35, 2, +72251368656, 2025-05-07 08:00:00+00, AWAITING, f).
+. Data: {'guest': <Guest: Кононова Ангелина Львовна>, 'employee': <User: никифор_антонова54>, 'department': None, 'purpose': 'Личный вопрос', 'expected_entry_time': datetime.datetime(2025, 5, 7, 8, 0, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+72251368656', 'consent_acknowledged': False}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (36, Личный вопрос, null, null, null, 15, 35, 2, +72251368656, 2025-05-07 08:00:00+00, AWAITING, f).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (36, Личный вопрос, null, null, null, 15, 35, 2, +72251368656, 2025-05-07 08:00:00+00, AWAITING, f).
+
+ERROR 2025-05-15 12:46:53,877 populate_faker_data 52772 46808 Error creating official visit for Раиса Эльдаровна Потапова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (38, Подача документов, null, null, null, 21, 40, 2, +7 (442) 248-6309, 2025-05-06 17:30:00+00, AWAITING, f).
+. Data: {'guest': <Guest: Раиса Эльдаровна Потапова>, 'employee': <User: ананий_лазарев70>, 'department': None, 'purpose': 'Подача документов', 'expected_entry_time': datetime.datetime(2025, 5, 6, 17, 30, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 (442) 248-6309', 'consent_acknowledged': False}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (38, Подача документов, null, null, null, 21, 40, 2, +7 (442) 248-6309, 2025-05-06 17:30:00+00, AWAITING, f).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (38, Подача документов, null, null, null, 21, 40, 2, +7 (442) 248-6309, 2025-05-06 17:30:00+00, AWAITING, f).
+
+ERROR 2025-05-15 12:46:53,882 populate_faker_data 52772 46808 Error creating official visit for Веселова Синклитикия Романовна: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (39, Подача документов, 2025-05-12 14:51:00+00, null, null, 21, 41, 2, 8 039 343 28 98, 2025-05-12 15:15:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Веселова Синклитикия Романовна>, 'employee': <User: ананий_лазарев70>, 'department': None, 'purpose': 'Подача документов', 'expected_entry_time': datetime.datetime(2025, 5, 12, 15, 15, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 5, 12, 14, 51, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '8 039 343 28 98', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (39, Подача документов, 2025-05-12 14:51:00+00, null, null, 21, 41, 2, 8 039 343 28 98, 2025-05-12 15:15:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (39, Подача документов, 2025-05-12 14:51:00+00, null, null, 21, 41, 2, 8 039 343 28 98, 2025-05-12 15:15:00+00, CHECKED_IN, t).
+
+ERROR 2025-05-15 12:46:53,890 populate_faker_data 52772 46808 Error creating official visit for Наина Антоновна Мясникова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (41, Получение справки, null, null, null, 23, 43, 2, +7 (936) 866-6461, 2025-05-01 17:30:00+00, AWAITING, t).
+. Data: {'guest': <Guest: Наина Антоновна Мясникова>, 'employee': <User: максимильян_мартынов84>, 'department': None, 'purpose': 'Получение справки', 'expected_entry_time': datetime.datetime(2025, 5, 1, 17, 30, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 (936) 866-6461', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (41, Получение справки, null, null, null, 23, 43, 2, +7 (936) 866-6461, 2025-05-01 17:30:00+00, AWAITING, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (41, Получение справки, null, null, null, 23, 43, 2, +7 (936) 866-6461, 2025-05-01 17:30:00+00, AWAITING, t).
+
+ERROR 2025-05-15 12:46:53,895 populate_faker_data 52772 46808 Error creating official visit for Евпраксия Оскаровна Баранова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (42, Деловая встреча, 2025-05-05 09:51:00+00, 2025-05-05 12:47:00+00, null, 27, 44, 2, 8 895 478 1726, 2025-05-05 10:00:00+00, CHECKED_OUT, t).
+. Data: {'guest': <Guest: Евпраксия Оскаровна Баранова>, 'employee': <User: исидор_попова91>, 'department': None, 'purpose': 'Деловая встреча', 'expected_entry_time': datetime.datetime(2025, 5, 5, 10, 0, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_OUT', 'entry_time': datetime.datetime(2025, 5, 5, 9, 51, tzinfo=datetime.timezone.utc), 'exit_time': datetime.datetime(2025, 5, 5, 12, 47, tzinfo=datetime.timezone.utc), 'registered_by': <User: sako>, 'employee_contact_phone': '8 895 478 1726', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (42, Деловая встреча, 2025-05-05 09:51:00+00, 2025-05-05 12:47:00+00, null, 27, 44, 2, 8 895 478 1726, 2025-05-05 10:00:00+00, CHECKED_OUT, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (42, Деловая встреча, 2025-05-05 09:51:00+00, 2025-05-05 12:47:00+00, null, 27, 44, 2, 8 895 478 1726, 2025-05-05 10:00:00+00, CHECKED_OUT, t).
+
+ERROR 2025-05-15 12:46:53,902 populate_faker_data 52772 46808 Error creating official visit for Кудрявцева Мария Руслановна: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (43, Получение справки, null, null, null, 21, 46, 2, 8 (548) 858-6408, 2025-04-17 16:45:00+00, CANCELLED, f).
+. Data: {'guest': <Guest: Кудрявцева Мария Руслановна>, 'employee': <User: ананий_лазарев70>, 'department': None, 'purpose': 'Получение справки', 'expected_entry_time': datetime.datetime(2025, 4, 17, 16, 45, tzinfo=datetime.timezone.utc), 'status': 'CANCELLED', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '8 (548) 858-6408', 'consent_acknowledged': False}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (43, Получение справки, null, null, null, 21, 46, 2, 8 (548) 858-6408, 2025-04-17 16:45:00+00, CANCELLED, f).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (43, Получение справки, null, null, null, 21, 46, 2, 8 (548) 858-6408, 2025-04-17 16:45:00+00, CANCELLED, f).
+
+ERROR 2025-05-15 12:46:53,910 populate_faker_data 52772 46808 Error creating official visit for Максимильян Глебович Смирнов: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (44, Консультация, null, null, null, 17, 48, 2, +7 (919) 792-57-62, 2025-05-16 12:00:00+00, AWAITING, f).
+. Data: {'guest': <Guest: Максимильян Глебович Смирнов>, 'employee': <User: давыд_носов68>, 'department': None, 'purpose': 'Консультация', 'expected_entry_time': datetime.datetime(2025, 5, 16, 12, 0, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 (919) 792-57-62', 'consent_acknowledged': False}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (44, Консультация, null, null, null, 17, 48, 2, +7 (919) 792-57-62, 2025-05-16 12:00:00+00, AWAITING, f).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (44, Консультация, null, null, null, 17, 48, 2, +7 (919) 792-57-62, 2025-05-16 12:00:00+00, AWAITING, f).
+
+ERROR 2025-05-15 12:46:53,920 populate_faker_data 52772 46808 Error creating official visit for Жанна Алексеевна Вишнякова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (46, Мероприятие, 2025-04-29 16:22:00+00, null, null, 26, 51, 2, +7 561 936 4838, 2025-04-29 16:45:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Жанна Алексеевна Вишнякова>, 'employee': <User: осип_белозеров71>, 'department': None, 'purpose': 'Мероприятие', 'expected_entry_time': datetime.datetime(2025, 4, 29, 16, 45, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 4, 29, 16, 22, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 561 936 4838', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (46, Мероприятие, 2025-04-29 16:22:00+00, null, null, 26, 51, 2, +7 561 936 4838, 2025-04-29 16:45:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (46, Мероприятие, 2025-04-29 16:22:00+00, null, null, 26, 51, 2, +7 561 936 4838, 2025-04-29 16:45:00+00, CHECKED_IN, t).
+
+ERROR 2025-05-15 12:46:53,924 populate_faker_data 52772 46808 Error creating official visit for Бронислав Егорович Исаков: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (47, Консультация, null, null, null, 16, 52, 2, +7 (661) 985-78-66, 2025-05-16 09:15:00+00, AWAITING, t).
+. Data: {'guest': <Guest: Бронислав Егорович Исаков>, 'employee': <User: исай_шестакова56>, 'department': None, 'purpose': 'Консультация', 'expected_entry_time': datetime.datetime(2025, 5, 16, 9, 15, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 (661) 985-78-66', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (47, Консультация, null, null, null, 16, 52, 2, +7 (661) 985-78-66, 2025-05-16 09:15:00+00, AWAITING, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (47, Консультация, null, null, null, 16, 52, 2, +7 (661) 985-78-66, 2025-05-16 09:15:00+00, AWAITING, t).
+
+ERROR 2025-05-15 12:46:53,936 populate_faker_data 52772 46808 Error creating official visit for Регина Вячеславовна Пахомова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (49, Собеседование, null, null, null, 14, 56, 2, +7 764 299 59 77, 2025-04-25 10:45:00+00, AWAITING, t).
+. Data: {'guest': <Guest: Регина Вячеславовна Пахомова>, 'employee': <User: севастьян_зимина50>, 'department': None, 'purpose': 'Собеседование', 'expected_entry_time': datetime.datetime(2025, 4, 25, 10, 45, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 764 299 59 77', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (49, Собеседование, null, null, null, 14, 56, 2, +7 764 299 59 77, 2025-04-25 10:45:00+00, AWAITING, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (49, Собеседование, null, null, null, 14, 56, 2, +7 764 299 59 77, 2025-04-25 10:45:00+00, AWAITING, t).
+
+ERROR 2025-05-15 12:46:53,941 populate_faker_data 52772 46808 Error creating official visit for Цветкова Оксана Вениаминовна: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (50, Мероприятие, 2025-04-27 15:53:00+00, 2025-04-27 16:12:00+00, null, 16, 57, 2, 8 (278) 787-40-60, 2025-04-27 16:15:00+00, CHECKED_OUT, t).
+. Data: {'guest': <Guest: Цветкова Оксана Вениаминовна>, 'employee': <User: исай_шестакова56>, 'department': None, 'purpose': 'Мероприятие', 'expected_entry_time': datetime.datetime(2025, 4, 27, 16, 15, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_OUT', 'entry_time': datetime.datetime(2025, 4, 27, 15, 53, tzinfo=datetime.timezone.utc), 'exit_time': datetime.datetime(2025, 4, 27, 16, 12, tzinfo=datetime.timezone.utc), 'registered_by': <User: sako>, 'employee_contact_phone': '8 (278) 787-40-60', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (50, Мероприятие, 2025-04-27 15:53:00+00, 2025-04-27 16:12:00+00, null, 16, 57, 2, 8 (278) 787-40-60, 2025-04-27 16:15:00+00, CHECKED_OUT, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (50, Мероприятие, 2025-04-27 15:53:00+00, 2025-04-27 16:12:00+00, null, 16, 57, 2, 8 (278) 787-40-60, 2025-04-27 16:15:00+00, CHECKED_OUT, t).
+
+ERROR 2025-05-15 12:46:53,947 populate_faker_data 52772 46808 Error creating official visit for Нинель Андреевна Красильникова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (51, Деловая встреча, 2025-05-08 16:19:00+00, null, null, 25, 58, 2, +7 798 556 80 22, 2025-05-08 16:30:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Нинель Андреевна Красильникова>, 'employee': <User: денис_никифоров76>, 'department': None, 'purpose': 'Деловая встреча', 'expected_entry_time': datetime.datetime(2025, 5, 8, 16, 30, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 5, 8, 16, 19, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 798 556 80 22', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (51, Деловая встреча, 2025-05-08 16:19:00+00, null, null, 25, 58, 2, +7 798 556 80 22, 2025-05-08 16:30:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (51, Деловая встреча, 2025-05-08 16:19:00+00, null, null, 25, 58, 2, +7 798 556 80 22, 2025-05-08 16:30:00+00, CHECKED_IN, t).
+
+ERROR 2025-05-15 12:46:53,954 populate_faker_data 52772 46808 Error creating official visit for Олимпиада Мироновна Большакова: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (52, Личный вопрос, 2025-05-03 11:59:00+00, null, null, 21, 60, 2, 89434627096, 2025-05-03 12:15:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Олимпиада Мироновна Большакова>, 'employee': <User: ананий_лазарев70>, 'department': None, 'purpose': 'Личный вопрос', 'expected_entry_time': datetime.datetime(2025, 5, 3, 12, 15, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 5, 3, 11, 59, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '89434627096', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (52, Личный вопрос, 2025-05-03 11:59:00+00, null, null, 21, 60, 2, 89434627096, 2025-05-03 12:15:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (52, Личный вопрос, 2025-05-03 11:59:00+00, null, null, 21, 60, 2, 89434627096, 2025-05-03 12:15:00+00, CHECKED_IN, t).
+
+ERROR 2025-05-15 12:46:53,990 populate_faker_data 52772 46808 Error creating official visit for Ефремова Фаина Тарасовна: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (53, Собеседование, null, null, null, 16, 61, 2, 81788808686, 2025-05-17 08:00:00+00, AWAITING, t).
+. Data: {'guest': <Guest: Ефремова Фаина Тарасовна>, 'employee': <User: исай_шестакова56>, 'department': None, 'purpose': 'Собеседование', 'expected_entry_time': datetime.datetime(2025, 5, 17, 8, 0, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '81788808686', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (53, Собеседование, null, null, null, 16, 61, 2, 81788808686, 2025-05-17 08:00:00+00, AWAITING, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (53, Собеседование, null, null, null, 16, 61, 2, 81788808686, 2025-05-17 08:00:00+00, AWAITING, t).
+
+ERROR 2025-05-15 12:46:53,996 populate_faker_data 52772 46808 Error creating official visit for Белоусов Филарет Аксёнович: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (54, Собеседование, null, null, null, 17, 62, 2, +7 783 945 91 29, 2025-04-30 08:15:00+00, AWAITING, t).
+. Data: {'guest': <Guest: Белоусов Филарет Аксёнович>, 'employee': <User: давыд_носов68>, 'department': None, 'purpose': 'Собеседование', 'expected_entry_time': datetime.datetime(2025, 4, 30, 8, 15, tzinfo=datetime.timezone.utc), 'status': 'AWAITING', 'entry_time': None, 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '+7 783 945 91 29', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (54, Собеседование, null, null, null, 17, 62, 2, +7 783 945 91 29, 2025-04-30 08:15:00+00, AWAITING, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (54, Собеседование, null, null, null, 17, 62, 2, +7 783 945 91 29, 2025-04-30 08:15:00+00, AWAITING, t).
+
+ERROR 2025-05-15 12:46:54,016 populate_faker_data 52772 46808 Error creating official visit for Давыдов Любим Зиновьевич: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (55, Консультация, 2025-05-02 17:39:00+00, null, null, 16, 66, 2, 8 (189) 871-34-94, 2025-05-02 17:45:00+00, CHECKED_IN, t).
+. Data: {'guest': <Guest: Давыдов Любим Зиновьевич>, 'employee': <User: исай_шестакова56>, 'department': None, 'purpose': 'Консультация', 'expected_entry_time': datetime.datetime(2025, 5, 2, 17, 45, tzinfo=datetime.timezone.utc), 'status': 'CHECKED_IN', 'entry_time': datetime.datetime(2025, 5, 2, 17, 39, tzinfo=datetime.timezone.utc), 'exit_time': None, 'registered_by': <User: sako>, 'employee_contact_phone': '8 (189) 871-34-94', 'consent_acknowledged': True}
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (55, Консультация, 2025-05-02 17:39:00+00, null, null, 16, 66, 2, 8 (189) 871-34-94, 2025-05-02 17:45:00+00, CHECKED_IN, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\management\commands\populate_faker_data.py", line 251, in handle
+    visit = Visit.objects.create(**visit_data)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "department_id" of relation "visitors_visit" violates not-null constraint
+DETAIL:  Failing row contains (55, Консультация, 2025-05-02 17:39:00+00, null, null, 16, 66, 2, 8 (189) 871-34-94, 2025-05-02 17:45:00+00, CHECKED_IN, t).
+
+INFO 2025-05-15 12:46:56,098 utils 27968 27836 Visit notification email for official ID 29 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:46:56,102 utils 27968 27836 Attempting to send creation notification for student ID 1
+INFO 2025-05-15 12:46:56,102 utils 27968 27836 Notification skipped for StudentVisit ID 1 as per current logic.
+INFO 2025-05-15 12:46:56,105 utils 27968 27836 Attempting to send creation notification for student ID 2
+INFO 2025-05-15 12:46:56,105 utils 27968 27836 Notification skipped for StudentVisit ID 2 as per current logic.
+INFO 2025-05-15 12:46:56,107 utils 27968 27836 Attempting to send creation notification for student ID 3
+INFO 2025-05-15 12:46:56,107 utils 27968 27836 Notification skipped for StudentVisit ID 3 as per current logic.
+INFO 2025-05-15 12:46:56,110 utils 27968 27836 Attempting to send creation notification for student ID 4
+INFO 2025-05-15 12:46:56,110 utils 27968 27836 Notification skipped for StudentVisit ID 4 as per current logic.
+INFO 2025-05-15 12:46:56,113 utils 27968 27836 Attempting to send creation notification for student ID 5
+INFO 2025-05-15 12:46:56,113 utils 27968 27836 Notification skipped for StudentVisit ID 5 as per current logic.
+INFO 2025-05-15 12:46:56,115 utils 27968 27836 Attempting to send creation notification for student ID 6
+INFO 2025-05-15 12:46:56,116 utils 27968 27836 Notification skipped for StudentVisit ID 6 as per current logic.
+INFO 2025-05-15 12:46:56,118 utils 27968 27836 Attempting to send creation notification for student ID 7
+INFO 2025-05-15 12:46:56,118 utils 27968 27836 Notification skipped for StudentVisit ID 7 as per current logic.
+INFO 2025-05-15 12:46:56,121 utils 27968 27836 Attempting to send creation notification for student ID 8
+INFO 2025-05-15 12:46:56,121 utils 27968 27836 Notification skipped for StudentVisit ID 8 as per current logic.
+INFO 2025-05-15 12:46:56,123 utils 27968 27836 Attempting to send creation notification for student ID 9
+INFO 2025-05-15 12:46:56,123 utils 27968 27836 Notification skipped for StudentVisit ID 9 as per current logic.
+INFO 2025-05-15 12:46:56,126 utils 27968 27836 Attempting to send creation notification for student ID 10
+INFO 2025-05-15 12:46:56,126 utils 27968 27836 Notification skipped for StudentVisit ID 10 as per current logic.
+INFO 2025-05-15 12:46:56,129 utils 27968 27836 Attempting to send creation notification for student ID 11
+INFO 2025-05-15 12:46:56,129 utils 27968 27836 Notification skipped for StudentVisit ID 11 as per current logic.
+INFO 2025-05-15 12:46:56,132 utils 27968 27836 Attempting to send creation notification for student ID 12
+INFO 2025-05-15 12:46:56,132 utils 27968 27836 Notification skipped for StudentVisit ID 12 as per current logic.
+INFO 2025-05-15 12:46:56,134 utils 27968 27836 Attempting to send creation notification for official ID 37
+WARNING 2025-05-15 12:46:56,168 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:46:58,213 utils 27968 27836 Visit notification email for official ID 37 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:46:58,217 utils 27968 27836 Attempting to send creation notification for student ID 13
+INFO 2025-05-15 12:46:58,217 utils 27968 27836 Notification skipped for StudentVisit ID 13 as per current logic.
+INFO 2025-05-15 12:46:58,220 utils 27968 27836 Attempting to send creation notification for official ID 40
+WARNING 2025-05-15 12:46:58,253 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:47:00,084 utils 27968 27836 Visit notification email for official ID 40 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:47:00,088 utils 27968 27836 Attempting to send creation notification for student ID 14
+INFO 2025-05-15 12:47:00,088 utils 27968 27836 Notification skipped for StudentVisit ID 14 as per current logic.
+INFO 2025-05-15 12:47:00,091 utils 27968 27836 Attempting to send creation notification for student ID 15
+INFO 2025-05-15 12:47:00,091 utils 27968 27836 Notification skipped for StudentVisit ID 15 as per current logic.
+INFO 2025-05-15 12:47:00,094 utils 27968 27836 Attempting to send creation notification for official ID 45
+WARNING 2025-05-15 12:47:00,140 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:47:02,014 utils 27968 27836 Visit notification email for official ID 45 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:47:02,018 utils 27968 27836 Attempting to send creation notification for student ID 16
+INFO 2025-05-15 12:47:02,018 utils 27968 27836 Notification skipped for StudentVisit ID 16 as per current logic.
+INFO 2025-05-15 12:47:02,021 utils 27968 27836 Attempting to send creation notification for student ID 17
+INFO 2025-05-15 12:47:02,021 utils 27968 27836 Notification skipped for StudentVisit ID 17 as per current logic.
+INFO 2025-05-15 12:47:02,024 utils 27968 27836 Attempting to send creation notification for student ID 18
+INFO 2025-05-15 12:47:02,024 utils 27968 27836 Notification skipped for StudentVisit ID 18 as per current logic.
+INFO 2025-05-15 12:47:02,027 utils 27968 27836 Attempting to send creation notification for official ID 48
+WARNING 2025-05-15 12:47:02,060 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:47:03,872 utils 27968 27836 Visit notification email for official ID 48 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:47:03,877 utils 27968 27836 Attempting to send creation notification for student ID 19
+INFO 2025-05-15 12:47:03,877 utils 27968 27836 Notification skipped for StudentVisit ID 19 as per current logic.
+INFO 2025-05-15 12:47:03,880 utils 27968 27836 Attempting to send creation notification for student ID 20
+INFO 2025-05-15 12:47:03,880 utils 27968 27836 Notification skipped for StudentVisit ID 20 as per current logic.
+INFO 2025-05-15 12:47:03,883 utils 27968 27836 Attempting to send creation notification for student ID 21
+INFO 2025-05-15 12:47:03,883 utils 27968 27836 Notification skipped for StudentVisit ID 21 as per current logic.
+INFO 2025-05-15 12:47:03,886 utils 27968 27836 Attempting to send creation notification for student ID 22
+INFO 2025-05-15 12:47:03,886 utils 27968 27836 Notification skipped for StudentVisit ID 22 as per current logic.
+INFO 2025-05-15 12:49:04,412 utils 27968 27836 Attempting to send creation notification for student ID 23
+INFO 2025-05-15 12:49:04,412 utils 27968 27836 Notification skipped for StudentVisit ID 23 as per current logic.
+INFO 2025-05-15 12:49:04,415 utils 27968 27836 Attempting to send creation notification for official ID 56
+WARNING 2025-05-15 12:49:04,447 utils 27968 27836 Department 'Отдел кадров' has no director assigned.
+INFO 2025-05-15 12:49:06,328 utils 27968 27836 Visit notification email for official ID 56 SENT successfully to ['Host:исидор.попова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:06,332 utils 27968 27836 Attempting to send creation notification for student ID 24
+INFO 2025-05-15 12:49:06,333 utils 27968 27836 Notification skipped for StudentVisit ID 24 as per current logic.
+INFO 2025-05-15 12:49:06,336 utils 27968 27836 Attempting to send creation notification for official ID 57
+WARNING 2025-05-15 12:49:06,366 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:08,211 utils 27968 27836 Visit notification email for official ID 57 SENT successfully to ['Host:куприян.соколов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:08,215 utils 27968 27836 Attempting to send creation notification for student ID 25
+INFO 2025-05-15 12:49:08,215 utils 27968 27836 Notification skipped for StudentVisit ID 25 as per current logic.
+INFO 2025-05-15 12:49:08,218 utils 27968 27836 Attempting to send creation notification for official ID 58
+WARNING 2025-05-15 12:49:08,253 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:49:10,049 utils 27968 27836 Visit notification email for official ID 58 SENT successfully to ['Host:денис.никифоров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:10,053 utils 27968 27836 Attempting to send creation notification for official ID 59
+WARNING 2025-05-15 12:49:10,082 utils 27968 27836 Department 'Отдел кадров' has no director assigned.
+INFO 2025-05-15 12:49:11,885 utils 27968 27836 Visit notification email for official ID 59 SENT successfully to ['Host:севастьян.ситникова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:11,889 utils 27968 27836 Attempting to send creation notification for official ID 60
+WARNING 2025-05-15 12:49:11,927 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:49:13,736 utils 27968 27836 Visit notification email for official ID 60 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:13,739 utils 27968 27836 Attempting to send creation notification for official ID 61
+WARNING 2025-05-15 12:49:13,772 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:15,597 utils 27968 27836 Visit notification email for official ID 61 SENT successfully to ['Host:зиновий.ильин@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:15,601 utils 27968 27836 Attempting to send creation notification for official ID 62
+WARNING 2025-05-15 12:49:15,630 utils 27968 27836 Department 'Учебный отдел' has no director assigned.
+INFO 2025-05-15 12:49:17,469 utils 27968 27836 Visit notification email for official ID 62 SENT successfully to ['Host:севастьян.зимина@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:17,473 utils 27968 27836 Attempting to send creation notification for official ID 63
+WARNING 2025-05-15 12:49:17,614 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:49:19,405 utils 27968 27836 Visit notification email for official ID 63 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:19,409 utils 27968 27836 Attempting to send creation notification for official ID 64
+WARNING 2025-05-15 12:49:19,440 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:21,337 utils 27968 27836 Visit notification email for official ID 64 SENT successfully to ['Host:куприян.соколов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:21,342 utils 27968 27836 Attempting to send creation notification for student ID 26
+INFO 2025-05-15 12:49:21,342 utils 27968 27836 Notification skipped for StudentVisit ID 26 as per current logic.
+INFO 2025-05-15 12:49:21,345 utils 27968 27836 Attempting to send creation notification for official ID 65
+WARNING 2025-05-15 12:49:21,376 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:23,233 utils 27968 27836 Visit notification email for official ID 65 SENT successfully to ['Host:исай.шестакова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:23,237 utils 27968 27836 Attempting to send creation notification for official ID 66
+WARNING 2025-05-15 12:49:23,378 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:25,151 utils 27968 27836 Visit notification email for official ID 66 SENT successfully to ['Host:зиновий.ильин@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:25,155 utils 27968 27836 Attempting to send creation notification for student ID 27
+INFO 2025-05-15 12:49:25,155 utils 27968 27836 Notification skipped for StudentVisit ID 27 as per current logic.
+INFO 2025-05-15 12:49:25,158 utils 27968 27836 Attempting to send creation notification for student ID 28
+INFO 2025-05-15 12:49:25,158 utils 27968 27836 Notification skipped for StudentVisit ID 28 as per current logic.
+INFO 2025-05-15 12:49:25,161 utils 27968 27836 Attempting to send creation notification for student ID 29
+INFO 2025-05-15 12:49:25,161 utils 27968 27836 Notification skipped for StudentVisit ID 29 as per current logic.
+INFO 2025-05-15 12:49:25,164 utils 27968 27836 Attempting to send creation notification for student ID 30
+INFO 2025-05-15 12:49:25,164 utils 27968 27836 Notification skipped for StudentVisit ID 30 as per current logic.
+INFO 2025-05-15 12:49:25,167 utils 27968 27836 Attempting to send creation notification for official ID 67
+WARNING 2025-05-15 12:49:25,310 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:27,138 utils 27968 27836 Visit notification email for official ID 67 SENT successfully to ['Host:григорий.устинов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:27,142 utils 27968 27836 Attempting to send creation notification for student ID 31
+INFO 2025-05-15 12:49:27,143 utils 27968 27836 Notification skipped for StudentVisit ID 31 as per current logic.
+INFO 2025-05-15 12:49:27,146 utils 27968 27836 Attempting to send creation notification for official ID 68
+WARNING 2025-05-15 12:49:27,180 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:49:28,985 utils 27968 27836 Visit notification email for official ID 68 SENT successfully to ['Host:денис.никифоров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:28,989 utils 27968 27836 Attempting to send creation notification for official ID 69
+WARNING 2025-05-15 12:49:29,022 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:49:30,795 utils 27968 27836 Visit notification email for official ID 69 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:30,799 utils 27968 27836 Attempting to send creation notification for official ID 70
+WARNING 2025-05-15 12:49:30,831 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:32,629 utils 27968 27836 Visit notification email for official ID 70 SENT successfully to ['Host:григорий.устинов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:32,633 utils 27968 27836 Attempting to send creation notification for student ID 32
+INFO 2025-05-15 12:49:32,633 utils 27968 27836 Notification skipped for StudentVisit ID 32 as per current logic.
+INFO 2025-05-15 12:49:32,636 utils 27968 27836 Attempting to send creation notification for official ID 71
+WARNING 2025-05-15 12:49:32,664 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:34,459 utils 27968 27836 Visit notification email for official ID 71 SENT successfully to ['Host:зиновий.ильин@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:34,463 utils 27968 27836 Attempting to send creation notification for student ID 33
+INFO 2025-05-15 12:49:34,463 utils 27968 27836 Notification skipped for StudentVisit ID 33 as per current logic.
+INFO 2025-05-15 12:49:34,466 utils 27968 27836 Attempting to send creation notification for official ID 72
+WARNING 2025-05-15 12:49:34,597 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:49:36,351 utils 27968 27836 Visit notification email for official ID 72 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:36,355 utils 27968 27836 Attempting to send creation notification for student ID 34
+INFO 2025-05-15 12:49:36,355 utils 27968 27836 Notification skipped for StudentVisit ID 34 as per current logic.
+INFO 2025-05-15 12:49:36,359 utils 27968 27836 Attempting to send creation notification for official ID 73
+WARNING 2025-05-15 12:49:36,389 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:38,238 utils 27968 27836 Visit notification email for official ID 73 SENT successfully to ['Host:куприян.соколов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:38,242 utils 27968 27836 Attempting to send creation notification for official ID 74
+WARNING 2025-05-15 12:49:38,277 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:49:40,110 utils 27968 27836 Visit notification email for official ID 74 SENT successfully to ['Host:денис.никифоров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:40,114 utils 27968 27836 Attempting to send creation notification for official ID 75
+WARNING 2025-05-15 12:49:40,152 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:49:41,921 utils 27968 27836 Visit notification email for official ID 75 SENT successfully to ['Host:виктория.ермакова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:41,925 utils 27968 27836 Attempting to send creation notification for student ID 35
+INFO 2025-05-15 12:49:41,926 utils 27968 27836 Notification skipped for StudentVisit ID 35 as per current logic.
+INFO 2025-05-15 12:49:41,929 utils 27968 27836 Attempting to send creation notification for official ID 76
+WARNING 2025-05-15 12:49:41,963 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:49:43,775 utils 27968 27836 Visit notification email for official ID 76 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:43,779 utils 27968 27836 Attempting to send creation notification for student ID 36
+INFO 2025-05-15 12:49:43,779 utils 27968 27836 Notification skipped for StudentVisit ID 36 as per current logic.
+INFO 2025-05-15 12:49:43,782 utils 27968 27836 Attempting to send creation notification for official ID 77
+WARNING 2025-05-15 12:49:43,814 utils 27968 27836 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-15 12:49:46,318 utils 27968 27836 Visit notification email for official ID 77 SENT successfully to ['Host:azat.absadyk@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:46,322 utils 27968 27836 Attempting to send creation notification for official ID 78
+WARNING 2025-05-15 12:49:46,350 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:48,170 utils 27968 27836 Visit notification email for official ID 78 SENT successfully to ['Host:исай.шестакова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:48,174 utils 27968 27836 Attempting to send creation notification for official ID 79
+WARNING 2025-05-15 12:49:48,222 utils 27968 27836 Department 'Отдел кадров' has no director assigned.
+INFO 2025-05-15 12:49:50,055 utils 27968 27836 Visit notification email for official ID 79 SENT successfully to ['Host:севастьян.ситникова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:50,059 utils 27968 27836 Attempting to send creation notification for official ID 80
+WARNING 2025-05-15 12:49:50,092 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:49:51,935 utils 27968 27836 Visit notification email for official ID 80 SENT successfully to ['Host:максимильян.мартынов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:51,939 utils 27968 27836 Attempting to send creation notification for student ID 37
+INFO 2025-05-15 12:49:51,939 utils 27968 27836 Notification skipped for StudentVisit ID 37 as per current logic.
+INFO 2025-05-15 12:49:51,942 utils 27968 27836 Attempting to send creation notification for official ID 81
+WARNING 2025-05-15 12:49:52,077 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:49:53,853 utils 27968 27836 Visit notification email for official ID 81 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:53,857 utils 27968 27836 Attempting to send creation notification for official ID 82
+WARNING 2025-05-15 12:49:53,890 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:49:55,689 utils 27968 27836 Visit notification email for official ID 82 SENT successfully to ['Host:григорий.устинов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:55,693 utils 27968 27836 Attempting to send creation notification for official ID 83
+WARNING 2025-05-15 12:49:55,723 utils 27968 27836 Department 'Администрация' has no director assigned.
+INFO 2025-05-15 12:49:57,549 utils 27968 27836 Visit notification email for official ID 83 SENT successfully to ['Host:осип.белозеров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:57,553 utils 27968 27836 Attempting to send creation notification for student ID 38
+INFO 2025-05-15 12:49:57,553 utils 27968 27836 Notification skipped for StudentVisit ID 38 as per current logic.
+INFO 2025-05-15 12:49:57,557 utils 27968 27836 Attempting to send creation notification for official ID 84
+WARNING 2025-05-15 12:49:57,588 utils 27968 27836 Department 'Администрация' has no director assigned.
+INFO 2025-05-15 12:49:59,385 utils 27968 27836 Visit notification email for official ID 84 SENT successfully to ['Host:осип.белозеров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:49:59,389 utils 27968 27836 Attempting to send creation notification for student ID 39
+INFO 2025-05-15 12:49:59,389 utils 27968 27836 Notification skipped for StudentVisit ID 39 as per current logic.
+INFO 2025-05-15 12:49:59,392 utils 27968 27836 Attempting to send creation notification for official ID 85
+WARNING 2025-05-15 12:49:59,525 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:50:01,342 utils 27968 27836 Visit notification email for official ID 85 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:01,347 utils 27968 27836 Attempting to send creation notification for official ID 86
+WARNING 2025-05-15 12:50:01,377 utils 27968 27836 Department 'Отдел кадров' has no director assigned.
+INFO 2025-05-15 12:50:03,201 utils 27968 27836 Visit notification email for official ID 86 SENT successfully to ['Host:исидор.попова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:03,205 utils 27968 27836 Attempting to send creation notification for official ID 87
+WARNING 2025-05-15 12:50:03,234 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:50:05,015 utils 27968 27836 Visit notification email for official ID 87 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:05,019 utils 27968 27836 Attempting to send creation notification for official ID 88
+WARNING 2025-05-15 12:50:05,049 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:50:07,146 utils 27968 27836 Visit notification email for official ID 88 SENT successfully to ['Host:yrysbek.adilbekuly@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:07,150 utils 27968 27836 Attempting to send creation notification for student ID 40
+INFO 2025-05-15 12:50:07,150 utils 27968 27836 Notification skipped for StudentVisit ID 40 as per current logic.
+INFO 2025-05-15 12:50:07,153 utils 27968 27836 Attempting to send creation notification for official ID 89
+WARNING 2025-05-15 12:50:07,183 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:50:09,570 utils 27968 27836 Visit notification email for official ID 89 SENT successfully to ['Host:григорий.устинов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:09,574 utils 27968 27836 Attempting to send creation notification for student ID 41
+INFO 2025-05-15 12:50:09,574 utils 27968 27836 Notification skipped for StudentVisit ID 41 as per current logic.
+INFO 2025-05-15 12:50:09,577 utils 27968 27836 Attempting to send creation notification for official ID 90
+WARNING 2025-05-15 12:50:09,609 utils 27968 27836 Department 'Отдел кадров' has no director assigned.
+INFO 2025-05-15 12:50:11,666 utils 27968 27836 Visit notification email for official ID 90 SENT successfully to ['Host:исидор.попова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:11,670 utils 27968 27836 Attempting to send creation notification for student ID 42
+INFO 2025-05-15 12:50:11,670 utils 27968 27836 Notification skipped for StudentVisit ID 42 as per current logic.
+INFO 2025-05-15 12:50:11,673 utils 27968 27836 Attempting to send creation notification for official ID 91
+WARNING 2025-05-15 12:50:11,703 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:50:14,862 utils 27968 27836 Visit notification email for official ID 91 SENT successfully to ['Host:куприян.соколов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:14,866 utils 27968 27836 Attempting to send creation notification for official ID 92
+WARNING 2025-05-15 12:50:14,998 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:50:16,791 utils 27968 27836 Visit notification email for official ID 92 SENT successfully to ['Host:исай.шестакова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:16,796 utils 27968 27836 Attempting to send creation notification for official ID 93
+WARNING 2025-05-15 12:50:16,833 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:50:18,592 utils 27968 27836 Visit notification email for official ID 93 SENT successfully to ['Host:виктория.ермакова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:18,599 utils 27968 27836 Attempting to send creation notification for student ID 43
+INFO 2025-05-15 12:50:18,600 utils 27968 27836 Notification skipped for StudentVisit ID 43 as per current logic.
+INFO 2025-05-15 12:50:18,607 utils 27968 27836 Attempting to send creation notification for student ID 44
+INFO 2025-05-15 12:50:18,607 utils 27968 27836 Notification skipped for StudentVisit ID 44 as per current logic.
+INFO 2025-05-15 12:50:18,611 utils 27968 27836 Attempting to send creation notification for student ID 45
+INFO 2025-05-15 12:50:18,611 utils 27968 27836 Notification skipped for StudentVisit ID 45 as per current logic.
+INFO 2025-05-15 12:50:18,615 utils 27968 27836 Attempting to send creation notification for official ID 94
+WARNING 2025-05-15 12:50:18,652 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:50:20,398 utils 27968 27836 Visit notification email for official ID 94 SENT successfully to ['Host:зиновий.ильин@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:20,402 utils 27968 27836 Attempting to send creation notification for official ID 95
+WARNING 2025-05-15 12:50:20,431 utils 27968 27836 Department 'Администрация' has no director assigned.
+INFO 2025-05-15 12:50:22,243 utils 27968 27836 Visit notification email for official ID 95 SENT successfully to ['Host:осип.белозеров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:22,247 utils 27968 27836 Attempting to send creation notification for student ID 46
+INFO 2025-05-15 12:50:22,248 utils 27968 27836 Notification skipped for StudentVisit ID 46 as per current logic.
+INFO 2025-05-15 12:50:22,251 utils 27968 27836 Attempting to send creation notification for official ID 96
+WARNING 2025-05-15 12:50:22,284 utils 27968 27836 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-15 12:50:24,011 utils 27968 27836 Visit notification email for official ID 96 SENT successfully to ['Host:azat.absadyk@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:24,016 utils 27968 27836 Attempting to send creation notification for student ID 47
+INFO 2025-05-15 12:50:24,016 utils 27968 27836 Notification skipped for StudentVisit ID 47 as per current logic.
+INFO 2025-05-15 12:50:24,019 utils 27968 27836 Attempting to send creation notification for official ID 97
+WARNING 2025-05-15 12:50:24,047 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:50:25,828 utils 27968 27836 Visit notification email for official ID 97 SENT successfully to ['Host:никифор.антонова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:25,832 utils 27968 27836 Attempting to send creation notification for student ID 48
+INFO 2025-05-15 12:50:25,832 utils 27968 27836 Notification skipped for StudentVisit ID 48 as per current logic.
+INFO 2025-05-15 12:50:25,835 utils 27968 27836 Attempting to send creation notification for student ID 49
+INFO 2025-05-15 12:50:25,835 utils 27968 27836 Notification skipped for StudentVisit ID 49 as per current logic.
+INFO 2025-05-15 12:50:25,838 utils 27968 27836 Attempting to send creation notification for official ID 98
+WARNING 2025-05-15 12:50:25,868 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:50:27,726 utils 27968 27836 Visit notification email for official ID 98 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:27,733 utils 27968 27836 Attempting to send creation notification for student ID 50
+INFO 2025-05-15 12:50:27,733 utils 27968 27836 Notification skipped for StudentVisit ID 50 as per current logic.
+INFO 2025-05-15 12:50:27,737 utils 27968 27836 Attempting to send creation notification for student ID 51
+INFO 2025-05-15 12:50:27,737 utils 27968 27836 Notification skipped for StudentVisit ID 51 as per current logic.
+INFO 2025-05-15 12:50:27,741 utils 27968 27836 Attempting to send creation notification for student ID 52
+INFO 2025-05-15 12:50:27,741 utils 27968 27836 Notification skipped for StudentVisit ID 52 as per current logic.
+INFO 2025-05-15 12:50:27,745 utils 27968 27836 Attempting to send creation notification for student ID 53
+INFO 2025-05-15 12:50:27,745 utils 27968 27836 Notification skipped for StudentVisit ID 53 as per current logic.
+INFO 2025-05-15 12:50:27,749 utils 27968 27836 Attempting to send creation notification for student ID 54
+INFO 2025-05-15 12:50:27,749 utils 27968 27836 Notification skipped for StudentVisit ID 54 as per current logic.
+INFO 2025-05-15 12:50:27,754 utils 27968 27836 Attempting to send creation notification for official ID 99
+WARNING 2025-05-15 12:50:27,788 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:50:29,621 utils 27968 27836 Visit notification email for official ID 99 SENT successfully to ['Host:максимильян.мартынов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:29,625 utils 27968 27836 Attempting to send creation notification for student ID 55
+INFO 2025-05-15 12:50:29,625 utils 27968 27836 Notification skipped for StudentVisit ID 55 as per current logic.
+INFO 2025-05-15 12:50:29,628 utils 27968 27836 Attempting to send creation notification for official ID 100
+WARNING 2025-05-15 12:50:29,663 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:50:31,439 utils 27968 27836 Visit notification email for official ID 100 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:31,443 utils 27968 27836 Attempting to send creation notification for student ID 56
+INFO 2025-05-15 12:50:31,443 utils 27968 27836 Notification skipped for StudentVisit ID 56 as per current logic.
+INFO 2025-05-15 12:50:31,449 utils 27968 27836 Attempting to send creation notification for official ID 101
+WARNING 2025-05-15 12:50:31,484 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:50:33,266 utils 27968 27836 Visit notification email for official ID 101 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:33,270 utils 27968 27836 Attempting to send creation notification for official ID 102
+WARNING 2025-05-15 12:50:33,302 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:50:35,099 utils 27968 27836 Visit notification email for official ID 102 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:35,103 utils 27968 27836 Attempting to send creation notification for official ID 103
+WARNING 2025-05-15 12:50:35,134 utils 27968 27836 Department 'Администрация' has no director assigned.
+INFO 2025-05-15 12:50:36,896 utils 27968 27836 Visit notification email for official ID 103 SENT successfully to ['Host:осип.белозеров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:36,900 utils 27968 27836 Attempting to send creation notification for official ID 104
+WARNING 2025-05-15 12:50:36,931 utils 27968 27836 Department 'Юридический департамент' has no director assigned.
+INFO 2025-05-15 12:50:38,775 utils 27968 27836 Visit notification email for official ID 104 SENT successfully to ['Host:arslan.abilov@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:38,779 utils 27968 27836 Attempting to send creation notification for official ID 105
+WARNING 2025-05-15 12:50:38,812 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:50:40,618 utils 27968 27836 Visit notification email for official ID 105 SENT successfully to ['Host:nurzhan.mustafin@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:40,622 utils 27968 27836 Attempting to send creation notification for official ID 106
+WARNING 2025-05-15 12:50:40,659 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:50:42,479 utils 27968 27836 Visit notification email for official ID 106 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:42,483 utils 27968 27836 Attempting to send creation notification for student ID 57
+INFO 2025-05-15 12:50:42,483 utils 27968 27836 Notification skipped for StudentVisit ID 57 as per current logic.
+INFO 2025-05-15 12:50:42,486 utils 27968 27836 Attempting to send creation notification for official ID 107
+WARNING 2025-05-15 12:50:42,519 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:50:44,272 utils 27968 27836 Visit notification email for official ID 107 SENT successfully to ['Host:максимильян.мартынов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:44,276 utils 27968 27836 Attempting to send creation notification for student ID 58
+INFO 2025-05-15 12:50:44,276 utils 27968 27836 Notification skipped for StudentVisit ID 58 as per current logic.
+INFO 2025-05-15 12:50:44,279 utils 27968 27836 Attempting to send creation notification for official ID 108
+WARNING 2025-05-15 12:50:44,309 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:50:46,088 utils 27968 27836 Visit notification email for official ID 108 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:46,092 utils 27968 27836 Attempting to send creation notification for official ID 109
+WARNING 2025-05-15 12:50:46,128 utils 27968 27836 Department 'Отдел кадров' has no director assigned.
+INFO 2025-05-15 12:50:47,932 utils 27968 27836 Visit notification email for official ID 109 SENT successfully to ['Host:исидор.попова@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:47,936 utils 27968 27836 Attempting to send creation notification for student ID 59
+INFO 2025-05-15 12:50:47,936 utils 27968 27836 Notification skipped for StudentVisit ID 59 as per current logic.
+INFO 2025-05-15 12:50:47,939 utils 27968 27836 Attempting to send creation notification for official ID 110
+WARNING 2025-05-15 12:50:47,973 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:50:49,818 utils 27968 27836 Visit notification email for official ID 110 SENT successfully to ['Host:максимильян.мартынов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:49,821 utils 27968 27836 Attempting to send creation notification for student ID 60
+INFO 2025-05-15 12:50:49,822 utils 27968 27836 Notification skipped for StudentVisit ID 60 as per current logic.
+INFO 2025-05-15 12:50:49,824 utils 27968 27836 Attempting to send creation notification for official ID 111
+WARNING 2025-05-15 12:50:49,854 utils 27968 27836 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-15 12:50:51,611 utils 27968 27836 Visit notification email for official ID 111 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:51,615 utils 27968 27836 Attempting to send creation notification for official ID 112
+WARNING 2025-05-15 12:50:51,659 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:50:53,444 utils 27968 27836 Visit notification email for official ID 112 SENT successfully to ['Host:давыд.носов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:53,448 utils 27968 27836 Attempting to send creation notification for student ID 61
+INFO 2025-05-15 12:50:53,448 utils 27968 27836 Notification skipped for StudentVisit ID 61 as per current logic.
+INFO 2025-05-15 12:50:53,451 utils 27968 27836 Attempting to send creation notification for official ID 113
+WARNING 2025-05-15 12:50:53,485 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:50:55,341 utils 27968 27836 Visit notification email for official ID 113 SENT successfully to ['Host:денис.никифоров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:55,345 utils 27968 27836 Attempting to send creation notification for official ID 114
+WARNING 2025-05-15 12:50:55,375 utils 27968 27836 Department 'Деканат Школы Цифровых Технологий' has no director assigned.
+INFO 2025-05-15 12:50:57,266 utils 27968 27836 Visit notification email for official ID 114 SENT successfully to ['Host:давыд.носов@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:57,270 utils 27968 27836 Attempting to send creation notification for official ID 115
+WARNING 2025-05-15 12:50:57,403 utils 27968 27836 Department 'Бухгалтерия' has no director assigned.
+INFO 2025-05-15 12:50:59,186 utils 27968 27836 Visit notification email for official ID 115 SENT successfully to ['Host:денис.никифоров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
+INFO 2025-05-15 12:50:59,190 utils 27968 27836 Attempting to send creation notification for student ID 62
+INFO 2025-05-15 12:50:59,190 utils 27968 27836 Notification skipped for StudentVisit ID 62 as per current logic.
