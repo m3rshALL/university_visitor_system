@@ -70,11 +70,14 @@
          <div class="row w-full">
             <div class="col">
                <h3 class="card-title mb-0">
-                  Employee
+                  Посетители
+                  
                </h3>
-               <p class="text-secondary m-0">
-                  Table description.
-               </p>
+               {% comment %}
+                  <p class="text-secondary m-0">
+                     
+                  </p>
+               {% endcomment %}
             </div>
             <div class="col-md-auto col-sm-12">
                <div class="ms-auto d-flex flex-wrap btn-list">
@@ -164,43 +167,42 @@
       </div>
       <div id="advanced-table">
          <div class="table-responsive">
-            <table class="table table-vcenter table-selectable">
-               <thead>
+            <table class="table table-vcenter table-selectable">               <thead>
                   <tr>
                      <th class="w-1"></th>
                      <th>
-                        <button class="table-sort d-flex justify-content-between" data-sort="sort-name">
-                        Посетитель
+                        <button class="table-sort" data-sort="sort-name">
+                           Посетитель
                         </button>
                      </th>
                      <th>
-                        <button class="table-sort d-flex justify-content-between" data-sort="sort-whom">
-                        К кому
+                        <button class="table-sort" data-sort="sort-whom">
+                           К кому
                         </button>
                      </th>
                      <th>
-                        <button class="table-sort d-flex justify-content-between" data-sort="sort-dep">
-                        Департамент
+                        <button class="table-sort" data-sort="sort-dep">
+                           Департамент
                         </button>
                      </th>
                      <th>
-                        <button class="table-sort d-flex justify-content-between" data-sort="sort-entry">
-                        Время входа
+                        <button class="table-sort" data-sort="sort-entry">
+                           Время входа
                         </button>
                      </th>
                      <th>
-                        <button class="table-sort d-flex justify-content-between" data-sort="sort-exit">
-                        Время выхода
+                        <button class="table-sort" data-sort="sort-exit">
+                           Время выхода
                         </button>
                      </th>
                      <th>
-                        <button class="table-sort d-flex justify-content-between" data-sort="sort-purpose">
-                        Цель визита
+                        <button class="table-sort" data-sort="sort-purpose">
+                           Цель визита
                         </button>
                      </th>
                      <th>
-                        <button class="table-sort d-flex justify-content-between" data-sort="sort-actions">
-                        Действие
+                        <button class="table-sort" data-sort="sort-actions">
+                           Действие
                         </button>
                      </th>
                   </tr>
@@ -226,8 +228,7 @@
                      </td>
                      <td class="sort-status">
                         <span class="">{{ visit.department.name|default:"-" }}</span>									
-                     </td>
-                     <td class="">
+                     </td>                     <td class="sort-entry">
                         <span class="">
                             {% if visit.entry_time %} {{ visit.entry_time|date:"Y-m-d H:i" }}
                             {% elif visit.status == 'AWAITING' %} {# Используйте ваше значение STATUS_AWAITING_ARRIVAL #}
@@ -238,7 +239,7 @@
                             {% else %} - {% endif %}
                         </span>									
                      </td>
-                     <td class="sort-date">
+                     <td class="sort-exit">
                         {% if visit.exit_time %} {{ visit.exit_time|date:"Y-m-d H:i" }}
                     {% elif visit.status == 'CHECKED_IN' %} <span class="badge bg-success-lt">В здании</span>
                     {% elif visit.status == 'AWAITING' %} <span class="text-muted">-</span> {# Ожидающим не показываем статус выхода #}
@@ -499,6 +500,127 @@ function setPageListItems(event) {
     url.search = params.toString();
     window.location.href = url.toString();
 }
+
+// Функция для сортировки таблицы
+document.addEventListener('DOMContentLoaded', function() {    const getCellValue = (tr, idx) => {
+        // Пропускаем первую колонку (пустая ячейка с чекбоксом)
+        const actualIdx = idx;
+        const cell = tr.children[actualIdx];
+        
+        if (!cell) return '';
+        
+        // Получаем текст из ячейки, игнорируя скрытые элементы
+        let text = '';
+        // Для дат, ищем конкретный формат даты в ячейке
+        if (actualIdx === 4 || actualIdx === 5) { // колонки дат
+            // Ищем прямые текстовые узлы с датами
+            const nodeIterator = document.createNodeIterator(cell, NodeFilter.SHOW_TEXT);
+            let node;
+            while (node = nodeIterator.nextNode()) {
+                const content = node.textContent.trim();
+                if (/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}$/.test(content)) {
+                    return content;
+                }
+            }
+            // Если дата не найдена, используем весь текст ячейки
+            text = cell.textContent.trim();
+        } else {
+            // Для остальных ячеек просто берем весь текстовый контент
+            text = cell.textContent.trim();
+        }
+        
+        return text;
+    };
+
+    const comparer = (idx, asc) => (a, b) => {
+        // Получаем значения для сравнения
+        const v1 = getCellValue(asc ? a : b, idx);
+        const v2 = getCellValue(asc ? b : a, idx);
+        
+        // Проверяем, содержит ли ячейка дату и время
+        const datePattern = /^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}$/;
+        if (datePattern.test(v1) && datePattern.test(v2)) {
+            // Сортировка по дате
+            return new Date(v1) - new Date(v2);
+        } else if (idx === 4 || idx === 5) {
+            // Для колонок дат, если нет точного формата, но есть статусы
+            // Сортируем строки по присутствию статусов
+            const statusOrder = {
+                'В здании': 2,
+                'Ожидается': 1,
+                'Отменен': 0,
+                '-': -1
+            };
+            
+            // Определяем статус из строк
+            const getStatus = (str) => {
+                if (str.includes('В здании')) return 'В здании';
+                if (str.includes('Ожидается')) return 'Ожидается';
+                if (str.includes('Отменен')) return 'Отменен';
+                return '-';
+            };
+            
+            const status1 = getStatus(v1);
+            const status2 = getStatus(v2);
+            
+            return statusOrder[status1] - statusOrder[status2];
+        } else {
+            // Обычная сортировка по тексту
+            return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) 
+                ? parseFloat(v1) - parseFloat(v2) 
+                : v1.toString().localeCompare(v2.toString());
+        }
+    };    // Добавляем обработчики к заголовкам таблицы
+    document.querySelectorAll('.table-sort').forEach(th => {
+        th.addEventListener('click', function() {
+            const table = th.closest('table');
+            const tbody = table.querySelector('tbody');
+            // Находим индекс столбца для сортировки (учитывая возможные nested элементы)
+            const thParent = th.closest('th');
+            const thIndex = Array.from(thParent.parentNode.children).indexOf(thParent);
+            
+            // Если уже есть стрелка, меняем направление сортировки
+            let sortDirection = this.classList.contains('sorted-asc') ? false : true;
+            
+            // Удаляем классы сортировки у всех заголовков и кнопок
+            table.querySelectorAll('th button.table-sort').forEach(el => {
+                el.classList.remove('sorted-asc', 'sorted-desc');
+            });
+            
+            // Добавляем класс сортировки текущему заголовку
+            this.classList.add(sortDirection ? 'sorted-asc' : 'sorted-desc');
+            
+            // Сортируем строки
+            Array.from(tbody.querySelectorAll('tr'))
+                .sort(comparer(thIndex, sortDirection))
+                .forEach(tr => tbody.appendChild(tr));
+        });
+    });
+});
 </script>
 
+<style>
+/* Стили для сортировки таблицы */
+.table-sort {
+    cursor: pointer;
+}
+
+.table-sort:after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    margin-left: 5px;
+    opacity: 0.3;
+}
+
+.sorted-asc:after {
+    content: '↑';
+    opacity: 1;
+}
+
+.sorted-desc:after {
+    content: '↓';
+    opacity: 1;
+}
+</style>
 {% endblock %}
