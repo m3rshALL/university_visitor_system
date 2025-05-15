@@ -317,17 +317,16 @@
             </table>
          </div>
          <div class="card-footer d-flex align-items-center">
-            <p class="m-0 text-secondary">Показано <span>{{ page_obj.start_index }}-{{ page_obj.end_index }}</span> из <span>{{ page_obj.paginator.count }}</span> записей</p>
-            <div class="dropdown ms-3">
+            <p class="m-0 text-secondary">Показано <span>{{ page_obj.start_index }}-{{ page_obj.end_index }}</span> из <span>{{ page_obj.paginator.count }}</span> записей</p>            <div class="dropdown ms-3">
                <a class="btn dropdown-toggle" data-bs-toggle="dropdown">
-               <span id="page-count" class="me-1">{{ page_obj.paginator.per_page }}</span>
+               <span id="page-count" class="me-1">{{ request.GET.per_page|default:page_obj.paginator.per_page }}</span>
                <span>записей на странице</span>
                </a>
                <div class="dropdown-menu">
-                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="10">10 записей</a>
-                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="20">20 записей</a>
-                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="50">50 записей</a>
-                  <a class="dropdown-item" onclick="setPageListItems(event)" data-value="100">100 записей</a>
+                  <a class="dropdown-item {% if request.GET.per_page == '10' or not request.GET.per_page and page_obj.paginator.per_page == 10 %}active{% endif %}" onclick="setPageListItems(event)" data-value="10">10 записей</a>
+                  <a class="dropdown-item {% if request.GET.per_page == '20' or not request.GET.per_page and page_obj.paginator.per_page == 20 %}active{% endif %}" onclick="setPageListItems(event)" data-value="20">20 записей</a>
+                  <a class="dropdown-item {% if request.GET.per_page == '50' or not request.GET.per_page and page_obj.paginator.per_page == 50 %}active{% endif %}" onclick="setPageListItems(event)" data-value="50">50 записей</a>
+                  <a class="dropdown-item {% if request.GET.per_page == '100' or not request.GET.per_page and page_obj.paginator.per_page == 100 %}active{% endif %}" onclick="setPageListItems(event)" data-value="100">100 записей</a>
                </div>
             </div>
             <ul class="pagination m-0 ms-auto">
