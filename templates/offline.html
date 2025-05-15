@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Нет подключения к сети{% endblock %}
+
+{% block content %}
+<div class="container-xl">
+    <div class="page page-center">
+        <div class="container-tight py-4">
+            <div class="empty">
+                <div class="empty-header">
+                    <i class="bi bi-wifi-off" style="font-size: 4rem; color: #606060;"></i>
+                </div>
+                <p class="empty-title">Отсутствует подключение к интернету</p>
+                <p class="empty-subtitle text-secondary">
+                    Похоже, что ваше устройство не подключено к интернету. Проверьте соединение и попробуйте снова.
+                </p>
+                <div class="empty-action">
+                    <button onclick="window.location.reload()" class="btn btn-primary">
+                        <i class="bi bi-arrow-clockwise me-2"></i>
+                        Обновить страницу
+                    </button>
+                </div>
+                <div class="mt-3">
+                    <p class="text-secondary small">Некоторые функции системы доступны в автономном режиме.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

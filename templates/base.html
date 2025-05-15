@@ -24,27 +24,51 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    {# ---------------------------------- #}
-
-    {# Ваш основной CSS #}
+    {# ---------------------------------- #}    {# Ваш основной CSS #}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
 
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
 
-    {# Блок для дополнительных CSS файлов из дочерних шаблонов (например, для виджетов) #}
-    {% block extra_head %}{% endblock %}
-    {# --------------------- #}
+    {# Блок для дополнительных CSS файлов из дочерних шаблонов (например, для виджетов) #}    {% block extra_head %}{% endblock %}
+    {# --------------------- #}    {% progressive_web_app_meta %}
 
-    {% progressive_web_app_meta %}
+    <!-- Скрытие содержимого до загрузки -->
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('{% static "js/serviceworker.js" %}')
+                    .then(function(registration) {
+                        console.log('ServiceWorker регистрация успешна:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Ошибка регистрации ServiceWorker:', error);
+                    });
+            });
+        }
+    </script>
+    <!-- End Service Worker Registration -->
 
 </head>
-<body>   
+<body>    <!-- BEGIN PRELOADER -->
+    <div id="preloader" class="preloader">
+        <div class="spinner"></div>
+        <div class="preloader-text">Загрузка системы пропусков...</div>
+    </div>
+    <!-- END PRELOADER -->
+
     <!-- BEGIN GLOBAL THEME SCRIPT -->
 	<script src="{% static 'tabler/js/tabler-theme.js' %}"></script>
 	<!-- END GLOBAL THEME SCRIPT -->
 
-<div class="page">
+<div class="page content-wrapper">
 		<!-- BEGIN NAVBAR  -->
 	<header class="navbar navbar-expand-md d-print-none" >
 		<div class="container-xl">
@@ -273,13 +297,22 @@
 {# Скрипт для показа тела документа после загрузки DOM, аналогично login.html #}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    document.body.style.display = "block";
-    // themeConfig уже определен в head
+    // Удаляем старую логику скрытия body, теперь мы используем preloader
+    // document.body.style.display = "block";
   });
 </script>
 
 {# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
 {% block extra_scripts %}{% endblock %}
+
+<!-- Offline mode handler -->
+<script src="{% static 'js/offline-handler.js' %}"></script>
+<script src="{% static 'js/offline-sync.js' %}"></script>
+<!-- For testing PWA features -->
+<script src="{% static 'js/pwa-test.js' %}"></script>
+<!-- Preloader -->
+<script src="{% static 'js/preloader.js' %}"></script>
+<!-- End Offline mode handler -->
 
 </body>
 

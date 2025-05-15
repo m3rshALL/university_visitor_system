@@ -1,4 +1,4 @@
-# d:\university_visitor_system\visitors\management\commands\populate_fake_data.py
+
 import random
 from datetime import timedelta
 import logging

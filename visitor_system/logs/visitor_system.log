@@ -4857,3 +4857,22 @@ WARNING 2025-05-15 12:50:57,403 utils 27968 27836 Department 'Бухгалтер
 INFO 2025-05-15 12:50:59,186 utils 27968 27836 Visit notification email for official ID 115 SENT successfully to ['Host:денис.никифоров@astanait.edu.kz', 'Registrar:maroccocombo@gmail.com'].
 INFO 2025-05-15 12:50:59,190 utils 27968 27836 Attempting to send creation notification for student ID 62
 INFO 2025-05-15 12:50:59,190 utils 27968 27836 Notification skipped for StudentVisit ID 62 as per current logic.
+WARNING 2025-05-15 15:14:30,348 log 52028 50184 Not Found: /visitors/current_guests/
+WARNING 2025-05-15 15:14:30,348 log 52028 40488 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-15 15:14:30,350 log 52028 53672 Not Found: /visitors/visit_history/
+WARNING 2025-05-15 15:14:30,440 log 52028 56104 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-15 15:14:31,328 log 52028 54352 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-15 15:14:31,509 log 52028 56028 Not Found: /apple-touch-icon.png
+WARNING 2025-05-15 15:14:31,511 log 52028 44684 Not Found: /favicon.ico
+WARNING 2025-05-15 15:14:49,786 log 52028 54352 Not Found: /visitors/visit_history/
+WARNING 2025-05-15 15:14:49,793 log 52028 55524 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-15 15:14:49,805 log 52028 22440 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-15 15:14:49,811 log 52028 39004 Not Found: /visitors/current_guests/
+WARNING 2025-05-15 15:14:58,648 log 52028 53560 Not Found: /visitors/current_guests/
+WARNING 2025-05-15 15:14:58,659 log 52028 38684 Not Found: /visitors/visit_history/
+WARNING 2025-05-15 15:14:58,663 log 52028 56144 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-15 15:14:58,670 log 52028 39556 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-15 15:30:54,604 log 52028 21296 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-15 15:30:54,673 log 52028 56012 Not Found: /visitors/current_guests/
+WARNING 2025-05-15 15:30:55,347 log 52028 13408 Not Found: /visitors/visit_history/
+WARNING 2025-05-15 15:30:55,400 log 52028 55688 Not Found: /visitors/visit_statistics/

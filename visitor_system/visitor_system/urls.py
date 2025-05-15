@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 from visitors import views as visitor_views # Главная страница - панель сотрудника
 from django.views.defaults import permission_denied, page_not_found, server_error
 from django.shortcuts import render
@@ -34,6 +35,11 @@ urlpatterns = [
     
     path("select2/", include("django_select2.urls")),
     path('', include('pwa.urls')),  # <- добавляем PWA
+    
+    # Страница для оффлайн-режима
+    path('offline.html', 
+         lambda request: render(request, 'offline.html'), 
+         name='offline'),
 
     # Можно добавить другие корневые URL, если нужно
 ]
