@@ -2590,3 +2590,19 @@ INFO 2025-05-15 10:53:24,429 utils 27968 27836 Visit notification email for offi
 WARNING 2025-05-15 11:24:25,687 log 37988 41712 Not Found: /apple-touch-icon-precomposed.png
 WARNING 2025-05-15 11:24:25,866 log 37988 39784 Not Found: /apple-touch-icon.png
 WARNING 2025-05-15 11:24:25,868 log 37988 34744 Not Found: /favicon.ico
+WARNING 2025-05-15 11:30:35,129 log 39292 40240 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-15 11:30:35,309 log 39292 36588 Not Found: /apple-touch-icon.png
+WARNING 2025-05-15 11:30:35,311 log 39292 35604 Not Found: /favicon.ico
+WARNING 2025-05-15 11:31:30,427 log 37240 42920 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied

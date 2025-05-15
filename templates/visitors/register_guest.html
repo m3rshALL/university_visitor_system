@@ -155,18 +155,20 @@
                                 </div>
                                 
                                 <!-- Скрытое поле для хранения полного имени -->
+                                <div class="row">
                                 <input type="hidden" name="{{ form.guest_full_name.html_name }}" id="guest_full_name_hidden">
-                                
-                                <div class="mb-3">
+                                  <div class="col-md-6 mb-3">
                                     <label for="{{ form.guest_iin.id_for_label }}" class="form-label required">ИИН:</label>
                                     <input type="text" id="{{ form.guest_iin.id_for_label }}" name="{{ form.guest_iin.html_name }}" 
                                            class="form-control" value="{{ form.guest_iin.value|default:'' }}" 
-                                           placeholder="Введите 12 цифр ИИН" maxlength="12">
+                                           placeholder="Введите 12 цифр ИИН" maxlength="12" pattern="[0-9]{12}" 
+                                           title="" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                     {% if form.guest_iin.errors %}
                                         <div class="invalid-feedback d-block">{% for e in form.guest_iin.errors %}{{ e }}{% endfor %}</div>
                                     {% else %}
                                         
                                     {% endif %}
+                                </div>
                                 </div>
                                 
                                 <div class="row">
@@ -197,28 +199,28 @@
                             </div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label for="{{ form.department.id_for_label }}" class="form-label">{{ form.department.label }}:</label>
+                                    <label for="{{ form.department.id_for_label }}" class="form-label required">{{ form.department.label }}:</label>
                                     {{ form.department }}
                                     {% if form.department.errors %}
                                         <div class="invalid-feedback d-block">{% for e in form.department.errors %}{{ e }}{% endfor %}</div>
                                     {% else %}
-                                        <div class="form-text">Обязательное поле.</div>
+                                        
                                     {% endif %}
                                     <div class="form-text" id="director_info_wrapper" style="display: none; margin-top: 5px;">
                                         <strong>Директор департамента:</strong> <span id="director_name_display">-</span>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="{{ form.employee.id_for_label }}" class="form-label">{{ form.employee.label }}:</label>
+                                    <label for="{{ form.employee.id_for_label }}" class="form-label required">{{ form.employee.label }}:</label>
                                     {{ form.employee }}
                                     {% if form.employee.errors %}
                                         <div class="invalid-feedback d-block">{% for e in form.employee.errors %}{{ e }}{% endfor %}</div>
                                     {% else %}
-                                        <div class="form-text">Начните вводить ФИО/email. Зависит от Департамента.</div>
+                                        
                                     {% endif %}
                                 </div>
                                 <div class="mb-3">
-                                    <label for="employee_phone_masked" class="form-label">{{ form.employee_contact_phone_form.label }}:</label>
+                                    <label for="employee_phone_masked" class="form-label required">{{ form.employee_contact_phone_form.label }}:</label>
                                     <input type="text" id="employee_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __">
                                     {% if form.employee_contact_phone_form.errors %}
                                         <div class="invalid-feedback d-block">{% for e in form.employee_contact_phone_form.errors %}{{ e }}{% endfor %}</div>
@@ -233,7 +235,7 @@
                                     {% if form.purpose.errors %}
                                         <div class="invalid-feedback d-block">{% for e in form.purpose.errors %}{{ e }}{% endfor %}</div>
                                     {% else %}
-                                        <div class="form-text">Обязательное поле.</div>
+                                        
                                     {% endif %}
                                 </div>
                                 <div class="mb-3" id="guest_purpose_other_wrapper">
@@ -242,10 +244,12 @@
                                     {% if form.purpose_other_text.errors %}
                                         <div class="invalid-feedback d-block">{% for e in form.purpose_other_text.errors %}{{ e }}{% endfor %}</div>
                                     {% else %}
-                                        <div class="form-text">Заполните, если выбрали "Другое".</div>
+                                        
                                     {% endif %}
                                 </div>
-                                <p class="text-muted small mt-3">Гость будет зарегистрирован от вашего имени: {{ user.get_full_name|default:user.username }}.</p>
+                                {% comment %}
+                                    <p class="text-muted small mt-3">Гость будет зарегистрирован от вашего имени: {{ user.get_full_name|default:user.username }}.</p>
+                                {% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -335,11 +339,53 @@
                         phoneMask.unmaskedValue = phoneValue;
                     }
                 }
-                
-                // Обновление hidden-поля при вводе
+                  // Обновление hidden-поля при вводе
                 phoneMaskElement.addEventListener('input', function() {
                     phoneHiddenElement.value = '+7' + phoneMask.unmaskedValue;
+                    
+                    // Визуальная валидация номера телефона
+                    validatePhoneNumber();
                 });
+                
+                // Функция для валидации номера телефона
+                function validatePhoneNumber() {
+                    // Номер считается валидным, если в нем ровно 10 цифр (без учета +7)
+                    const isValid = phoneMask.unmaskedValue && phoneMask.unmaskedValue.length === 10;
+                    
+                    if (phoneMask.unmaskedValue.length > 0) {
+                        if (isValid) {
+                            phoneMaskElement.classList.remove('is-invalid');
+                            phoneMaskElement.classList.add('is-valid');
+                        } else {
+                            phoneMaskElement.classList.remove('is-valid');
+                            phoneMaskElement.classList.add('is-invalid');
+                        }
+                    } else {
+                        // Если поле пустое, убираем все классы валидации
+                        phoneMaskElement.classList.remove('is-valid', 'is-invalid');
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Проверка при потере фокуса
+                phoneMaskElement.addEventListener('blur', validatePhoneNumber);
+                
+                // Проверка при отправке формы
+                const form = phoneMaskElement.closest('form');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        if (!validatePhoneNumber() && phoneMask.unmaskedValue.length > 0) {
+                            e.preventDefault();
+                            phoneMaskElement.focus();
+                        }
+                    });
+                }
+                
+                // Начальная валидация
+                if (phoneMask.unmaskedValue.length > 0) {
+                    validatePhoneNumber();
+                }
             }
             
             // Маска для телефона сотрудника
@@ -362,11 +408,42 @@
                         employeePhoneMask.unmaskedValue = phoneValue;
                     }
                 }
-                
-                // Обновление hidden-поля при вводе
+                  // Обновление hidden-поля при вводе
                 employeePhoneMaskElement.addEventListener('input', function() {
                     employeePhoneHiddenElement.value = '+7' + employeePhoneMask.unmaskedValue;
+                    
+                    // Визуальная валидация номера телефона сотрудника
+                    validateEmployeePhoneNumber();
                 });
+                
+                // Функция для валидации номера телефона сотрудника
+                function validateEmployeePhoneNumber() {
+                    // Номер считается валидным, если в нем ровно 10 цифр (без учета +7)
+                    const isValid = employeePhoneMask.unmaskedValue && employeePhoneMask.unmaskedValue.length === 10;
+                    
+                    if (employeePhoneMask.unmaskedValue.length > 0) {
+                        if (isValid) {
+                            employeePhoneMaskElement.classList.remove('is-invalid');
+                            employeePhoneMaskElement.classList.add('is-valid');
+                        } else {
+                            employeePhoneMaskElement.classList.remove('is-valid');
+                            employeePhoneMaskElement.classList.add('is-invalid');
+                        }
+                    } else {
+                        // Если поле пустое, убираем все классы валидации
+                        employeePhoneMaskElement.classList.remove('is-valid', 'is-invalid');
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Проверка при потере фокуса
+                employeePhoneMaskElement.addEventListener('blur', validateEmployeePhoneNumber);
+                
+                // Начальная валидация
+                if (employeePhoneMask.unmaskedValue.length > 0) {
+                    validateEmployeePhoneNumber();
+                }
             }
             
             // Объединение полей имени в одно поле перед отправкой формы
@@ -460,6 +537,91 @@
         });
         </script>
         {# --------------------------------------- #}
+
+    {# --- JS для валидации ИИН --- #}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Получаем поле ИИН
+        const iinField = document.getElementById('{{ guest_form.guest_iin.id_for_label }}');
+        
+        if (iinField) {
+            // Функция для валидации ИИН
+            function validateIIN() {
+                const value = iinField.value.trim();
+                const isValid = /^\d{12}$/.test(value);
+                
+                // Визуальное отображение валидности
+                if (value.length > 0) {
+                    if (isValid) {
+                        iinField.classList.remove('is-invalid');
+                        iinField.classList.add('is-valid');
+                    } else {
+                        iinField.classList.remove('is-valid');
+                        iinField.classList.add('is-invalid');
+                        
+                        // Показываем подсказку об ошибке
+                        let errorDiv = iinField.nextElementSibling;
+                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.classList.add('invalid-feedback', 'd-block');
+                            iinField.parentNode.insertBefore(errorDiv, iinField.nextSibling);
+                        }
+                        
+                        let errorMessage = '';
+                        if (value.length !== 12) {
+                            errorMessage = '';
+                        } else if (!/^\d+$/.test(value)) {
+                            errorMessage = '';
+                        }
+                        
+                        errorDiv.textContent = errorMessage;
+                    }
+                } else {
+                    // Если поле пустое, убираем все классы валидации
+                    iinField.classList.remove('is-valid', 'is-invalid');
+                }
+                
+                return isValid;
+            }
+            
+            // Обработка ввода: разрешаем только цифры
+            iinField.addEventListener('input', function(e) {
+                // Заменяем все нецифровые символы
+                const cursorPos = this.selectionStart;
+                const oldValue = this.value;
+                const newValue = oldValue.replace(/[^\d]/g, '');
+                
+                // Если значение изменилось, обновляем его и устанавливаем курсор
+                if (oldValue !== newValue) {
+                    this.value = newValue;
+                    this.setSelectionRange(cursorPos - (oldValue.length - newValue.length), cursorPos - (oldValue.length - newValue.length));
+                }
+                
+                validateIIN();
+            });
+            
+            // Проверка при потере фокуса
+            iinField.addEventListener('blur', validateIIN);
+            
+            // Проверка при отправке формы
+            const form = iinField.closest('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    if (!validateIIN() && iinField.value.trim().length > 0) {
+                        e.preventDefault();
+                        iinField.focus();
+                    }
+                });
+            }
+            
+            // Начальная валидация
+            if (iinField.value.trim().length > 0) {
+                validateIIN();
+            }
+        }
+    });
+    </script>
+    {# ------------------------------- #}
 
     {# --- JS для поля "Другое" цели визита --- #}
     <script>
@@ -620,13 +782,17 @@
                                                                 phoneMaskElement.value = '+7 (' + phoneValue.substring(0, 3) + ') ' + 
                                                                     phoneValue.substring(3, 6) + ' ' + 
                                                                     phoneValue.substring(6, 8) + ' ' + 
-                                                                    phoneValue.substring(8, 10);
-                                                            } else {
+                                                                    phoneValue.substring(8, 10);                                                            } else {
                                                                 phoneMaskElement.value = phoneNumber;
                                                             }
                                                         }
                                                         // Обновляем скрытое поле
                                                         $('#{{ guest_form.employee_contact_phone_form.id_for_label }}').val(response.phone_number || '');
+                                                        
+                                                        // Вызываем функцию валидации телефона после автозаполнения
+                                                        if (typeof validateEmployeePhoneNumber === 'function') {
+                                                            setTimeout(validateEmployeePhoneNumber, 100); // Небольшая задержка для корректной работы
+                                                        }
                                                     }
                                                  },
                                                  error: function(xhr, status, error) { 
