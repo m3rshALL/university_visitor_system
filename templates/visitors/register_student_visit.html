@@ -5,168 +5,243 @@
 
 {% block extra_head %}
     {{ student_form.media.css }}
-    <style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Добавляем библиотеку IMask для создания масок ввода -->
+    <script src="https://unpkg.com/imask@6.4.3/dist/imask.js"></script>    <style>
         /* Обертка для поля "Другое" цели визита */
         #student_purpose_other_wrapper { display: none; } /* Используем уникальный ID */
-        /* Стили для Floating Labels */
+        
+        /* Стили для карточек */
+        .card-header {
+            font-weight: 500;
+        }
+        .action-btn {
+            margin-right: 5px;
+        }
+        
+        /* Стили для полей формы */
+        .form-label.required:after {
+            content: " *";
+            color: red;
+        }
+        
+        /* Увеличиваем отступы между элементами */
+        .card {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card + .card {
+            margin-top: 1.5rem;
+        }
+        .form-control, .form-select {
+            padding: 0.5rem 0.75rem;
+        }
+        
+        /* Стили для улучшения взаимодействия с полем телефона */
+        .focused-input {
+            background-color: #f8f9fa;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-<h2>Регистрация визита студента/абитуриента</h2>
-<hr>
-
-{% if student_form.non_field_errors %}
-    <div class="alert alert-danger">
-        {% for error in student_form.non_field_errors %}
-             {{ error }}{% if not forloop.last %}<br>{% endif %}
-        {% endfor %}
-    </div>
-{% endif %}
-
-<form method="post" novalidate class="needs-validation" id="student-reg-form">
-    {% csrf_token %}
-
-    {% with form=student_form %}
-    {# --- Карта: Данные посетителя (Гостя) --- #}
-    <div class="card mb-4">
-        <div class="card-header">Данные посетителя</div>
-        <div class="card-body">
-            {# ФИО #}
-            <div class="mb-3">
-                <label for="{{ form.guest_full_name.id_for_label }}" class="form-label">{{ form.guest_full_name.label }}:</label>
-                {{ form.guest_full_name }}
-                {% if form.guest_full_name.errors %}
-                    <div class="invalid-feedback d-block">
-                        {% for error in form.guest_full_name.errors %}{{ error }}{% endfor %}
+<div class="page-wrapper">
+    <!-- BEGIN PAGE HEADER -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        <i class="bi bi-person-badge me-2"></i>Регистрация визита студента/абитуриента
+                    </h2>
+                </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Назад
+                        </a>
                     </div>
-                {% else %}
-                     <div class="form-text">Обязательное поле.</div>
-                {% endif %}
-            </div>
-            {# ИИН #}
-             <div class="mb-3">
-                <label for="{{ form.guest_iin.id_for_label }}" class="form-label">{{ form.guest_iin.label }}:</label>
-                {{ form.guest_iin }}
-                {% if form.guest_iin.errors %}
-                     <div class="invalid-feedback d-block">
-                         {% for error in form.guest_iin.errors %}{{ error }}{% endfor %}
-                     </div>
-                 {% else %}
-                     <div class="form-text">12 цифр.</div>
-                {% endif %}
-            </div>
-             {# Email и Телефон #}
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                      <label for="{{ form.guest_phone.id_for_label }}" class="form-label">{{ form.guest_phone.label }}:</label>
-                     {{ form.guest_phone }}
-                     {% if form.guest_phone.errors %}
-                         <div class="invalid-feedback d-block">
-                            {% for error in form.guest_phone.errors %}{{ error }}{% endfor %}
-                         </div>
-                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    {# ------------------------------------ #}
+    <!-- END PAGE HEADER -->
 
-    {# --- Карта: Детали визита студента --- #}
-     <div class="card mb-4">
-        <div class="card-header">Детали визита студента/абитуриента</div>
-        <div class="card-body">
-
-             {# ID Студента #}
-            <div class="mb-3">
-                <label for="{{ form.student_id_number.id_for_label }}" class="form-label">{{ form.student_id_number.label }}:</label>
-                {{ form.student_id_number }}
-                {% if form.student_id_number.errors %}
-                     <div class="invalid-feedback d-block">
-                         {% for error in form.student_id_number.errors %}{{ error }}{% endfor %}
-                     </div>
-                {% endif %}
+    <!-- BEGIN PAGE BODY -->
+    <div class="page-body">
+        <div class="container-xl">
+            {% if student_form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in student_form.non_field_errors %}
+                     {{ error }}{% if not forloop.last %}<br>{% endif %}
+                {% endfor %}
             </div>
-             {# Группа и Курс #}
-            <div class="row">
-                <div class="col-md-8 mb-3">
-                     <label for="{{ form.student_group.id_for_label }}" class="form-label">{{ form.student_group.label }}:</label>
-                     {{ form.student_group }}
-                     {% if form.student_group.errors %}
-                         <div class="invalid-feedback d-block">
-                             {% for error in form.student_group.errors %}{{ error }}{% endfor %}
-                         </div>
-                     {% endif %}
+            {% endif %}
+
+            <form method="post" novalidate class="needs-validation" id="student-reg-form">
+                {% csrf_token %}                {% with form=student_form %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Карта: Данные посетителя -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="bi bi-person me-2"></i>Данные посетителя
+                                </div>
+                            </div>
+                            <div class="card-body">                               
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="guest_surname" class="form-label required">Фамилия:</label>
+                                        <input type="text" id="guest_surname" name="guest_surname" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="guest_firstname" class="form-label required">Имя:
+                                        </label>
+                                        <input type="text" id="guest_firstname" name="guest_firstname" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="guest_patronymic" class="form-label">Отчество:</label>
+                                        <input type="text" id="guest_patronymic" name="guest_patronymic" class="form-control">
+                                        <div class="form-text">Если имеется</div>
+                                    </div>
+                                </div>                                 <!-- Скрытое поле для хранения полного имени -->
+                                <input type="hidden" name="{{ student_form.guest_full_name.html_name }}" id="guest_full_name_hidden">
+                                  <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                    <label for="{{ student_form.guest_iin.id_for_label }}" class="form-label required">ИИН:</label>
+                                    <input type="text" id="{{ student_form.guest_iin.id_for_label }}" name="{{ student_form.guest_iin.html_name }}" 
+                                           class="form-control" value="{{ student_form.guest_iin.value|default:'' }}" 
+                                           placeholder="Введите 12 цифр ИИН" maxlength="12" pattern="[0-9]{12}" 
+                                           title="ИИН должен содержать 12 цифр" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                    {% if student_form.guest_iin.errors %}
+                                        <div class="invalid-feedback d-block">{% for e in student_form.guest_iin.errors %}{{ e }}{% endfor %}</div>
+                                    {% else %}
+                                        
+                                    {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="guest_phone_masked" class="form-label required">Номер телефона:</label>
+                                        <input type="text" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __">
+                                        {% if student_form.guest_phone.errors %}
+                                            <div class="invalid-feedback d-block">{% for e in student_form.guest_phone.errors %}{{ e }}{% endfor %}</div>
+                                        {% endif %}
+                                        
+                                        <!-- Скрытое поле для хранения значения без маски -->
+                                        <input type="hidden" name="{{ student_form.guest_phone.html_name }}" id="{{ student_form.guest_phone.id_for_label }}" value="{{ student_form.guest_phone.value|default:'' }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        <!-- Карта: Детали визита студента -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="bi bi-card-checklist me-2"></i>Детали визита студента/абитуриента
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.student_id_number.id_for_label }}" class="form-label">{{ form.student_id_number.label }}:</label>
+                                        {{ form.student_id_number }}
+                                        {% if form.student_id_number.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.student_id_number.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.student_course.id_for_label }}" class="form-label">{{ form.student_course.label }}:</label>
+                                        {{ form.student_course }}
+                                        {% if form.student_course.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.student_course.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="{{ form.student_group.id_for_label }}" class="form-label">{{ form.student_group.label }}:</label>
+                                        {{ form.student_group }}
+                                        {% if form.student_group.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.student_group.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="{{ form.department.id_for_label }}" class="form-label required">{{ form.department.label }}:</label>
+                                        {{ form.department }}
+                                        {% if form.department.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.department.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="{{ form.purpose.id_for_label }}" class="form-label required">{{ form.purpose.label }}:</label>
+                                        {{ form.purpose }}
+                                        {% if form.purpose.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.purpose.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3" id="student_purpose_other_wrapper">
+                                        <label for="{{ form.purpose_other_text.id_for_label }}" class="form-label">{{ form.purpose_other_text.label }}:</label>
+                                        {{ form.purpose_other_text }}
+                                        {% if form.purpose_other_text.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.purpose_other_text.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class="form-text">Заполните, если выбрали "Другое".</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                 <div class="col-md-4 mb-3">
-                      <label for="{{ form.student_course.id_for_label }}" class="form-label">{{ form.student_course.label }}:</label>
-                      {{ form.student_course }}
-                      {% if form.student_course.errors %}
-                          <div class="invalid-feedback d-block">
-                              {% for error in form.student_course.errors %}{{ error }}{% endfor %}
-                          </div>
-                      {% endif %}
-                 </div>
-            </div>
-            {# Департамент назначения #}
-            <div class="mb-3">
-                 <label for="{{ form.department.id_for_label }}" class="form-label">{{ form.department.label }}:</label>
-                 {{ form.department }}
-                 {# --- ИСПРАВЛЕНО ЗДЕСЬ --- #}
-                 {% if form.department.errors %}
-                     <div class="invalid-feedback d-block">
-                         {% for error in form.department.errors %}{{ error }}{% endfor %}
-                     </div>
-                 {% else %}
-                    <div class="form-text">Обязательное поле.</div>
-                 {% endif %}
-                 {# --- КОНЕЦ ИСПРАВЛЕНИЯ --- #}
-            </div>
-             {# Цель визита (выбор) #}
-            <div class="mb-3">
-                 <label for="{{ form.purpose.id_for_label }}" class="form-label">{{ form.purpose.label }}:</label>
-                 {{ form.purpose }}
-                 {# --- ИСПРАВЛЕНО ЗДЕСЬ --- #}
-                 {% if form.purpose.errors %}
-                     <div class="invalid-feedback d-block">
-                         {% for error in form.purpose.errors %}{{ error }}{% endfor %}
-                     </div>
-                 {% else %}
-                    <div class="form-text">Обязательное поле.</div>
-                 {% endif %}
-                 {# --- КОНЕЦ ИСПРАВЛЕНИЯ --- #}
-            </div>
-             {# Цель визита (Другое - текст) #}
-             <div class="mb-3" id="student_purpose_other_wrapper"> {# Уникальный ID #}
-                <label for="{{ form.purpose_other_text.id_for_label }}" class="form-label">{{ form.purpose_other_text.label }}:</label>
-                {{ form.purpose_other_text }}
-                {% if form.purpose_other_text.errors %}<div class="invalid-feedback d-block">{% for e in form.purpose_other_text.errors %}{{e}}{% endfor %}</div>{% else %}<div class="form-text">Заполните, если выбрали "Другое".</div>{% endif %}
-            </div>
-
-            <p class="text-muted small mt-3">Визит будет зарегистрирован от вашего имени: {{ user.get_full_name|default:user.username }}.</p>
-
-        </div> {# /card-body #}
-    </div> {# /card #}
-    {% endwith %}
-    {# ----------------------------------- #}
-
-    {# --- Кнопки --- #}
-    <div class="mt-4 mb-5">
-        <button type="submit" class="btn btn-primary">Зарегистрировать визит студента</button>
-        <a href="{% url 'employee_dashboard' %}" class="btn btn-secondary">Отмена</a>
+                <!-- Кнопки -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-between mt-3 mb-4">
+                            <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Отмена
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-person-plus me-2"></i>Зарегистрировать визит студента
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+            </form>
+        </div>
     </div>
-    {# ------------- #}
-
-</form>
+    <!-- END PAGE BODY -->
+</div>
 {% endblock %}
-
 
 {% block extra_scripts %}
     {# --- JS для виджетов формы (используем правильное имя) --- #}
     {{ student_form.media.js }}
 
-    {# --- JS для поля "Другое" цели визита (исправлены селекторы) --- #}
-    <script>
+    {# --- JS для поля "Другое" цели визита (исправлены селекторы) --- #}    <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Используем ID из student_form и уникальный ID обертки
         const spSelect = document.getElementById('{{ student_form.purpose.id_for_label }}');
@@ -177,13 +252,12 @@
                 if (spSelect.value === 'Other') { spWrapper.style.display = 'block'; }
                 else { spWrapper.style.display = 'none'; if (spInput) spInput.value = ''; }
             }
-             toggleStudentOther();
-             spSelect.addEventListener('change', toggleStudentOther);
+            toggleStudentOther();
+            spSelect.addEventListener('change', toggleStudentOther);
         } else { console.warn("Элементы 'Другой цели' для студента не найдены."); }
     });
     </script>
     {# ---------------------------------------- #}
-
 
     {# --- JS для стилей Bootstrap (используем ID формы) --- #}
     <script>
@@ -199,9 +273,421 @@
                     if (errorDiv && errorDiv.innerText.trim() !== '') { control.classList.add('is-invalid'); }
                     else { control.classList.remove('is-invalid'); }
                 });
-             } else { console.warn("Форма #student-reg-form не найдена для стилизации.");}
+            } else { console.warn("Форма #student-reg-form не найдена для стилизации.");}
         });
-    </script>
-    {# ----------------------------- #}
+    </script>    
 
+    <!-- Маски для ввода и обработка полей имени -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+              // Маска для телефона гостя
+            const phoneMaskElement = document.getElementById('guest_phone_masked');
+            const phoneHiddenElement = document.getElementById('{{ student_form.guest_phone.id_for_label }}');
+            
+            if (phoneMaskElement && phoneHiddenElement) {
+                // Настройки для маски телефона
+                const phoneMask = IMask(phoneMaskElement, {
+                    mask: '+7 (000) 000-00-00',
+                    lazy: false,
+                    
+                });
+                
+                // Инициализация значением из hidden-поля, если оно есть
+                if (phoneHiddenElement.value) {
+                    // Форматируем значение, убирая все, кроме цифр
+                    let phoneValue = phoneHiddenElement.value.replace(/\D/g, '');
+                    if (phoneValue.startsWith('7')) {
+                        phoneMask.unmaskedValue = phoneValue.substring(1); // Убираем первую 7
+                    } else {
+                        phoneMask.unmaskedValue = phoneValue;
+                    }
+                }               // Обновление hidden-поля при вводе
+                phoneMaskElement.addEventListener('input', function() {
+                    phoneHiddenElement.value = '+7' + phoneMask.unmaskedValue;
+                    
+                    // Визуальная валидация номера телефона
+                    validatePhoneNumber();
+                });
+                
+                // Функция для валидации номера телефона
+                function validatePhoneNumber() {
+                    // Номер считается валидным, если в нем ровно 10 цифр (без учета +7)
+                    const isValid = phoneMask.unmaskedValue && phoneMask.unmaskedValue.length === 10;
+                    
+                    if (phoneMask.unmaskedValue.length > 0) {
+                        if (isValid) {
+                            phoneMaskElement.classList.remove('is-invalid');
+                            phoneMaskElement.classList.add('is-valid');
+                        } else {
+                            phoneMaskElement.classList.remove('is-valid');
+                            phoneMaskElement.classList.add('is-invalid');
+                        }
+                    } else {
+                        // Если поле пустое, убираем все классы валидации
+                        phoneMaskElement.classList.remove('is-valid', 'is-invalid');
+                    }
+                    
+                    return isValid;
+                }
+                  // Проверка при потере фокуса
+                phoneMaskElement.addEventListener('blur', function() {
+                    phoneMaskElement.classList.remove('focused-input');
+                    
+                    // Проверка валидности при потере фокуса
+                    if (phoneMask.unmaskedValue && phoneMask.unmaskedValue.length > 0) {
+                        validatePhoneNumber();
+                    } else if (phoneMaskElement.required) {
+                        // Если поле обязательное и пустое - показать ошибку
+                        phoneMaskElement.classList.add('is-invalid');
+                        
+                        let errorDiv = phoneMaskElement.nextElementSibling;
+                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.classList.add('invalid-feedback', 'd-block');
+                            phoneMaskElement.parentNode.insertBefore(errorDiv, phoneMaskElement.nextSibling);
+                        }
+                        
+                        errorDiv.textContent = 'Введите номер телефона';
+                        errorDiv.style.display = 'block';
+                    }
+                });// Проверка при отправке формы
+                const form = phoneMaskElement.closest('form');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        // Проверяем заполнение телефона
+                        if (!phoneMask.unmaskedValue || phoneMask.unmaskedValue.length === 0) {
+                            // Телефон не заполнен (обязательное поле)
+                            phoneMaskElement.classList.add('is-invalid');
+                            
+                            let errorDiv = phoneMaskElement.nextElementSibling;
+                            if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                                errorDiv = document.createElement('div');
+                                errorDiv.classList.add('invalid-feedback', 'd-block');
+                                phoneMaskElement.parentNode.insertBefore(errorDiv, phoneMaskElement.nextSibling);
+                            }
+                            
+                            errorDiv.textContent = 'Введите номер телефона';
+                            errorDiv.style.display = 'block';
+                            
+                            e.preventDefault();
+                            phoneMaskElement.focus();
+                            return;
+                        }
+                        
+                        // Проверяем корректность заполнения
+                        if (!validatePhoneNumber()) {
+                            e.preventDefault();
+                            phoneMaskElement.focus();
+                        }
+                    });
+                }
+                
+                // Начальная валидация
+                if (phoneMask.unmaskedValue && phoneMask.unmaskedValue.length > 0) {
+                    validatePhoneNumber();
+                }
+                
+                // Улучшения визуализации маски при фокусировке
+                phoneMaskElement.addEventListener('focus', function() {
+                    if (!phoneMask.unmaskedValue || phoneMask.unmaskedValue.length === 0) {
+                        // Чтобы пользователь видел, где находится курсор при первом клике
+                        phoneMaskElement.classList.add('focused-input');
+                    }
+                });
+                
+                phoneMaskElement.addEventListener('blur', function() {
+                    phoneMaskElement.classList.remove('focused-input');
+                });
+            }
+            // Объединение полей имени в одно поле перед отправкой формы
+            const surnameField = document.getElementById('guest_surname');
+            const firstnameField = document.getElementById('guest_firstname');
+            const patronymicField = document.getElementById('guest_patronymic');
+            const fullNameHiddenField = document.getElementById('guest_full_name_hidden');
+            
+            // Проверяем, есть ли у нас скрытое поле ФИО и выходим, если нет
+            if (!fullNameHiddenField) return;
+            
+            // Функция обновления полного имени
+            function updateFullName() {
+                const surname = surnameField ? surnameField.value.trim() : '';
+                const firstname = firstnameField ? firstnameField.value.trim() : '';
+                const patronymic = patronymicField ? patronymicField.value.trim() : '';
+                
+                let fullName = '';
+                if (surname) fullName += surname;
+                if (firstname) fullName += (fullName ? ' ' : '') + firstname;
+                if (patronymic) fullName += (fullName ? ' ' : '') + patronymic;
+                
+                fullNameHiddenField.value = fullName;
+            }
+            
+            // Обновляем полное имя при изменении любого из полей
+            if (surnameField) surnameField.addEventListener('input', updateFullName);
+            if (firstnameField) firstnameField.addEventListener('input', updateFullName);
+            if (patronymicField) patronymicField.addEventListener('input', updateFullName);            // Заполнение разделенных полей ФИО из существующего значения
+            const existingFullName = "{{ student_form.guest_full_name.value|default:'' }}";
+            if (existingFullName) {
+                const nameParts = existingFullName.split(' ');
+                if (nameParts.length >= 1 && surnameField) {
+                    surnameField.value = nameParts[0];
+                }
+                if (nameParts.length >= 2 && firstnameField) {
+                    firstnameField.value = nameParts[1];
+                }
+                if (nameParts.length >= 3 && patronymicField) {
+                    patronymicField.value = nameParts.slice(2).join(' ');
+                }
+            }
+            
+            // Инициализируем полное имя
+            updateFullName();
+            
+            // Проверка обязательных полей имени и фамилии при отправке формы
+            const form = document.getElementById('student-reg-form');
+            if (form && surnameField && firstnameField) {
+                form.addEventListener('submit', function(e) {
+                    let hasError = false;
+                    
+                    // Проверка фамилии
+                    if (!surnameField.value.trim()) {
+                        surnameField.classList.add('is-invalid');
+                        
+                        let errorDiv = surnameField.parentNode.querySelector('.invalid-feedback');
+                        if (!errorDiv) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.classList.add('invalid-feedback', 'd-block');
+                            surnameField.parentNode.appendChild(errorDiv);
+                        }
+                        
+                        errorDiv.textContent = 'Введите фамилию';
+                        errorDiv.style.display = 'block';
+                        
+                        hasError = true;
+                    } else {
+                        surnameField.classList.remove('is-invalid');
+                        const errorDiv = surnameField.parentNode.querySelector('.invalid-feedback');
+                        if (errorDiv) {
+                            errorDiv.style.display = 'none';
+                        }
+                    }
+                    
+                    // Проверка имени
+                    if (!firstnameField.value.trim()) {
+                        firstnameField.classList.add('is-invalid');
+                        
+                        let errorDiv = firstnameField.parentNode.querySelector('.invalid-feedback');
+                        if (!errorDiv) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.classList.add('invalid-feedback', 'd-block');
+                            firstnameField.parentNode.appendChild(errorDiv);
+                        }
+                        
+                        errorDiv.textContent = 'Введите имя';
+                        errorDiv.style.display = 'block';
+                        
+                        hasError = true;
+                    } else {
+                        firstnameField.classList.remove('is-invalid');
+                        const errorDiv = firstnameField.parentNode.querySelector('.invalid-feedback');
+                        if (errorDiv) {
+                            errorDiv.style.display = 'none';
+                        }
+                    }
+                    
+                    if (hasError) {
+                        e.preventDefault();
+                        if (!firstnameField.value.trim()) {
+                            firstnameField.focus();
+                        } else if (!surnameField.value.trim()) {
+                            surnameField.focus();
+                        }
+                    }
+                });
+            }
+        });
+    </script>    {# --- JS для валидации ИИН --- #}    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Получаем поле ИИН
+        const iinField = document.getElementById('{{ student_form.guest_iin.id_for_label }}');
+        
+        if (iinField) {
+            // Функция для валидации ИИН
+            function validateIIN() {
+                const value = iinField.value.trim();
+                const isValid = /^\d{12}$/.test(value);
+                
+                // Визуальное отображение валидности
+                if (value.length > 0) {
+                    if (isValid) {
+                        iinField.classList.remove('is-invalid');
+                        iinField.classList.add('is-valid');
+                    } else {
+                        iinField.classList.remove('is-valid');
+                        iinField.classList.add('is-invalid');
+                        
+                        // Показываем подсказку об ошибке
+                        let errorDiv = iinField.nextElementSibling;
+                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.classList.add('invalid-feedback', 'd-block');
+                            iinField.parentNode.insertBefore(errorDiv, iinField.nextSibling);
+                        }
+                        
+                        let errorMessage = '';
+                        if (value.length !== 12) {
+                            errorMessage = '';
+                        } else if (!/^\d+$/.test(value)) {
+                            errorMessage = 'ИИН должен содержать только цифры';
+                        }
+                        
+                        errorDiv.textContent = errorMessage;
+                    }
+                } else {
+                    // Если поле пустое, убираем все классы валидации
+                    iinField.classList.remove('is-valid', 'is-invalid');
+                }
+                
+                return isValid;
+            }
+            
+            // Обработка ввода: разрешаем только цифры
+            iinField.addEventListener('input', function(e) {
+                // Заменяем все нецифровые символы
+                const cursorPos = this.selectionStart;
+                const oldValue = this.value;
+                const newValue = oldValue.replace(/[^\d]/g, '');
+                
+                // Если значение изменилось, обновляем его и устанавливаем курсор
+                if (oldValue !== newValue) {
+                    this.value = newValue;
+                    this.setSelectionRange(cursorPos - (oldValue.length - newValue.length), cursorPos - (oldValue.length - newValue.length));
+                }
+                
+                validateIIN();
+            });
+            
+            // Проверка при потере фокуса
+            iinField.addEventListener('blur', validateIIN);
+              // Проверка при отправке формы
+            const form = iinField.closest('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // Проверка на заполненность (обязательное поле)
+                    if (iinField.value.trim().length === 0) {
+                        iinField.classList.add('is-invalid');
+                        
+                        let errorDiv = iinField.nextElementSibling;
+                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
+                            errorDiv = document.createElement('div');
+                            errorDiv.classList.add('invalid-feedback', 'd-block');
+                            iinField.parentNode.insertBefore(errorDiv, iinField.nextSibling);
+                        }
+                        
+                        errorDiv.textContent = 'Введите ИИН';
+                        errorDiv.style.display = 'block';
+                        
+                        e.preventDefault();
+                        iinField.focus();
+                        return;
+                    }
+                    
+                    // Проверка на корректность
+                    if (!validateIIN() && iinField.value.trim().length > 0) {
+                        e.preventDefault();
+                        iinField.focus();
+                    }
+                });
+            }
+            
+            // Начальная валидация
+            if (iinField.value.trim().length > 0) {
+                validateIIN();
+            }
+        }
+    });
+    </script>
+    {# --- JS для валидации обязательных полей формы --- #}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Проверка валидации департамента и цели визита (обязательные поля)
+        const form = document.getElementById('student-reg-form');
+        const departmentSelect = document.getElementById('{{ student_form.department.id_for_label }}');
+        const purposeSelect = document.getElementById('{{ student_form.purpose.id_for_label }}');
+        
+        if (form && departmentSelect && purposeSelect) {
+            form.addEventListener('submit', function(e) {
+                let hasError = false;
+                
+                // Проверка департамента
+                if (!departmentSelect.value) {
+                    departmentSelect.classList.add('is-invalid');
+                    
+                    let errorDiv = departmentSelect.closest('.mb-3').querySelector('.invalid-feedback');
+                    if (!errorDiv) {
+                        errorDiv = document.createElement('div');
+                        errorDiv.classList.add('invalid-feedback', 'd-block');
+                        departmentSelect.closest('.mb-3').appendChild(errorDiv);
+                    }
+                    
+                    errorDiv.textContent = 'Выберите департамент';
+                    errorDiv.style.display = 'block';
+                    
+                    hasError = true;
+                } else {
+                    departmentSelect.classList.remove('is-invalid');
+                }
+                
+                // Проверка цели визита
+                if (!purposeSelect.value) {
+                    purposeSelect.classList.add('is-invalid');
+                    
+                    let errorDiv = purposeSelect.closest('.mb-3').querySelector('.invalid-feedback');
+                    if (!errorDiv) {
+                        errorDiv = document.createElement('div');
+                        errorDiv.classList.add('invalid-feedback', 'd-block');
+                        purposeSelect.closest('.mb-3').appendChild(errorDiv);
+                    }
+                    
+                    errorDiv.textContent = 'Выберите цель визита';
+                    errorDiv.style.display = 'block';
+                    
+                    hasError = true;
+                } else {
+                    purposeSelect.classList.remove('is-invalid');
+                    
+                    // Проверка наличия "Другой цели" если выбран пункт "Other"
+                    if (purposeSelect.value === 'Other') {
+                        const otherWrapper = document.getElementById('student_purpose_other_wrapper');
+                        const otherInput = otherWrapper.querySelector('input, textarea');
+                        
+                        if (otherInput && !otherInput.value.trim()) {
+                            otherInput.classList.add('is-invalid');
+                            
+                            let errorDiv = otherInput.closest('.mb-3').querySelector('.invalid-feedback');
+                            if (!errorDiv) {
+                                errorDiv = document.createElement('div');
+                                errorDiv.classList.add('invalid-feedback', 'd-block');
+                                otherInput.closest('.mb-3').appendChild(errorDiv);
+                            }
+                            
+                            errorDiv.textContent = 'Укажите другую цель визита';
+                            errorDiv.style.display = 'block';
+                            
+                            hasError = true;
+                        } else if (otherInput) {
+                            otherInput.classList.remove('is-invalid');
+                        }
+                    }
+                }
+                
+                if (hasError) {
+                    e.preventDefault();
+                }
+            });
+        }
+    });
+    </script>
+    {# ------------------------------- #}
 {% endblock %}

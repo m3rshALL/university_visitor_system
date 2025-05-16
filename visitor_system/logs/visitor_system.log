@@ -4876,3 +4876,8 @@ WARNING 2025-05-15 15:30:54,604 log 52028 21296 Not Found: /visitors/employee_da
 WARNING 2025-05-15 15:30:54,673 log 52028 56012 Not Found: /visitors/current_guests/
 WARNING 2025-05-15 15:30:55,347 log 52028 13408 Not Found: /visitors/visit_history/
 WARNING 2025-05-15 15:30:55,400 log 52028 55688 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-16 11:30:46,089 log 28896 9644 Not Found: /favicon.ico
+WARNING 2025-05-16 11:30:56,590 log 28896 28640 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-16 11:30:56,902 log 28896 30436 Not Found: /visitors/current_guests/
+WARNING 2025-05-16 11:30:57,095 log 28896 27976 Not Found: /visitors/visit_history/
+WARNING 2025-05-16 11:30:57,171 log 28896 28520 Not Found: /visitors/visit_statistics/

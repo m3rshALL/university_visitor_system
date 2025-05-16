@@ -1,3 +1,14 @@
+# visitors/new_employee_dashboard.py
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Count, Q
+from itertools import chain
+from operator import attrgetter
+from .models import Visit, StudentVisit, EmployeeProfile, STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN
+from django.shortcuts import render
+from django.contrib.auth.models import User
+
 @login_required
 def employee_dashboard_view(request):
     """Панель управления для обычного сотрудника."""
@@ -119,16 +130,53 @@ def employee_dashboard_view(request):
         if 1 <= day <= 31:  # Проверка на всякий случай
             monthly_data[day-1] += visit['count']  # -1 т.к. индексы начинаются с 0
     
-    visit_chart_data['month'] = monthly_data
-
-    # Конвертируем в JSON для передачи в шаблон
+    visit_chart_data['month'] = monthly_data    # Конвертируем в JSON для передачи в шаблон
     import json
     visit_chart_data_json = json.dumps(visit_chart_data)
+
+    # Получаем недавние визиты (включая уже покинувших посетителей) 
+    # за последние 7 дней из текущего департамента
+    recent_time_threshold = timezone.now() - timedelta(days=7)
+    
+    if user_department:
+        # Если есть департамент, фильтруем по нему
+        recent_official_visits = Visit.objects.filter(
+            department=user_department,
+            entry_time__gte=recent_time_threshold
+        ).select_related('guest', 'department', 'employee').order_by('-entry_time')[:10]
+        
+        recent_student_visits = StudentVisit.objects.filter(
+            department=user_department,
+            entry_time__gte=recent_time_threshold
+        ).select_related('guest', 'department').order_by('-entry_time')[:10]
+    else:
+        # Если нет департамента, показываем визиты, связанные с пользователем
+        recent_official_visits = Visit.objects.filter(
+            Q(employee=user) | Q(registered_by=user),
+            entry_time__gte=recent_time_threshold
+        ).select_related('guest', 'department', 'employee').order_by('-entry_time')[:10]
+        
+        recent_student_visits = StudentVisit.objects.filter(
+            registered_by=user,
+            entry_time__gte=recent_time_threshold
+        ).select_related('guest', 'department').order_by('-entry_time')[:10]
+    
+    # Добавляем атрибут для различения типов визитов в шаблоне
+    for v in recent_official_visits: v.visit_kind = 'official'
+    for v in recent_student_visits: v.visit_kind = 'student'
+    
+    # Объединяем и сортируем по времени входа (самые новые вверху)
+    recent_visits = sorted(
+        chain(recent_official_visits, recent_student_visits),
+        key=attrgetter('entry_time'),
+        reverse=True
+    )[:10]  # Берем только 10 самых недавних визитов
 
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
         'my_visit_history': my_visit_history,
+        'recent_visits': recent_visits,  # Добавляем недавние визиты в контекст
         'today': today,  # Добавляем переменную today для условного форматирования в шаблоне
         'department_name': user_department.name if user_department else "Нет департамента",
         'visit_chart_data': visit_chart_data_json,  # Добавляем данные для графика
