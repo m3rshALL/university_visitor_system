@@ -3,71 +3,119 @@
 {% block title %}Статистика визитов{% endblock %}
 
 {% block content %}
-<h2>Статистика визитов</h2>
-<hr>
-
-{# --- Блок с основными цифрами (без изменений) --- #}
-<div class="row mb-4">
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h5 class="card-title">Всего визитов</h5>
-                <p class="card-text fs-2">{{ total_visits_count }}</p>
-            </div>
-        </div>
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">Статистика визитов</h2>
+      </div>
     </div>
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
-                <h5 class="card-title">Средняя длит. (мин)</h5>
-                <p class="card-text fs-2">{{ average_duration_minutes }}</p>
-                 <small class="text-muted">(Для завершенных визитов)</small>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
-{# ------------------------------ #}
+
+<div class="page-body">
+  <div class="container-xl">
+    {# --- Блок с основными цифрами (Tabler UI стиль) --- #}
+    <div class="row row-deck row-cards mb-4">
+      <div class="col-sm-6 col-md-4">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-primary text-white avatar">
+                  <!-- Tabler SVG icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                  </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium">Всего визитов</div>
+                <div class="text-muted">{{ total_visits_count }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="card card-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <span class="bg-green text-white avatar">
+                  <!-- Tabler SVG icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                    <path d="M12 7l0 5l3 3"></path>
+                  </svg>
+                </span>
+              </div>
+              <div class="col">
+                <div class="font-weight-medium">Средняя длит. (мин)</div>
+                <div class="text-muted">{{ average_duration_minutes }}</div>
+                <div class="text-muted small">(Для завершенных визитов)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {# ------------------------------ #}
 
 
-{# --- Блок с графиками --- #}
-<div class="row">
-    {# График посещений по дням #}
-    <div class="col-lg-6 mb-4">
+    {# --- Блок с графиками (Tabler UI стиль) --- #}
+    <div class="row row-deck row-cards">
+      {# График посещений по дням #}
+      <div class="col-lg-6 mb-4">
         <div class="card">
-            <div class="card-header">Посещения за последние 30 дней</div>
-            <div class="card-body">
-                <canvas id="visitsDailyChart"></canvas>
+          <div class="card-header">
+            <h3 class="card-title">Посещения за последние 30 дней</h3>
+          </div>
+          <div class="card-body">
+            <div id="visitsDailyChart-wrapper" style="height: 320px;">
+              <canvas id="visitsDailyChart"></canvas>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    {# --- График по типам посетителей УДАЛЕН --- #}
-    {# <div class="col-lg-6 mb-4"> ... </div> #}
-
-    {# --- НОВЫЙ График по сотрудникам --- #}
-    <div class="col-lg-6 mb-4">
-         <div class="card">
-            <div class="card-header">Посещения по сотрудникам (Топ 10)</div>
-            <div class="card-body">
-                <canvas id="visitsByEmployeeChart"></canvas> {# Новый ID #}
+      {# --- НОВЫЙ График по сотрудникам --- #}
+      <div class="col-lg-6 mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Посещения по сотрудникам (Топ 10)</h3>
+          </div>
+          <div class="card-body">
+            <div id="visitsByEmployeeChart-wrapper" style="height: 320px;">
+              <canvas id="visitsByEmployeeChart"></canvas> {# Новый ID #}
             </div>
+          </div>
         </div>
-    </div>
-    {# ---------------------------------- #}
+      </div>
+      {# ---------------------------------- #}
 
-
-    {# График по департаментам #}
-    <div class="col-lg-12 mb-4"> {# Сделаем шире #}
-         <div class="card">
-            <div class="card-header">Посещения по департаментам (Топ 10)</div>
-            <div class="card-body">
-                <canvas id="visitsByDeptChart"></canvas>
+      {# График по департаментам #}
+      <div class="col-12 mb-4"> {# Сделаем шире #}
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Посещения по департаментам (Топ 10)</h3>
+          </div>
+          <div class="card-body">
+            <div id="visitsByDeptChart-wrapper" style="height: 320px;">
+              <canvas id="visitsByDeptChart"></canvas>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+    {# ----------------------- #}
+  </div>
 </div>
-{# ----------------------- #}
-
 {% endblock %}
 
 
@@ -76,11 +124,31 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 {# --------------------------------- #}
 
-{# --- Скрипты для инициализации графиков --- #}
+{# --- Скрипты для инициализации графиков (Tabler UI стиль) --- #}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Общие настройки для графиков в стиле Tabler
+    Chart.defaults.font.family = '"Noto Sans", -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif';
+    Chart.defaults.color = '#667382';  // Tabler text-muted color
+    Chart.defaults.scale.grid.color = 'rgba(98, 105, 118, 0.1)';
+    Chart.defaults.scale.grid.zeroLineColor = 'rgba(98, 105, 118, 0.1)';
+    Chart.defaults.scale.beginAtZero = true;
+    
+    // Цвета в стиле Tabler
+    const tablerColors = {
+        primary: '#206bc4',
+        secondary: '#626976',
+        success: '#2fb344',
+        info: '#4299e1',
+        warning: '#f76707',
+        danger: '#d63939',
+        light: '#f5f7fb',
+        dark: '#232e3c',
+        muted: '#667382',
+        purple: '#ae3ec9'
+    };
 
-    // --- График посещений по дням (без изменений) ---
+    // --- График посещений по дням ---
     const ctxDaily = document.getElementById('visitsDailyChart');
     if (ctxDaily) {
         new Chart(ctxDaily, {
@@ -90,47 +158,85 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Количество визитов',
                     data: JSON.parse('{{ visits_daily_data|escapejs }}'),
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1, fill: false
-                }]
-            },
-            options: { scales: { y: { beginAtZero: true } }, responsive: true, maintainAspectRatio: true }
-        });
-    }
-
-    // --- График по типам визитов УДАЛЕН ---
-
-    // --- НОВЫЙ График по сотрудникам ---
-    const ctxByEmployee = document.getElementById('visitsByEmployeeChart');
-    if (ctxByEmployee) {
-        new Chart(ctxByEmployee, {
-            type: 'bar', // Столбчатая диаграмма
-            data: {
-                // Метки - Имена сотрудников
-                labels: JSON.parse('{{ visits_employee_labels|escapejs }}'),
-                datasets: [{
-                    label: 'Количество визитов',
-                    // Данные - Количество визитов
-                    data: JSON.parse('{{ visits_employee_data|escapejs }}'),
-                    backgroundColor: 'rgba(153, 102, 255, 0.7)', // Фиолетовый цвет
-                    borderColor: 'rgba(153, 102, 255, 1)',
-                    borderWidth: 1
+                    borderColor: tablerColors.primary,
+                    backgroundColor: 'rgba(32, 107, 196, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointBackgroundColor: tablerColors.primary,
+                    pointBorderColor: '#fff',
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true
                 }]
             },
             options: {
-                indexAxis: 'y', // Горизонтальная диаграмма удобнее для имен
-                 scales: {
-                    x: { beginAtZero: true }
-                },
                 responsive: true,
-                maintainAspectRatio: false // Позволяет управлять высотой через CSS/div
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        padding: 10,
+                        titleFont: {
+                            size: 14
+                        },
+                        bodyFont: {
+                            size: 13
+                        }
+                    }
+                }
             }
         });
     }
-    // ----------------------------------
 
+    // --- График по сотрудникам ---
+    const ctxByEmployee = document.getElementById('visitsByEmployeeChart');
+    if (ctxByEmployee) {
+        new Chart(ctxByEmployee, {
+            type: 'bar',
+            data: {
+                labels: JSON.parse('{{ visits_employee_labels|escapejs }}'),
+                datasets: [{
+                    label: 'Количество визитов',
+                    data: JSON.parse('{{ visits_employee_data|escapejs }}'),
+                    backgroundColor: 'rgba(174, 62, 201, 0.7)', // Tabler purple
+                    borderColor: tablerColors.purple,
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
 
-    // --- График по департаментам (без изменений) ---
+    // --- График по департаментам ---
     const ctxByDept = document.getElementById('visitsByDeptChart');
     if (ctxByDept) {
         new Chart(ctxByDept, {
@@ -140,19 +246,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     label: 'Количество визитов',
                     data: JSON.parse('{{ visits_dept_data|escapejs }}'),
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
+                    backgroundColor: 'rgba(66, 153, 225, 0.7)', // Tabler info
+                    borderColor: tablerColors.info,
+                    borderWidth: 1,
+                    borderRadius: 4
                 }]
             },
             options: {
-                 indexAxis: 'y',
-                 scales: { x: { beginAtZero: true } },
-                 responsive: true, maintainAspectRatio: true
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
             }
         });
     }
-
 });
 </script>
 {# ----------------------------------------- #}

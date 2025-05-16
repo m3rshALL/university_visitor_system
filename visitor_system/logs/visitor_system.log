@@ -4881,3 +4881,14 @@ WARNING 2025-05-16 11:30:56,590 log 28896 28640 Not Found: /visitors/employee_da
 WARNING 2025-05-16 11:30:56,902 log 28896 30436 Not Found: /visitors/current_guests/
 WARNING 2025-05-16 11:30:57,095 log 28896 27976 Not Found: /visitors/visit_history/
 WARNING 2025-05-16 11:30:57,171 log 28896 28520 Not Found: /visitors/visit_statistics/
+INFO 2025-05-16 12:53:50,855 views 29876 31200 Statistics data prepared for user 'sako'.
+INFO 2025-05-16 12:59:17,190 forms 29876 30808 Using guest object: Сарматов Самат (ID: 4), Created: False
+INFO 2025-05-16 12:59:17,190 forms 29876 30808 Visit None created with status CHECKED_IN.
+ERROR 2025-05-16 12:59:25,471 redis 29876 30808 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-16 12:59:25,471 redis 29876 30808 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-16 12:59:29,568 redis 29876 30808 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-16 12:59:29,568 redis 29876 30808 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-16 12:59:34,679 redis 29876 30808 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-16 12:59:34,679 redis 29876 30808 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-16 12:59:39,773 redis 29876 30808 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-16 12:59:39,773 redis 29876 30808 Connection to Redis lost: Retry (3/20) in 1.00 second.
