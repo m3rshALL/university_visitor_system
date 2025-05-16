@@ -4892,3 +4892,48 @@ ERROR 2025-05-16 12:59:34,679 redis 29876 30808 Connection to Redis lost: Retry 
 ERROR 2025-05-16 12:59:34,679 redis 29876 30808 Connection to Redis lost: Retry (2/20) in 1.00 second.
 ERROR 2025-05-16 12:59:39,773 redis 29876 30808 Connection to Redis lost: Retry (3/20) in 1.00 second.
 ERROR 2025-05-16 12:59:39,773 redis 29876 30808 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-16 12:59:44,846 redis 29876 30808 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-16 12:59:44,846 redis 29876 30808 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-16 12:59:49,942 redis 29876 30808 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-16 12:59:49,942 redis 29876 30808 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-16 12:59:55,044 redis 29876 30808 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-16 12:59:55,044 redis 29876 30808 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-16 13:00:00,146 redis 29876 30808 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-16 13:00:00,146 redis 29876 30808 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-16 13:00:05,238 redis 29876 30808 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-16 13:00:05,238 redis 29876 30808 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-16 13:00:10,330 redis 29876 30808 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-16 13:00:10,330 redis 29876 30808 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-16 13:00:15,433 redis 29876 30808 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-16 13:00:15,433 redis 29876 30808 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-16 13:00:20,540 redis 29876 30808 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-16 13:00:20,540 redis 29876 30808 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-16 13:00:25,608 redis 29876 30808 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-16 13:00:25,608 redis 29876 30808 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-16 13:00:30,668 redis 29876 30808 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-16 13:00:30,668 redis 29876 30808 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-16 13:00:35,777 redis 29876 30808 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-16 13:00:35,777 redis 29876 30808 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-16 13:00:40,884 redis 29876 30808 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-16 13:00:40,884 redis 29876 30808 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-16 13:00:45,989 redis 29876 30808 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-16 13:00:45,989 redis 29876 30808 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-16 13:00:51,069 redis 29876 30808 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-16 13:00:51,069 redis 29876 30808 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-16 13:00:56,140 redis 29876 30808 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-16 13:00:56,140 redis 29876 30808 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-16 13:01:01,229 redis 29876 30808 Connection to Redis lost: Retry (19/20) in 1.00 second.
+ERROR 2025-05-16 13:01:01,229 redis 29876 30808 Connection to Redis lost: Retry (19/20) in 1.00 second.
+CRITICAL 2025-05-16 13:01:06,316 redis 29876 30808 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-16 13:01:06,316 redis 29876 30808 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+INFO 2025-05-16 13:01:49,026 forms 29876 20580 Using guest object: Сарматов Самат (ID: 4), Created: False
+INFO 2025-05-16 13:01:49,026 forms 29876 20580 Visit None created with status CHECKED_IN.
+INFO 2025-05-16 13:01:49,055 forms 29876 20580 Saved Visit ID 117, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-16 13:01:49,058 utils 29764 25608 Attempting to send creation notification for official ID 117
+ERROR 2025-05-16 13:01:49,064 views 29876 20580 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-16 13:01:49,093 utils 29764 25608 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-16 13:01:51,585 utils 29764 25608 Visit notification email for official ID 117 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].

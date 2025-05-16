@@ -1,5 +1,4 @@
 # visitors/views.py
-import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.exceptions import PermissionDenied
@@ -14,8 +13,9 @@ from notifications.utils import send_guest_arrival_email # Импорт функ
 from django.db.models import Q # Для сложных запросов
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
-from datetime import timedelta
+from datetime import timedelta, datetime
 import json
+import logging
 
 from django.contrib.auth.models import Group # Импорт модели группы пользователей
 from django.db.models import Count, Avg, F, DurationField
@@ -25,16 +25,15 @@ from itertools import chain
 from operator import attrgetter
 from collections import defaultdict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
-import datetime
 
 from django.views.decorators.http import require_POST # Для ограничения методов
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, cache_control
+from django.core.cache import cache
+from django.views.decorators.vary import vary_on_cookie
 
 from notifications.utils import send_new_visit_notification_to_security
 
@@ -114,6 +113,8 @@ def register_guest_view(request):
 # ----------------------------------------------------------------------
 
 @login_required
+@cache_page(60 * 5)  # Кэшируем страницу на 5 минут
+@vary_on_cookie     # Варьируем кэш в зависимости от пользователя (т.к. содержимое зависит от прав доступа)
 def current_guests_view(request):
     """Отображение списка гостей, которые сейчас находятся в здании."""
     # Фильтруем визиты по статусу 'CHECKED_IN'
