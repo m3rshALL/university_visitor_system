@@ -13,7 +13,8 @@ from notifications.utils import send_guest_arrival_email # Импорт функ
 from django.db.models import Q # Для сложных запросов
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
-from datetime import timedelta, datetime
+import datetime
+from datetime import timedelta
 import json
 import logging
 
@@ -25,6 +26,8 @@ from itertools import chain
 from operator import attrgetter
 from collections import defaultdict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter

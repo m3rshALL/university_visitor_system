@@ -4937,3 +4937,21 @@ INFO 2025-05-16 13:01:49,058 utils 29764 25608 Attempting to send creation notif
 ERROR 2025-05-16 13:01:49,064 views 29876 20580 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
 WARNING 2025-05-16 13:01:49,093 utils 29764 25608 Department 'Медиа студия' has no director assigned.
 INFO 2025-05-16 13:01:51,585 utils 29764 25608 Visit notification email for official ID 117 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+WARNING 2025-05-16 13:32:38,257 log 39876 31308 Not Found: /favicon.ico
+WARNING 2025-05-16 13:33:06,048 log 39876 37844 Not Found: /visitors/visit_history/
+WARNING 2025-05-16 13:33:06,063 log 39876 38232 Not Found: /visitors/current_guests/
+WARNING 2025-05-16 13:33:06,063 log 39876 33188 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-16 13:33:06,063 log 39876 35812 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-16 13:33:11,525 log 39876 31096 Not Found: /apple-touch-icon.png
+WARNING 2025-05-16 13:33:11,528 log 39876 38484 Not Found: /favicon.ico
+WARNING 2025-05-16 13:33:11,699 log 39876 35716 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-16 13:33:38,577 log 39876 38508 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-16 13:33:38,584 log 39876 34352 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-16 13:33:38,588 log 39876 36616 Not Found: /visitors/current_guests/
+WARNING 2025-05-16 13:33:38,659 log 39876 32584 Not Found: /visitors/visit_history/
+WARNING 2025-05-16 15:32:53,542 log 39876 22980 Not Found: /favicon.ico
+WARNING 2025-05-16 15:33:14,392 log 39876 28208 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-16 15:33:14,992 log 39876 34560 Not Found: /visitors/current_guests/
+WARNING 2025-05-16 15:33:15,463 log 39876 36360 Not Found: /visitors/visit_history/
+WARNING 2025-05-16 15:33:15,474 log 39876 29880 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-16 15:37:32,213 log 39876 39320 Not Found: /favicon.ico
