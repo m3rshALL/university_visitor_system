@@ -1,0 +1,64 @@
+name: Django CI
+
+# События, которые будут запускать этот workflow
+on:
+  push:
+    branches: [ main ] # или master, если у тебя так называется основная ветка
+  pull_request:
+    branches: [ main ] # или master
+
+jobs:
+  build:
+    # Тип исполнителя (runner), на котором будет выполняться задание
+    # ubuntu-latest - это последняя стабильная версия Ubuntu, предоставляемая GitHub
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Можно указать несколько версий Python, если хочешь тестировать на них
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"] # Выбери версии Python, которые используешь
+
+    steps:
+    # Шаг 1: Клонирование твоего репозитория
+    # Используем готовый action 'actions/checkout'
+    - name: Checkout repository
+      uses: actions/checkout@v4 # Рекомендуется использовать последнюю мажорную версию
+
+    # Шаг 2: Настройка Python
+    # Используем готовый action 'actions/setup-python'
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'poetry' # Кэширование зависимостей для ускорения последующих сборок
+
+    # Шаг 3: Проверка версии Poetry (опционально, т.к. actions/setup-python его установит)
+    # Если нужна конкретная версия Poetry, ее можно установить явно:
+    # - name: Install specific Poetry version
+    #   run: pipx install poetry==<версия>
+    - name: Display Poetry version
+      run: poetry --version
+
+    # Шаг 4: Установка зависимостей проекта с помощью Poetry
+    - name: Install dependencies
+      run: |
+        poetry install --no-interaction --no-ansi
+        # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
+        # для flake8 и других инструментов разработки, используй:
+        # poetry install --with dev --no-interaction --no-ansi
+
+    # Шаг 5: Запуск тестов Django
+    - name: Run Django Tests
+      run: poetry run python manage.py test
+
+    # Шаг 6: Запуск flake8 для проверки кода
+    - name: Lint with Flake8 (Poetry)
+      run: poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      # --count - количество ошибок
+      # --exit-zero - завершить с кодом 0, даже если есть ошибки  
+      # --max-complexity=10 - максимальная сложность функции
+      # --max-line-length=127 - максимальная длина строки
+      # --statistics - статистика по ошибкам
+      # poetry run flake8 .
+
+
