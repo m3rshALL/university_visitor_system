@@ -63,12 +63,12 @@ jobs:
 
     # Шаг 5: Запуск тестов Django
     - name: Run Django Tests
-      working-directory: ./university_visitor_system/visitor_system
+      working-directory: ./visitor_system
       run: poetry run python manage.py test
 
     # Шаг 6: Запуск flake8 для проверки кода
     - name: Lint with Flake8 (Poetry)
-      working-directory: ./university_visitor_system/visitor_system
+      working-directory: ./visitor_system
       run: poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       # --count - количество ошибок
       # --exit-zero - завершить с кодом 0, даже если есть ошибки  
