@@ -13,7 +13,7 @@ jobs:
     # ubuntu-latest - это последняя стабильная версия Ubuntu, предоставляемая GitHub
     runs-on: ubuntu-latest
     
-    # Add PostgreSQL service container
+    # Add service containers
     services:
       postgres:
         image: postgres:15
@@ -26,6 +26,18 @@ jobs:
         # Health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      # Add Redis service container
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        # Health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -86,6 +98,8 @@ jobs:
         echo "DB_NAME=visitor_system_db" >> $GITHUB_ENV
         echo "DB_USER=visitor_system_user" >> $GITHUB_ENV
         echo "DB_PASSWORD=Sako2020" >> $GITHUB_ENV
+        echo "REDIS_HOST=localhost" >> $GITHUB_ENV
+        echo "REDIS_PORT=6379" >> $GITHUB_ENV
 
     # Create .env file
     - name: Create .env file
@@ -93,6 +107,8 @@ jobs:
       run: |
         echo "DB_PASSWORD=Sako2020" > .env
         echo "DJANGO_SETTINGS_MODULE=visitor_system.settings" >> .env
+        echo "REDIS_HOST=localhost" >> .env
+        echo "REDIS_PORT=6379" >> .env
 
     # Run Django migrations before tests
     - name: Run Django Migrations
