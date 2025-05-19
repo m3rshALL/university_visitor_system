@@ -17,21 +17,19 @@ jobs:
       # Можно указать несколько версий Python, если хочешь тестировать на них
       matrix:
         python-version: ["3.9", "3.10", "3.11"] # Убрали Python 3.13, т.к. он экспериментальный
-
+        os: [ubuntu-22.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     # Шаг 1: Клонирование твоего репозитория
     # Используем готовый action 'actions/checkout'
     - name: Checkout repository
-      uses: actions/checkout@v4 # Рекомендуется использовать последнюю мажорную версию
+      uses: actions/checkout@v4 
 
-    # Шаг 2: Настройка Python
-    # Используем готовый action 'actions/setup-python'
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'poetry' # Эта опция должна устанавливать Poetry и кэшировать зависимости
-
+        
     # Шаг 2.1: Явно добавляем директорию Poetry в PATH для надежности
     # pipx (используемый setup-python для poetry) устанавливает исполняемые файлы в $HOME/.local/bin.
     # Этот шаг гарантирует, что директория будет в GITHUB_PATH для последующих шагов.
