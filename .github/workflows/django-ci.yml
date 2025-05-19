@@ -61,28 +61,32 @@ jobs:
           ${{ runner.os }}-poetry-${{ matrix.python-version }}-
 
     - name: Display Poetry version
-      run: poetry --version
-
-    # Шаг 4: Установка зависимостей проекта с помощью Poetry
+      run: poetry --version    # Шаг 3: Установка зависимостей проекта с помощью Poetry
     - name: Install dependencies
       run: |
         poetry install --no-interaction --no-ansi
         # Если кэш не был восстановлен, poetry install создаст .venv и установит все.
         # Если кэш был восстановлен, poetry install быстро проверит и доустановит недостающее.
-        # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
-        # для flake8 и других инструментов разработки, используй:
-        # poetry install --with dev --no-interaction --no-ansi
-
-    # Шаг 5: Запуск тестов Django
+        # Устанавливаем dev зависимости для flake8 и других инструментов
+        poetry install --with dev --no-interaction --no-ansi    # Шаг 4: Запуск тестов Django
     - name: Run Django Tests
-      run: poetry run python manage.py test
-
-    # Шаг 6: Запуск flake8 для проверки кода
+      run: |
+        cd visitor_system
+        poetry run python manage.py test
+      # Добавляем обработку ошибок, чтобы workflow не прерывался при ошибках в тестах
+      continue-on-error: false # Если нужно, чтобы CI падал при ошибках в тестах - оставляем false    # Шаг 5: Проверка наличия flake8 и запуск для проверки кода
     - name: Lint with Flake8 (Poetry)
-      run: poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      run: |
+        # Проверяем, установлен ли flake8
+        if poetry run pip list | grep -q flake8; then
+          echo "Running flake8 checks..."
+          poetry run flake8 . --count --max-complexity=10 --max-line-length=127 --statistics --exit-zero
+        else
+          echo "flake8 is not installed. Skipping linting step."
+          echo "Please add flake8 to your dev dependencies in pyproject.toml"
+        fi
       # --count - количество ошибок
       # --exit-zero - завершить с кодом 0, даже если есть ошибки  
       # --max-complexity=10 - максимальная сложность функции
       # --max-line-length=127 - максимальная длина строки
       # --statistics - статистика по ошибкам
-      # poetry run flake8 .
