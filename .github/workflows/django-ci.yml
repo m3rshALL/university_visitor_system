@@ -48,10 +48,10 @@ jobs:
     # Шаг 4: Установка зависимостей проекта с помощью Poetry
     - name: Install dependencies
       run: |
-        poetry install --no-interaction --no-ansi
-        # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
-        # для flake8 и других инструментов разработки, используй:
-        # poetry install --with dev --no-interaction --no-ansi
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install --with dev
+        
 
     # Шаг 5: Запуск тестов Django
     - name: Run Django Tests
