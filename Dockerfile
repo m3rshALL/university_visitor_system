@@ -5,6 +5,7 @@ FROM python:3.13
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV POETRY_VERSION=1.5.1 
+ENV PYTHONPATH="/app:$PYTHONPATH"
 
 # Рабочая директория
 WORKDIR /app
@@ -31,9 +32,9 @@ COPY pyproject.toml poetry.lock* /app/
 # Установка зависимостей проекта (без dev-зависимостей)
 # --no-interaction: не задавать интерактивных вопросов
 # --no-ansi: для более чистого вывода в логах
-# --no-root: не устанавливать сам проект как пакет (если код копируется позже)
 # Если ваш проект должен быть установлен как пакет, уберите --no-root
-RUN poetry install --no-dev --no-interaction --no-ansi --no-root
+RUN poetry install --no-interaction --no-ansi
+RUN echo "--- INSTALLED PACKAGES AFTER POETRY INSTALL (BUILD TIME) ---" && pip list && echo "------------------------------------------------------------"
 
 # Копирование всего проекта
 COPY . /app/

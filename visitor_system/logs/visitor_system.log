@@ -4970,3 +4970,4 @@ WARNING 2025-05-19 12:18:16,759 log 42624 45120 Not Found: /visitors/employee_da
 WARNING 2025-05-19 12:18:16,877 log 42624 45296 Not Found: /visitors/current_guests/
 WARNING 2025-05-19 12:18:17,390 log 42624 40328 Not Found: /visitors/visit_history/
 WARNING 2025-05-19 12:18:17,459 log 42624 42508 Not Found: /visitors/visit_statistics/
+WARNING 2025-05-19 13:37:42,660 log 48532 53712 Not Found: /favicon.ico

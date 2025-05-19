@@ -213,7 +213,10 @@ SOCIALACCOUNT_PROVIDERS = {
 # Говорим Django доверять заголовку X-Forwarded-Proto, который ngrok (и другие прокси)
 # обычно устанавливает в 'https' для оригинальных HTTPS запросов.
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# -------------------------------------------------------------
+USE_X_FORWARDED_HOST = True # Также полезно, если Nginx передает оригинальный Host
+# Если вы используете Django >= 3.1, SECURE_PROXY_SSL_HEADER может быть достаточно.
+# Для более старых версий может потребоваться CSRF_COOKIE_SECURE = True и SESSION_COOKIE_SECURE = True
+# для production, но это зависит от того, всегда ли вы будете за Nginx.
 
 # Установите True, так как вы используете HTTPS через ngrok
 CSRF_COOKIE_SECURE = True

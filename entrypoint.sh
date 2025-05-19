@@ -1,5 +1,9 @@
 #!/bin/sh
 
+echo "--- INSTALLED PACKAGES AT RUNTIME (ENTRYPOINT START) ---"
+pip list
+echo "-------------------------------------------------------"
+
 # Ожидание доступности базы данных
 echo "Waiting for postgres..."
 # Устанавливаем netcat для проверки соединения
@@ -22,7 +26,7 @@ poetry run python manage.py collectstatic --noinput --clear
 # Запуск Gunicorn
 echo "Starting Gunicorn..."
 cd /app/visitor_system
-exec poetry run gunicorn --bind 0.0.0.0:8000 visitor_system.wsgi:application \
+exec poetry run gunicorn --bind localhost:8000 visitor_system.wsgi:application \
     --workers 3 \
     --log-level=info \
     --log-file=- \
