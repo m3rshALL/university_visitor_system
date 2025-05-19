@@ -55,7 +55,6 @@ services:
       - db
       - app
     restart: unless-stopped
-
   celerybeat:
     build:
       context: .
