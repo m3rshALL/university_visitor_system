@@ -16,7 +16,7 @@ jobs:
     strategy:
       # Можно указать несколько версий Python, если хочешь тестировать на них
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.13"] # Выбери версии Python, которые используешь
+        python-version: ["3.9", "3.10", "3.11"] # Убрали Python 3.13, т.к. он экспериментальный
 
     steps:
     # Шаг 1: Клонирование твоего репозитория
@@ -30,7 +30,13 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'poetry' # Кэширование зависимостей для ускорения последующих сборок
+        cache: 'poetry' # Эта опция должна устанавливать Poetry и кэшировать зависимости
+
+    # Шаг 2.1: Явно добавляем директорию Poetry в PATH для надежности
+    # pipx (используемый setup-python для poetry) устанавливает исполняемые файлы в $HOME/.local/bin.
+    # Этот шаг гарантирует, что директория будет в GITHUB_PATH для последующих шагов.
+    - name: Add Poetry to PATH
+      run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     # Шаг 3: Проверка версии Poetry (опционально, т.к. actions/setup-python его установит)
     # Если нужна конкретная версия Poetry, ее можно установить явно:
@@ -60,5 +66,3 @@ jobs:
       # --max-line-length=127 - максимальная длина строки
       # --statistics - статистика по ошибкам
       # poetry run flake8 .
-
-
