@@ -10,7 +10,7 @@ from django.apps import apps
 logger = logging.getLogger(__name__)
 
 SETUP_EXEMPT_URL_NAMES = [ 'profile_setup', 'account_logout', 'password_reset', 'password_reset_done', 'password_reset_confirm', 'password_reset_complete' ]
-SETUP_EXEMPT_URL_PREFIXES = ['/static/', '/media/', '/admin/', '/__debug__/'] # Добавили debug toolbar
+SETUP_EXEMPT_URL_PREFIXES = ['/static/', '/media/', '/admin/', '/__debug__/', '/accounts/'] # Добавили debug toolbar
 
 class ProfileSetupMiddleware:
     def __init__(self, get_response):

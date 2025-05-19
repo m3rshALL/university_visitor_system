@@ -4955,3 +4955,14 @@ WARNING 2025-05-16 15:33:14,992 log 39876 34560 Not Found: /visitors/current_gue
 WARNING 2025-05-16 15:33:15,463 log 39876 36360 Not Found: /visitors/visit_history/
 WARNING 2025-05-16 15:33:15,474 log 39876 29880 Not Found: /visitors/visit_statistics/
 WARNING 2025-05-16 15:37:32,213 log 39876 39320 Not Found: /favicon.ico
+WARNING 2025-05-19 10:35:44,052 log 22540 33252 Not Found: /favicon.ico
+INFO 2025-05-19 10:36:03,067 middleware 22540 6340 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:05,522 middleware 22540 6660 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:05,546 middleware 22540 20720 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:08,046 middleware 22540 31412 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:08,112 middleware 22540 29900 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:08,138 middleware 22540 29472 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:09,130 middleware 22540 30624 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:09,216 middleware 22540 30808 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:09,222 middleware 22540 31820 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-19 10:36:18,339 views 22540 32144 User 'sagat.akimbay' completed profile setup.
