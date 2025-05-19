@@ -78,12 +78,12 @@ jobs:
         path: .venv # Poetry создаст venv здесь из-за virtualenvs.in-project=true
         key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
         restore-keys: |
-          ${{ runner.os }}-poetry-${{ matrix.python-version }}-
-
-    # Шаг 4: Установка зависимостей проекта с помощью Poetry
+          ${{ runner.os }}-poetry-${{ matrix.python-version }}-    # Шаг 4: Установка зависимостей проекта с помощью Poetry
     - name: Install dependencies
       run: |
         poetry install --no-interaction --no-ansi --no-root
+        # Install flake8 for linting
+        poetry add --group dev flake8
         # Если кэш не был восстановлен, poetry install создаст .venv и установит все.
         # Если кэш был восстановлен, poetry install быстро проверит и доустановит недостающее.
         # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
