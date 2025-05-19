@@ -102,6 +102,18 @@ self.addEventListener('fetch', event => {
     // Пропускаем cross-origin запросы
     if (!event.request.url.startsWith(self.location.origin)) return;
     
+    // Особая обработка для манифеста - всегда пробуем из сети
+    if (event.request.url.includes('/manifest.json')) {
+        event.respondWith(
+            fetch(event.request)
+                .catch(() => {
+                    console.log('Failed to fetch manifest.json from network');
+                    return caches.match(event.request);
+                })
+        );
+        return;
+    }
+    
     // Отдельная обработка API запросов
     if (event.request.url.includes('/api/')) {
         // Для API всегда сначала пробуем сеть
