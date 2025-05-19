@@ -54,7 +54,7 @@ jobs:
     # Шаг 4: Установка зависимостей проекта с помощью Poetry
     - name: Install dependencies
       run: |
-        poetry install --no-interaction --no-ansi
+        poetry install --no-interaction --no-ansi --no-root
         # Если кэш не был восстановлен, poetry install создаст .venv и установит все.
         # Если кэш был восстановлен, poetry install быстро проверит и доустановит недостающее.
         # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
