@@ -1,5 +1,5 @@
 # Базовый образ (убедитесь, что версия Python совпадает с pyproject.toml)
-FROM python:3.13-slim
+FROM python:3.13
 
 # Установка переменных окружения
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -13,7 +13,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
-    curl \ # Нужен для установки Poetry
+    curl \
     # ... другие системные зависимости
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,7 +33,7 @@ COPY pyproject.toml poetry.lock* /app/
 # --no-ansi: для более чистого вывода в логах
 # --no-root: не устанавливать сам проект как пакет (если код копируется позже)
 # Если ваш проект должен быть установлен как пакет, уберите --no-root
-RUN poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --no-dev --no-interaction --no-ansi --no-root
 
 # Копирование всего проекта
 COPY . /app/
@@ -51,4 +51,4 @@ RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Если без entrypoint.sh:
-# CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:8000", "your_project_name.wsgi:application"]
+# CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:8000", "visitor_system.wsgi:application"]

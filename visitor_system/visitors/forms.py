@@ -132,7 +132,7 @@ class GuestRegistrationForm(forms.Form):
     )
     # ------------------------------------------------------
     employee_contact_phone_form = forms.CharField(
-        label="Контактный тел. сотрудника (для визита, обязательно)", max_length=20, required=True
+        label="Контактный тел. сотрудника", max_length=20, required=True
     )
     # -------------------
     

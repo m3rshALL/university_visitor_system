@@ -63,8 +63,8 @@
             {% csrf_token %}
 
             <div class="mb-3">
-                <label class="form-label" for="{{ form.login.id_for_label }}">Email address</label>
-                {% render_field form.login class="form-control" placeholder="your@email.com" autocomplete="email" %}
+                <label class="form-label" for="{{ form.login.id_for_label }}">Email</label>
+                {% render_field form.login class="form-control" placeholder="Ваш@email.com" autocomplete="email" %}
                     {% if form.login.errors %}
                         <div class="invalid-feedback d-block">
                             {% for error in form.login.errors %}{{ error }}{% endfor %}
@@ -74,13 +74,13 @@
 
             <div class="mb-2">
                 <label class="form-label" for="{{ form.password.id_for_label }}">
-                    Password
+                    Пароль
                     <span class="form-label-description">
-                            <a href="{% url 'account_reset_password' %}">I forgot password</a>
+                            <a href="{% url 'account_reset_password' %}">Я забыл пароль</a>
                         </span>
                 </label>
                 <div class="input-group input-group-flat">
-                    {% render_field form.password class="form-control" placeholder="Your password" autocomplete="current-password" %}
+                    {% render_field form.password class="form-control" placeholder="Ваш пароль" autocomplete="current-password" %}
             <span class="input-group-text">
                 <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler.io/icons/icon/eye -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg></a>
@@ -97,7 +97,7 @@
                 <div class="mb-2">
                     <label class="form-check">
                         {% render_field form.remember class="form-check-input" %}
-                        <span class="form-check-label">Remember me</span>
+                        <span class="form-check-label">Запомнить меня</span>
                     </label>
                 </div>
                 {% endif %}
@@ -107,18 +107,18 @@
                 {% endif %}
 
             <div class="form-footer">
-                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                <button type="submit" class="btn btn-primary w-100">Войти</button>
             </div>
         </form>
             </div>
-            <div class="hr-text">or</div>
+            <div class="hr-text">или</div>
 
             <div class="card-body">
                 <div class="row">
 			    <div class="col">
                     <a href="{% provider_login_url 'microsoft' process='login' %}" class="btn btn-4 w-100">
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-brand-windows"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 13v5c0 1.57 -1.248 2.832 -2.715 2.923l-.113 .003l-.042 .018a1 1 0 0 1 -.336 .056l-.118 -.008l-4.676 -.585v-7.407zm-10 0v7.157l-5.3 -.662c-1.514 -.151 -2.7 -1.383 -2.7 -2.895v-3.6zm0 -9.158v7.158h-8v-3.6c0 -1.454 1.096 -2.648 2.505 -2.87zm10 2.058v5.1h-8v-7.409l4.717 -.589c1.759 -.145 3.283 1.189 3.283 2.898" /></svg>
-                Login with Microsoft
+                Войти через Microsoft
                 </a>
             </div>
 		</div>

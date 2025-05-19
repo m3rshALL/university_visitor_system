@@ -20,15 +20,15 @@ services:
     restart: unless-stopped
     ports:
       - "63790:6379"
-
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: myproject_app
+    container_name: UniversityVisitorSystem    
     restart: unless-stopped
-    # command: poetry run gunicorn --bind 0.0.0.0:8000 your_project_name.wsgi:application (если не entrypoint.sh)
+    # command: poetry run gunicorn --bind 0.0.0.0:8000 visitor_system.wsgi:application
     volumes:
+      - ./visitor_system:/app/visitor_system
       - static_volume:/app/staticfiles
       - media_volume:/app/mediafiles
     expose:
@@ -38,15 +38,14 @@ services:
     depends_on:
       - db
       - redis
-
   celeryworker:
     build:
       context: .
-      dockerfile: Dockerfile # Используем тот же Dockerfile
-    container_name: myproject_celeryworker
-    # Команды запускаются через poetry run
-    command: poetry run celery -A your_project_name worker -l info
+      dockerfile: Dockerfile    
+      container_name: UniversityVisitorSystem_celeryworker
+    # Команды запускаются через poetry run    command: bash -c "cd /app/visitor_system && poetry run celery -A visitor_system worker --pool=solo -l info"
     volumes:
+      - ./visitor_system:/app/visitor_system
       - media_volume:/app/mediafiles
     env_file:
       - ./.env
@@ -58,11 +57,11 @@ services:
   celerybeat:
     build:
       context: .
-      dockerfile: Dockerfile # Используем тот же Dockerfile
-    container_name: myproject_celerybeat
-    # Команды запускаются через poetry run
-    command: poetry run celery -A your_project_name beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+      dockerfile: Dockerfile    
+      container_name: UniversityVisitorSystem_celerybeat
+    # Команды запускаются через poetry run    command: bash -c "cd /app/visitor_system && poetry run celery -A visitor_system beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
     volumes:
+      - ./visitor_system:/app/visitor_system
       - media_volume:/app/mediafiles
     env_file:
       - ./.env
