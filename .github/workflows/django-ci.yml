@@ -1,4 +1,4 @@
-name: Django CI
+name: Django CI with Poetry (Manual Setup)
 
 # События, которые будут запускать этот workflow
 on:
@@ -18,7 +18,6 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11"] # Убрали Python 3.13, т.к. он экспериментальный
 
-
     steps:
     # Шаг 1: Клонирование твоего репозитория
     # Используем готовый action 'actions/checkout'
@@ -26,33 +25,43 @@ jobs:
       uses: actions/checkout@v4 # Рекомендуется использовать последнюю мажорную версию
 
     # Шаг 2: Настройка Python
-    # Используем готовый action 'actions/setup-python'
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'poetry' # Эта опция должна устанавливать Poetry и кэшировать зависимости
+        cache: 'pip' # Кэшируем только pip; Poetry установим и кэшируем отдельно
 
-    # Шаг 2.1: Явно добавляем директорию Poetry в PATH для надежности
-    # pipx (используемый setup-python для poetry) устанавливает исполняемые файлы в $HOME/.local/bin.
-    # Этот шаг гарантирует, что директория будет в GITHUB_PATH для последующих шагов.
-    - name: Add Poetry to PATH
-      run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+    # Шаг 2.1: Установка Poetry и настройка
+    - name: Install and configure Poetry
+      run: |
+        python -m pip install --upgrade pip pipx
+        pipx install poetry
+        echo "$HOME/.local/bin" >> $GITHUB_PATH # Добавляем директорию pipx в PATH для последующих шагов
+        poetry config virtualenvs.in-project true # Создавать venv в .venv директории проекта
 
-    # Шаг 3: Проверка версии Poetry (опционально, т.к. actions/setup-python его установит)
-    # Если нужна конкретная версия Poetry, ее можно установить явно:
-    # - name: Install specific Poetry version
-    #   run: pipx install poetry==<версия>
+    # Шаг 2.2: Кэширование виртуального окружения Poetry
+    # Кэшируем директорию .venv, где Poetry будет создавать окружение
+    - name: Cache Poetry virtualenv
+      id: cache-poetry-venv # Даем ID для использования в условии следующего шага (если потребуется)
+      uses: actions/cache@v4
+      with:
+        path: .venv # Poetry создаст venv здесь из-за virtualenvs.in-project=true
+        key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-${{ matrix.python-version }}-
+
     - name: Display Poetry version
       run: poetry --version
 
     # Шаг 4: Установка зависимостей проекта с помощью Poetry
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install poetry
-        poetry install --with dev
-        
+        poetry install --no-interaction --no-ansi
+        # Если кэш не был восстановлен, poetry install создаст .venv и установит все.
+        # Если кэш был восстановлен, poetry install быстро проверит и доустановит недостающее.
+        # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
+        # для flake8 и других инструментов разработки, используй:
+        # poetry install --with dev --no-interaction --no-ansi
 
     # Шаг 5: Запуск тестов Django
     - name: Run Django Tests
