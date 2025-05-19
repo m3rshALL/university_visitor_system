@@ -78,7 +78,8 @@ jobs:
     - name: Cache Poetry virtualenv
       id: cache-poetry-venv # Даем ID для использования в условии следующего шага (если потребуется)
       uses: actions/cache@v4
-      with:        path: .venv # Poetry создаст venv здесь из-за virtualenvs.in-project=true
+      with:        
+      path: .venv # Poetry создаст venv здесь из-за virtualenvs.in-project=true
         key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
         restore-keys: |
           ${{ runner.os }}-poetry-${{ matrix.python-version }}-
