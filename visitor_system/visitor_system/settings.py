@@ -294,7 +294,7 @@ CELERY_TASK_SERIALIZER = 'json'
 # Формат сериализации результатов
 CELERY_RESULT_SERIALIZER = 'json'
 # Часовой пояс (важно для планирования задач, если будете использовать)
-CELERY_TIMEZONE = settings.TIME_ZONE # Используем тот же, что и у Django
+CELERY_TIMEZONE = TIME_ZONE # Используем тот же часовой пояс, что установлен в Django
 
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
@@ -471,9 +471,12 @@ PWA_APP_SPLASH_SCREEN = [
 
 # Настройки Service Worker (можно оставить по умолчанию)
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js') # Путь, куда будет сгенерирован serviceworker
-#PWA_SERVICE_WORKER_PATH = STATIC_ROOT + '/js/serviceworker.js'
-# PWA_SERVICE_WORKER_EXCLUDE_URLS = [] # URL, которые не должны кэшироваться
-# PWA_DEBUG = DEBUG # Использовать DEBUG настройку Django для PWA
+# Добавляем настройку для кодировки service worker файла
+PWA_APP_FETCH_URL_PATTERNS = ['.*(?:fonts.googleapis.com|gstatic.com).*$']
+# Настройка исключений для service worker
+PWA_SERVICE_WORKER_EXCLUDE_URLS = []
+# Отладка PWA
+PWA_DEBUG = DEBUG # Использовать DEBUG настройку Django для PWA
 
 # Имя файла манифеста
 PWA_MANIFEST_FILENAME = 'manifest.json'

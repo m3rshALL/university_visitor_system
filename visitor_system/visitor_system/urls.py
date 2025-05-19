@@ -23,6 +23,7 @@ from django.views.static import serve
 from visitors import views as visitor_views # Главная страница - панель сотрудника
 from django.views.defaults import permission_denied, page_not_found, server_error
 from django.shortcuts import render
+from .pwa_views import service_worker_view
 
 
 urlpatterns = [
@@ -32,8 +33,12 @@ urlpatterns = [
     path('visitors/', include('visitors.urls')), # URL для гостей и визитов
     # Главная страница - перенаправляем на панель сотрудника
     path('', visitor_views.employee_dashboard_view, name='home'),
+      path("select2/", include("django_select2.urls")),
     
-    path("select2/", include("django_select2.urls")),
+    # Custom service worker view to handle encoding issues
+    path('serviceworker.js', service_worker_view, name='serviceworker'),
+    
+    # PWA URLs, our custom service worker view override will take precedence
     path('', include('pwa.urls')),  # <- добавляем PWA
     
     # Страница для оффлайн-режима

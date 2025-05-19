@@ -1,4 +1,4 @@
-name: Django CI with Poetry (Manual Setup)
+name: Django CI with Poetry
 
 # События, которые будут запускать этот workflow
 on:
