@@ -12,6 +12,23 @@ jobs:
     # Тип исполнителя (runner), на котором будет выполняться задание
     # ubuntu-latest - это последняя стабильная версия Ubuntu, предоставляемая GitHub
     runs-on: ubuntu-latest
+    
+    # Add PostgreSQL service container
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: visitor_system_user
+          POSTGRES_PASSWORD: Sako2020
+          POSTGRES_DB: visitor_system_db
+        ports:
+          - 5432:5432
+        # Health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     strategy:
       # Можно указать несколько версий Python, если хочешь тестировать на них
@@ -60,6 +77,27 @@ jobs:
         # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
         # для flake8 и других инструментов разработки, используй:
         # poetry install --with dev --no-interaction --no-ansi
+
+    # Setup environment variables for Django tests
+    - name: Set up environment for Django
+      run: |
+        echo "DB_HOST=localhost" >> $GITHUB_ENV
+        echo "DB_PORT=5432" >> $GITHUB_ENV
+        echo "DB_NAME=visitor_system_db" >> $GITHUB_ENV
+        echo "DB_USER=visitor_system_user" >> $GITHUB_ENV
+        echo "DB_PASSWORD=Sako2020" >> $GITHUB_ENV
+
+    # Create .env file
+    - name: Create .env file
+      working-directory: ./visitor_system
+      run: |
+        echo "DB_PASSWORD=Sako2020" > .env
+        echo "DJANGO_SETTINGS_MODULE=visitor_system.settings" >> .env
+
+    # Run Django migrations before tests
+    - name: Run Django Migrations
+      working-directory: ./visitor_system
+      run: poetry run python manage.py migrate --noinput
 
     # Шаг 5: Запуск тестов Django
     - name: Run Django Tests
