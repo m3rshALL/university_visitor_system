@@ -59,28 +59,36 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         # We remove explicit poetry caching here; snok/install-poetry will handle its installation.
-        # Caching the .venv directory (done in a later step) is the most effective caching for dependencies.
-
-    # Шаг 2.1: Установка Poetry с использованием snok/install-poetry
+        # Caching the .venv directory (done in a later step) is the most effective caching for dependencies.    # Шаг 2.1: Установка Poetry с использованием snok/install-poetry
     - name: Install Poetry
       uses: snok/install-poetry@v1.3.4 # Using a specific stable version of the action for reproducibility
       with:
         version: "2.1.3" # Specify the Poetry version that pipx was installing
         virtualenvs-in-project: true # Configure Poetry to create .venv in the project directory
         # The snok/install-poetry action handles adding Poetry to the PATH.
+        
+    # Шаг 2.2: Настройка Poetry для решения проблем с разрешениями
+    - name: Configure Poetry cache directory
+      run: |
+        mkdir -p $HOME/.poetry/cache
+        poetry config cache-dir $HOME/.poetry/cache
 
     # Шаг 2.2: Кэширование виртуального окружения Poetry
     # Кэшируем директорию .venv, где Poetry будет создавать окружение
     - name: Cache Poetry virtualenv
       id: cache-poetry-venv # Даем ID для использования в условии следующего шага (если потребуется)
       uses: actions/cache@v4
-      with:
-        path: .venv # Poetry создаст venv здесь из-за virtualenvs.in-project=true
+      with:        path: .venv # Poetry создаст venv здесь из-за virtualenvs.in-project=true
         key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
         restore-keys: |
-          ${{ runner.os }}-poetry-${{ matrix.python-version }}-    # Шаг 4: Установка зависимостей проекта с помощью Poetry
+          ${{ runner.os }}-poetry-${{ matrix.python-version }}-
+          
+    # Шаг 4: Установка зависимостей проекта с помощью Poetry
     - name: Install dependencies
       run: |
+        # First, ensure the lock file is up to date with pyproject.toml
+        poetry lock --no-interaction
+        # Then install dependencies
         poetry install --no-interaction --no-ansi --no-root
         # Install flake8 for linting
         poetry add --group dev flake8
