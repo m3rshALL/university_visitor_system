@@ -33,11 +33,21 @@ jobs:
 
     # Шаг 2.1: Установка Poetry и настройка
     - name: Install and configure Poetry
+      shell: bash # Explicitly set shell for 'set -e' and consistent behavior
       run: |
+        set -e # Exit immediately if a command exits with a non-zero status
+        echo "INFO: Upgrading pip and installing pipx..."
         python -m pip install --upgrade pip pipx
+        echo "INFO: pipx installed/upgraded."
+        echo "INFO: Installing Poetry using pipx..."
         pipx install poetry
+        echo "INFO: Poetry installed via pipx."
+        echo "INFO: Adding $HOME/.local/bin to GITHUB_PATH for subsequent steps..."
         echo "$HOME/.local/bin" >> $GITHUB_PATH # Добавляем директорию pipx в PATH для последующих шагов
+        echo "INFO: Verifying Poetry installation and configuring..."
+        poetry --version # Crucial check to ensure poetry is now callable
         poetry config virtualenvs.in-project true # Создавать venv в .venv директории проекта
+        echo "INFO: Poetry installation and configuration complete."
 
     # Шаг 2.2: Кэширование виртуального окружения Poetry
     # Кэшируем директорию .venv, где Poetry будет создавать окружение
