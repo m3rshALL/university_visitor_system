@@ -29,25 +29,16 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'pip' # Кэшируем только pip; Poetry установим и кэшируем отдельно
+        # We remove explicit poetry caching here; snok/install-poetry will handle its installation.
+        # Caching the .venv directory (done in a later step) is the most effective caching for dependencies.
 
-    # Шаг 2.1: Установка Poetry и настройка
-    - name: Install and configure Poetry
-      shell: bash # Explicitly set shell for 'set -e' and consistent behavior
-      run: |
-        set -e # Exit immediately if a command exits with a non-zero status
-        echo "INFO: Upgrading pip and installing pipx..."
-        python -m pip install --upgrade pip pipx
-        echo "INFO: pipx installed/upgraded."
-        echo "INFO: Installing Poetry using pipx..."
-        pipx install poetry
-        echo "INFO: Poetry installed via pipx."
-        echo "INFO: Adding $HOME/.local/bin to GITHUB_PATH for subsequent steps..."
-        echo "$HOME/.local/bin" >> $GITHUB_PATH # Добавляем директорию pipx в PATH для последующих шагов
-        echo "INFO: Verifying Poetry installation and configuring..."
-        poetry --version # Crucial check to ensure poetry is now callable
-        poetry config virtualenvs.in-project true # Создавать venv в .venv директории проекта
-        echo "INFO: Poetry installation and configuration complete."
+    # Шаг 2.1: Установка Poetry с использованием snok/install-poetry
+    - name: Install Poetry
+      uses: snok/install-poetry@v1.3.4 # Using a specific stable version of the action for reproducibility
+      with:
+        version: "2.1.3" # Specify the Poetry version that pipx was installing
+        virtualenvs-in-project: true # Configure Poetry to create .venv in the project directory
+        # The snok/install-poetry action handles adding Poetry to the PATH.
 
     # Шаг 2.2: Кэширование виртуального окружения Poetry
     # Кэшируем директорию .venv, где Poetry будет создавать окружение
@@ -60,33 +51,26 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-poetry-${{ matrix.python-version }}-
 
-    - name: Display Poetry version
-      run: poetry --version    # Шаг 3: Установка зависимостей проекта с помощью Poetry
+    # Шаг 4: Установка зависимостей проекта с помощью Poetry
     - name: Install dependencies
       run: |
         poetry install --no-interaction --no-ansi
         # Если кэш не был восстановлен, poetry install создаст .venv и установит все.
         # Если кэш был восстановлен, poetry install быстро проверит и доустановит недостающее.
-        # Устанавливаем dev зависимости для flake8 и других инструментов
-        poetry install --with dev --no-interaction --no-ansi    # Шаг 4: Запуск тестов Django
+        # Если у тебя есть группы зависимостей, например [tool.poetry.group.dev.dependencies]
+        # для flake8 и других инструментов разработки, используй:
+        # poetry install --with dev --no-interaction --no-ansi
+
+    # Шаг 5: Запуск тестов Django
     - name: Run Django Tests
-      run: |
-        cd visitor_system
-        poetry run python manage.py test
-      # Добавляем обработку ошибок, чтобы workflow не прерывался при ошибках в тестах
-      continue-on-error: false # Если нужно, чтобы CI падал при ошибках в тестах - оставляем false    # Шаг 5: Проверка наличия flake8 и запуск для проверки кода
+      run: poetry run python manage.py test
+
+    # Шаг 6: Запуск flake8 для проверки кода
     - name: Lint with Flake8 (Poetry)
-      run: |
-        # Проверяем, установлен ли flake8
-        if poetry run pip list | grep -q flake8; then
-          echo "Running flake8 checks..."
-          poetry run flake8 . --count --max-complexity=10 --max-line-length=127 --statistics --exit-zero
-        else
-          echo "flake8 is not installed. Skipping linting step."
-          echo "Please add flake8 to your dev dependencies in pyproject.toml"
-        fi
+      run: poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       # --count - количество ошибок
       # --exit-zero - завершить с кодом 0, даже если есть ошибки  
       # --max-complexity=10 - максимальная сложность функции
       # --max-line-length=127 - максимальная длина строки
       # --statistics - статистика по ошибкам
+      # poetry run flake8 .
