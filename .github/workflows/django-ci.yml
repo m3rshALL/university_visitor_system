@@ -27,7 +27,7 @@ jobs:
     # Шаг 2: Настройка Python
     # Используем готовый action 'actions/setup-python'
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'poetry' # Эта опция должна устанавливать Poetry и кэшировать зависимости
