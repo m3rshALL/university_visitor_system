@@ -29,7 +29,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        
+        cache: 'poetry' # Эта опция должна устанавливать Poetry и кэшировать зависимости
+
     # Шаг 2.1: Явно добавляем директорию Poetry в PATH для надежности
     # pipx (используемый setup-python для poetry) устанавливает исполняемые файлы в $HOME/.local/bin.
     # Этот шаг гарантирует, что директория будет в GITHUB_PATH для последующих шагов.
