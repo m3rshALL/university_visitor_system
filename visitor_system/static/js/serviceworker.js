@@ -1,46 +1,30 @@
-const CACHE_NAME = 'visitor-system-cache-v1';
+const CACHE_NAME = 'visitor-system-cache-v2';
 const OFFLINE_URL = '/offline.html';
 const DB_VERSION = 1;
 
-// Ресурсы для кеширования
+// Ресурсы для кеширования - обновлены пути к существующим файлам
 const STATIC_ASSETS = [
     '/',
     OFFLINE_URL,
-    '/static/css/tabler.min.css',
-    '/static/js/tabler.min.js',
-    '/static/img/logo.png',
-    '/static/js/chart.js',
-    '/static/js/apexcharts.min.js',
+    // Используем только имеющиеся файлы
     '/static/js/offline-handler.js',
     '/static/js/offline-sync.js',
-    '/static/js/pwa-test.js',
-    '/static/js/preloader.js',
-    '/static/css/preloader.css',
-    '/static/img/placeholder.svg',
-    '/static/css/icons.css',
-    '/static/tabler/css/tabler.min.css',
-    '/static/tabler/js/tabler.min.js',
-    // Дополнительные ресурсы
-    '/static/tabler/css/tabler-flags.css',
-    '/static/tabler/css/tabler-socials.css',
-    '/static/tabler/css/tabler-payments.css',
-    '/static/tabler/css/tabler-vendors.css',
-    '/static/tabler/css/tabler-marketing.css',
     '/static/css/style.css',
-    '/static/tabler/js/tabler-theme.js',
-    // Шрифты и иконки
-    '/static/fonts/tabler-icons.woff2',
-    '/static/fonts/tabler-icons.woff',
-    // Возможно другие ресурсы
+    // Иконки PWA
+    '/static/img/icons/icon-72x72.png',
+    '/static/img/icons/icon-96x96.png',
+    '/static/img/icons/icon-128x128.png',
+    '/static/img/icons/icon-144x144.png',
+    '/static/img/icons/icon-152x152.png',
+    '/static/img/icons/icon-192x192.png',
+    '/static/img/icons/icon-384x384.png',
+    '/static/img/icons/icon-512x512.png',
+    '/static/img/icons/apple-touch-icon.png'
 ];
 
 // Какие страницы следует кешировать для оффлайн доступа
 const PAGES_TO_CACHE = [
     '/',
-    '/visitors/employee_dashboard/',
-    '/visitors/current_guests/',
-    '/visitors/visit_history/',
-    '/visitors/visit_statistics/',
     '/offline.html'
 ];
 
@@ -50,25 +34,42 @@ self.addEventListener('install', event => {
         caches.open(CACHE_NAME)
             .then(cache => {
                 console.log('Открытие кеша и добавление статических ресурсов');
-                const cachePromises = [
-                    ...STATIC_ASSETS,
-                    ...PAGES_TO_CACHE
-                ].map(url => {
-                    return fetch(url, { credentials: 'same-origin' })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Не удалось кешировать ${url}, статус: ${response.status}`);
-                            }
-                            return cache.put(url, response);
-                        })
-                        .catch(error => {
-                            console.warn(`Не удалось кешировать ${url}:`, error);
-                        });
-                });
                 
-                return Promise.allSettled(cachePromises);
+                // Сначала кешируем offline страницу
+                return cache.add(new Request(OFFLINE_URL, { cache: 'reload' }))
+                    .then(() => {
+                        // Затем пытаемся кешировать другие ресурсы
+                        const cachePromises = [
+                            ...STATIC_ASSETS,
+                            ...PAGES_TO_CACHE
+                        ].map(url => {
+                            // Пропускаем offline URL, так как мы уже его кешировали
+                            if (url === OFFLINE_URL) return Promise.resolve();
+                            
+                            return fetch(url, { 
+                                credentials: 'same-origin',
+                                cache: 'no-cache' // Всегда пытаемся получить свежую версию
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    console.log(`Пропускаем кеширование ${url}, статус: ${response.status}`);
+                                    return;
+                                }
+                                return cache.put(url, response);
+                            })
+                            .catch(error => {
+                                console.log(`Не удалось кешировать ${url}: ${error.message}`);
+                                // Не прерываем установку, если один файл не может быть кеширован
+                                return Promise.resolve();
+                            });
+                        });
+                        
+                        // Используем Promise.allSettled, чтобы установка прошла успешно, даже если некоторые ресурсы не удалось кешировать
+                        return Promise.allSettled(cachePromises);
+                    });
             })
             .then(() => {
+                console.log('Service Worker успешно установлен');
                 return self.skipWaiting();
             })
     );
@@ -93,11 +94,68 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Периодический кеш дополнительных страниц (для навигации офлайн)
-self.addEventListener('sync', event => {
-    if (event.tag === 'cache-pages') {
-        event.waitUntil(cacheAdditionalPages());
+// Обработка fetch запросов: сначала сеть, затем кеш, потом offline страница
+self.addEventListener('fetch', event => {
+    // Пропускаем не GET запросы
+    if (event.request.method !== 'GET') return;
+    
+    // Пропускаем cross-origin запросы
+    if (!event.request.url.startsWith(self.location.origin)) return;
+    
+    // Особая обработка для манифеста - всегда пробуем из сети
+    if (event.request.url.includes('/manifest.json')) {
+        event.respondWith(
+            fetch(event.request)
+                .catch(() => {
+                    console.log('Failed to fetch manifest.json from network');
+                    return caches.match(event.request);
+                })
+        );
+        return;
     }
+    
+    // Отдельная обработка API запросов
+    if (event.request.url.includes('/api/')) {
+        // Для API всегда сначала пробуем сеть
+        return;
+    }
+    
+    event.respondWith(
+        fetch(event.request)
+            .then(response => {
+                // Если получили валидный ответ, клонируем его и обновляем кеш
+                if (response && response.status === 200) {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseClone);
+                    });
+                }
+                return response;
+            })
+            .catch(() => {
+                // Если сеть недоступна, пробуем отдать из кеша
+                return caches.match(event.request)
+                    .then(cachedResponse => {
+                        if (cachedResponse) {
+                            return cachedResponse;
+                        }
+                        
+                        // Если запрос для страницы (не ресурса), возвращаем offline страницу
+                        if (event.request.mode === 'navigate') {
+                            return caches.match(OFFLINE_URL);
+                        }
+                        
+                        // Для других ресурсов просто возвращаем простой ответ
+                        return new Response('Ресурс недоступен офлайн', {
+                            status: 503,
+                            statusText: 'Service Unavailable',
+                            headers: new Headers({
+                                'Content-Type': 'text/plain'
+                            })
+                        });
+                    });
+            })
+    );
 });
 
 // Функция для кеширования дополнительных страниц сайта

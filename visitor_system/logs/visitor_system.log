@@ -4966,3 +4966,7 @@ INFO 2025-05-19 10:36:09,130 middleware 22540 30624 [Middleware] User 'sagat.aki
 INFO 2025-05-19 10:36:09,216 middleware 22540 30808 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
 INFO 2025-05-19 10:36:09,222 middleware 22540 31820 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
 INFO 2025-05-19 10:36:18,339 views 22540 32144 User 'sagat.akimbay' completed profile setup.
+WARNING 2025-05-19 12:18:16,759 log 42624 45120 Not Found: /visitors/employee_dashboard/
+WARNING 2025-05-19 12:18:16,877 log 42624 45296 Not Found: /visitors/current_guests/
+WARNING 2025-05-19 12:18:17,390 log 42624 40328 Not Found: /visitors/visit_history/
+WARNING 2025-05-19 12:18:17,459 log 42624 42508 Not Found: /visitors/visit_statistics/

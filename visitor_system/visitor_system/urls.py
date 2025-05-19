@@ -24,6 +24,7 @@ from visitors import views as visitor_views # Главная страница - 
 from django.views.defaults import permission_denied, page_not_found, server_error
 from django.shortcuts import render
 from .pwa_views import service_worker_view
+from .pwa_manifest_view import manifest_json_view
 
 
 urlpatterns = [
@@ -37,6 +38,9 @@ urlpatterns = [
     
     # Custom service worker view to handle encoding issues
     path('serviceworker.js', service_worker_view, name='serviceworker'),
+    
+    # Custom manifest.json view to handle syntax issues
+    path('manifest.json', manifest_json_view, name='manifest'),
     
     # PWA URLs, our custom service worker view override will take precedence
     path('', include('pwa.urls')),  # <- добавляем PWA

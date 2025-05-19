@@ -30,12 +30,10 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
 
-    <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/icons/apple-touch-icon.png' %}">
 
     {# Блок для дополнительных CSS файлов из дочерних шаблонов (например, для виджетов) #}    {% block extra_head %}{% endblock %}
-    {# --------------------- #}    {% progressive_web_app_meta %}
-
-    <!-- Скрытие содержимого до загрузки -->
+    {# --------------------- #}    {% progressive_web_app_meta %}    <!-- Скрытие содержимого до загрузки -->
     <style>
         body {
             overflow-x: hidden;
@@ -48,22 +46,6 @@
             margin-top: 1.5rem;
         }
     </style>
-
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('{% static "js/serviceworker.js" %}')
-                    .then(function(registration) {
-                        console.log('ServiceWorker регистрация успешна:', registration.scope);
-                    })
-                    .catch(function(error) {
-                        console.log('Ошибка регистрации ServiceWorker:', error);
-                    });
-            });
-        }
-    </script>
-    <!-- End Service Worker Registration -->
 
 </head>
 <body>    <!-- BEGIN PRELOADER -->

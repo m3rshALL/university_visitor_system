@@ -421,12 +421,9 @@ PWA_APP_START_URL = '/' # Начальный URL при запуске из PWA
 PWA_APP_SCOPE = '/' # Область действия PWA
 
 # --- Иконки ---
-# Вам нужно создать эти иконки и разместить их в папке static/images/icons/ (или другом пути)
-# Пути указываются относительно папки static.
-# Пример: static/images/icons/icon-72x72.png
 PWA_APP_ICONS = [
     {
-        'src': '/static/img/icons/icon-72x72.png', # Замените на ваш путь и имя файла
+        'src': '/static/img/icons/icon-72x72.png',
         'sizes': '72x72'
     },
     {
@@ -448,8 +445,7 @@ PWA_APP_ICONS = [
     {
         'src': '/static/img/icons/icon-192x192.png',
         'sizes': '192x192'
-    },
-    {
+    },    {
         'src': '/static/img/icons/icon-384x384.png',
         'sizes': '384x384'
     },
@@ -464,19 +460,16 @@ PWA_APP_APPLE_TOUCH_ICON = '/static/img/icons/apple-touch-icon.png' # Разме
 # Splash screen (необязательно, но улучшает вид при запуске)
 PWA_APP_SPLASH_SCREEN = [
     {
-        'src': '/static/images/icons/splash-640x1136.png',
+        'src': '/static/img/icons/splash-640x1136.png',
         'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
     }
 ]
 
-# Настройки Service Worker (можно оставить по умолчанию)
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js') # Путь, куда будет сгенерирован serviceworker
-# Добавляем настройку для кодировки service worker файла
-PWA_APP_FETCH_URL_PATTERNS = ['.*(?:fonts.googleapis.com|gstatic.com).*$']
-# Настройка исключений для service worker
-PWA_SERVICE_WORKER_EXCLUDE_URLS = []
-# Отладка PWA
-PWA_DEBUG = DEBUG # Использовать DEBUG настройку Django для PWA
+# Настройки Service Worker
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js') # Путь к файлу service worker
+PWA_APP_FETCH_URL_PATTERNS = []  # Упрощаем, чтобы избежать проблем совместимости
+PWA_SERVICE_WORKER_EXCLUDE_URLS = []  # Не исключаем URL из обработки service worker
+PWA_DEBUG = DEBUG  # Используем тот же флаг DEBUG, что и для Django
 
 # Имя файла манифеста
 PWA_MANIFEST_FILENAME = 'manifest.json'
