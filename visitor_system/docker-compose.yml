@@ -1,0 +1,106 @@
+# d:\university_visitor_system\docker-compose.yml
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        # Передаем значение из .env файла как аргумент сборки
+        DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+    container_name: django_app    
+    volumes:
+      - .:/app # Монтирование текущей директории для разработки (изменения кода видны сразу)
+      - ../entrypoint.sh:/app/entrypoint.sh # Explicitly mount entrypoint.sh from parent directory
+      - staticfiles_volume:/app/staticfiles
+      - mediafiles_volume:/app/mediafiles
+    expose:
+      - "8000" # Порт доступен только внутри Docker-сети для Nginx
+    env_file:
+      - .env    
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      # Health check with admin URL (assuming it's accessible)
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/admin/login/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro # :ro - только для чтения
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - staticfiles_volume:/app/staticfiles:ro
+      - mediafiles_volume:/app/mediafiles:ro
+    depends_on:
+      - app
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost/ || exit 1"] # Простая проверка, что Nginx запущен
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  db:
+    image: postgres:14-alpine # Используем PostgreSQL 14+ для совместимости с Django
+    container_name: postgres_db
+    volumes:
+      - postgres_data_volume:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    environment:
+      # Явно указываем переменные для наглядности, хотя env_file их тоже устанавливает
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports: # Опционально: открыть порт на хост для прямого доступа к БД
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"] # Двойной $$ для экранирования в docker-compose
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    container_name: redis_cache
+    ports: # Опционально: открыть порт на хост для прямого доступа к Redis
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  celery_worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile # Использует тот же Dockerfile, что и app
+      args:
+        DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+    container_name: celery_worker    # Замените 'visitor_system' на имя вашего Django-проекта, если оно другое
+    command: poetry run celery -A visitor_system worker -l info
+    volumes:
+      - .:/app
+      - ../entrypoint.sh:/app/entrypoint.sh # Explicitly mount entrypoint.sh
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+      app: # Или db, если задачи Celery напрямую работают с БД
+        condition: service_started # Или service_healthy, если у app есть надежный healthcheck
+
+volumes:
+  postgres_data_volume:
+  staticfiles_volume:
+  mediafiles_volume:
+

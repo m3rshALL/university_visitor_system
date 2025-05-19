@@ -107,14 +107,14 @@ WSGI_APPLICATION = 'visitor_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql', # Движок PostgreSQL
-        'NAME': 'visitor_system_db',           # Имя базы из Шага 2
-        'USER': 'visitor_system_user',           # Имя пользователя из Шага 2
+        'NAME': os.environ.get('POSTGRES_DB', 'visitor_system_db'),           # Имя базы из Шага 2
+        'USER': os.environ.get('POSTGRES_USER', 'visitor_system_user'),           # Имя пользователя из Шага 2
         # --- Пароль из Шага 2 (ЛУЧШЕ ЧЕРЕЗ ПЕРЕМЕННУЮ ОКРУЖЕНИЯ!) ---
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'Sako2020'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'Sako2020'), # Ensure POSTGRES_PASSWORD is set in your .env
         # --- Хост (где запущен сервер PostgreSQL) ---
-        'HOST': 'localhost', # Или '127.0.0.1'. Если Docker в Windows/macOS, обычно тоже 'localhost'.
-                             # Если Docker в Linux или БД на другом сервере - IP адрес или имя хоста.
-        'PORT': '5432',      # Стандартный порт PostgreSQL
+        # Специальная проверка - если мы в Docker, используем 'db', иначе 'localhost'
+        'HOST': 'localhost',  # For local development, always use localhost
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),      # Стандартный порт PostgreSQL
     }
 }
 
@@ -284,11 +284,11 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # Или другой адрес, разр�
 # ----- Настройки Celery -----
 # URL брокера сообщений (Redis)
 # redis://localhost:6379/0 - стандартный URL для Redis на локальной машине, база данных 0
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:{os.environ.get('REDIS_PORT', '6379')}/0")
 
 # Бэкенд для хранения результатов задач (опционально, можно тоже Redis)
 # Если вам не нужно отслеживать результат выполнения email-задачи, можно закомментировать
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:{os.environ.get('REDIS_PORT', '6379')}/0") # Consider using a different DB, e.g., /1
 
 # Формат принимаемого контента
 CELERY_ACCEPT_CONTENT = ['json']
@@ -299,9 +299,10 @@ CELERY_RESULT_SERIALIZER = 'json'
 # Часовой пояс (важно для планирования задач, если будете использовать)
 CELERY_TIMEZONE = TIME_ZONE # Используем тот же часовой пояс, что установлен в Django
 
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
+# Эти переменные больше не нужны, если CELERY_BROKER_URL и CELERY_RESULT_BACKEND задаются полностью
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = 6379
+# REDIS_DB = 0
 
 
 LOGS_DIR = BASE_DIR / 'logs'
@@ -391,7 +392,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         # Указываем URL к Redis, используя базу данных №1 для кэша
-        "LOCATION": os.environ.get('CACHE_URL', "redis://127.0.0.1:6379/1"),
+        "LOCATION": os.environ.get('CACHE_URL', f"redis://{os.environ.get('REDIS_HOST', '127.0.0.1')}:{os.environ.get('REDIS_PORT', '6379')}/1"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             # Опционально: пароль для Redis, если он установлен
