@@ -9,9 +9,6 @@ ENV DJANGO_SETTINGS_MODULE=visitor_system.settings_docker
 # Устанавливаем основную рабочую директорию для приложения
 WORKDIR /app
 
-# Устанавливаем Poetry
-ENV POETRY_VERSION=1.7.1
-RUN pip install "poetry==$POETRY_VERSION"
 
 # Конфигурируем Poetry так, чтобы он не создавал виртуальное окружение внутри проекта,
 # так как Docker сам по себе обеспечивает изоляцию.
