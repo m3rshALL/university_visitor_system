@@ -16,7 +16,7 @@ WORKDIR /app
 
 RUN pip install "poetry==$POETRY_VERSION"
 # Устанавливаем зависимости системы, если они нужны (например, для psycopg2)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
     gcc \
     libpq-dev \
     postgresql-client \
@@ -63,4 +63,4 @@ RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
 ENTRYPOINT ["entrypoint.sh"]
 USER appuser 
 
-CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--log-file", "/app/logs/gunicorn.log"]

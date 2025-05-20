@@ -1,0 +1,35 @@
+# Environment variables
+# Never commit .env files as they might contain sensitive credentials.
+# Instead, commit a .env.example file with placeholder values.
+.env
+
+# VS Code
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Poetry
+.poetry/
+poetry.lock # Usually committed, but some prefer to ignore if all devs use `poetry install` without `poetry.lock`
+            # For consistency, it's generally better to commit poetry.lock
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
