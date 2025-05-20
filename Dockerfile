@@ -14,7 +14,7 @@ ENV PATH="${POETRY_HOME}/bin:${PATH}"
 # Устанавливаем основную рабочую директорию для приложения
 WORKDIR /app
 
-
+RUN pip install "poetry==$POETRY_VERSION"
 # Устанавливаем зависимости системы, если они нужны (например, для psycopg2)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
