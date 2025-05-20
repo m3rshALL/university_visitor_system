@@ -15,10 +15,6 @@ ENV PATH="${POETRY_HOME}/bin:${PATH}"
 WORKDIR /app
 
 
-# Конфигурируем Poetry так, чтобы он не создавал виртуальное окружение внутри проекта,
-# так как Docker сам по себе обеспечивает изоляцию.
-RUN poetry config virtualenvs.create false
-
 # Устанавливаем зависимости системы, если они нужны (например, для psycopg2)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
