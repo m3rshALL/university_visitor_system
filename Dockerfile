@@ -6,8 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=visitor_system.settings_docker 
 
-# Устанавливаем рабочую директорию
-WORKDIR ./visitor_system
+# Устанавливаем основную рабочую директорию для приложения
+WORKDIR /app
 
 # Устанавливаем Poetry
 ENV POETRY_VERSION=1.7.1
@@ -25,18 +25,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Копируем файлы Poetry и устанавливаем зависимости
 # Копируем только эти файлы для кэширования слоя зависимостей
-COPY poetry.lock pyproject.toml ./
+COPY poetry.lock pyproject.toml /app/
 RUN poetry install --no-interaction --no-ansi --no-dev --no-root
 
-# Копируем весь проект в контейнер
-COPY . ./visitor_system
+# Копируем код Django проекта (содержимое d:\university_visitor_system\visitor_system\) в /app/
+# Теперь manage.py будет в /app/manage.py
+# А каталог приложения visitor_system (с settings.py) будет в /app/visitor_system/
+COPY ./visitor_system/ /app/
 
-# DEBUG: Confirm current working directory and list contents of /app
+# DEBUG: Confirm current working directory and list its contents
 RUN pwd
-RUN ls -la ./visitor_system
+RUN ls -la /app/
 
 # DEBUG: Явно проверяем наличие manage.py перед его использованием
-RUN if [ ! -f ./visitor_system/manage.py ]; then echo "ОШИБКА: Файл ./visitor_system/manage.py не найден!"; exit 1; fi
+RUN if [ ! -f /app/manage.py ]; then echo "ОШИБКА: Файл /app/manage.py не найден!"; exit 1; fi
 
 # Собираем статические файлы
 # Эти переменные окружения могут понадобиться для collectstatic, если DEBUG=False
