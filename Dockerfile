@@ -52,6 +52,14 @@ EXPOSE 8000
 # Запускаем Gunicorn
 # Пользователь и группа 'appuser' должны быть созданы, если вы хотите запускать не от root
 RUN groupadd -r appuser && useradd --no-create-home -r -g appuser appuser
+COPY --chown=appuser:appuser ./visitor_system/ /app/
+RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
 USER appuser 
 
-CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Run database migrations and then start Gunicorn
+# We use 'poetry run' to ensure manage.py and gunicorn are executed
+# within the project's dependency context managed by Poetry.
+CMD ["/bin/bash", "-c", "poetry run python manage.py migrate --noinput && poetry run gunicorn visitor_system.wsgi:application --bind 0.0.0.0:8000"]
+
+# Note: Using /bin/bash -c allows chaining commands with &&.
+# Ensure bash is available in the base image (python:3.13-slim usually includes it).
