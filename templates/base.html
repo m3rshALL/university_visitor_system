@@ -1,4 +1,4 @@
-{% load static pwa %} {# load both static and pwa tag-libs #}
+{% load static pwa %} 
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -26,14 +26,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    {# ---------------------------------- #}    {# Ваш основной CSS #}
+    {# ---------------------------------- #}    
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
 
     <link rel="apple-touch-icon" href="{% static 'img/icons/apple-touch-icon.png' %}">
 
-    {# Блок для дополнительных CSS файлов из дочерних шаблонов (например, для виджетов) #}    {% block extra_head %}{% endblock %}
-    {# --------------------- #}    {% progressive_web_app_meta %}    <!-- Скрытие содержимого до загрузки -->
+    {% block extra_head %}{% endblock %}
+    {% progressive_web_app_meta %}    
     <style>
         body {
             overflow-x: hidden;
