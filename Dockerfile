@@ -43,15 +43,19 @@ RUN mkdir -p /app/logs /app/media /app/staticfiles && \
 RUN poetry run python manage.py collectstatic --noinput --settings=visitor_system.settings_docker
 
 # Копируем entrypoint скрипт и делаем его исполняемым
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && \
+    chmod +x /usr/local/bin/entrypoint.sh
 
 # Открываем порт, на котором будет работать Gunicorn
 EXPOSE 8000
 
+# Даем пользователю права на запуск entrypoint.sh и логи
+RUN chown -R appuser:appuser /usr/local/bin/entrypoint.sh /app/logs
+
 # Устанавливаем пользователя для запуска
 USER appuser
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--log-file", "/app/logs/gunicorn.log"]

@@ -23,7 +23,7 @@ services:
       redis:
         condition: service_started
   db: # Your PostgreSQL database service
-    image: postgres:15-alpine # Or your preferred PostgreSQL version
+    image: postgres:14-alpine # Or your preferred PostgreSQL version
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
