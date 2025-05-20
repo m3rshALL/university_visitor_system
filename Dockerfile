@@ -1,10 +1,10 @@
 # Используем официальный образ Python
-FROM python:3.10-slim
+FROM python:3.13-slim
 
 # Устанавливаем переменные окружения
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV DJANGO_SETTINGS_MODULE visitor_system.settings_docker # Указываем на Docker-специфичные настройки
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=visitor_system.settings_docker 
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
