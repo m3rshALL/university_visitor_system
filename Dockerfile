@@ -35,12 +35,15 @@ COPY . /app/
 RUN pwd
 RUN ls -la /app
 
+# DEBUG: Явно проверяем наличие manage.py перед его использованием
+RUN if [ ! -f /app/manage.py ]; then echo "ОШИБКА: Файл /app/manage.py не найден!"; exit 1; fi
+
 # Собираем статические файлы
 # Эти переменные окружения могут понадобиться для collectstatic, если DEBUG=False
 # Убедитесь, что они доступны во время сборки, если это необходимо,
 # или настройте settings_docker.py так, чтобы он мог работать без них для collectstatic.
 # RUN SECRET_KEY="dummy-for-collectstatic" DJANGO_ALLOWED_HOSTS="localhost" python manage.py collectstatic --noinput
-RUN poetry run python manage.py collectstatic --noinput --verbosity 3
+RUN poetry run python manage.py collectstatic --noinput --settings=visitor_system.settings_docker
 
 # Открываем порт, на котором будет работать Gunicorn
 EXPOSE 8000
