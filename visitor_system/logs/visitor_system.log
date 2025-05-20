@@ -5836,3 +5836,4 @@ Traceback (most recent call last):
     ...<2 lines>...
     )
 django.db.utils.NotSupportedError: PostgreSQL 14 or later is required (found 13.21).
+WARNING 2025-05-20 12:33:57,786 log 32716 11636 Not Found: /favicon.ico

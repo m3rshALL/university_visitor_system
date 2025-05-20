@@ -19,6 +19,8 @@ RUN pip install "poetry==$POETRY_VERSION"
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
+    postgresql-client \
+    curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sSL https://install.python-poetry.org | python3 - --version ${POETRY_VERSION} --yes
@@ -36,8 +38,6 @@ COPY ./visitor_system/ /app/
 RUN pwd
 RUN ls -la /app/
 
-# DEBUG: Явно проверяем наличие manage.py перед его использованием
-RUN if [ ! -f /app/manage.py ]; then echo "ОШИБКА: Файл /app/manage.py не найден!"; exit 1; fi
 
 # Собираем статические файлы
 # Эти переменные окружения могут понадобиться для collectstatic, если DEBUG=False
@@ -46,6 +46,11 @@ RUN if [ ! -f /app/manage.py ]; then echo "ОШИБКА: Файл /app/manage.py
 # RUN SECRET_KEY="dummy-for-collectstatic" DJANGO_ALLOWED_HOSTS="localhost" python manage.py collectstatic --noinput
 RUN poetry run python manage.py collectstatic --noinput --settings=visitor_system.settings_docker
 
+RUN mkdir -p /app/logs
+
+# Копируем entrypoint скрипт и делаем его исполняемым
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 # Открываем порт, на котором будет работать Gunicorn
 EXPOSE 8000
 
@@ -54,12 +59,8 @@ EXPOSE 8000
 RUN groupadd -r appuser && useradd --no-create-home -r -g appuser appuser
 COPY --chown=appuser:appuser ./visitor_system/ /app/
 RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
+
+ENTRYPOINT ["entrypoint.sh"]
 USER appuser 
 
-# Run database migrations and then start Gunicorn
-# We use 'poetry run' to ensure manage.py and gunicorn are executed
-# within the project's dependency context managed by Poetry.
-CMD ["/bin/bash", "-c", "poetry run python manage.py migrate --noinput && poetry run gunicorn visitor_system.wsgi:application --bind 0.0.0.0:8000"]
-
-# Note: Using /bin/bash -c allows chaining commands with &&.
-# Ensure bash is available in the base image (python:3.13-slim usually includes it).
+CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000"]
