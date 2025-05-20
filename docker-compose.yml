@@ -18,9 +18,10 @@ services:
       - CACHE_URL=redis://redis:6379/1
       # ... other environment variables
     depends_on:
-      - db      # Ensures 'db' service starts before 'web'
-      - redis   # If you use Redis for Celery/Caching
-
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
   db: # Your PostgreSQL database service
     image: postgres:15-alpine # Or your preferred PostgreSQL version
     volumes:
@@ -29,6 +30,12 @@ services:
       - POSTGRES_DB=visitor_system_db
       - POSTGRES_USER=visitor_system_user
       - POSTGRES_PASSWORD=Sako2020 # Must match what Django expects
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U visitor_system_user -d visitor_system_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     # No ports exposed to host machine by default unless you need to connect directly
 
   redis: # Your Redis service (if used for Celery/Caching)
