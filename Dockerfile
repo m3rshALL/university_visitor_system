@@ -1,61 +1,69 @@
-# Используем официальный образ Python
-FROM python:3.13-slim
+# Этап 1: Сборка с Poetry
+FROM python:3.13-slim-bullseye AS builder
 
-# Устанавливаем переменные окружения
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV DJANGO_SETTINGS_MODULE=visitor_system.settings_docker 
-
-ENV POETRY_VERSION=1.7.1 
-ENV POETRY_HOME="/opt/poetry" 
-ENV POETRY_VIRTUALENVS_CREATE=false 
-ENV PATH="${POETRY_HOME}/bin:${PATH}"
-
-# Устанавливаем основную рабочую директорию для приложения
-WORKDIR /app
-
-# Устанавливаем зависимости системы, если они нужны (например, для psycopg2)
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
-    gcc \
-    libpq-dev \
-    postgresql-client \
+# Установка системных зависимостей, необходимых для сборки некоторых Python пакетов
+# Например, postgresql-client для psycopg2, build-essential для компиляции
+RUN apt-get update && apt-get install -y --no-install-recommends curl\
     curl \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    build-essential \
+    libpq-dev \
+    # Другие системные зависимости, если нужны
+    && rm -rf /var/lib/apt/lists/*
 
-# Устанавливаем poetry
+# Установка Poetry
+ENV POETRY_VERSION=1.7.1 
+ENV POETRY_HOME="/opt/poetry"
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true 
+ENV PATH="$POETRY_HOME/bin:$PATH"
 RUN curl -sSL https://install.python-poetry.org | python3 - --version ${POETRY_VERSION} --yes
 
-# Копируем файлы Poetry и устанавливаем зависимости
-COPY poetry.lock pyproject.toml /app/
+WORKDIR /app
+
+# Копируем только файлы зависимостей для кеширования этого слоя
+COPY pyproject.toml poetry.lock /app/
+
+# Устанавливаем зависимости без dev-пакетов
+# --no-root: не устанавливать сам проект как пакет (если он не библиотека)
+# Используем --no-interaction --no-ansi для CI/CD
 RUN poetry install --no-interaction --no-ansi --no-dev --no-root
 
-# Создаем пользователя, чтобы не запускать приложение от root
-RUN groupadd -r appuser && useradd --no-create-home -r -g appuser appuser
+# Этап 2: Финальный образ
+FROM python:3.13-slim-bullseye AS final
 
-# Копируем код Django проекта
-COPY ./visitor_system/ /app/
+# Установка системных зависимостей, необходимых для runtime
+# Например, postgresql-client для pg_isready или других утилит
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    postgresql-client \
+    # libpq5 - уже должен быть если libpq-dev был на builder, но можно явно
+    && rm -rf /var/lib/apt/lists/*
 
-# Создаем необходимые директории и устанавливаем права
-RUN mkdir -p /app/logs /app/media /app/staticfiles && \
-    chown -R appuser:appuser /app
+# Устанавливаем переменные окружения
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Собираем статические файлы
-RUN poetry run python manage.py collectstatic --noinput --settings=visitor_system.settings_docker
+WORKDIR /app
 
-# Копируем entrypoint скрипт и делаем его исполняемым
-COPY entrypoint.sh /usr/local/bin/
-RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && \
-    chmod +x /usr/local/bin/entrypoint.sh
+# Копируем виртуальное окружение, созданное Poetry
+COPY --from=builder /app/.venv ./.venv
+# Активируем venv
+ENV PATH="/app/.venv/bin:$PATH"
 
-# Открываем порт, на котором будет работать Gunicorn
+# Копируем весь код проекта
+COPY . .
+
+# Копируем и делаем исполняемым entrypoint скрипт (если используется)
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Открываем порт, на котором будет работать веб-приложение
 EXPOSE 8000
 
-# Даем пользователю права на запуск entrypoint.sh и логи
-RUN chown -R appuser:appuser /usr/local/bin/entrypoint.sh /app/logs
+# Пользователь (опционально, но рекомендуется для безопасности)
+# RUN addgroup --system app && adduser --system --group app
+# USER app
 
-# Устанавливаем пользователя для запуска
-USER appuser
+# Entrypoint (если используется)
+# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--log-file", "/app/logs/gunicorn.log"]
+# Команда по умолчанию (будет переопределена в docker-compose.yml для разных сервисов)
+# CMD ["gunicorn", "project_config.wsgi:application", "--bind", "0.0.0.0:8000"]
