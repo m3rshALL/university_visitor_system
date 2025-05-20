@@ -9,15 +9,24 @@ ENV DJANGO_SETTINGS_MODULE visitor_system.settings_docker # Указываем �
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
+# Устанавливаем Poetry
+ENV POETRY_VERSION=1.7.1
+RUN pip install "poetry==$POETRY_VERSION"
+
+# Конфигурируем Poetry так, чтобы он не создавал виртуальное окружение внутри проекта,
+# так как Docker сам по себе обеспечивает изоляцию.
+RUN poetry config virtualenvs.create false
+
 # Устанавливаем зависимости системы, если они нужны (например, для psycopg2)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Копируем файлы зависимостей и устанавливаем их
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+# Копируем файлы Poetry и устанавливаем зависимости
+# Копируем только эти файлы для кэширования слоя зависимостей
+COPY poetry.lock pyproject.toml /app/
+RUN poetry install --no-interaction --no-ansi --no-dev --no-root
 
 # Копируем весь проект в контейнер
 COPY . /app/
@@ -27,14 +36,14 @@ COPY . /app/
 # Убедитесь, что они доступны во время сборки, если это необходимо,
 # или настройте settings_docker.py так, чтобы он мог работать без них для collectstatic.
 # RUN SECRET_KEY="dummy-for-collectstatic" DJANGO_ALLOWED_HOSTS="localhost" python manage.py collectstatic --noinput
-RUN python manage.py collectstatic --noinput --settings=visitor_system.settings_docker
+RUN poetry run python manage.py collectstatic --noinput --settings=visitor_system.settings_docker
 
 # Открываем порт, на котором будет работать Gunicorn
 EXPOSE 8000
 
 # Запускаем Gunicorn
 # Пользователь и группа 'appuser' должны быть созданы, если вы хотите запускать не от root
-# RUN addgroup --system appuser && adduser --system --ingroup appuser appuser
-# USER appuser
+# RUN groupadd -r appuser && useradd -r -g appuser appuser
+# USER appuser # Раскомментируйте, если создаете и используете непривилегированного пользователя
 
-CMD ["gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000"]
