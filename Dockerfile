@@ -6,6 +6,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=visitor_system.settings_docker 
 
+ENV POETRY_VERSION=1.7.1 
+ENV POETRY_HOME="/opt/poetry" 
+ENV POETRY_VIRTUALENVS_CREATE=false 
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+
 # Устанавливаем основную рабочую директорию для приложения
 WORKDIR /app
 
@@ -20,6 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN curl -sSL https://install.python-poetry.org | python3 - --version ${POETRY_VERSION} --yes
 # Копируем файлы Poetry и устанавливаем зависимости
 # Копируем только эти файлы для кэширования слоя зависимостей
 COPY poetry.lock pyproject.toml /app/
@@ -49,7 +55,7 @@ EXPOSE 8000
 
 # Запускаем Gunicorn
 # Пользователь и группа 'appuser' должны быть созданы, если вы хотите запускать не от root
-# RUN groupadd -r appuser && useradd -r -g appuser appuser
-# USER appuser # Раскомментируйте, если создаете и используете непривилегированного пользователя
+RUN groupadd -r appuser && useradd --no-create-home -r -g appuser appuser
+USER appuser 
 
 CMD ["poetry", "run", "gunicorn", "visitor_system.wsgi:application", "--bind", "0.0.0.0:8000"]

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  web: # Your Django application service
+    build: .
+    command: poetry run gunicorn visitor_system.wsgi:application --bind 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=django-insecure-b_2g0i5hh+p3k()3^_pgjz3#e9hpxk^ub(dm&+i^y=do=w-^p+ # Make sure to set this
+      - DEBUG=True # Or False for production
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 app # 'app' can be the service name
+      - POSTGRES_DB=visitor_system_db
+      - POSTGRES_USER=visitor_system_user
+      - POSTGRES_PASSWORD=Sako2020 # Or your actual password
+      - POSTGRES_HOST=db # Crucial: tells Django to connect to the 'db' service
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CACHE_URL=redis://redis:6379/1
+      # ... other environment variables
+    depends_on:
+      - db      # Ensures 'db' service starts before 'web'
+      - redis   # If you use Redis for Celery/Caching
+
+  db: # Your PostgreSQL database service
+    image: postgres:15-alpine # Or your preferred PostgreSQL version
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=visitor_system_db
+      - POSTGRES_USER=visitor_system_user
+      - POSTGRES_PASSWORD=Sako2020 # Must match what Django expects
+    # No ports exposed to host machine by default unless you need to connect directly
+
+  redis: # Your Redis service (if used for Celery/Caching)
+    image: redis:alpine
+    # No ports exposed to host machine by default
+
+volumes:
+  postgres_data:
