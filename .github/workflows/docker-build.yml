@@ -16,9 +16,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: build image
-        run: docker build -t m3rshALL/university_visitor_system:latest
-        
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
