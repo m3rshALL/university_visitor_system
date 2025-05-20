@@ -40,7 +40,7 @@ RUN ls -la /app
 # Убедитесь, что они доступны во время сборки, если это необходимо,
 # или настройте settings_docker.py так, чтобы он мог работать без них для collectstatic.
 # RUN SECRET_KEY="dummy-for-collectstatic" DJANGO_ALLOWED_HOSTS="localhost" python manage.py collectstatic --noinput
-RUN poetry run python manage.py collectstatic --noinput
+RUN poetry run python manage.py collectstatic --noinput --verbosity 3
 
 # Открываем порт, на котором будет работать Gunicorn
 EXPOSE 8000
