@@ -31,6 +31,10 @@ RUN poetry install --no-interaction --no-ansi --no-dev --no-root
 # Копируем весь проект в контейнер
 COPY . /app/
 
+# DEBUG: Confirm current working directory and list contents of /app
+RUN pwd
+RUN ls -la /app
+
 # Собираем статические файлы
 # Эти переменные окружения могут понадобиться для collectstatic, если DEBUG=False
 # Убедитесь, что они доступны во время сборки, если это необходимо,
