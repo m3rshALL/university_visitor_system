@@ -1,0 +1,909 @@
+/**
+ * Converts a given value to a percentage string.
+ *
+ * @param {Number} $value - The value to be converted to a percentage.
+ * @return {String} - The percentage representation of the value.
+ */
+/**
+ * Generates a transparent version of the given color.
+ *
+ * @param {Color} $color - The base color to be made transparent.
+ * @param {Number} $alpha - The level of transparency, ranging from 0 (fully transparent) to 1 (fully opaque). Default is 1.
+ * @return {Color} - The resulting color with the specified transparency.
+ */
+.payment {
+  height: 2.5rem;
+  aspect-ratio: 1.66666;
+  display: inline-block;
+  background: no-repeat center/100% 100%;
+  vertical-align: bottom;
+  font-style: normal;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.payment-provider-2c2p {
+  background-image: url("../img/payments/2c2p.82232b60f065.svg");
+}
+
+.payment-provider-2c2p-dark {
+  background-image: url("../img/payments/2c2p-dark.dc8de06397dd.svg");
+}
+
+.payment-provider-2checkout {
+  background-image: url("../img/payments/2checkout.ea5717f5bf33.svg");
+}
+
+.payment-provider-2checkout-dark {
+  background-image: url("../img/payments/2checkout-dark.3219cea51338.svg");
+}
+
+.payment-provider-adyen {
+  background-image: url("../img/payments/adyen.8cd96f86c67d.svg");
+}
+
+.payment-provider-adyen-dark {
+  background-image: url("../img/payments/adyen-dark.76f8020da11e.svg");
+}
+
+.payment-provider-affirm {
+  background-image: url("../img/payments/affirm.e11b72a68001.svg");
+}
+
+.payment-provider-affirm-dark {
+  background-image: url("../img/payments/affirm-dark.25a3dee8c63f.svg");
+}
+
+.payment-provider-alipay-plus {
+  background-image: url("../img/payments/alipay-plus.510fdfe94366.svg");
+}
+
+.payment-provider-alipay-plus-dark {
+  background-image: url("../img/payments/alipay-plus-dark.67e6ec8e5f2a.svg");
+}
+
+.payment-provider-alipay {
+  background-image: url("../img/payments/alipay.a4f77f10abbb.svg");
+}
+
+.payment-provider-alipay-dark {
+  background-image: url("../img/payments/alipay-dark.c6452d5f51cb.svg");
+}
+
+.payment-provider-allegro-pay {
+  background-image: url("../img/payments/allegro-pay.81418eeb01f5.svg");
+}
+
+.payment-provider-allegro-pay-dark {
+  background-image: url("../img/payments/allegro-pay-dark.016fad24a954.svg");
+}
+
+.payment-provider-amazon-pay {
+  background-image: url("../img/payments/amazon-pay.28140d01d09a.svg");
+}
+
+.payment-provider-amazon-pay-dark {
+  background-image: url("../img/payments/amazon-pay-dark.34d38b416f65.svg");
+}
+
+.payment-provider-amazon {
+  background-image: url("../img/payments/amazon.e1d818df3937.svg");
+}
+
+.payment-provider-amazon-dark {
+  background-image: url("../img/payments/amazon-dark.06428bb68279.svg");
+}
+
+.payment-provider-americanexpress {
+  background-image: url("../img/payments/americanexpress.086fc2afc0d6.svg");
+}
+
+.payment-provider-americanexpress-dark {
+  background-image: url("../img/payments/americanexpress-dark.77344eb13321.svg");
+}
+
+.payment-provider-applepay {
+  background-image: url("../img/payments/applepay.b076fa53b854.svg");
+}
+
+.payment-provider-applepay-dark {
+  background-image: url("../img/payments/applepay-dark.b906b071cb97.svg");
+}
+
+.payment-provider-authorize {
+  background-image: url("../img/payments/authorize.31bf73c1c71a.svg");
+}
+
+.payment-provider-authorize-dark {
+  background-image: url("../img/payments/authorize-dark.1e5dfcc0b0ec.svg");
+}
+
+.payment-provider-autopay {
+  background-image: url("../img/payments/autopay.218dc5f27fef.svg");
+}
+
+.payment-provider-autopay-dark {
+  background-image: url("../img/payments/autopay-dark.b35806cda134.svg");
+}
+
+.payment-provider-bancontact {
+  background-image: url("../img/payments/bancontact.144237dfe58c.svg");
+}
+
+.payment-provider-bancontact-dark {
+  background-image: url("../img/payments/bancontact-dark.1feea417afe6.svg");
+}
+
+.payment-provider-binance-usd {
+  background-image: url("../img/payments/binance-usd.9aa56ef243b0.svg");
+}
+
+.payment-provider-binance-usd-dark {
+  background-image: url("../img/payments/binance-usd-dark.ddf03ff7906d.svg");
+}
+
+.payment-provider-bitcoin {
+  background-image: url("../img/payments/bitcoin.9d6fc46ffd83.svg");
+}
+
+.payment-provider-bitcoin-dark {
+  background-image: url("../img/payments/bitcoin-dark.36bb877184a5.svg");
+}
+
+.payment-provider-bitpay {
+  background-image: url("../img/payments/bitpay.d1aa72813d91.svg");
+}
+
+.payment-provider-bitpay-dark {
+  background-image: url("../img/payments/bitpay-dark.56f64ea49613.svg");
+}
+
+.payment-provider-bkash {
+  background-image: url("../img/payments/bkash.ce05450319c5.svg");
+}
+
+.payment-provider-bkash-dark {
+  background-image: url("../img/payments/bkash-dark.7669acd619a4.svg");
+}
+
+.payment-provider-blik {
+  background-image: url("../img/payments/blik.e461aedde013.svg");
+}
+
+.payment-provider-blik-dark {
+  background-image: url("../img/payments/blik-dark.873859555872.svg");
+}
+
+.payment-provider-braintree {
+  background-image: url("../img/payments/braintree.57328e481974.svg");
+}
+
+.payment-provider-braintree-dark {
+  background-image: url("../img/payments/braintree-dark.4f3a4344db17.svg");
+}
+
+.payment-provider-cash-app {
+  background-image: url("../img/payments/cash-app.f9841ac0b1d3.svg");
+}
+
+.payment-provider-cash-app-dark {
+  background-image: url("../img/payments/cash-app-dark.e49578dd24c7.svg");
+}
+
+.payment-provider-chime {
+  background-image: url("../img/payments/chime.45c2f6338d8b.svg");
+}
+
+.payment-provider-chime-dark {
+  background-image: url("../img/payments/chime-dark.07a064ed2a46.svg");
+}
+
+.payment-provider-cirrus {
+  background-image: url("../img/payments/cirrus.ffca7447d135.svg");
+}
+
+.payment-provider-cirrus-dark {
+  background-image: url("../img/payments/cirrus-dark.faf8cb3061a1.svg");
+}
+
+.payment-provider-clickandbuy {
+  background-image: url("../img/payments/clickandbuy.e9b68540d321.svg");
+}
+
+.payment-provider-clickandbuy-dark {
+  background-image: url("../img/payments/clickandbuy-dark.582867a7399d.svg");
+}
+
+.payment-provider-coinkite {
+  background-image: url("../img/payments/coinkite.4e4970baa745.svg");
+}
+
+.payment-provider-coinkite-dark {
+  background-image: url("../img/payments/coinkite-dark.dd394e13ddca.svg");
+}
+
+.payment-provider-dinersclub {
+  background-image: url("../img/payments/dinersclub.fc136ea8df73.svg");
+}
+
+.payment-provider-dinersclub-dark {
+  background-image: url("../img/payments/dinersclub-dark.62d203e108b8.svg");
+}
+
+.payment-provider-directdebit {
+  background-image: url("../img/payments/directdebit.f2a4dea10a19.svg");
+}
+
+.payment-provider-directdebit-dark {
+  background-image: url("../img/payments/directdebit-dark.e2e1947f9066.svg");
+}
+
+.payment-provider-discover {
+  background-image: url("../img/payments/discover.bbdf026f1334.svg");
+}
+
+.payment-provider-discover-dark {
+  background-image: url("../img/payments/discover-dark.a37ee3e8d40c.svg");
+}
+
+.payment-provider-dotpay {
+  background-image: url("../img/payments/dotpay.966b2e6b3476.svg");
+}
+
+.payment-provider-dotpay-dark {
+  background-image: url("../img/payments/dotpay-dark.810139095094.svg");
+}
+
+.payment-provider-dwolla {
+  background-image: url("../img/payments/dwolla.aac561be2592.svg");
+}
+
+.payment-provider-dwolla-dark {
+  background-image: url("../img/payments/dwolla-dark.b3069a68f2c4.svg");
+}
+
+.payment-provider-easypaisa {
+  background-image: url("../img/payments/easypaisa.2c58194d2bc9.svg");
+}
+
+.payment-provider-easypaisa-dark {
+  background-image: url("../img/payments/easypaisa-dark.5334d2fbe6ac.svg");
+}
+
+.payment-provider-ebay {
+  background-image: url("../img/payments/ebay.40951499e70f.svg");
+}
+
+.payment-provider-ebay-dark {
+  background-image: url("../img/payments/ebay-dark.09d77c1489da.svg");
+}
+
+.payment-provider-elo {
+  background-image: url("../img/payments/elo.d13ac9363830.svg");
+}
+
+.payment-provider-elo-dark {
+  background-image: url("../img/payments/elo-dark.09cc7989609b.svg");
+}
+
+.payment-provider-epayco {
+  background-image: url("../img/payments/epayco.352ec5f21e91.svg");
+}
+
+.payment-provider-epayco-dark {
+  background-image: url("../img/payments/epayco-dark.602ae2b338db.svg");
+}
+
+.payment-provider-esewa {
+  background-image: url("../img/payments/esewa.ce8130331cd1.svg");
+}
+
+.payment-provider-esewa-dark {
+  background-image: url("../img/payments/esewa-dark.bb8bb4823cc4.svg");
+}
+
+.payment-provider-ethereum {
+  background-image: url("../img/payments/ethereum.34189bd9e65d.svg");
+}
+
+.payment-provider-ethereum-dark {
+  background-image: url("../img/payments/ethereum-dark.a95c582e315c.svg");
+}
+
+.payment-provider-eway {
+  background-image: url("../img/payments/eway.e0b145cb1f48.svg");
+}
+
+.payment-provider-eway-dark {
+  background-image: url("../img/payments/eway-dark.966ab11430cd.svg");
+}
+
+.payment-provider-fonepay {
+  background-image: url("../img/payments/fonepay.b184f4f1ceff.svg");
+}
+
+.payment-provider-fonepay-dark {
+  background-image: url("../img/payments/fonepay-dark.43bc9a3160c0.svg");
+}
+
+.payment-provider-giropay {
+  background-image: url("../img/payments/giropay.dad062c4dc56.svg");
+}
+
+.payment-provider-giropay-dark {
+  background-image: url("../img/payments/giropay-dark.d6e1aad14931.svg");
+}
+
+.payment-provider-google-pay {
+  background-image: url("../img/payments/google-pay.c3fe28ce25b5.svg");
+}
+
+.payment-provider-google-pay-dark {
+  background-image: url("../img/payments/google-pay-dark.1db75a8b4677.svg");
+}
+
+.payment-provider-googlewallet {
+  background-image: url("../img/payments/googlewallet.29904f5ce20d.svg");
+}
+
+.payment-provider-googlewallet-dark {
+  background-image: url("../img/payments/googlewallet-dark.639146092591.svg");
+}
+
+.payment-provider-hubspot {
+  background-image: url("../img/payments/hubspot.c9ffdd1de204.svg");
+}
+
+.payment-provider-hubspot-dark {
+  background-image: url("../img/payments/hubspot-dark.4a1957f9ed59.svg");
+}
+
+.payment-provider-ingenico {
+  background-image: url("../img/payments/ingenico.5e2499e292b0.svg");
+}
+
+.payment-provider-ingenico-dark {
+  background-image: url("../img/payments/ingenico-dark.8cd6233189f0.svg");
+}
+
+.payment-provider-ideal {
+  background-image: url("../img/payments/ideal.4201ed1e4b98.svg");
+}
+
+.payment-provider-ideal-dark {
+  background-image: url("../img/payments/ideal-dark.fcebeec164fd.svg");
+}
+
+.payment-provider-imepay {
+  background-image: url("../img/payments/imepay.1ed639e6017f.svg");
+}
+
+.payment-provider-imepay-dark {
+  background-image: url("../img/payments/imepay-dark.af8a30ed21ba.svg");
+}
+
+.payment-provider-jcb {
+  background-image: url("../img/payments/jcb.360be501528a.svg");
+}
+
+.payment-provider-jcb-dark {
+  background-image: url("../img/payments/jcb-dark.3ce7a45d4695.svg");
+}
+
+.payment-provider-khalti {
+  background-image: url("../img/payments/khalti.3010fecb8e53.svg");
+}
+
+.payment-provider-khalti-dark {
+  background-image: url("../img/payments/khalti-dark.8207a2677d91.svg");
+}
+
+.payment-provider-klarna {
+  background-image: url("../img/payments/klarna.3cee3e33ebb9.svg");
+}
+
+.payment-provider-klarna-dark {
+  background-image: url("../img/payments/klarna-dark.4da1af137dc2.svg");
+}
+
+.payment-provider-laser {
+  background-image: url("../img/payments/laser.050cfe61ea87.svg");
+}
+
+.payment-provider-laser-dark {
+  background-image: url("../img/payments/laser-dark.9b40f6809f3c.svg");
+}
+
+.payment-provider-litecoin {
+  background-image: url("../img/payments/litecoin.d06186f7f0e4.svg");
+}
+
+.payment-provider-litecoin-dark {
+  background-image: url("../img/payments/litecoin-dark.cdba148195ef.svg");
+}
+
+.payment-provider-maestro {
+  background-image: url("../img/payments/maestro.590703aab24b.svg");
+}
+
+.payment-provider-maestro-dark {
+  background-image: url("../img/payments/maestro-dark.67eb38c12b03.svg");
+}
+
+.payment-provider-mastercard {
+  background-image: url("../img/payments/mastercard.534d3b254416.svg");
+}
+
+.payment-provider-mastercard-dark {
+  background-image: url("../img/payments/mastercard-dark.62a50d3076ac.svg");
+}
+
+.payment-provider-mercado-pago {
+  background-image: url("../img/payments/mercado-pago.3012f01c2e0b.svg");
+}
+
+.payment-provider-mercado-pago-dark {
+  background-image: url("../img/payments/mercado-pago-dark.3de40245a98e.svg");
+}
+
+.payment-provider-metamask {
+  background-image: url("../img/payments/metamask.de768ed465f3.svg");
+}
+
+.payment-provider-metamask-dark {
+  background-image: url("../img/payments/metamask-dark.089d1b65be3b.svg");
+}
+
+.payment-provider-mir {
+  background-image: url("../img/payments/mir.366e1405dea1.svg");
+}
+
+.payment-provider-mir-dark {
+  background-image: url("../img/payments/mir-dark.3a7c1430a1eb.svg");
+}
+
+.payment-provider-monero {
+  background-image: url("../img/payments/monero.47ad332cab6c.svg");
+}
+
+.payment-provider-monero-dark {
+  background-image: url("../img/payments/monero-dark.c7b50bbcd5b6.svg");
+}
+
+.payment-provider-moneygram {
+  background-image: url("../img/payments/moneygram.2b494727eb59.svg");
+}
+
+.payment-provider-moneygram-dark {
+  background-image: url("../img/payments/moneygram-dark.9e909460ea7c.svg");
+}
+
+.payment-provider-neteller {
+  background-image: url("../img/payments/neteller.61cbc4dcc14c.svg");
+}
+
+.payment-provider-neteller-dark {
+  background-image: url("../img/payments/neteller-dark.6ba5a1348dc1.svg");
+}
+
+.payment-provider-ogone {
+  background-image: url("../img/payments/ogone.542ef889e7d9.svg");
+}
+
+.payment-provider-ogone-dark {
+  background-image: url("../img/payments/ogone-dark.7c65fef8e1f7.svg");
+}
+
+.payment-provider-okpay {
+  background-image: url("../img/payments/okpay.8139a877da78.svg");
+}
+
+.payment-provider-okpay-dark {
+  background-image: url("../img/payments/okpay-dark.dc36fe3f3ca1.svg");
+}
+
+.payment-provider-opensea {
+  background-image: url("../img/payments/opensea.55641af63090.svg");
+}
+
+.payment-provider-opensea-dark {
+  background-image: url("../img/payments/opensea-dark.97fe0e7e0bca.svg");
+}
+
+.payment-provider-paybox {
+  background-image: url("../img/payments/paybox.5a06e8ac5a0c.svg");
+}
+
+.payment-provider-paybox-dark {
+  background-image: url("../img/payments/paybox-dark.ed2f04b4423b.svg");
+}
+
+.payment-provider-payconiq {
+  background-image: url("../img/payments/payconiq.ab0cd62f7ca8.svg");
+}
+
+.payment-provider-payconiq-dark {
+  background-image: url("../img/payments/payconiq-dark.334c8a048903.svg");
+}
+
+.payment-provider-payka {
+  background-image: url("../img/payments/payka.b5cc3c711aec.svg");
+}
+
+.payment-provider-payka-dark {
+  background-image: url("../img/payments/payka-dark.f69c46e478c1.svg");
+}
+
+.payment-provider-payline {
+  background-image: url("../img/payments/payline.4af4358b989d.svg");
+}
+
+.payment-provider-payline-dark {
+  background-image: url("../img/payments/payline-dark.80624f0f72d4.svg");
+}
+
+.payment-provider-paymill {
+  background-image: url("../img/payments/paymill.faf207c6ec67.svg");
+}
+
+.payment-provider-paymill-dark {
+  background-image: url("../img/payments/paymill-dark.5e0cad555a3c.svg");
+}
+
+.payment-provider-payone {
+  background-image: url("../img/payments/payone.30dd00c1f8d0.svg");
+}
+
+.payment-provider-payone-dark {
+  background-image: url("../img/payments/payone-dark.b1c307996162.svg");
+}
+
+.payment-provider-payoneer {
+  background-image: url("../img/payments/payoneer.8a50dca7d8b6.svg");
+}
+
+.payment-provider-payoneer-dark {
+  background-image: url("../img/payments/payoneer-dark.4f56a855df1f.svg");
+}
+
+.payment-provider-paypal {
+  background-image: url("../img/payments/paypal.3d93ed563b2c.svg");
+}
+
+.payment-provider-paypal-dark {
+  background-image: url("../img/payments/paypal-dark.ecccade50575.svg");
+}
+
+.payment-provider-paypo {
+  background-image: url("../img/payments/paypo.8fa701dbde81.svg");
+}
+
+.payment-provider-paypo-dark {
+  background-image: url("../img/payments/paypo-dark.ce67d4f79830.svg");
+}
+
+.payment-provider-paysafe {
+  background-image: url("../img/payments/paysafe.1ecd99027221.svg");
+}
+
+.payment-provider-paysafe-dark {
+  background-image: url("../img/payments/paysafe-dark.ac080a670a71.svg");
+}
+
+.payment-provider-paysafecard {
+  background-image: url("../img/payments/paysafecard.77a195341965.svg");
+}
+
+.payment-provider-paysafecard-dark {
+  background-image: url("../img/payments/paysafecard-dark.c5f070aca3fb.svg");
+}
+
+.payment-provider-payu {
+  background-image: url("../img/payments/payu.d5ed59fc0f26.svg");
+}
+
+.payment-provider-payu-dark {
+  background-image: url("../img/payments/payu-dark.7ece4e44a782.svg");
+}
+
+.payment-provider-payza {
+  background-image: url("../img/payments/payza.884cf4e732fe.svg");
+}
+
+.payment-provider-payza-dark {
+  background-image: url("../img/payments/payza-dark.e2ec3d137858.svg");
+}
+
+.payment-provider-poli {
+  background-image: url("../img/payments/poli.c944a8370225.svg");
+}
+
+.payment-provider-poli-dark {
+  background-image: url("../img/payments/poli-dark.b263a46a6bff.svg");
+}
+
+.payment-provider-przelewy24 {
+  background-image: url("../img/payments/przelewy24.837bd7a6cdb9.svg");
+}
+
+.payment-provider-przelewy24-dark {
+  background-image: url("../img/payments/przelewy24-dark.2f25ed487790.svg");
+}
+
+.payment-provider-revolut-pay {
+  background-image: url("../img/payments/revolut-pay.e0b0ee99247f.svg");
+}
+
+.payment-provider-revolut-pay-dark {
+  background-image: url("../img/payments/revolut-pay-dark.164a4c3c8bf4.svg");
+}
+
+.payment-provider-ripple {
+  background-image: url("../img/payments/ripple.e36103a6babb.svg");
+}
+
+.payment-provider-ripple-dark {
+  background-image: url("../img/payments/ripple-dark.87b361fd9545.svg");
+}
+
+.payment-provider-sage {
+  background-image: url("../img/payments/sage.a9456c5d89d4.svg");
+}
+
+.payment-provider-sage-dark {
+  background-image: url("../img/payments/sage-dark.3f05d6a04933.svg");
+}
+
+.payment-provider-samsung-pay {
+  background-image: url("../img/payments/samsung-pay.ae0241db4189.svg");
+}
+
+.payment-provider-samsung-pay-dark {
+  background-image: url("../img/payments/samsung-pay-dark.cc197ed81552.svg");
+}
+
+.payment-provider-sepa {
+  background-image: url("../img/payments/sepa.c47d3e2a63d5.svg");
+}
+
+.payment-provider-sepa-dark {
+  background-image: url("../img/payments/sepa-dark.1e00c94166df.svg");
+}
+
+.payment-provider-shop-pay {
+  background-image: url("../img/payments/shop-pay.4ec55b7d1dd4.svg");
+}
+
+.payment-provider-shop-pay-dark {
+  background-image: url("../img/payments/shop-pay-dark.9f0e8104858d.svg");
+}
+
+.payment-provider-shopify {
+  background-image: url("../img/payments/shopify.ac63462ca261.svg");
+}
+
+.payment-provider-shopify-dark {
+  background-image: url("../img/payments/shopify-dark.0274e92faa86.svg");
+}
+
+.payment-provider-skrill {
+  background-image: url("../img/payments/skrill.e6a36dcf6158.svg");
+}
+
+.payment-provider-skrill-dark {
+  background-image: url("../img/payments/skrill-dark.caec4b51308a.svg");
+}
+
+.payment-provider-solana {
+  background-image: url("../img/payments/solana.f970fbcc9894.svg");
+}
+
+.payment-provider-solana-dark {
+  background-image: url("../img/payments/solana-dark.8edfcb62504b.svg");
+}
+
+.payment-provider-solo {
+  background-image: url("../img/payments/solo.d3ae8a7fbec7.svg");
+}
+
+.payment-provider-solo-dark {
+  background-image: url("../img/payments/solo-dark.7ad9c614dc97.svg");
+}
+
+.payment-provider-spingo {
+  background-image: url("../img/payments/spingo.03e594218ad8.svg");
+}
+
+.payment-provider-spingo-dark {
+  background-image: url("../img/payments/spingo-dark.07263a15713c.svg");
+}
+
+.payment-provider-square {
+  background-image: url("../img/payments/square.2f04f4658a6a.svg");
+}
+
+.payment-provider-square-dark {
+  background-image: url("../img/payments/square-dark.d11912e8c1a3.svg");
+}
+
+.payment-provider-stax {
+  background-image: url("../img/payments/stax.beb04d7ea1a9.svg");
+}
+
+.payment-provider-stax-dark {
+  background-image: url("../img/payments/stax-dark.c102d238144e.svg");
+}
+
+.payment-provider-stripe {
+  background-image: url("../img/payments/stripe.ec716cf01033.svg");
+}
+
+.payment-provider-stripe-dark {
+  background-image: url("../img/payments/stripe-dark.29bb6e6f87bc.svg");
+}
+
+.payment-provider-switch {
+  background-image: url("../img/payments/switch.f99a3fc2d536.svg");
+}
+
+.payment-provider-switch-dark {
+  background-image: url("../img/payments/switch-dark.714b8878c3bb.svg");
+}
+
+.payment-provider-tether {
+  background-image: url("../img/payments/tether.adfe5fc4be07.svg");
+}
+
+.payment-provider-tether-dark {
+  background-image: url("../img/payments/tether-dark.c4c35f71306f.svg");
+}
+
+.payment-provider-tpay {
+  background-image: url("../img/payments/tpay.91bbae37eb81.svg");
+}
+
+.payment-provider-tpay-dark {
+  background-image: url("../img/payments/tpay-dark.d60edfeee371.svg");
+}
+
+.payment-provider-troy {
+  background-image: url("../img/payments/troy.79fb442ff0de.svg");
+}
+
+.payment-provider-troy-dark {
+  background-image: url("../img/payments/troy-dark.a0988ea2bc10.svg");
+}
+
+.payment-provider-true-usd {
+  background-image: url("../img/payments/true-usd.ca506baa47f6.svg");
+}
+
+.payment-provider-true-usd-dark {
+  background-image: url("../img/payments/true-usd-dark.3e0ca0dd0b70.svg");
+}
+
+.payment-provider-ukash {
+  background-image: url("../img/payments/ukash.21e3b4fd489c.svg");
+}
+
+.payment-provider-ukash-dark {
+  background-image: url("../img/payments/ukash-dark.63aaee26b428.svg");
+}
+
+.payment-provider-unionpay {
+  background-image: url("../img/payments/unionpay.cd95df045ea2.svg");
+}
+
+.payment-provider-unionpay-dark {
+  background-image: url("../img/payments/unionpay-dark.22f9da9d58de.svg");
+}
+
+.payment-provider-venmo {
+  background-image: url("../img/payments/venmo.a705cfe1778b.svg");
+}
+
+.payment-provider-venmo-dark {
+  background-image: url("../img/payments/venmo-dark.7e1282c6eff0.svg");
+}
+
+.payment-provider-verifone {
+  background-image: url("../img/payments/verifone.cf134dc93174.svg");
+}
+
+.payment-provider-verifone-dark {
+  background-image: url("../img/payments/verifone-dark.99c95fd8da4c.svg");
+}
+
+.payment-provider-verisign {
+  background-image: url("../img/payments/verisign.46d47ab507d2.svg");
+}
+
+.payment-provider-verisign-dark {
+  background-image: url("../img/payments/verisign-dark.4cfd0f1936ce.svg");
+}
+
+.payment-provider-visa {
+  background-image: url("../img/payments/visa.be1637d37ae4.svg");
+}
+
+.payment-provider-visa-dark {
+  background-image: url("../img/payments/visa-dark.79456c2ce093.svg");
+}
+
+.payment-provider-we-chat-pay {
+  background-image: url("../img/payments/we-chat-pay.cb513860ac20.svg");
+}
+
+.payment-provider-we-chat-pay-dark {
+  background-image: url("../img/payments/we-chat-pay-dark.0a039897688e.svg");
+}
+
+.payment-provider-webmoney {
+  background-image: url("../img/payments/webmoney.d6ccb5c569b2.svg");
+}
+
+.payment-provider-webmoney-dark {
+  background-image: url("../img/payments/webmoney-dark.e3fb2c2ed615.svg");
+}
+
+.payment-provider-westernunion {
+  background-image: url("../img/payments/westernunion.7047d97f73a1.svg");
+}
+
+.payment-provider-westernunion-dark {
+  background-image: url("../img/payments/westernunion-dark.c3bb2ba620ef.svg");
+}
+
+.payment-provider-wise {
+  background-image: url("../img/payments/wise.869869b7f499.svg");
+}
+
+.payment-provider-wise-dark {
+  background-image: url("../img/payments/wise-dark.73f86a9be0f4.svg");
+}
+
+.payment-provider-worldpay {
+  background-image: url("../img/payments/worldpay.12e8ffcad364.svg");
+}
+
+.payment-provider-worldpay-dark {
+  background-image: url("../img/payments/worldpay-dark.627c784ff880.svg");
+}
+
+.payment-provider-zelle {
+  background-image: url("../img/payments/zelle.8e1cc3a01cee.svg");
+}
+
+.payment-provider-zelle-dark {
+  background-image: url("../img/payments/zelle-dark.2d1ef98bbb34.svg");
+}
+
+.payment-xxs {
+  height: 1rem;
+}
+
+.payment-xs {
+  height: 1.25rem;
+}
+
+.payment-sm {
+  height: 2rem;
+}
+
+.payment-md {
+  height: 2.5rem;
+}
+
+.payment-lg {
+  height: 3rem;
+}
+
+.payment-xl {
+  height: 5rem;
+}
+
+.payment-2xl {
+  height: 7rem;
+}
+
+/*# sourceMappingURL=tabler-payments.css.8bf7f1187cd1.map */

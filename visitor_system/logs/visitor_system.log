@@ -6262,3 +6262,4 @@ WARNING 2025-05-22 16:16:37,784 log 24900 54752 Not Found: /apple-touch-icon-120
 WARNING 2025-05-22 16:16:58,604 log 24900 65980 Not Found: /apple-touch-icon.png
 WARNING 2025-05-22 16:16:58,606 log 24900 59724 Not Found: /favicon.ico
 WARNING 2025-05-22 16:16:58,775 log 24900 66396 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-23 10:19:22,520 log 28408 25964 Not Found: /.well-known/appspecific/com.chrome.devtools.json

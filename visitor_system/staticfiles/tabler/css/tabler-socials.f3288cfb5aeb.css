@@ -1,0 +1,226 @@
+/**
+ * Converts a given value to a percentage string.
+ *
+ * @param {Number} $value - The value to be converted to a percentage.
+ * @return {String} - The percentage representation of the value.
+ */
+/**
+ * Generates a transparent version of the given color.
+ *
+ * @param {Color} $color - The base color to be made transparent.
+ * @param {Number} $alpha - The level of transparency, ranging from 0 (fully transparent) to 1 (fully opaque). Default is 1.
+ * @return {Color} - The resulting color with the specified transparency.
+ */
+.social {
+  position: relative;
+  display: inline-block;
+  height: 2.5rem;
+  aspect-ratio: 1;
+  background: no-repeat center/cover;
+  vertical-align: bottom;
+}
+
+.social-app-apple {
+  background-image: url("../img/social/apple.31bd4fc9e966.svg");
+}
+.social-app-apple.social-gray {
+  background-image: url("../img/social/apple-gray.0758bf1241f0.svg");
+}
+
+.social-app-discord {
+  background-image: url("../img/social/discord.270766e1f020.svg");
+}
+.social-app-discord.social-gray {
+  background-image: url("../img/social/discord-gray.c47a9a1b0683.svg");
+}
+
+.social-app-dribbble {
+  background-image: url("../img/social/dribbble.88fc0bb75996.svg");
+}
+.social-app-dribbble.social-gray {
+  background-image: url("../img/social/dribbble-gray.9b9306cc2f6a.svg");
+}
+
+.social-app-facebook {
+  background-image: url("../img/social/facebook.6e036eb7edfb.svg");
+}
+.social-app-facebook.social-gray {
+  background-image: url("../img/social/facebook-gray.e50ad4675bff.svg");
+}
+
+.social-app-figma {
+  background-image: url("../img/social/figma.da4bd1810413.svg");
+}
+.social-app-figma.social-gray {
+  background-image: url("../img/social/figma-gray.ad7fd7cb83d8.svg");
+}
+
+.social-app-github {
+  background-image: url("../img/social/github.06fe398bedd8.svg");
+}
+.social-app-github.social-gray {
+  background-image: url("../img/social/github-gray.8f160e1afed9.svg");
+}
+
+.social-app-google {
+  background-image: url("../img/social/google.4913bee388c0.svg");
+}
+.social-app-google.social-gray {
+  background-image: url("../img/social/google-gray.cba59d4c2fe5.svg");
+}
+
+.social-app-instagram {
+  background-image: url("../img/social/instagram.eabdae2dee66.svg");
+}
+.social-app-instagram.social-gray {
+  background-image: url("../img/social/instagram-gray.95a4a2062716.svg");
+}
+
+.social-app-linkedin {
+  background-image: url("../img/social/linkedin.7ef65aa713b4.svg");
+}
+.social-app-linkedin.social-gray {
+  background-image: url("../img/social/linkedin-gray.bbed1e6fd348.svg");
+}
+
+.social-app-medium {
+  background-image: url("../img/social/medium.2d78e86f0ac1.svg");
+}
+.social-app-medium.social-gray {
+  background-image: url("../img/social/medium-gray.e85f09226491.svg");
+}
+
+.social-app-meta {
+  background-image: url("../img/social/meta.874029677cd0.svg");
+}
+.social-app-meta.social-gray {
+  background-image: url("../img/social/meta-gray.e220c8cf33b4.svg");
+}
+
+.social-app-metamask {
+  background-image: url("../img/social/metamask.9f2e3fbe0e99.svg");
+}
+.social-app-metamask.social-gray {
+  background-image: url("../img/social/metamask-gray.d3cb155991fd.svg");
+}
+
+.social-app-pinterest {
+  background-image: url("../img/social/pinterest.5567255ff149.svg");
+}
+.social-app-pinterest.social-gray {
+  background-image: url("../img/social/pinterest-gray.2db5dbd656e0.svg");
+}
+
+.social-app-reddit {
+  background-image: url("../img/social/reddit.825445b0c824.svg");
+}
+.social-app-reddit.social-gray {
+  background-image: url("../img/social/reddit-gray.707bca10cb17.svg");
+}
+
+.social-app-signal {
+  background-image: url("../img/social/signal.35e473ccf3d3.svg");
+}
+.social-app-signal.social-gray {
+  background-image: url("../img/social/signal-gray.35f7ae1344aa.svg");
+}
+
+.social-app-skype {
+  background-image: url("../img/social/skype.ddadf9ed668d.svg");
+}
+.social-app-skype.social-gray {
+  background-image: url("../img/social/skype-gray.7e1d40bc74dd.svg");
+}
+
+.social-app-snapchat {
+  background-image: url("../img/social/snapchat.3e985bdfe83b.svg");
+}
+.social-app-snapchat.social-gray {
+  background-image: url("../img/social/snapchat-gray.30364af5a268.svg");
+}
+
+.social-app-spotify {
+  background-image: url("../img/social/spotify.4a49531fc801.svg");
+}
+.social-app-spotify.social-gray {
+  background-image: url("../img/social/spotify-gray.afaa2f606349.svg");
+}
+
+.social-app-telegram {
+  background-image: url("../img/social/telegram.6cd1f7cdb8dc.svg");
+}
+.social-app-telegram.social-gray {
+  background-image: url("../img/social/telegram-gray.6ff2d13634bc.svg");
+}
+
+.social-app-tiktok {
+  background-image: url("../img/social/tiktok.73b37a2e813a.svg");
+}
+.social-app-tiktok.social-gray {
+  background-image: url("../img/social/tiktok-gray.1faa5354a156.svg");
+}
+
+.social-app-tumblr {
+  background-image: url("../img/social/tumblr.89ee5bc5d033.svg");
+}
+.social-app-tumblr.social-gray {
+  background-image: url("../img/social/tumblr-gray.34f60fee7356.svg");
+}
+
+.social-app-twitch {
+  background-image: url("../img/social/twitch.e7d81d23bb32.svg");
+}
+.social-app-twitch.social-gray {
+  background-image: url("../img/social/twitch-gray.f1cce8dde102.svg");
+}
+
+.social-app-vk {
+  background-image: url("../img/social/vk.13d6f3bb38c5.svg");
+}
+.social-app-vk.social-gray {
+  background-image: url("../img/social/vk-gray.7b5c16a2ce40.svg");
+}
+
+.social-app-x {
+  background-image: url("../img/social/x.2f4d0fcb7937.svg");
+}
+.social-app-x.social-gray {
+  background-image: url("../img/social/x-gray.eb2bccc96123.svg");
+}
+
+.social-app-youtube {
+  background-image: url("../img/social/youtube.fdb403ead325.svg");
+}
+.social-app-youtube.social-gray {
+  background-image: url("../img/social/youtube-gray.53432f4a9589.svg");
+}
+
+.social-xxs {
+  height: 1rem;
+}
+
+.social-xs {
+  height: 1.25rem;
+}
+
+.social-sm {
+  height: 2rem;
+}
+
+.social-md {
+  height: 2.5rem;
+}
+
+.social-lg {
+  height: 3rem;
+}
+
+.social-xl {
+  height: 5rem;
+}
+
+.social-2xl {
+  height: 7rem;
+}
+
+/*# sourceMappingURL=tabler-socials.css.f3c9c996a80e.map */
