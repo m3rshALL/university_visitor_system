@@ -6263,3 +6263,18 @@ WARNING 2025-05-22 16:16:58,604 log 24900 65980 Not Found: /apple-touch-icon.png
 WARNING 2025-05-22 16:16:58,606 log 24900 59724 Not Found: /favicon.ico
 WARNING 2025-05-22 16:16:58,775 log 24900 66396 Not Found: /apple-touch-icon-precomposed.png
 WARNING 2025-05-23 10:19:22,520 log 28408 25964 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-23 11:24:44,490 log 22092 27876 Not Found: /favicon.ico
+INFO 2025-05-23 11:35:35,337 forms 39112 39528 Using guest object: Аманжолов Максат (ID: 14), Created: False
+INFO 2025-05-23 11:35:35,337 forms 39112 39528 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-23 11:35:35,374 forms 39112 39528 Celery task queued for Visit ID 130
+INFO 2025-05-23 11:35:35,374 forms 39112 39528 Saved Visit ID 130, Status: AWAITING, Consent Ack: True
+INFO 2025-05-23 11:35:35,376 utils 13972 39148 Attempting to send creation notification for official ID 130
+ERROR 2025-05-23 11:35:35,380 views 39112 39528 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-23 11:35:35,411 utils 13972 39148 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-23 11:35:37,667 utils 13972 39148 Visit notification email for official ID 130 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-23 11:35:37,697 utils 13972 39148 Attempting to send creation notification for official ID 130
+WARNING 2025-05-23 11:35:37,733 utils 13972 39148 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-23 11:35:39,617 utils 13972 39148 Visit notification email for official ID 130 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-23 11:40:52,052 views 39112 38068 Statistics data prepared for user 'Sagat'.
+WARNING 2025-05-23 11:47:02,881 log 39112 31128 Not Found: /sample/
+WARNING 2025-05-23 11:47:03,018 log 39112 23784 Not Found: /favicon.ico
