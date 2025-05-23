@@ -1,69 +1,98 @@
-# Этап 1: Сборка с Poetry
-FROM python:3.13-slim-bullseye AS builder
+# Этап 1: Установка зависимостей
+FROM python:3.13-slim-bullseye
 
-# Установка системных зависимостей, необходимых для сборки некоторых Python пакетов
-# Например, postgresql-client для psycopg2, build-essential для компиляции
-RUN apt-get update && apt-get install -y --no-install-recommends curl\
-    curl \
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    postgresql-client \
     build-essential \
     libpq-dev \
-    # Другие системные зависимости, если нужны
     && rm -rf /var/lib/apt/lists/*
 
-# Установка Poetry
-ENV POETRY_VERSION=1.7.1 
-ENV POETRY_HOME="/opt/poetry"
-ENV POETRY_VIRTUALENVS_IN_PROJECT=true 
-ENV PATH="$POETRY_HOME/bin:$PATH"
-RUN curl -sSL https://install.python-poetry.org | python3 - --version ${POETRY_VERSION} --yes
+# Устанавливаем переменные окружения
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    # Убедимся, что pip не создает кеш
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on
 
 WORKDIR /app
 
 # Копируем только файлы зависимостей для кеширования этого слоя
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock* /app/
 
-# Устанавливаем зависимости без dev-пакетов
-# --no-root: не устанавливать сам проект как пакет (если он не библиотека)
-# Используем --no-interaction --no-ansi для CI/CD
-RUN poetry install --no-interaction --no-ansi --no-dev --no-root
+# Установка Poetry
+RUN pip install poetry==1.7.1 \
+    && poetry config virtualenvs.create false
 
-# Этап 2: Финальный образ
-FROM python:3.13-slim-bullseye AS final
+# Устанавливаем зависимости из poetry.lock
+RUN poetry install --no-dev --no-interaction --no-ansi
 
-# Установка системных зависимостей, необходимых для runtime
-# Например, postgresql-client для pg_isready или других утилит
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    postgresql-client \
-    # libpq5 - уже должен быть если libpq-dev был на builder, но можно явно
-    && rm -rf /var/lib/apt/lists/*
-
-# Устанавливаем переменные окружения
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-WORKDIR /app
-
-# Копируем виртуальное окружение, созданное Poetry
-COPY --from=builder /app/.venv ./.venv
-# Активируем venv
-ENV PATH="/app/.venv/bin:$PATH"
+# Явно проверяем, что Django установлен, или устанавливаем его
+RUN pip list | grep Django || pip install django==5.2
 
 # Копируем весь код проекта
-COPY . .
+COPY . /app/
 
-# Копируем и делаем исполняемым entrypoint скрипт (если используется)
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+# Проверяем установку Django
+RUN python -m pip list | grep Django || echo "Django не установлен!"
+
+# Создаем улучшенный entrypoint скрипт с проверкой и созданием БД
+RUN echo '#!/bin/bash\n\
+echo "=== Структура директории проекта:"\n\
+ls -la /app\n\
+echo "=== Установленные пакеты Python:"\n\
+pip list\n\
+\n\
+# Устанавливаем значения по умолчанию для переменных окружения, если они не заданы\n\
+: ${DATABASE_HOST:="postgres"}\n\
+: ${POSTGRES_PORT:="5432"}\n\
+: ${POSTGRES_USER:="postgres"}\n\
+: ${POSTGRES_PASSWORD:="postgres"}\n\
+: ${POSTGRES_DB:="postgres"}\n\
+\n\
+echo "Настройки подключения к БД:"\n\
+echo "DATABASE_HOST=$DATABASE_HOST"\n\
+echo "POSTGRES_PORT=$POSTGRES_PORT"\n\
+echo "POSTGRES_USER=$POSTGRES_USER"\n\
+echo "POSTGRES_DB=$POSTGRES_DB"\n\
+\n\
+# Проверяем соединение с PostgreSQL\n\
+echo "Ожидание запуска PostgreSQL..."\n\
+until PGPASSWORD=$POSTGRES_PASSWORD pg_isready -h $DATABASE_HOST -p $POSTGRES_PORT -U $POSTGRES_USER; do\n\
+  echo "PostgreSQL еще не доступен - ожидаем..."\n\
+  sleep 2\n\
+done\n\
+echo "PostgreSQL запущен!"\n\
+\n\
+# Проверка существования базы данных и создание её при необходимости\n\
+echo "Проверка существования базы данных $POSTGRES_DB..."\n\
+if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DATABASE_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -lqt | cut -d \| -f 1 | grep -qw $POSTGRES_DB; then\n\
+  echo "База данных $POSTGRES_DB не существует. Создание..."\n\
+  # Создаем базу данных\n\
+  PGPASSWORD=$POSTGRES_PASSWORD psql -h $DATABASE_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -c "CREATE DATABASE $POSTGRES_DB;"\n\
+  echo "База данных $POSTGRES_DB создана успешно!"\n\
+else\n\
+  echo "База данных $POSTGRES_DB уже существует."\n\
+fi\n\
+\n\
+# Поиск файла manage.py\n\
+MANAGE_PY_PATH=$(find /app -type f -name "manage.py" | head -1)\n\
+\n\
+if [ -z "$MANAGE_PY_PATH" ]; then\n\
+  echo "ОШИБКА: Файл manage.py не найден в проекте."\n\
+  exec bash\n\
+else\n\
+  echo "Найден файл manage.py: $MANAGE_PY_PATH"\n\
+  echo "Применяем миграции к базе данных..."\n\
+  cd $(dirname $MANAGE_PY_PATH) && python $(basename $MANAGE_PY_PATH) migrate --noinput\n\
+  echo "Запуск Django-приложения:"\n\
+  cd $(dirname $MANAGE_PY_PATH) && python $(basename $MANAGE_PY_PATH) runserver 0.0.0.0:8000\n\
+fi' > /usr/local/bin/entrypoint.sh
+
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Открываем порт, на котором будет работать веб-приложение
 EXPOSE 8000
 
-# Пользователь (опционально, но рекомендуется для безопасности)
-# RUN addgroup --system app && adduser --system --group app
-# USER app
-
-# Entrypoint (если используется)
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-# Команда по умолчанию (будет переопределена в docker-compose.yml для разных сервисов)
-# CMD ["gunicorn", "project_config.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Используем entrypoint скрипт
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

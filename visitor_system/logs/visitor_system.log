@@ -5837,3 +5837,428 @@ Traceback (most recent call last):
     )
 django.db.utils.NotSupportedError: PostgreSQL 14 or later is required (found 13.21).
 WARNING 2025-05-20 12:33:57,786 log 32716 11636 Not Found: /favicon.ico
+WARNING 2025-05-21 11:49:54,781 log 7224 9048 Not Found: /favicon.ico
+INFO 2025-05-21 11:50:35,510 middleware 7224 27792 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-21 11:50:37,602 middleware 7224 31156 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-21 12:23:05,993 autoreload 17 140083959310144 Watching for file changes with StatReloader
+INFO 2025-05-21 12:28:08,556 autoreload 17 140239831684928 Watching for file changes with StatReloader
+INFO 2025-05-21 12:28:35,197 autoreload 17 140239831684928 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:28:36,450 autoreload 19 139849330677568 Watching for file changes with StatReloader
+INFO 2025-05-21 12:28:57,667 autoreload 19 139849330677568 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:28:58,965 autoreload 21 139644809582400 Watching for file changes with StatReloader
+INFO 2025-05-21 12:29:18,788 autoreload 21 139644809582400 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:29:20,297 autoreload 23 139820613355328 Watching for file changes with StatReloader
+INFO 2025-05-21 12:29:54,138 autoreload 23 139820613355328 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:29:55,452 autoreload 25 139664218105664 Watching for file changes with StatReloader
+INFO 2025-05-21 12:30:07,465 autoreload 25 139664218105664 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:30:08,846 autoreload 27 140163384321856 Watching for file changes with StatReloader
+INFO 2025-05-21 12:30:47,088 autoreload 27 140163384321856 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:30:48,687 autoreload 29 139738991818560 Watching for file changes with StatReloader
+INFO 2025-05-21 12:33:09,447 autoreload 29 139738991818560 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:33:11,293 autoreload 31 140012863194944 Watching for file changes with StatReloader
+INFO 2025-05-21 12:33:15,873 autoreload 31 140012863194944 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:33:17,191 autoreload 33 140428060669760 Watching for file changes with StatReloader
+INFO 2025-05-21 12:34:14,344 autoreload 33 140428060669760 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:34:15,927 autoreload 35 140717444323136 Watching for file changes with StatReloader
+INFO 2025-05-21 12:36:15,902 autoreload 35 140717444323136 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:36:17,121 autoreload 37 140506844358464 Watching for file changes with StatReloader
+INFO 2025-05-21 12:36:24,480 autoreload 37 140506844358464 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:36:26,057 autoreload 39 140056419342144 Watching for file changes with StatReloader
+INFO 2025-05-21 12:36:28,005 autoreload 39 140056419342144 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:36:29,473 autoreload 41 140547642001216 Watching for file changes with StatReloader
+INFO 2025-05-21 12:36:41,752 autoreload 41 140547642001216 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:36:43,154 autoreload 43 140038103512896 Watching for file changes with StatReloader
+INFO 2025-05-21 12:37:07,405 autoreload 43 140038103512896 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:37:08,590 autoreload 45 139713311057728 Watching for file changes with StatReloader
+INFO 2025-05-21 12:53:33,168 autoreload 45 139713311057728 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:53:35,078 autoreload 47 140258293802816 Watching for file changes with StatReloader
+INFO 2025-05-21 12:56:18,960 autoreload 47 140258293802816 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:56:20,653 autoreload 49 140108821686080 Watching for file changes with StatReloader
+INFO 2025-05-21 12:57:10,071 autoreload 49 140108821686080 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:57:11,655 autoreload 51 139807637825344 Watching for file changes with StatReloader
+INFO 2025-05-21 12:57:12,549 middleware 38880 36628 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-21 12:59:43,439 autoreload 51 139807637825344 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 12:59:44,858 autoreload 53 140159851284288 Watching for file changes with StatReloader
+INFO 2025-05-21 13:19:41,823 autoreload 39 140582396565312 Watching for file changes with StatReloader
+INFO 2025-05-21 13:21:15,039 autoreload 39 140582396565312 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 13:21:16,559 autoreload 41 140460045612864 Watching for file changes with StatReloader
+INFO 2025-05-21 13:21:28,414 autoreload 41 140460045612864 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 13:21:29,752 autoreload 43 140480912295744 Watching for file changes with StatReloader
+INFO 2025-05-21 13:21:31,667 autoreload 43 140480912295744 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 13:21:32,858 autoreload 45 139859002509120 Watching for file changes with StatReloader
+INFO 2025-05-21 13:22:41,359 autoreload 45 139859002509120 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 13:22:43,433 autoreload 47 139994401412928 Watching for file changes with StatReloader
+INFO 2025-05-21 13:22:48,585 autoreload 47 139994401412928 /app/visitor_system/visitor_system/settings.py changed, reloading.
+INFO 2025-05-21 13:22:50,198 autoreload 49 140188054722368 Watching for file changes with StatReloader
+INFO 2025-05-21 13:25:03,226 autoreload 37 139942579095360 Watching for file changes with StatReloader
+INFO 2025-05-21 13:46:56,393 autoreload 51 140551273379648 Watching for file changes with StatReloader
+WARNING 2025-05-22 12:16:05,548 log 34492 27420 Not Found: /favicon.ico
+WARNING 2025-05-22 12:17:00,989 log 43088 44732 Not Found: /favicon.ico
+INFO 2025-05-22 12:17:10,519 middleware 43088 27188 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:17:13,143 middleware 43088 14064 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:17:18,268 middleware 43088 43416 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:17:27,619 middleware 43088 22960 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:17:29,210 middleware 43088 41700 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:17:32,519 middleware 43088 43776 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:18:31,894 middleware 34640 37360 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:19:09,940 middleware 34640 39352 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:19:12,626 middleware 34640 41888 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:19:16,545 middleware 34640 43404 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:19:19,299 middleware 34640 41336 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:19:47,306 middleware 34640 40992 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:20:40,358 middleware 34640 44208 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:20:50,645 middleware 34640 43132 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:21:03,019 middleware 34640 44220 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:22:10,243 forms 34640 43148 Using guest object: Санжаров Самат (ID: 4), Created: False
+INFO 2025-05-22 12:22:10,244 forms 34640 43148 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:22:14,829 redis 34640 43148 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:22:14,829 redis 34640 43148 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:22:17,097 redis 34640 43148 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:22:17,097 redis 34640 43148 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:22:20,382 redis 34640 43148 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:22:20,382 redis 34640 43148 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:22:23,666 redis 34640 43148 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:22:23,666 redis 34640 43148 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:22:26,934 redis 34640 43148 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:22:26,934 redis 34640 43148 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:22:30,212 redis 34640 43148 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:22:30,212 redis 34640 43148 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:22:33,479 redis 34640 43148 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:22:33,479 redis 34640 43148 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:22:36,762 redis 34640 43148 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:22:36,762 redis 34640 43148 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:22:40,071 redis 34640 43148 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-22 12:22:40,071 redis 34640 43148 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-22 12:22:43,344 redis 34640 43148 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:22:43,344 redis 34640 43148 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:22:46,623 redis 34640 43148 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-22 12:22:46,623 redis 34640 43148 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-22 12:22:49,901 redis 34640 43148 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:22:49,901 redis 34640 43148 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:22:53,182 redis 34640 43148 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:22:53,182 redis 34640 43148 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:22:56,473 redis 34640 43148 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:22:56,473 redis 34640 43148 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:22:59,759 redis 34640 43148 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:22:59,759 redis 34640 43148 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:23:03,040 redis 34640 43148 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:23:03,040 redis 34640 43148 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:23:06,305 redis 34640 43148 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:23:06,305 redis 34640 43148 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:23:09,586 redis 34640 43148 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-22 12:23:09,586 redis 34640 43148 Connection to Redis lost: Retry (17/20) in 1.00 second.
+INFO 2025-05-22 12:24:50,545 middleware 13476 37112 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:24:52,550 middleware 13476 44212 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:24:53,324 middleware 13476 37952 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-05-22 12:25:34,728 views 13476 42568 User 'sagat.akimbay' completed profile setup.
+INFO 2025-05-22 12:26:15,652 forms 13476 41268 Using guest object: Санжаров Самат (ID: 4), Created: False
+INFO 2025-05-22 12:26:15,652 forms 13476 41268 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:26:20,245 redis 13476 41268 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:26:20,245 redis 13476 41268 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:26:22,535 redis 13476 41268 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:26:22,535 redis 13476 41268 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:26:25,807 redis 13476 41268 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:26:25,807 redis 13476 41268 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:26:29,100 redis 13476 41268 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:26:29,100 redis 13476 41268 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:26:32,378 redis 13476 41268 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:26:32,378 redis 13476 41268 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:26:35,656 redis 13476 41268 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:26:35,656 redis 13476 41268 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:26:38,939 redis 13476 41268 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:26:38,939 redis 13476 41268 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:26:42,213 redis 13476 41268 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:26:42,213 redis 13476 41268 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:26:45,500 redis 13476 41268 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-22 12:26:45,500 redis 13476 41268 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-22 12:26:48,793 redis 13476 41268 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:26:48,793 redis 13476 41268 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:26:52,071 redis 13476 41268 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-22 12:26:52,071 redis 13476 41268 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-22 12:26:55,357 redis 13476 41268 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:26:55,357 redis 13476 41268 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:26:58,637 redis 13476 41268 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:26:58,637 redis 13476 41268 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:27:01,916 redis 13476 41268 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:27:01,916 redis 13476 41268 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:27:05,201 redis 13476 41268 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:27:05,201 redis 13476 41268 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:27:08,479 redis 13476 41268 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:27:08,479 redis 13476 41268 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:27:11,748 redis 13476 41268 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:27:11,748 redis 13476 41268 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:27:15,033 redis 13476 41268 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-22 12:27:15,033 redis 13476 41268 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-22 12:27:18,326 redis 13476 41268 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-22 12:27:18,326 redis 13476 41268 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-22 12:27:21,606 redis 13476 41268 Connection to Redis lost: Retry (19/20) in 1.00 second.
+ERROR 2025-05-22 12:27:21,606 redis 13476 41268 Connection to Redis lost: Retry (19/20) in 1.00 second.
+CRITICAL 2025-05-22 12:27:24,885 redis 13476 41268 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-22 12:27:24,885 redis 13476 41268 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+INFO 2025-05-22 12:28:51,824 forms 45492 46076 Using guest object: Проверка Проверка (ID: 14), Created: False
+INFO 2025-05-22 12:28:51,824 forms 45492 46076 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:28:56,403 redis 45492 46076 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:28:56,403 redis 45492 46076 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:28:58,690 redis 45492 46076 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:28:58,690 redis 45492 46076 Connection to Redis lost: Retry (1/20) in 1.00 second.
+INFO 2025-05-22 12:29:10,810 forms 44056 45408 Using guest object: Проверка Проверка (ID: 14), Created: False
+INFO 2025-05-22 12:29:10,810 forms 44056 45408 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:29:15,386 redis 44056 45408 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:29:15,386 redis 44056 45408 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:29:17,644 redis 44056 45408 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:29:17,644 redis 44056 45408 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:29:20,934 redis 44056 45408 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:29:20,934 redis 44056 45408 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:29:24,213 redis 44056 45408 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:29:24,213 redis 44056 45408 Connection to Redis lost: Retry (3/20) in 1.00 second.
+INFO 2025-05-22 12:30:48,135 forms 38012 45220 Using guest object: Проверка Проверка (ID: 14), Created: False
+INFO 2025-05-22 12:30:48,135 forms 38012 45220 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:30:52,728 redis 38012 45220 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:30:52,728 redis 38012 45220 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:30:55,001 redis 38012 45220 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:30:55,001 redis 38012 45220 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:30:58,281 redis 38012 45220 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:30:58,281 redis 38012 45220 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:31:01,565 redis 38012 45220 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:31:01,565 redis 38012 45220 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:31:04,846 redis 38012 45220 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:31:04,846 redis 38012 45220 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:31:08,134 redis 38012 45220 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:31:08,134 redis 38012 45220 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:31:11,406 redis 38012 45220 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:31:11,406 redis 38012 45220 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:31:14,682 redis 38012 45220 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:31:14,682 redis 38012 45220 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:31:17,958 redis 38012 45220 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-22 12:31:17,958 redis 38012 45220 Connection to Redis lost: Retry (8/20) in 1.00 second.
+INFO 2025-05-22 12:31:18,707 forms 38012 39960 Using guest object: Проверка Имя (ID: 14), Created: False
+INFO 2025-05-22 12:31:18,707 forms 38012 39960 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:31:21,235 redis 38012 45220 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:31:21,235 redis 38012 45220 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:31:23,257 redis 38012 39960 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:31:23,257 redis 38012 39960 Connection to Redis lost: Retry (0/20) now.
+ERROR 2025-05-22 12:31:24,515 redis 38012 45220 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-22 12:31:24,515 redis 38012 45220 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-22 12:31:25,538 redis 38012 39960 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:31:25,538 redis 38012 39960 Connection to Redis lost: Retry (1/20) in 1.00 second.
+ERROR 2025-05-22 12:31:27,797 redis 38012 45220 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:31:27,797 redis 38012 45220 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:31:28,812 redis 38012 39960 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:31:28,812 redis 38012 39960 Connection to Redis lost: Retry (2/20) in 1.00 second.
+ERROR 2025-05-22 12:31:31,078 redis 38012 45220 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:31:31,078 redis 38012 45220 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:31:32,092 redis 38012 39960 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:31:32,092 redis 38012 39960 Connection to Redis lost: Retry (3/20) in 1.00 second.
+ERROR 2025-05-22 12:31:34,355 redis 38012 45220 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:31:34,355 redis 38012 45220 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:31:35,382 redis 38012 39960 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:31:35,382 redis 38012 39960 Connection to Redis lost: Retry (4/20) in 1.00 second.
+ERROR 2025-05-22 12:31:37,633 redis 38012 45220 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:31:37,633 redis 38012 45220 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:31:38,663 redis 38012 39960 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:31:38,663 redis 38012 39960 Connection to Redis lost: Retry (5/20) in 1.00 second.
+ERROR 2025-05-22 12:31:40,912 redis 38012 45220 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:31:40,912 redis 38012 45220 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:31:41,933 redis 38012 39960 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:31:41,933 redis 38012 39960 Connection to Redis lost: Retry (6/20) in 1.00 second.
+ERROR 2025-05-22 12:31:44,195 redis 38012 45220 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:31:44,195 redis 38012 45220 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:31:45,220 redis 38012 39960 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:31:45,220 redis 38012 39960 Connection to Redis lost: Retry (7/20) in 1.00 second.
+ERROR 2025-05-22 12:31:47,473 redis 38012 45220 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-22 12:31:47,473 redis 38012 45220 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-22 12:31:48,494 redis 38012 39960 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-22 12:31:48,494 redis 38012 39960 Connection to Redis lost: Retry (8/20) in 1.00 second.
+ERROR 2025-05-22 12:31:50,752 redis 38012 45220 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-22 12:31:50,752 redis 38012 45220 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-22 12:31:51,773 redis 38012 39960 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:31:51,773 redis 38012 39960 Connection to Redis lost: Retry (9/20) in 1.00 second.
+ERROR 2025-05-22 12:31:54,034 redis 38012 45220 Connection to Redis lost: Retry (19/20) in 1.00 second.
+ERROR 2025-05-22 12:31:54,034 redis 38012 45220 Connection to Redis lost: Retry (19/20) in 1.00 second.
+ERROR 2025-05-22 12:31:55,059 redis 38012 39960 Connection to Redis lost: Retry (10/20) in 1.00 second.
+ERROR 2025-05-22 12:31:55,059 redis 38012 39960 Connection to Redis lost: Retry (10/20) in 1.00 second.
+CRITICAL 2025-05-22 12:31:57,306 redis 38012 45220 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-22 12:31:57,306 redis 38012 45220 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+ERROR 2025-05-22 12:31:58,327 redis 38012 39960 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:31:58,327 redis 38012 39960 Connection to Redis lost: Retry (11/20) in 1.00 second.
+ERROR 2025-05-22 12:32:01,612 redis 38012 39960 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:32:01,612 redis 38012 39960 Connection to Redis lost: Retry (12/20) in 1.00 second.
+ERROR 2025-05-22 12:32:04,874 redis 38012 39960 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:32:04,874 redis 38012 39960 Connection to Redis lost: Retry (13/20) in 1.00 second.
+ERROR 2025-05-22 12:32:08,148 redis 38012 39960 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:32:08,148 redis 38012 39960 Connection to Redis lost: Retry (14/20) in 1.00 second.
+ERROR 2025-05-22 12:32:11,426 redis 38012 39960 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:32:11,426 redis 38012 39960 Connection to Redis lost: Retry (15/20) in 1.00 second.
+ERROR 2025-05-22 12:32:14,703 redis 38012 39960 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:32:14,703 redis 38012 39960 Connection to Redis lost: Retry (16/20) in 1.00 second.
+ERROR 2025-05-22 12:32:17,968 redis 38012 39960 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-22 12:32:17,968 redis 38012 39960 Connection to Redis lost: Retry (17/20) in 1.00 second.
+ERROR 2025-05-22 12:32:21,249 redis 38012 39960 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-22 12:32:21,249 redis 38012 39960 Connection to Redis lost: Retry (18/20) in 1.00 second.
+ERROR 2025-05-22 12:32:24,519 redis 38012 39960 Connection to Redis lost: Retry (19/20) in 1.00 second.
+ERROR 2025-05-22 12:32:24,519 redis 38012 39960 Connection to Redis lost: Retry (19/20) in 1.00 second.
+CRITICAL 2025-05-22 12:32:27,805 redis 38012 39960 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-22 12:32:27,805 redis 38012 39960 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+INFO 2025-05-22 12:35:56,526 forms 39336 35072 Using guest object: Проверка Имя (ID: 14), Created: False
+INFO 2025-05-22 12:35:56,527 forms 39336 35072 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:36:01,107 redis 39336 35072 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 12:36:01,107 redis 39336 35072 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 12:36:03,387 redis 39336 35072 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 12:36:03,387 redis 39336 35072 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 12:36:06,669 redis 39336 35072 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 12:36:06,669 redis 39336 35072 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 12:36:09,967 redis 39336 35072 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 12:36:09,967 redis 39336 35072 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 12:36:13,248 redis 39336 35072 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 12:36:13,248 redis 39336 35072 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 12:36:16,537 redis 39336 35072 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 12:36:16,537 redis 39336 35072 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 12:36:19,816 redis 39336 35072 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 12:36:19,816 redis 39336 35072 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 12:36:23,094 redis 39336 35072 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 12:36:23,094 redis 39336 35072 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 12:36:26,379 redis 39336 35072 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 12:36:26,379 redis 39336 35072 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 12:36:29,657 redis 39336 35072 Connection to Redis lost: Retry (9/10) in 1.00 second.
+ERROR 2025-05-22 12:36:29,657 redis 39336 35072 Connection to Redis lost: Retry (9/10) in 1.00 second.
+CRITICAL 2025-05-22 12:36:32,934 redis 39336 35072 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-22 12:36:32,934 redis 39336 35072 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+WARNING 2025-05-22 12:42:50,825 log 46520 34276 Not Found: /favicon.ico
+INFO 2025-05-22 12:43:23,502 forms 46520 37636 Using guest object: Проверка Имя (ID: 14), Created: False
+INFO 2025-05-22 12:43:23,503 forms 46520 37636 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 12:43:28,099 redis 46520 37636 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 12:43:28,099 redis 46520 37636 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 12:43:30,377 redis 46520 37636 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 12:43:30,377 redis 46520 37636 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 12:43:33,668 redis 46520 37636 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 12:43:33,668 redis 46520 37636 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 12:43:36,945 redis 46520 37636 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 12:43:36,945 redis 46520 37636 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 12:43:40,222 redis 46520 37636 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 12:43:40,222 redis 46520 37636 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 12:43:43,501 redis 46520 37636 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 12:43:43,501 redis 46520 37636 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 12:43:46,782 redis 46520 37636 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 12:43:46,782 redis 46520 37636 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 12:43:50,064 redis 46520 37636 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 12:43:50,064 redis 46520 37636 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 12:43:53,323 redis 46520 37636 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 12:43:53,323 redis 46520 37636 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 12:43:56,592 redis 46520 37636 Connection to Redis lost: Retry (9/10) in 1.00 second.
+ERROR 2025-05-22 12:43:56,592 redis 46520 37636 Connection to Redis lost: Retry (9/10) in 1.00 second.
+CRITICAL 2025-05-22 12:43:59,857 redis 46520 37636 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-22 12:43:59,857 redis 46520 37636 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+INFO 2025-05-22 13:15:44,059 forms 48904 48976 Using guest object: Фамилия Имя (ID: 14), Created: False
+INFO 2025-05-22 13:15:44,059 forms 48904 48976 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 13:15:48,651 redis 48904 48976 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 13:15:48,651 redis 48904 48976 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 13:15:50,934 redis 48904 48976 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 13:15:50,934 redis 48904 48976 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 13:15:54,215 redis 48904 48976 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 13:15:54,215 redis 48904 48976 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 13:15:57,484 redis 48904 48976 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 13:15:57,484 redis 48904 48976 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 13:16:00,755 redis 48904 48976 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 13:16:00,755 redis 48904 48976 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 13:16:04,033 redis 48904 48976 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 13:16:04,033 redis 48904 48976 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 13:16:07,322 redis 48904 48976 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 13:16:07,322 redis 48904 48976 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 13:16:10,610 redis 48904 48976 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 13:16:10,610 redis 48904 48976 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 13:16:13,897 redis 48904 48976 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 13:16:13,897 redis 48904 48976 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 13:16:17,182 redis 48904 48976 Connection to Redis lost: Retry (9/10) in 1.00 second.
+ERROR 2025-05-22 13:16:17,182 redis 48904 48976 Connection to Redis lost: Retry (9/10) in 1.00 second.
+CRITICAL 2025-05-22 13:16:20,459 redis 48904 48976 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-22 13:16:20,459 redis 48904 48976 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+INFO 2025-05-22 13:56:27,423 forms 48904 51516 Using guest object: Сандаров Самат (ID: 14), Created: False
+INFO 2025-05-22 13:56:27,423 forms 48904 51516 Visit None created with status CHECKED_IN.
+ERROR 2025-05-22 13:56:31,989 redis 48904 51516 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 13:56:31,989 redis 48904 51516 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-05-22 13:56:34,278 redis 48904 51516 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 13:56:34,278 redis 48904 51516 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-05-22 13:56:37,565 redis 48904 51516 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 13:56:37,565 redis 48904 51516 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-05-22 13:56:40,857 redis 48904 51516 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 13:56:40,857 redis 48904 51516 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-05-22 13:56:44,132 redis 48904 51516 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 13:56:44,132 redis 48904 51516 Connection to Redis lost: Retry (4/10) in 1.00 second.
+ERROR 2025-05-22 13:56:47,424 redis 48904 51516 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 13:56:47,424 redis 48904 51516 Connection to Redis lost: Retry (5/10) in 1.00 second.
+ERROR 2025-05-22 13:56:50,705 redis 48904 51516 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 13:56:50,705 redis 48904 51516 Connection to Redis lost: Retry (6/10) in 1.00 second.
+ERROR 2025-05-22 13:56:53,990 redis 48904 51516 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 13:56:53,990 redis 48904 51516 Connection to Redis lost: Retry (7/10) in 1.00 second.
+ERROR 2025-05-22 13:56:57,266 redis 48904 51516 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 13:56:57,266 redis 48904 51516 Connection to Redis lost: Retry (8/10) in 1.00 second.
+ERROR 2025-05-22 13:57:00,543 redis 48904 51516 Connection to Redis lost: Retry (9/10) in 1.00 second.
+ERROR 2025-05-22 13:57:00,543 redis 48904 51516 Connection to Redis lost: Retry (9/10) in 1.00 second.
+CRITICAL 2025-05-22 13:57:03,829 redis 48904 51516 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+CRITICAL 2025-05-22 13:57:03,829 redis 48904 51516 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+INFO 2025-05-22 14:02:23,109 forms 51364 23304 Using guest object: Сандаров Самат (ID: 14), Created: False
+INFO 2025-05-22 14:02:23,109 forms 51364 23304 Visit None created with status CHECKED_IN.
+INFO 2025-05-22 14:02:23,142 forms 51364 23304 Saved Visit ID 128, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-22 14:02:23,145 utils 52120 52384 Attempting to send creation notification for official ID 128
+ERROR 2025-05-22 14:02:23,149 views 51364 23304 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-22 14:02:23,180 utils 52120 52384 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-22 14:02:25,552 utils 52120 52384 Visit notification email for official ID 128 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-22 14:03:17,722 forms 51364 24616 Using guest object: Саматов Самат (ID: 14), Created: False
+INFO 2025-05-22 14:03:17,722 forms 51364 24616 Visit None created with status CHECKED_IN.
+INFO 2025-05-22 14:03:17,742 forms 51364 24616 Saved Visit ID 129, Status: CHECKED_IN, Consent Ack: True
+INFO 2025-05-22 14:03:17,743 utils 52120 52384 Attempting to send creation notification for official ID 129
+ERROR 2025-05-22 14:03:17,747 views 51364 24616 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-22 14:03:17,776 utils 52120 52384 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-22 14:03:19,643 utils 52120 52384 Visit notification email for official ID 129 SENT successfully to ['Host:yrysbek.adilbekuly@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-22 14:09:38,518 log 55212 54448 Not Found: /favicon.ico
+INFO 2025-05-22 14:15:25,521 utils 52120 52384 Attempting to send creation notification for student ID 63
+INFO 2025-05-22 14:15:25,521 utils 52120 52384 Notification skipped for StudentVisit ID 63 as per current logic.
+ERROR 2025-05-22 14:15:25,525 views 54676 23676 Ошибка при вызове send_new_visit_notification_to_security для студента: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+INFO 2025-05-22 14:20:02,149 views 55060 55444 Statistics data prepared for user 'Sagat'.
+WARNING 2025-05-22 14:44:07,783 log 24900 57524 Not Found: /apple-touch-icon.png
+WARNING 2025-05-22 14:44:07,796 log 24900 57512 Not Found: /favicon.ico
+WARNING 2025-05-22 14:44:07,799 log 24900 57984 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-22 14:44:11,095 log 24900 57388 Not Found: /apple-touch-icon-120x120-precomposed.png
+WARNING 2025-05-22 14:44:11,955 log 24900 58020 Not Found: /apple-touch-icon-120x120.png
+WARNING 2025-05-22 14:44:24,521 log 24900 58192 Not Found: /favicon.ico
+WARNING 2025-05-22 14:44:24,529 log 24900 54196 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-22 14:44:24,532 log 24900 58064 Not Found: /apple-touch-icon.png
+WARNING 2025-05-22 14:44:26,901 log 24900 56076 Not Found: /apple-touch-icon-120x120-precomposed.png
+WARNING 2025-05-22 14:44:27,722 log 24900 58048 Not Found: /apple-touch-icon-120x120.png
+WARNING 2025-05-22 14:44:28,584 log 24900 57928 Not Found: /apple-touch-icon.png
+WARNING 2025-05-22 14:44:29,458 log 24900 53992 Not Found: /apple-touch-icon.png
+WARNING 2025-05-22 16:16:35,435 log 24900 66184 Not Found: /favicon.ico
+WARNING 2025-05-22 16:16:35,447 log 24900 65576 Not Found: /apple-touch-icon-precomposed.png
+WARNING 2025-05-22 16:16:35,604 log 24900 62848 Not Found: /apple-touch-icon.png
+WARNING 2025-05-22 16:16:37,784 log 24900 54752 Not Found: /apple-touch-icon-120x120-precomposed.png
+WARNING 2025-05-22 16:16:58,604 log 24900 65980 Not Found: /apple-touch-icon.png
+WARNING 2025-05-22 16:16:58,606 log 24900 59724 Not Found: /favicon.ico
+WARNING 2025-05-22 16:16:58,775 log 24900 66396 Not Found: /apple-touch-icon-precomposed.png

@@ -15,6 +15,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 import datetime
 from datetime import timedelta
+import datetime  # Импортируем весь модуль datetime
 import json
 import logging
 
@@ -144,14 +145,18 @@ def current_guests_view(request):
     # Добавляем атрибут для различения в шаблоне (если нужно)
     #for v in current_visits: v.visit_kind = 'official'
     for v in current_official_visits: v.visit_kind = 'official'
-    for v in current_student_visits: v.visit_kind = 'student'
+    for v in current_student_visits: v.visit_kind = 'student'    # Объединяем и сортируем (например, по времени входа)
+    # Создаем функцию-ключ для сортировки, которая безопасно обрабатывает None
+    def safe_entry_time_key(visit):
+        # Если entry_time равен None, возвращаем минимальную дату для сортировки
+        if visit.entry_time is None:
+            return timezone.make_aware(datetime.datetime.min, timezone.get_default_timezone())
+        return visit.entry_time
 
-    # Объединяем и сортируем (например, по времени входа)
     combined_list = sorted(
-        #chain(current_visits, current_student_visits),
         chain(current_official_visits, current_student_visits),
-        key=attrgetter('entry_time'), # Сортируем по времени входа
-        reverse=True # Самые недавние вверху
+        key=safe_entry_time_key,  # Используем безопасную функцию-ключ
+        reverse=True  # Самые недавние вверху
     )
     # ------------------------------------------
 

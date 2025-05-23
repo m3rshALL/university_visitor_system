@@ -32,7 +32,6 @@ ALLOWED_HOSTS = ['10.1.10.206', '127.0.0.1', 'localhost', '.ngrok-free.app']
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,13 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     
-    #Third Party Apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.microsoft',
     
-    #Раширенные возможности Django
     'django_extensions',
     'django_select2',
     'django_filters',
@@ -56,7 +53,6 @@ INSTALLED_APPS = [
     'pwa',
     'widget_tweaks',
     
-    #My Apps
     'authentication',
     'visitors',
     'departments',
@@ -103,6 +99,7 @@ WSGI_APPLICATION = 'visitor_system.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
@@ -184,9 +181,6 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 
-
-
-
 client_id = os.getenv('client_id')
 client_secret = os.getenv('client_secret')
 tenant_id = os.getenv('tenant_id')
@@ -220,7 +214,8 @@ USE_X_FORWARDED_HOST = True # Также полезно, если Nginx пере
 
 # Установите True, так как вы используете HTTPS через ngrok
 CSRF_COOKIE_SECURE = True
-
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 # Установите True, если вы хотите, чтобы CSRF cookie отправлялся только по HTTPS
 # Это рекомендуется для production и при использовании HTTPS локально/через ngrok
 SESSION_COOKIE_SECURE = True
@@ -229,7 +224,7 @@ SESSION_COOKIE_SECURE = True
 # Замените '15f6-85-159-27-200.ngrok-free.app' на ваш ТЕКУЩИЙ ngrok URL,
 # но без 'https://' в начале.
 CSRF_TRUSTED_ORIGINS = [
-    'https://b44e-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
+    'https://22aa-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
     # Можно добавить и другие доверенные хосты, если нужно, например,
     # 'http://localhost:8000',
     # 'http://127.0.0.1:8000'
@@ -283,27 +278,39 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # Или другой адрес, разр�
 
 # ----- Настройки Celery -----
 # URL брокера сообщений (Redis)
-# redis://localhost:6379/0 - стандартный URL для Redis на локальной машине, база данных 0
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:{os.environ.get('REDIS_PORT', '6379')}/0")
 
-# Бэкенд для хранения результатов задач (опционально, можно тоже Redis)
-# Если вам не нужно отслеживать результат выполнения email-задачи, можно закомментировать
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:{os.environ.get('REDIS_PORT', '6379')}/0") # Consider using a different DB, e.g., /1
+# Add connection retry settings for more stability
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'retry_policy': {
+        'max_retries': 10,
+        'interval_start': 0,
+        'interval_step': 0.2,
+        'interval_max': 1,
+    },
+}
 
-# Формат принимаемого контента
+# Add health check settings
+CELERY_BROKER_CONNECTION_RETRY = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BROKER_CONNECTION_MAX_RETRIES = 10
+
+# Остальные настройки Celery
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:{os.environ.get('REDIS_PORT', '6379')}/0")
 CELERY_ACCEPT_CONTENT = ['json']
-# Формат сериализации задач
 CELERY_TASK_SERIALIZER = 'json'
-# Формат сериализации результатов
 CELERY_RESULT_SERIALIZER = 'json'
-# Часовой пояс (важно для планирования задач, если будете использовать)
-CELERY_TIMEZONE = TIME_ZONE # Используем тот же часовой пояс, что установлен в Django
+CELERY_TIMEZONE = TIME_ZONE
 
-# Эти переменные больше не нужны, если CELERY_BROKER_URL и CELERY_RESULT_BACKEND задаются полностью
-# REDIS_HOST = 'localhost'
-# REDIS_PORT = 6379
-# REDIS_DB = 0
+# Дополнительные настройки Redis для более устойчивой работы
+CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {
+    'retry_policy': {
+        'max_retries': 10,
+    },
+}
 
+REDIS_HOST='localhost'
+REDIS_PORT=6379
 
 LOGS_DIR = BASE_DIR / 'logs'
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
@@ -380,6 +387,18 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True, # Можно передавать корневому
         },
+        # Логгер для Redis
+        'redis': {
+            'handlers': ['console', 'file'],
+            'level': 'WARNING',  # Set to DEBUG when troubleshooting
+            'propagate': False,
+        },
+        # Логгер для django_redis
+        'django_redis': {
+            'handlers': ['console', 'file'],
+            'level': 'WARNING',  # Set to DEBUG when troubleshooting
+            'propagate': False,
+        },
     },
 }
 
@@ -395,16 +414,17 @@ CACHES = {
         "LOCATION": os.environ.get('CACHE_URL', f"redis://{os.environ.get('REDIS_HOST', '127.0.0.1')}:{os.environ.get('REDIS_PORT', '6379')}/1"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # Опционально: пароль для Redis, если он установлен
-            # "PASSWORD": os.environ.get('REDIS_PASSWORD'),
             # Настройки подключения и обработки ошибок
-            "CONNECTION_POOL_KWARGS": {"max_connections": 50, "socket_connect_timeout": 5},
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 50, 
+                "socket_connect_timeout": 5,
+                "socket_keepalive": True,  # Keep connections alive
+                "retry_on_timeout": True,  # Retry on timeout
+            },
             "SOCKET_TIMEOUT": 5,
-            "IGNORE_EXCEPTIONS": True, # Не падать, если Redis недоступен
+            "IGNORE_EXCEPTIONS": True,  # Не падать, если Redis недоступен
+            "RETRY_AFTER_TIMEOUT": True,  # Added for reliability
         },
-        # Опционально: Время жизни кэша по умолчанию (в секундах)
-        # "TIMEOUT": 300, # 5 минут
-        # 'KEY_PREFIX': 'visitor_system' # Префикс для ключей
     }
 }
 

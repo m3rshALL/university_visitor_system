@@ -1,105 +1,34 @@
-version: '3.9'
+version: '3.8'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: my_project_app
-    # command: ["gunicorn", "project_config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--reload"] # Для Django
-    # command: ["gunicorn", "your_flask_app_file:app", "--bind", "0.0.0.0:8000", "--workers", "3", "--reload"] # Для Flask
-    # Используем entrypoint, если он есть:
-    entrypoint: /usr/local/bin/entrypoint.sh
-    command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000" # Для разработки Django
-      # Или для Gunicorn:
-      # sh -c "gunicorn project_config.wsgi:application --bind 0.0.0.0:8000 --workers 3"
-    volumes:
-      - .:/app # Монтируем код для разработки (hot reload)
-      # - static_volume:/app/staticfiles # Если вы собираете статику в Dockerfile
-      # - media_volume:/app/mediafiles   # Для медиа файлов
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env
-    depends_on:
-      db:
-        condition: service_healthy # Ждем, пока БД будет готова
-      redis:
-        condition: service_started # Redis обычно стартует быстро
-
-  worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: my_project_worker
-    # entrypoint: /usr/local/bin/entrypoint.sh # Можно использовать, если worker'у нужны миграции
-    command: >
-      sh -c "celery -A project_config.celery_app worker -l INFO" # Укажите правильный путь к celery_app
-    volumes:
-      - .:/app # Для разработки
-    env_file:
-      - .env
-    depends_on:
-      app: # Чтобы убедиться, что код и настройки доступны
-        condition: service_started
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
-
-  beat: # Опционально, если нужны периодические задачи
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: my_project_beat
-    # entrypoint: /usr/local/bin/entrypoint.sh
-    command: >
-      sh -c "celery -A project_config.celery_app beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler" # Для django-celery-beat
-      # Или для стандартного beat:
-      # sh -c "celery -A project_config.celery_app beat -l INFO"
-    volumes:
-      - .:/app # Для разработки
-    env_file:
-      - .env
-    depends_on:
-      app:
-        condition: service_started
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
-
   db:
-    image: postgres:14-alpine # Используйте нужную версию
-    container_name: my_project_db
+    image: postgres:14
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - .env
-    ports: # Открываем порт для локального доступа к БД (опционально)
-      - "54300:5432"
-    healthcheck: # Проверка состояния PostgreSQL
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
-      interval: 10s
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Инициализационный скрипт
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=visitor_system_db  # Используем стандартное имя базы данных
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7-alpine # Используйте нужную версию
-    container_name: my_project_redis
-    ports: # Открываем порт для локального доступа к Redis (опционально)
-      - "63790:6379"
+  visitor_system:
+    build: .
     volumes:
-      - redis_data:/data # Для персистентности (если нужно)
-    healthcheck:
-        test: ["CMD", "redis-cli", "ping"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=visitor_system_user
+      - POSTGRES_PASSWORD=Sako2020
+      - POSTGRES_DB=visitor_system_db  # Указываем правильное имя базы данных
+      - POSTGRES_PORT=5432
 
 volumes:
   postgres_data:
-  redis_data: # Если используется
-  # static_volume:
-  # media_volume:

@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse, resolve # Добавили resolve
 from django.urls.exceptions import Resolver404
 from django.conf import settings # Для AUTH_USER_MODEL
-from visitors.models import EmployeeProfile # Убрали импорт Visit/StudentVisit
+from visitors.models import EmployeeProfile 
 from django.apps import apps
 
 logger = logging.getLogger(__name__)
