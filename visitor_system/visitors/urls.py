@@ -15,7 +15,7 @@ urlpatterns = [
     # --- URL для настройки профиля ---
     path('profile/setup/', views.profile_setup_view, name='profile_setup'),
     
-    path('current/', views.current_guests_view, name='current_guests'),
+    # path('current/', views.current_guests_view, name='current_guests'),
     path('history/', views.visit_history_view, name='visit_history'),
     path('history/detail/<int:visit_id>/', views.visit_detail_view, name='visit_detail'),
     path('history/student/detail/<int:visit_id>/', views.student_visit_detail_view, name='student_visit_detail'),

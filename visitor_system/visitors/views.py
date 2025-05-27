@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test, per
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.http import JsonResponse, HttpResponse, Http404
+from django.views.decorators.cache import never_cache, cache_page
 
 from django.contrib import messages # Для показа сообщений пользователю
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
@@ -18,6 +19,9 @@ from datetime import timedelta
 import datetime  # Импортируем весь модуль datetime
 import json
 import logging
+
+import os
+from django.conf import settings
 
 from django.contrib.auth.models import Group # Импорт модели группы пользователей
 from django.db.models import Count, Avg, F, DurationField
@@ -38,6 +42,9 @@ from django.utils.http import url_has_allowed_host_and_scheme # Для безо�
 from django.views.decorators.cache import cache_page, cache_control
 from django.core.cache import cache
 from django.views.decorators.vary import vary_on_cookie
+
+from django.views.decorators.cache import cache_control
+from django.contrib.staticfiles.views import serve as serve_static
 
 from notifications.utils import send_new_visit_notification_to_security
 
@@ -82,6 +89,46 @@ def get_scoped_visits_qs(user):
                 student_visits_qs = student_visits_qs.none()
     
     return official_visits_qs, student_visits_qs
+
+
+def combine_visit_lists(official_visits_qs, student_visits_qs):
+    """
+    Объединяет два QuerySet'а (официальные и студенческие визиты) в один отсортированный список.
+    Добавляет атрибут visit_kind для различения типов визитов в шаблоне.
+    Сортирует по релевантному времени (entry_time или expected_entry_time).
+    
+    Args:
+        official_visits_qs: QuerySet с объектами Visit
+        student_visits_qs: QuerySet с объектами StudentVisit
+    
+    Returns:
+        list: Отсортированный список визитов обоих типов
+    """
+    # Добавляем атрибут для различения в шаблоне
+    for v in official_visits_qs: v.visit_kind = 'official'
+    for v in student_visits_qs: v.visit_kind = 'student'
+    
+    def get_sort_key(visit):
+        # Сортируем по релевантному времени: фактическое > планируемое
+        # None ставим в самый конец (самое старое время)
+        relevant_time = None
+        if visit.entry_time:
+            relevant_time = visit.entry_time
+        elif hasattr(visit, 'expected_entry_time') and visit.expected_entry_time:
+            relevant_time = visit.expected_entry_time
+
+        # Даем очень старую дату для None, чтобы они были последними при reverse=True
+        very_old_time = timezone.make_aware(datetime.datetime.min, timezone.get_default_timezone())
+        return relevant_time if relevant_time else very_old_time
+
+    # Объединяем и сортируем списки визитов
+    combined_list = sorted(
+        chain(official_visits_qs, student_visits_qs),
+        key=get_sort_key,
+        reverse=True  # Самые свежие (по фактическому или планируемому входу) - вверху
+    )
+    
+    return combined_list
 # -----------------------------------------------------------------------
 
 @login_required
@@ -116,11 +163,11 @@ def register_guest_view(request):
     return render(request, 'visitors/register_guest.html', context)
 # ----------------------------------------------------------------------
 
-@login_required
+"""@login_required
 @cache_page(60 * 5)  # Кэшируем страницу на 5 минут
 @vary_on_cookie     # Варьируем кэш в зависимости от пользователя (т.к. содержимое зависит от прав доступа)
 def current_guests_view(request):
-    """Отображение списка гостей, которые сейчас находятся в здании."""
+    Отображение списка гостей, которые сейчас находятся в здании.
     # Фильтруем визиты по статусу 'CHECKED_IN'
     #current_visits = Visit.objects.filter(
     #    status=STATUS_CHECKED_IN # <-- Изменено условие фильтрации
@@ -164,12 +211,16 @@ def current_guests_view(request):
         # Передаем объединенный список в шаблон
         'current_visits': combined_list
     }
-    return render(request, 'visitors/current_guests.html', context)
+    return render(request, 'visitors/current_guests.html', context)"""
 # ---------------------------------
 
+from django.views.decorators.cache import never_cache
+
 @login_required
+@never_cache  # Отключаем кэширование для динамического представления с фильтрацией
 def visit_history_view(request):
     """Отображение И общей истории визитов с фильтрацией."""
+    # Если есть GET-параметры, это фильтрация - не кэшируем
     user = request.user # Получаем текущего пользователя
     # Получаем визиты с учетом прав доступа пользователя
     official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)
@@ -345,27 +396,39 @@ def student_visit_detail_view(request, visit_id):
 @require_POST # Ограничиваем метод только POST-запросами
 def mark_guest_exit_view(request, visit_id):
     """Отмечает выход гостя (модель Visit)."""
-    try:
-        # Пытаемся получить объект Visit по ID
-        visit = get_object_or_404(Visit, pk=visit_id)
+    
+    # Пытаемся получить объект Visit по ID
+    visit = get_object_or_404(Visit, pk=visit_id)
 
-        # Проверяем, находится ли гость в здании перед отметкой выхода
-        if visit.status != STATUS_CHECKED_IN:
-            messages.warning(request, f"Невозможно отметить выход для '{visit.guest.full_name}'. "
-                                      f"Текущий статус: {visit.get_status_display()}. Возможно, выход уже был отмечен ранее.")
-            # Возвращаем пользователя туда, откуда он пришел (или на страницу текущих гостей)
-            return redirect(request.META.get('HTTP_REFERER', 'current_guests'))
+    # Проверяем, находится ли гость в здании перед отметкой выхода
+    if visit.status != STATUS_CHECKED_IN:
+        messages.warning(request, f"Невозможно отметить выход для '{visit.guest.full_name}'. "
+                                    f"Текущий статус: {visit.get_status_display()}. Возможно, выход уже был отмечен ранее.")
+        # Возвращаем пользователя туда, откуда он пришел (или на страницу текущих гостей)
+        return redirect(request.META.get('HTTP_REFERER', 'visit_history'))        # Если все в порядке, отмечаем время выхода и меняем статус
+    visit.exit_time = timezone.now()
+    visit.status = STATUS_CHECKED_OUT
+    visit.save(update_fields=['exit_time', 'status']) # Обновляем только нужные поля
 
-        # Если все в порядке, отмечаем время выхода и меняем статус
-        visit.exit_time = timezone.now()
-        visit.status = STATUS_CHECKED_OUT
-        visit.save(update_fields=['exit_time', 'status']) # Обновляем только нужные поля
+    # Асинхронно отправляем уведомление о выходе, если у визита есть назначенный сотрудник с email
+    if hasattr(visit, 'host_employee') and visit.host_employee and visit.host_employee.email:
+        from notifications.tasks import send_exit_notification
+        subject = f"Посетитель {visit.guest.full_name} покинул здание"
+        message = f"Посетитель {visit.guest.full_name} покинул здание в {visit.exit_time.strftime('%H:%M:%S')}."
+        
+        # Вызываем задачу Celery асинхронно
+        send_exit_notification.delay(
+            visit.host_employee.email,
+            subject,
+            message
+        )
+        logger.info(f"Поставлена задача на отправку уведомления о выходе для визита {visit_id}")
 
-        messages.success(request, f"Выход гостя '{visit.guest.full_name}' успешно зарегистрирован.")
-        # Перенаправляем на список текущих гостей
-        return redirect('current_guests')
+    messages.success(request, f"Выход гостя '{visit.guest.full_name}' успешно зарегистрирован.")
+    # Перенаправляем на список текущих гостей
+    return redirect('visit_history')
 
-    except Http404:
+    """except Http404:
         # Явно обрабатываем случай, когда визит не найден (ошибка 404)
         logger.warning(f"Attempted to mark exit for non-existent Visit ID: {visit_id} by user {request.user.username}")
         messages.error(request, f"Ошибка: Визит гостя с ID {visit_id} не найден. Возможно, он был удален или уже обработан.")
@@ -376,7 +439,7 @@ def mark_guest_exit_view(request, visit_id):
         # Ловим другие возможные ошибки
         logger.error(f"Unexpected error marking guest exit for visit ID {visit_id}: {e}", exc_info=True)
         messages.error(request, "Произошла непредвиденная ошибка при отметке выхода гостя.")
-        return redirect(request.META.get('HTTP_REFERER', 'current_guests'))
+        return redirect(request.META.get('HTTP_REFERER', 'current_guests'))"""
 
 # --- View для отметки выхода СТУДЕНТА ---
 @login_required
@@ -391,7 +454,7 @@ def mark_student_exit_view(request, visit_id):
         if visit.status != STATUS_CHECKED_IN:
             messages.warning(request, f"Невозможно отметить выход для '{visit.guest.full_name}'. "
                                       f"Текущий статус: {visit.get_status_display()}. Возможно, выход уже был отмечен ранее.")
-            return redirect(request.META.get('HTTP_REFERER', 'current_guests'))
+            return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
 
         # Отмечаем выход
         visit.exit_time = timezone.now()
@@ -399,7 +462,7 @@ def mark_student_exit_view(request, visit_id):
         visit.save(update_fields=['exit_time', 'status'])
 
         messages.success(request, f"Выход посетителя '{visit.guest.full_name}' успешно зарегистрирован.")
-        return redirect('current_guests')
+        return redirect('visit_history')
 
     except Http404:
         logger.warning(f"Attempted to mark exit for non-existent StudentVisit ID: {visit_id} by user {request.user.username}")
@@ -1290,3 +1353,67 @@ def profile_setup_view(request):
     }
     return render(request, 'visitors/profile_setup.html', context)
 # --------------------------------------------------
+
+def cached_static_serve(request, path, **kwargs):
+    return cache_control(
+        max_age=86400,  # 1 day in seconds
+        immutable=True, 
+        public=True
+    )(serve_static)(request, path, **kwargs)
+    
+def manifest_json_view(request):
+    """
+    Serve the manifest.json file with proper content type and encoding
+    """
+    # Path to our custom manifest.json file
+    manifest_path = os.path.join(settings.BASE_DIR, 'static', 'manifest.json')
+    
+    if os.path.exists(manifest_path):
+        with open(manifest_path, 'r', encoding='utf-8') as manifest_file:
+            manifest_data = json.load(manifest_file)
+            return JsonResponse(manifest_data)
+    else:
+        # Fallback: generate a simple valid manifest
+        manifest_data = {
+            "name": "AITU Visitor Pass",
+            "short_name": "Visitor Pass",
+            "description": "Система управления пропусками для Astana IT University",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#ffffff",
+            "theme_color": "#206bc4",
+            "orientation": "any",
+            "scope": "/",
+            "icons": [
+                {
+                    "src": "/static/img/icons/icon-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png",
+                    "purpose": "any maskable"
+                },
+                {
+                    "src": "/static/img/icons/icon-512x512.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "any maskable"
+                }
+            ]
+        }
+        return JsonResponse(manifest_data)
+
+def service_worker_view(request):
+    """
+    Serve the service worker file with UTF-8 encoding to avoid encoding issues on Windows.
+    """
+    # Path to the service worker file
+    service_worker_path = settings.PWA_SERVICE_WORKER_PATH
+    
+    if os.path.exists(service_worker_path):
+        with open(service_worker_path, 'r', encoding='utf-8') as serviceworker_file:
+            return HttpResponse(
+                serviceworker_file.read(),
+                content_type="application/javascript",
+            )
+    else:
+        # Return an empty service worker if the file doesn't exist
+        return HttpResponse("// Service worker not found", content_type="application/javascript")

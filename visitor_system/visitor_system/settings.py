@@ -30,6 +30,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['10.1.10.206', '127.0.0.1', 'localhost', '.ngrok-free.app']
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -39,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',  # Для работы с WhiteNoise
+    #'whitenoise.runserver_nostatic',  # Для работы с WhiteNoise
     'django.contrib.sites',
     
     'allauth',
@@ -50,6 +54,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_select2',
     'django_filters',
+    'debug_toolbar',
     
     'pwa',
     'widget_tweaks',
@@ -64,6 +69,7 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # Middleware для Django Debug Toolbar
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', # Для работы с WhiteNoise
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -232,7 +238,7 @@ SESSION_COOKIE_SECURE = True
 # Замените '15f6-85-159-27-200.ngrok-free.app' на ваш ТЕКУЩИЙ ngrok URL,
 # но без 'https://' в начале.
 CSRF_TRUSTED_ORIGINS = [
-    'https://1de3-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
+    'https://aaa5-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
     # Можно добавить и другие доверенные хосты, если нужно, например,
     # 'http://localhost:8000',
     # 'http://127.0.0.1:8000'
@@ -416,23 +422,17 @@ LOGGING = {
 
 # ----- Настройки Кэширования -----
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        # Указываем URL к Redis, используя базу данных №1 для кэша
-        "LOCATION": os.environ.get('CACHE_URL', f"redis://{os.environ.get('REDIS_HOST', '127.0.0.1')}:{os.environ.get('REDIS_PORT', '6379')}/1"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # Настройки подключения и обработки ошибок
-            "CONNECTION_POOL_KWARGS": {
-                "max_connections": 50, 
-                "socket_connect_timeout": 5,
-                "socket_keepalive": True,  # Keep connections alive
-                "retry_on_timeout": True,  # Retry on timeout
-            },
-            "SOCKET_TIMEOUT": 5,
-            "IGNORE_EXCEPTIONS": True,  # Не падать, если Redis недоступен
-            "RETRY_AFTER_TIMEOUT": True,  # Added for reliability
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Или ваш URL Redis
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor', # Может сжать данные
+            'SERIALIZER': 'django_redis.serializers.json.JSONSerializer', # Если кэшируете JSON
+            'MAX_ENTRIES': 50000, # Максимальное количество записей
+            'TIMEOUT': 60 * 15, # 15 минут
         },
+        'KEY_PREFIX': 'visitor_system_cache', # Уникальный префикс для ключей
     }
 }
 

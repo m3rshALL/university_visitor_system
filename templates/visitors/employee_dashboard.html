@@ -63,22 +63,24 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-4 col-lg-3">
-                        <a href="{% url 'current_guests' %}" class="card card-link card-link-pop">
-                            <div class="card-body text-center">
-                                <div class="text-green mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-                                    </svg>
+                    {% comment %}
+                        <div class="col-md-4 col-lg-3">
+                            <a href="{% url 'current_guests' %}" class="card card-link card-link-pop">
+                                <div class="card-body text-center">
+                                    <div class="text-green mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                        </svg>
+                                    </div>
+                                    <div>Текущие гости</div>
                                 </div>
-                                <div>Текущие гости</div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    {% endcomment %}
                     <div class="col-md-4 col-lg-3">
                         <a href="{% url 'visit_history' %}" class="card card-link card-link-pop">
                             <div class="card-body text-center">
@@ -385,20 +387,22 @@
                             <div class="col">История всех визитов</div>
                         </div>
                     </a>
-                    <a href="{% url 'current_guests' %}" class="list-group-item list-group-item-action">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-success" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-                                </svg>
+                    {% comment %}
+                        <a href="{% url 'current_guests' %}" class="list-group-item list-group-item-action">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-success" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                    </svg>
+                                </div>
+                                <div class="col">Текущие гости в здании</div>
                             </div>
-                            <div class="col">Текущие гости в здании</div>
-                        </div>
-                    </a>
+                        </a>
+                    {% endcomment %}
                 </div>
             </div>
         </div>
