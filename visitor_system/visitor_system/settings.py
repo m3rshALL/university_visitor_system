@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'visitors',
     'departments',
     'notifications',
+    'classroom_book',
     
 ]
 

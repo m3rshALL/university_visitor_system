@@ -32,9 +32,10 @@ urlpatterns = [
     #path('auth/', include('authentication.urls')), # URL для аутентификации
     path('accounts/', include('allauth.urls')), # URL для аутентификации через allauth
     path('visitors/', include('visitors.urls')), # URL для гостей и визитов
+    path('classroom-book/', include('classroom_book.urls', namespace='classroom_book')), # URL для бронирования аудиторий
     # Главная страница - перенаправляем на панель сотрудника
     path('', visitor_views.employee_dashboard_view, name='home'),
-      path("select2/", include("django_select2.urls")),
+    path("select2/", include("django_select2.urls")),
     
     # Custom service worker view to handle encoding issues
     path('serviceworker.js', service_worker_view, name='serviceworker'),

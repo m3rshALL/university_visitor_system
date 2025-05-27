@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Бронирование аудиторий{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Бронирование аудиторий
+                </h2>
+                <div class="page-pretitle">
+                    Система бронирования ключей для преподавателей
+                </div>
+            </div>
+            {% comment %}
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="{% url 'classroom_book:book_classroom' %}" class="btn btn-primary d-none d-sm-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 5l0 14" />
+                                <path d="M5 12l14 0" />
+                            </svg>
+                            Забронировать аудиторию
+                        </a>
+                    </div>
+                </div>
+            {% endcomment %}
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-deck row-cards">
+            {% if active_bookings %}
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Активные бронирования</h3>
+                        <div class="card-actions">
+                            <a href="{% url 'classroom_book:my_bookings' %}" class="btn btn-outline-primary btn-sm">
+                                Все бронирования
+                            </a>
+                        </div>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        {% for booking in active_bookings %}
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="avatar rounded bg-blue-lt">
+                                        {{ booking.classroom.number|slice:":2" }}
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-fill">
+                                            <div class="font-weight-medium">Аудитория {{ booking.classroom.number }} ({{ booking.classroom.building }})</div>
+                                            <div class="text-muted">
+                                                {{ booking.start_time|date:"d.m.Y" }} | {{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <form action="{% url 'classroom_book:return_key' booking.id %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-success btn-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M5 12l5 5l10 -10"></path>
+                                            </svg>
+                                            Вернуть ключ
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="col-12">
+                <div class="row row-cards">
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-primary text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"></path>
+                                                <path d="M16 3v4"></path>
+                                                <path d="M8 3v4"></path>
+                                                <path d="M4 11h16"></path>
+                                                <path d="M16 19h6"></path>
+                                                <path d="M19 16v6"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">
+                                            Новое бронирование
+                                        </div>
+                                        <div class="text-muted">
+                                            Забронировать аудиторию
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="{% url 'classroom_book:book_classroom' %}" class="btn btn-primary w-100">
+                                        Забронировать
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-azure text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M9 6l11 0"></path>
+                                                <path d="M9 12l11 0"></path>
+                                                <path d="M9 18l11 0"></path>
+                                                <path d="M5 6l0 .01"></path>
+                                                <path d="M5 12l0 .01"></path>
+                                                <path d="M5 18l0 .01"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">
+                                            Мои бронирования
+                                        </div>
+                                        <div class="text-muted">
+                                            Просмотр всех бронирований
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="{% url 'classroom_book:my_bookings' %}" class="btn btn-azure w-100">
+                                        Просмотреть
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        <span class="bg-green text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M3 21l18 0"></path>
+                                                <path d="M9 8l1 0"></path>
+                                                <path d="M9 12l1 0"></path>
+                                                <path d="M9 16l1 0"></path>
+                                                <path d="M14 8l1 0"></path>
+                                                <path d="M14 12l1 0"></path>
+                                                <path d="M14 16l1 0"></path>
+                                                <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16"></path>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="col">
+                                        <div class="font-weight-medium">
+                                            Аудитории
+                                        </div>
+                                        <div class="text-muted">
+                                            Список всех аудиторий
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="{% url 'classroom_book:classroom_list' %}" class="btn btn-green w-100">
+                                        Просмотреть
+                                    </a>
+                                </div>
+                            </div>
+                        </div
+                </div>
+            </div>
+
+            {% if recent_bookings %}
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Недавние бронирования</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Аудитория</th>
+                                    <th>Дата</th>
+                                    <th>Время</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in recent_bookings %}
+                                <tr>
+                                    <td>{{ booking.classroom.number }} ({{ booking.classroom.building }})</td>
+                                    <td>{{ booking.start_time|date:"d.m.Y" }}</td>
+                                    <td>{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</td>
+                                    <td>
+                                        {% if booking.is_returned %}
+                                        <span class="badge bg-success">Возвращено</span>
+                                        {% elif booking.is_cancelled %}
+                                        <span class="badge bg-danger">Отменено</span>
+                                        {% elif booking.start_time > now %}
+                                        <span class="badge bg-primary">Запланировано</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">Активно</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

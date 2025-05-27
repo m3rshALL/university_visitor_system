@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Бронирование аудитории{% endblock %}
+
+{% block content %}
+<!-- Page header -->
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">Забронировать аудиторию</h2>
+        <div class="page-pretitle">
+          Выберите аудиторию и время
+        </div>
+      </div>
+      <div class="col-auto ms-auto d-print-none">
+        <div class="btn-list">
+          <a href="{% url 'classroom_book:classroom_index' %}" class="btn btn-outline-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M5 12l14 0" />
+              <path d="M5 12l6 6" />
+              <path d="M5 12l6 -6" />
+            </svg>
+            Назад
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page body -->
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-cards">
+      <div class="col-12">
+        <form class="card" method="post">
+          {% csrf_token %}
+          <div class="card-header">
+            <h3 class="card-title">Информация о бронировании</h3>
+          </div>
+          <div class="card-body">
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for error in form.non_field_errors %}
+              {{ error }}
+              {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">{{ form.classroom.label }}</label>
+                  {{ form.classroom }}
+                  {% if form.classroom.errors %}
+                  <div class="invalid-feedback d-block">
+                    {% for error in form.classroom.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-6 mb-3">
+                    <label class="form-label">{{ form.start_time.label }}</label>
+                    {{ form.start_time }}
+                    {% if form.start_time.errors %}
+                    <div class="invalid-feedback d-block">
+                      {% for error in form.start_time.errors %}
+                      {{ error }}
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="col-sm-6 mb-3">
+                    <label class="form-label">{{ form.end_time.label }}</label>
+                    {{ form.end_time }}
+                    {% if form.end_time.errors %}
+                    <div class="invalid-feedback d-block">
+                      {% for error in form.end_time.errors %}
+                      {{ error }}
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">{{ form.purpose.label }}</label>
+                  {{ form.purpose }}
+                  {% if form.purpose.errors %}
+                  <div class="invalid-feedback d-block">
+                    {% for error in form.purpose.errors %}
+                    {{ error }}
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  <small class="form-hint">Укажите цель бронирования аудитории</small>
+                </div>
+              </div>
+              
+              <div class="col-lg-6">
+                <div class="card" id="availability-card" style="display: none;">
+                  <div class="card-status-top bg-primary"></div>
+                  <div class="card-header">
+                    <h3 class="card-title">Доступность аудитории</h3>
+                  </div>
+                  <div class="card-body">
+                    <div id="availability-spinner" class="d-flex justify-content-center p-3">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Загрузка...</span>
+                      </div>
+                    </div>
+                    <div id="availability-content" style="display: none;">
+                      <div id="no-bookings" class="text-success d-flex align-items-center mb-3" style="display: none;">
+                        <span class="status status-green me-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l5 5l10 -10"></path>
+                          </svg>
+                        </span>
+                        Аудитория свободна на выбранную дату
+                      </div>
+                      <div id="has-bookings" style="display: none;">
+                        <div class="d-flex align-items-center mb-3">
+                          <span class="status status-warning me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4"></path>
+                              <path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                              <path d="M15 3v4"></path>
+                              <path d="M7 3v4"></path>
+                              <path d="M3 11h16"></path>
+                              <path d="M18 16.496v1.504l1 1"></path>
+                            </svg>
+                          </span>
+                          <strong>Уже забронировано:</strong>
+                        </div>
+                        <ul id="booking-list" class="list-group list-group-flush"></ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer d-flex">
+            <button type="submit" class="btn btn-primary ms-auto">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-key" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l6.558 -6.558l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0z"></path>
+                <path d="M15 9h.01"></path>
+              </svg>
+              Забронировать ключ
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const classroomSelect = document.getElementById('id_classroom');
+  const startTimeInput = document.getElementById('id_start_time');
+  const availabilityCard = document.getElementById('availability-card');
+  const availabilitySpinner = document.getElementById('availability-spinner');
+  const availabilityContent = document.getElementById('availability-content');
+  const noBookings = document.getElementById('no-bookings');
+  const hasBookings = document.getElementById('has-bookings');
+  const bookingList = document.getElementById('booking-list');
+  
+  // Функция для форматирования даты из datetime-local
+  function formatDate(dateStr) {
+    if (!dateStr) return null;
+    return dateStr.split('T')[0]; // Получаем только дату
+  }
+  
+  // Функция для проверки доступности аудитории
+  function checkAvailability() {
+    const classroomId = classroomSelect.value;
+    const startTime = startTimeInput.value;
+    const date = formatDate(startTime);
+    
+    if (!classroomId || !date) {
+      return;
+    }
+    
+    // Отображаем карточку с загрузчиком
+    availabilityCard.style.display = 'block';
+    availabilitySpinner.style.display = 'flex';
+    availabilityContent.style.display = 'none';
+    noBookings.style.display = 'none';
+    hasBookings.style.display = 'none';
+    
+    // Запрашиваем данные о доступности
+    fetch(`{% url 'classroom_book:check_availability' %}?classroom_id=${classroomId}&date=${date}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Ошибка сети');
+        }
+        return response.json();
+      })
+      .then(data => {
+        availabilitySpinner.style.display = 'none';
+        availabilityContent.style.display = 'block';
+        
+        if (data.busy_slots && data.busy_slots.length > 0) {
+          // Если есть бронирования
+          noBookings.style.display = 'none';
+          hasBookings.style.display = 'block';
+          
+          // Очищаем список
+          bookingList.innerHTML = '';
+          
+          // Заполняем список бронирований
+          data.busy_slots.forEach(slot => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.innerHTML = `
+              <span class="text-body">${slot.start} - ${slot.end}</span>
+              <span class="badge ${slot.is_current_user ? 'bg-blue' : 'bg-primary'} ms-2">${slot.teacher}</span>
+            `;
+            bookingList.appendChild(li);
+          });
+        } else {
+          // Если нет бронирований
+          noBookings.style.display = 'flex';
+          hasBookings.style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Ошибка при проверке доступности:', error);
+        availabilitySpinner.style.display = 'none';
+        availabilityContent.style.display = 'block';
+        noBookings.style.display = 'none';
+        hasBookings.style.display = 'block';
+        
+        bookingList.innerHTML = '<li class="list-group-item text-danger">Ошибка при загрузке данных</li>';
+      });
+  }
+  
+  // Слушатели событий
+  classroomSelect.addEventListener('change', checkAvailability);
+  startTimeInput.addEventListener('change', checkAvailability);
+  
+  // Начальная проверка при загрузке страницы
+  if (classroomSelect.value && startTimeInput.value) {
+    checkAvailability();
+  }
+});
+</script>
+{% endblock %}

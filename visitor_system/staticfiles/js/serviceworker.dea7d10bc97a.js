@@ -1,4 +1,5 @@
 const CACHE_NAME = 'visitor-system-cache-v2';
+const OFFLINE_URL = '/offline.html';
 const DB_VERSION = 1;
 
 // Ресурсы для кеширования - обновлены пути к существующим файлам
