@@ -9,7 +9,9 @@ from django.views.decorators.cache import never_cache, cache_page
 from django.contrib import messages # Для показа сообщений пользователю
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
     STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED
-from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm
+from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm, \
+    GuestInvitationFillForm, GuestInvitationFinalizeForm
+from .models import GuestInvitation
 from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
 from django.http import JsonResponse, HttpResponse
@@ -19,6 +21,9 @@ from datetime import timedelta
 import datetime  # Импортируем весь модуль datetime
 import json
 import logging
+import uuid
+from django.urls import reverse
+from django.core.mail import send_mail
 
 import os
 from django.conf import settings
@@ -1328,7 +1333,7 @@ def profile_setup_view(request):
     if request.method == 'GET' and profile.phone_number and profile.department:
          # Не показываем сообщение, просто редирект
          # messages.info(request, "Ваш профиль уже настроен.")
-         return redirect('employee_dashboard') # Или куда нужно
+        return redirect('employee_dashboard') # Или куда нужно
 
     if request.method == 'POST':
         form = ProfileSetupForm(request.POST, instance=profile)
@@ -1340,9 +1345,9 @@ def profile_setup_view(request):
             next_url = request.GET.get('next')
             # Используем is_safe_url для проверки
             if next_url and url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
-                 return redirect(next_url)
+                return redirect(next_url)
             else:
-                 return redirect('employee_dashboard') # Редирект по умолчанию
+                return redirect('employee_dashboard') # Редирект по умолчанию
         else:
             logger.warning(f"Profile setup form invalid for user '{request.user.username}'. Errors: {form.errors.as_json()}")
     else: # GET запрос
@@ -1352,6 +1357,75 @@ def profile_setup_view(request):
         'form': form
     }
     return render(request, 'visitors/profile_setup.html', context)
+# --------------------------------------------------
+
+# --- Представление для логики защищённых приглашений ---
+@login_required
+def create_guest_invitation(request):
+    """Генерирует токен и ссылку для приглашения гостя напрямую, без формы"""
+    # Создаем приглашение сразу с токеном
+    invitation = GuestInvitation.objects.create(
+        employee=request.user,
+        token=uuid.uuid4()
+    )
+    
+    # Генерируем ссылку для гостя
+    link = request.build_absolute_uri(reverse('guest_invitation_fill', args=[str(invitation.token)]))
+    
+    # Показываем ссылку пользователю
+    context = {
+        'invitation_link': link,
+        'invitation': invitation
+    }
+    return render(request, 'visitors/guest_invitation_create.html', context)
+
+def guest_invitation_fill(request, token):
+    invitation = get_object_or_404(GuestInvitation, token=token)
+    if invitation.is_filled:
+        return render(request, 'visitors/guest_invitation_already_filled.html')
+    if request.method == 'POST':
+        form = GuestInvitationFillForm(request.POST, request.FILES, instance=invitation)
+        if form.is_valid():
+            invitation = form.save(commit=False)
+            invitation.is_filled = True
+            invitation.save()
+            return render(request, 'visitors/guest_invitation_filled_success.html')
+    else:
+        form = GuestInvitationFillForm(instance=invitation)
+    return render(request, 'visitors/guest_invitation_fill.html', {'form': form, 'invitation': invitation})
+
+@login_required
+def finalize_guest_invitation(request, pk):
+    invitation = get_object_or_404(GuestInvitation, pk=pk, is_filled=True, is_registered=False)
+    if request.method == 'POST':
+        form = GuestInvitationFinalizeForm(request.POST, instance=invitation)
+        if form.is_valid():
+            invitation = form.save(commit=False)
+            guest, _ = Guest.objects.get_or_create(
+                full_name=invitation.guest_full_name,
+                defaults={
+                    'email': invitation.guest_email,
+                    'phone_number': invitation.guest_phone,
+                }
+            )
+            visit = Visit.objects.create(
+                guest=guest,
+                employee=invitation.employee,
+                department=invitation.employee.employeeprofile.department,
+                purpose='Гостевой визит по приглашению',
+                expected_entry_time=invitation.visit_time,
+                registered_by=request.user,
+                employee_contact_phone=invitation.employee.employeeprofile.phone_number,
+                consent_acknowledged=True,
+            )
+            invitation.is_registered = True
+            invitation.visit = visit
+            invitation.save()
+            messages.success(request, 'Визит успешно зарегистрирован.')
+            return redirect('employee_dashboard')
+    else:
+        form = GuestInvitationFinalizeForm(instance=invitation)
+    return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
 # --------------------------------------------------
 
 def cached_static_serve(request, path, **kwargs):

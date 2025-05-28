@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 from visitors import views as visitor_views # Главная страница - панель сотрудника
 # from django.views.defaults import permission_denied, page_not_found, server_error
 from django.shortcuts import render
-from debug_toolbar.toolbar import debug_toolbar_urls
+# from debug_toolbar.toolbar import debug_toolbar_urls
 from visitors.views import cached_static_serve, manifest_json_view, service_worker_view
 
 urlpatterns = [
@@ -62,7 +62,7 @@ if settings.DEBUG:
     urlpatterns += [
         path(f'{settings.STATIC_URL[1:]}/<path:path>', cached_static_serve)
     ]
-    urlpatterns.extend(debug_toolbar_urls())  # Добавляем URL-ы от debug_toolbar
+    # urlpatterns.extend(debug_toolbar_urls())  # Добавляем URL-ы от debug_toolbar
 
 if not settings.DEBUG:
     handler403 = lambda request, exception: render(request, 'errors/403.html', status=403)

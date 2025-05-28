@@ -45,4 +45,9 @@ urlpatterns = [
     # --- URL для деталей департамента ---
     path('ajax/department-details/', views.get_department_details_view, name='get_department_details'),
     
+    # --- Приглашения гостей ---
+    path('invite/', views.create_guest_invitation, name='create_guest_invitation'),
+    path('invite/fill/<uuid:token>/', views.guest_invitation_fill, name='guest_invitation_fill'),
+    path('invite/finalize/<int:pk>/', views.finalize_guest_invitation, name='finalize_guest_invitation'),
+    
 ]

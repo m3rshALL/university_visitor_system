@@ -1,6 +1,6 @@
 # visitors/forms.py
 from django import forms
-from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile
+from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile, GuestInvitation
 from departments.models import Department
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
@@ -430,10 +430,25 @@ class ProfileSetupForm(forms.ModelForm):
         queryset=Department.objects.order_by('name'), # Сортируем департаменты
         label="Ваш департамент", required=True,
         empty_label="Выберите департамент..." # Подсказка для пустого значения
-    )
-
+    )    
     class Meta:
         model = EmployeeProfile
         fields = ['phone_number', 'department'] # Только эти поля
 # -------------------------------------
+
+class GuestInvitationFillForm(forms.ModelForm):
+    class Meta:
+        model = GuestInvitation
+        fields = ['guest_full_name', 'guest_email', 'guest_phone', 'guest_photo']
+        widgets = {
+            'guest_photo': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
+        }
+
+class GuestInvitationFinalizeForm(forms.ModelForm):
+    class Meta:
+        model = GuestInvitation
+        fields = ['visit_time']
+        widgets = {
+            'visit_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
 

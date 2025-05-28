@@ -9649,3 +9649,6 @@ INFO 2025-05-28 15:48:33,372 utils 29088 29120 Visit notification email for offi
 INFO 2025-05-28 15:48:33,377 utils 29088 29120 Attempting to send creation notification for official ID 134
 WARNING 2025-05-28 15:48:33,507 utils 29088 29120 Department 'Цифровой институт непрерывного образования' has no director assigned.
 INFO 2025-05-28 15:48:35,277 utils 29088 29120 Visit notification email for official ID 134 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-28 17:09:49,803 log 45068 71716 Not Found: /favicon.ico
+WARNING 2025-05-28 17:11:27,606 log 20588 8164 Not Found: /favicon.ico
+WARNING 2025-05-28 17:15:09,441 log 73628 72832 Not Found: /favicon.ico
