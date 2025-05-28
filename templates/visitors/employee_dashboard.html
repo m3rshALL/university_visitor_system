@@ -117,7 +117,8 @@
 
 <div class="row mb-3">
     <div class="col-12">
-        <div class="card">            <div class="card-header">
+        <div class="card">            
+            <div class="card-header">
                 <h3 class="card-title">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -171,7 +172,7 @@
                                 <span class="badge {% if visit.expected_entry_time.date == today %}bg-blue-lt{% else %}bg-purple-lt{% endif %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
+                                        <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-10z"></path>
                                         <path d="M16 3l0 4"></path>
                                         <path d="M8 3l0 4"></path>
                                         <path d="M4 11l16 0"></path>
@@ -254,6 +255,191 @@
                                     <p class="empty-subtitle text-muted">
                                         На ближайшую неделю не запланировано предварительных визитов ни для вас, ни для ваших коллег по департаменту
                                     </p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Карточка для заполненных приглашений гостей -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-opened me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M3 9l9 6l9 -6l-9 -6l-9 6"></path>
+                        <path d="M21 9v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 1.175 -1.823m3.825 -.177h7a2 2 0 0 1 2 2v8"></path>
+                        <path d="M16 3v4"></path>
+                        <path d="M8 3v1"></path>
+                        <path d="M4 11h7m4 0h5"></path>
+                        <path d="M3 3l18 18"></path>
+                    </svg>
+                    Заполненные приглашения гостей (ожидают регистрации)
+                </h3>
+                <div class="card-actions">
+                    <a href="{% url 'create_guest_invitation' %}" class="btn btn-success btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                            <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path>
+                        </svg>
+                        Новое приглашение
+                    </a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table">
+                    <thead>
+                        <tr>
+                            <th>Гость</th>
+                            <th>Контакты</th>
+                            <th>ИИН</th>
+                            <th>Фото</th>
+                            <th>Время заполнения</th>
+                            <th>Запланированное время визита</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invitation in pending_invitations %}
+                        <tr>
+                            <td class="text-nowrap">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-sm bg-green-lt rounded me-2">{{ invitation.guest_full_name|slice:":2" }}</div>
+                                    <div>
+                                        <div class="font-weight-medium">{{ invitation.guest_full_name }}</div>
+                                        <div class="text-muted small">Приглашён вами</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-nowrap">
+                                {% if invitation.guest_email %}
+                                    <div class="mb-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path>
+                                            <path d="M3 7l9 6l9 -6"></path>
+                                        </svg>
+                                        {{ invitation.guest_email }}
+                                    </div>
+                                {% endif %}
+                                {% if invitation.guest_phone %}
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
+                                        </svg>
+                                        {{ invitation.guest_phone }}
+                                    </div>
+                                {% endif %}
+                                {% if not invitation.guest_email and not invitation.guest_phone and not invitation.email and not invitation.phone %}
+                                    <span class="text-muted">Не указаны</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-nowrap">
+                                {% if invitation.guest_iin %}
+                                    <span class="badge bg-azure-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"></path>
+                                            <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                            <path d="M15 8l2 0"></path>
+                                            <path d="M15 12l2 0"></path>
+                                            <path d="M7 16l10 0"></path>
+                                        </svg>
+                                        {{ invitation.guest_iin }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">Не указан</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if invitation.guest_photo %}
+                                    <div class="avatar avatar-md" style="background-image: url({{ invitation.guest_photo.url }})"></div>
+                                {% else %}
+                                    <div class="avatar avatar-md bg-secondary-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"></path>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td class="text-nowrap">
+                                <span class="badge bg-yellow-lt">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 7v5l3 3"></path>
+                                    </svg>
+                                    {{ invitation.created_at|date:"d.m.Y H:i" }}
+                                </span>
+                            </td>
+                            <td class="text-nowrap">
+                                {% if invitation.visit_time %}
+                                    <span class="badge bg-blue-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-10z"></path>
+                                            <path d="M16 3l0 4"></path>
+                                            <path d="M8 3l0 4"></path>
+                                            <path d="M4 11l16 0"></path>
+                                            <path d="M8 15h2v2h-2z"></path>
+                                        </svg>
+                                        {{ invitation.visit_time|date:"d.m.Y H:i" }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">Не указано</span>
+                                {% endif %}
+                            </td>                            <td class="text-nowrap">
+                                <a href="{% url 'finalize_guest_invitation' invitation.id %}" class="btn btn-primary btn-sm" title="Зарегистрировать визит">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                        <path d="M15 19l2 2l4 -4"></path>
+                                    </svg>
+                                    Зарегистрировать
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-3">
+                                <div class="empty">
+                                    <div class="empty-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail-x" width="40" height="40" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M13.5 19h-8.5a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v6"></path>
+                                            <path d="M3 7l9 6l9 -6"></path>
+                                            <path d="M22 22l-5 -5"></path>
+                                            <path d="M17 22l5 -5"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="empty-title">Нет заполненных приглашений</p>
+                                    <p class="empty-subtitle text-muted">
+                                        Когда гости заполнят ваши приглашения, они появятся здесь для регистрации
+                                    </p>
+                                    <div class="empty-action">
+                                        <a href="{% url 'create_guest_invitation' %}" class="btn btn-success">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path>
+                                                <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path>
+                                            </svg>
+                                            Создать приглашение
+                                        </a>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -518,18 +704,11 @@
                         <p class="empty-title text-muted">У вас еще нет записей в истории визитов</p>
                     </div>
                 {% endif %}
-            </div>
+            </div>        
         </div>
     </div>
 </div>
 
-<div class="mb-3">
-    <a href="{% url 'create_guest_invitation' %}" class="btn btn-success">
-        Пригласить гостя (генерировать защищённую ссылку)
-    </a>
-</div>
-
-</div>
 
 
 {% endblock %}

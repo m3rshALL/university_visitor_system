@@ -437,18 +437,50 @@ class ProfileSetupForm(forms.ModelForm):
 # -------------------------------------
 
 class GuestInvitationFillForm(forms.ModelForm):
+    guest_iin = forms.CharField(
+        label="ИИН (12 цифр)",
+        max_length=12,
+        required=True,
+        validators=[
+            RegexValidator(regex=r'^\d{12}$', message='ИИН должен состоять ровно из 12 цифр.'),
+            MinLengthValidator(12), 
+            MaxLengthValidator(12)
+        ],
+        widget=forms.TextInput(attrs={
+            'placeholder': '123456789012',
+            'pattern': '[0-9]{12}',
+            'class': 'form-control'
+        })
+    )
+    
     class Meta:
         model = GuestInvitation
-        fields = ['guest_full_name', 'guest_email', 'guest_phone', 'guest_photo']
+        fields = ['guest_full_name', 'guest_email', 'guest_phone', 'guest_iin', 'guest_photo']
         widgets = {
-            'guest_photo': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
+            'guest_full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Иванов Иван Иванович'}),
+            'guest_iin': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '123456789012',
+                'pattern': '[0-9]{12}',
+                'title': 'ИИН должен состоять ровно из 12 цифр.'
+            }),            
+            'guest_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'ivan@example.com'}),
+            'guest_phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+7 700 123 45 67'}),
+            'guest_photo': forms.ClearableFileInput(attrs={'accept': 'image/*', 'class': 'form-control'}),
         }
 
 class GuestInvitationFinalizeForm(forms.ModelForm):
+    visit_time = forms.DateTimeField(
+        label="Время визита",
+        required=True,
+        widget=forms.DateTimeInput(attrs={
+            'type': 'datetime-local',
+            'class': 'form-control'
+        }),
+        help_text="Укажите планируемое время визита"
+    )
+    
     class Meta:
         model = GuestInvitation
         fields = ['visit_time']
-        widgets = {
-            'visit_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-        }
 

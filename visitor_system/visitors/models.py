@@ -197,6 +197,17 @@ class GuestInvitation(models.Model):
     guest_full_name = models.CharField(max_length=255, verbose_name="ФИО гостя")
     guest_email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Email гостя")
     guest_phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Телефон гостя")
+    guest_iin = models.CharField(
+        max_length=12,
+        validators=[
+            RegexValidator(regex=r'^\d{12}$', message='ИИН должен состоять ровно из 12 цифр.'),
+            MinLengthValidator(12), 
+            MaxLengthValidator(12)
+        ],
+        blank=True,
+        null=True,
+        verbose_name="ИИН гостя"
+    )
     guest_photo = models.ImageField(upload_to='guest_photos/', blank=True, null=True, verbose_name="Фото гостя")
     created_at = models.DateTimeField(auto_now_add=True)
     is_filled = models.BooleanField(default=False, verbose_name="Гость заполнил данные")

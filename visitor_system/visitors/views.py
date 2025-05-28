@@ -522,6 +522,13 @@ def employee_dashboard_view(request):
     for visit_obj in upcoming_visits_week_list:
         visit_obj.visit_kind = 'official'
 
+    # Получаем заполненные, но не зарегистрированные приглашения для текущего пользователя
+    pending_invitations = GuestInvitation.objects.filter(
+        employee=user,
+        is_filled=True,
+        is_registered=False
+    ).order_by('-created_at')
+    
     # Гости, которых ожидает данный сотрудник и которые еще не вышли
     my_current_guests = Visit.objects.filter(
         employee=user,
@@ -531,7 +538,7 @@ def employee_dashboard_view(request):
     # История визитов, связанных с этим сотрудником (как принимающий или регистрирующий)
     my_visit_history = Visit.objects.filter(
         Q(employee=user) | Q(registered_by=user)
-    ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20    # Данные для графика активности визитов
+    ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20# Данные для графика активности визитов
     # Генерируем данные для разных периодов (сегодня, неделя, месяц)
     visit_chart_data = {}
     
@@ -682,7 +689,6 @@ def employee_dashboard_view(request):
         key=attrgetter('entry_time'),
         reverse=True
     )[:10]  # Берем только 10 самых недавних визитов
-    
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
@@ -691,6 +697,7 @@ def employee_dashboard_view(request):
         'today': today,  # Добавляем переменную today для условного форматирования в шаблоне
         'department_name': user_department.name if user_department else "Нет департамента",
         'visit_chart_data': visit_chart_data_json,  # Добавляем данные для графика
+        'pending_invitations': pending_invitations,  # Добавляем заполненные приглашения
     }
     return render(request, 'visitors/employee_dashboard.html', context)
 
@@ -1279,7 +1286,7 @@ def check_in_visit(request, visit_kind, visit_id):
         visit.save()
         messages.success(request, f"Вход для '{visit.guest.full_name}' успешно зарегистрирован.")
     except Exception as e:
-         messages.error(request, f"Ошибка при регистрации входа: {e}")
+        messages.error(request, f"Ошибка при регистрации входа: {e}")
 
     return redirect(request.META.get('HTTP_REFERER', 'visit_history')) # Возвращаемся назад
 # ------------------------------------
