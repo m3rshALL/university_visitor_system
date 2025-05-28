@@ -67,18 +67,18 @@
                                     <td>{{ booking.purpose }}</td>
                                     <td>
                                         {% if booking.status == 'reserved' %}
-                                            <span class="badge bg-primary">Забронирован</span>
+                                            <span class="badge bg-primary-lt">Забронирован</span>
                                         {% elif booking.status == 'issued' %}
                                             <span class="badge bg-success">Ключ выдан</span>
                                         {% else %}
-                                            <span class="badge bg-blue">{{ booking.get_status_display }}</span>
+                                            <span class="badge bg-blue-lt">{{ booking.get_status_display }}</span>
                                         {% endif %}
                                     </td>
                                     <td>
                                         <div class="btn-list flex-nowrap">
                                             <form action="{% url 'classroom_book:return_key' booking.id %}" method="post" class="d-inline">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-sm btn-success">
+                                                <button type="submit" class="badge bg-success-lt btn btn-sm">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                         <path d="M5 12l5 5l10 -10"></path>
@@ -88,7 +88,7 @@
                                             </form>
                                             <form action="{% url 'classroom_book:cancel_booking' booking.id %}" method="post" class="d-inline">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                <button type="submit" class="badge bg-danger-lt btn btn-sm">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                         <path d="M18 6l-12 12"></path>
@@ -165,13 +165,13 @@
                                     <td>{{ booking.purpose }}</td>
                                     <td>
                                         {% if booking.is_returned %}
-                                            <span class="badge bg-success">Возвращен</span>
+                                            <span class="badge bg-secondary-lt">Возвращен</span>
                                         {% elif booking.is_cancelled %}
-                                            <span class="badge bg-danger">Отменен</span>
+                                            <span class="badge bg-danger-lt">Отменен</span>
                                         {% elif booking.status == 'expired' %}
-                                            <span class="badge bg-warning">Просрочен</span>
+                                            <span class="badge bg-warning-lt">Просрочен</span>
                                         {% else %}
-                                            <span class="badge bg-secondary">{{ booking.get_status_display }}</span>
+                                            <span class="badge bg-secondary-lt">{{ booking.get_status_display }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>

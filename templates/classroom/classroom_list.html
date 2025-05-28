@@ -46,9 +46,9 @@
             <div class="card-body">
                 <form method="get" class="row g-3">
                     <div class="col-md-3">
-                        <label class="form-label">Корпус</label>
+                        <label class="form-label">Блок</label>
                         <select name="building" class="form-select">
-                            <option value="">Все корпуса</option>
+                            <option value="">Все блоки</option>
                             {% for building_name in buildings %}
                             <option value="{{ building_name }}" {% if current_filters.building == building_name %}selected{% endif %}>{{ building_name }}</option>
                             {% endfor %}
@@ -94,14 +94,14 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <div class="avatar avatar-lg bg-blue-lt">
-                                    {{ classroom.number }}
+                                <div class="avatar avatar-lg bg-blue-lt d-flex align-items-center justify-content-center">
+                                    <span class="fw-bold">{{ classroom.building }}</span>
                                 </div>
                             </div>
                             <div class="col">
                                 <h3 class="card-title mb-1">Аудитория {{ classroom.number }}</h3>
                                 <div class="text-muted">
-                                    {{ classroom.building }}, {{ classroom.floor }} этаж
+                                    {{ classroom.building }} блок, {{ classroom.floor }} этаж
                                 </div>
                             </div>
                         </div>

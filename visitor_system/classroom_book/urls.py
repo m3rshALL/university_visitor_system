@@ -13,6 +13,7 @@ urlpatterns = [
     path('return/<uuid:booking_id>/', views.return_key, name='return_key'),
     path('cancel/<uuid:booking_id>/', views.cancel_booking, name='cancel_booking'),
     path('quick-booking/<str:token>/', views.quick_booking, name='quick_booking'),
+    path('help/', views.help_page, name='help'),
     
     # API endpoints
     path('api/check-availability/', views.check_classroom_availability, name='check_availability'),

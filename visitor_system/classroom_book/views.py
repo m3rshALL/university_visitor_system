@@ -76,9 +76,8 @@ def classroom_list(request):
     paginator = Paginator(classrooms, 12)  # 12 аудиторий на странице
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
     # Получаем уникальные значения для фильтров
-    buildings = Classroom.objects.values_list('building', flat=True).distinct()
+    buildings = ['C1', 'C2', 'C3']  # Фиксированный список блоков университета
     floors = Classroom.objects.values_list('floor', flat=True).distinct().order_by('floor')
     
     context = {
@@ -247,23 +246,37 @@ def check_classroom_availability(request):
     try:
         classroom = get_object_or_404(Classroom, id=classroom_id)
         date = datetime.strptime(date_str, '%Y-%m-%d').date()
-        
-        # Получаем все бронирования для этой аудитории на выбранную дату
-        start_of_day = datetime.combine(date, datetime.min.time())
-        end_of_day = datetime.combine(date, datetime.max.time())
-        
+        # Сначала определяем tz
+        almaty_tz = pytz.timezone('Asia/Almaty')
+        # Получаем все бронирования для этой аудитории, которые пересекаются с выбранной датой
+        # Используем make_aware для корректного tz-aware datetime
+        naive_start = datetime.combine(date, datetime.min.time())
+        naive_end = datetime.combine(date, datetime.max.time())
+        start_of_day = timezone.make_aware(naive_start, almaty_tz)
+        end_of_day = timezone.make_aware(naive_end, almaty_tz)
+        start_of_day_utc = start_of_day.astimezone(pytz.UTC)
+        end_of_day_utc = end_of_day.astimezone(pytz.UTC)
         bookings = KeyBooking.objects.filter(
             classroom=classroom,
-            start_time__date=date,
-            is_cancelled=False
+            is_cancelled=False,
+            is_returned=False,
+            start_time__lt=end_of_day_utc,
+            end_time__gt=start_of_day_utc
         ).order_by('start_time')
         
+        # Конвертируем время в локальный часовой пояс
         busy_slots = []
         for booking in bookings:
+            # Конвертируем UTC время в локальный часовой пояс
+            start_local = booking.start_time.astimezone(almaty_tz)
+            end_local = booking.end_time.astimezone(almaty_tz)
+            
             busy_slots.append({
                 'id': str(booking.id),  # UUID нужно преобразовать в строку
-                'start': booking.start_time.strftime('%H:%M'),
-                'end': booking.end_time.strftime('%H:%M'),
+                'start': start_local.strftime('%H:%M'),
+                'end': end_local.strftime('%H:%M'),
+                'start_datetime': start_local.isoformat(),
+                'end_datetime': end_local.isoformat(),
                 'teacher': booking.teacher.get_full_name() or booking.teacher.username,
                 'is_current_user': booking.teacher == request.user
             })
@@ -276,3 +289,7 @@ def check_classroom_availability(request):
     
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+def help_page(request):
+    """Страница помощи и инструкций по использованию системы"""
+    return render(request, 'classroom/help.html')

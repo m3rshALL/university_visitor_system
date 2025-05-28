@@ -9604,3 +9604,48 @@ WARNING 2025-05-27 19:56:38,795 log 93272 94228 Not Found: /.well-known/appspeci
 WARNING 2025-05-27 19:56:41,233 log 93272 93616 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-27 19:57:19,218 log 96804 95236 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-27 19:57:57,276 log 96116 96584 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 10:11:36,232 log 3836 28096 Not Found: /favicon.ico
+WARNING 2025-05-28 11:41:24,888 log 38556 40392 Not Found: /favicon.ico
+WARNING 2025-05-28 11:43:15,172 log 38556 36148 Not Found: /favicon.ico
+WARNING 2025-05-28 12:05:52,560 log 44732 41884 Not Found: /classroom/book/
+WARNING 2025-05-28 12:21:46,480 log 45616 44224 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:02,298 log 45296 6916 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:05,025 log 45296 44828 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:05,857 log 45296 43772 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:09,940 log 45296 43732 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:39,945 log 45296 520 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:40,532 log 45296 39348 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:48,109 log 45296 43792 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:05,222 log 46408 45568 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:06,597 log 46408 45776 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:07,370 log 46408 46704 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:13,201 log 46408 46096 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:14,426 log 46408 43308 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:27,667 log 46408 46804 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 12:23:55,767 log 45852 46396 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 14:24:10,809 log 41672 12876 Not Found: /favicon.ico
+WARNING 2025-05-28 14:32:48,478 log 41672 54204 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-28 14:37:52,395 log 41672 57652 Not Found: /favicon.ico
+INFO 2025-05-28 15:48:31,040 forms 41672 65092 Using guest object: Санжаров Самат (ID: 10), Created: False
+INFO 2025-05-28 15:48:31,041 forms 41672 65092 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-28 15:48:31,093 forms 41672 65092 Celery task queued for Visit ID 134
+INFO 2025-05-28 15:48:31,093 forms 41672 65092 Saved Visit ID 134, Status: AWAITING, Consent Ack: True
+INFO 2025-05-28 15:48:31,095 utils 29088 29120 Attempting to send creation notification for official ID 134
+ERROR 2025-05-28 15:48:31,098 views 41672 65092 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-28 15:48:31,127 utils 29088 29120 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-28 15:48:33,372 utils 29088 29120 Visit notification email for official ID 134 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-28 15:48:33,377 utils 29088 29120 Attempting to send creation notification for official ID 134
+WARNING 2025-05-28 15:48:33,507 utils 29088 29120 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-28 15:48:35,277 utils 29088 29120 Visit notification email for official ID 134 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].

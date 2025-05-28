@@ -103,11 +103,20 @@
                 </div>
               </div>
               
-              <div class="col-lg-6">
-                <div class="card" id="availability-card" style="display: none;">
+              <div class="col-lg-6">                <div class="card" id="availability-card" style="display: none;">
                   <div class="card-status-top bg-primary"></div>
                   <div class="card-header">
                     <h3 class="card-title">Доступность аудитории</h3>
+                    <div class="card-actions">
+                      <span id="last-update" class="text-muted small"></span>
+                      <button type="button" id="refresh-btn" class="btn btn-sm btn-outline-primary ms-2" title="Обновить данные">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+                          <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                   <div class="card-body">
                     <div id="availability-spinner" class="d-flex justify-content-center p-3">
@@ -167,94 +176,220 @@
 
 {% block extra_scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const classroomSelect = document.getElementById('id_classroom');
+document.addEventListener('DOMContentLoaded', function() {  const classroomSelect = document.getElementById('id_classroom');
   const startTimeInput = document.getElementById('id_start_time');
+  const endTimeInput = document.getElementById('id_end_time');
+  const submitButton = document.querySelector('button[type="submit"]');
   const availabilityCard = document.getElementById('availability-card');
   const availabilitySpinner = document.getElementById('availability-spinner');
   const availabilityContent = document.getElementById('availability-content');
   const noBookings = document.getElementById('no-bookings');
   const hasBookings = document.getElementById('has-bookings');
   const bookingList = document.getElementById('booking-list');
+  const lastUpdateSpan = document.getElementById('last-update');
+  const refreshBtn = document.getElementById('refresh-btn');
   
-  // Функция для форматирования даты из datetime-local
+  let currentBusySlots = [];
+  let autoRefreshInterval;
+  let lastCheckParams = null;    // Функция для форматирования даты из datetime-local
   function formatDate(dateStr) {
     if (!dateStr) return null;
     return dateStr.split('T')[0]; // Получаем только дату
   }
   
-  // Функция для проверки доступности аудитории
-  function checkAvailability() {
+  // Функция для обновления времени последней проверки
+  function updateLastCheckTime() {
+    const now = new Date();
+    lastUpdateSpan.textContent = `Обновлено: ${now.toLocaleTimeString()}`;
+  }
+  
+  // Функция для сравнения параметров запроса
+  function getCheckParams() {
     const classroomId = classroomSelect.value;
     const startTime = startTimeInput.value;
     const date = formatDate(startTime);
+    return { classroomId, date };
+  }
+  
+  // Функция для проверки, изменились ли параметры
+  function hasParamsChanged() {
+    const currentParams = getCheckParams();
+    if (!lastCheckParams) return true;
+    return (
+      lastCheckParams.classroomId !== currentParams.classroomId ||
+      lastCheckParams.date !== currentParams.date
+    );
+  }
+  
+  // Функция для проверки пересечения времени
+  function hasTimeConflict(userStart, userEnd, busySlots) {
+    if (!userStart || !userEnd) return false;
     
+    const userStartTime = new Date(userStart);
+    const userEndTime = new Date(userEnd);
+    
+    return busySlots.some(slot => {
+      const slotStart = new Date(slot.start_datetime);
+      const slotEnd = new Date(slot.end_datetime);
+      
+      // Проверяем пересечение времени
+      return (userStartTime < slotEnd && userEndTime > slotStart);
+    });
+  }
+
+    // Функция для проверки доступности аудитории
+  function checkAvailability(forceUpdate = false) {
+    const currentParams = getCheckParams();
+    const { classroomId, date } = currentParams;
     if (!classroomId || !date) {
+      currentBusySlots = [];
+      availabilityCard.style.display = 'none';
+      lastCheckParams = null;
+      updateSubmitButton();
       return;
     }
-    
-    // Отображаем карточку с загрузчиком
+    // Проверяем, нужно ли обновлять данные
+    if (!forceUpdate && lastCheckParams && lastCheckParams.classroomId === classroomId && lastCheckParams.date === date) {
+      // Даже если параметры не изменились, всегда обновляем (чтобы ловить возвраты/отмены)
+      // return; // УБРАНО!
+    }
+    lastCheckParams = currentParams;
     availabilityCard.style.display = 'block';
     availabilitySpinner.style.display = 'flex';
     availabilityContent.style.display = 'none';
     noBookings.style.display = 'none';
     hasBookings.style.display = 'none';
-    
-    // Запрашиваем данные о доступности
+    refreshBtn.disabled = true;
     fetch(`{% url 'classroom_book:check_availability' %}?classroom_id=${classroomId}&date=${date}`)
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Ошибка сети');
-        }
+        if (!response.ok) throw new Error('Ошибка сети');
         return response.json();
       })
       .then(data => {
         availabilitySpinner.style.display = 'none';
         availabilityContent.style.display = 'block';
-        
+        refreshBtn.disabled = false;
+        currentBusySlots = data.busy_slots || [];
         if (data.busy_slots && data.busy_slots.length > 0) {
-          // Если есть бронирования
           noBookings.style.display = 'none';
           hasBookings.style.display = 'block';
-          
-          // Очищаем список
           bookingList.innerHTML = '';
-          
-          // Заполняем список бронирований
           data.busy_slots.forEach(slot => {
             const li = document.createElement('li');
             li.className = 'list-group-item d-flex justify-content-between align-items-center';
             li.innerHTML = `
               <span class="text-body">${slot.start} - ${slot.end}</span>
-              <span class="badge ${slot.is_current_user ? 'bg-blue' : 'bg-primary'} ms-2">${slot.teacher}</span>
+              <span class="badge ${slot.is_current_user ? 'badge bg-blue-lt' : 'badge bg-blue-lt'} ms-2">${slot.teacher}</span>
             `;
             bookingList.appendChild(li);
-          });
-        } else {
-          // Если нет бронирований
+          });        } else {
           noBookings.style.display = 'flex';
           hasBookings.style.display = 'none';
         }
+        updateLastCheckTime();
+        updateSubmitButton();
       })
       .catch(error => {
         console.error('Ошибка при проверке доступности:', error);
         availabilitySpinner.style.display = 'none';
         availabilityContent.style.display = 'block';
+        refreshBtn.disabled = false;
         noBookings.style.display = 'none';
         hasBookings.style.display = 'block';
-        
         bookingList.innerHTML = '<li class="list-group-item text-danger">Ошибка при загрузке данных</li>';
+        currentBusySlots = [];
+        updateSubmitButton();
       });
+    // Запускаем автообновление всегда, если параметры валидны
+    startAutoRefresh();
   }
   
-  // Слушатели событий
-  classroomSelect.addEventListener('change', checkAvailability);
-  startTimeInput.addEventListener('change', checkAvailability);
+  // Функция для запуска автообновления
+  function startAutoRefresh() {
+    clearAutoRefresh();
+    // Обновляем данные каждые 30 секунд
+    autoRefreshInterval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        checkAvailability(true);
+      }
+    }, 30000);
+  }
+  
+  // Функция для остановки автообновления
+  function clearAutoRefresh() {
+    if (autoRefreshInterval) {
+      clearInterval(autoRefreshInterval);
+      autoRefreshInterval = null;
+    }
+  }
+    // Слушатели событий
+  classroomSelect.addEventListener('change', function() {
+    checkAvailability(true);
+  });
+  startTimeInput.addEventListener('change', function() {
+    checkAvailability(true);
+  });
+  endTimeInput.addEventListener('change', updateSubmitButton);
+  refreshBtn.addEventListener('click', function() {
+    checkAvailability(true);
+  });
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      const params = getCheckParams();
+      if (params.classroomId && params.date) {
+        checkAvailability(true);
+        // Показываем уведомление об обновлении
+        const notification = document.createElement('div');
+        notification.className = 'alert alert-info alert-dismissible fade show position-fixed';
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 1050; min-width: 300px;';
+        notification.innerHTML = `
+          <div class="d-flex">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
+              </svg>
+            </div>
+            <div>
+              <h4 class="alert-title">Данные обновлены</h4>
+              <div class="text-muted">Список бронирований актуализирован</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Автоматически удаляем уведомление через 3 секунды
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 3000);
+      }
+    }
+  });
+  
+  // Очистка интервала при закрытии страницы
+  window.addEventListener('beforeunload', function() {
+    clearAutoRefresh();
+  });
   
   // Начальная проверка при загрузке страницы
   if (classroomSelect.value && startTimeInput.value) {
-    checkAvailability();
+    checkAvailability(true);
   }
+  
+  // Восстановить функцию для обновления состояния кнопки бронирования
+  function updateSubmitButton() {
+  const startTime = startTimeInput.value;
+  const endTime = endTimeInput.value;
+  // Проверка на заполненность полей
+
+}
+// Изначально проверим состояние кнопки
+updateSubmitButton();
 });
 </script>
 {% endblock %}

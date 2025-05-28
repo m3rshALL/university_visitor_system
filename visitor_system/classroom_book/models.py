@@ -10,7 +10,7 @@ class Classroom(models.Model):
     """Модель аудитории"""
     number = models.CharField(max_length=10, unique=True, verbose_name='Номер аудитории')
     floor = models.IntegerField(verbose_name='Этаж')
-    building = models.CharField(max_length=50, verbose_name='Корпус')
+    building = models.CharField(max_length=50, verbose_name='Блок')
     capacity = models.IntegerField(null=True, blank=True, verbose_name='Вместимость')
     features = models.TextField(blank=True, verbose_name='Особенности')
     is_active = models.BooleanField(default=True, verbose_name='Активна')
