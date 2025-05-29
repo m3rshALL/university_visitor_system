@@ -29,6 +29,8 @@ django-widget-tweaks = "^1.5.0"
 faker = "^37.3.0"
 whitenoise = "^6.9.0"
 django-debug-toolbar = "^5.2.0"
+qrcode = "^8.2"
+pytz = "^2025.2"
 
 
 [tool.poetry.group.dev.dependencies]

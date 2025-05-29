@@ -5,6 +5,7 @@ from departments.models import Department
 from django.utils import timezone
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
 from django.conf import settings
+import uuid
 
 # --- Статусы визитов ---
 STATUS_AWAITING_ARRIVAL = 'AWAITING'
@@ -189,4 +190,43 @@ class EmployeeProfile(models.Model):
         verbose_name = "Профиль сотрудника"
         verbose_name_plural = "Профили сотрудников"
 # ------------------------------------
+
+class GuestInvitation(models.Model):
+    token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='guest_invitations', verbose_name="Пригласивший сотрудник")
+    guest_full_name = models.CharField(max_length=255, verbose_name="ФИО гостя")
+    guest_email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Email гостя")
+    guest_phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Телефон гостя")
+    guest_iin = models.CharField(
+        max_length=12,
+        validators=[
+            RegexValidator(regex=r'^\d{12}$', message='ИИН должен состоять ровно из 12 цифр.'),
+            MinLengthValidator(12), 
+            MaxLengthValidator(12)
+        ],
+        blank=True,
+        null=True,
+        verbose_name="ИИН гостя"
+    )
+    guest_photo = models.ImageField(upload_to='guest_photos/', blank=True, null=True, verbose_name="Фото гостя")
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_filled = models.BooleanField(default=False, verbose_name="Гость заполнил данные")
+    visit_time = models.DateTimeField(blank=True, null=True, verbose_name="Время визита")
+    is_registered = models.BooleanField(default=False, verbose_name="Визит зарегистрирован")
+    visit = models.OneToOneField('Visit', on_delete=models.SET_NULL, blank=True, null=True, related_name='invitation', verbose_name="Связанный визит")
+
+    def __str__(self):
+        return f"Приглашение для {self.guest_full_name} от {self.employee}"  
+
+    class Meta:
+        verbose_name = "Приглашение гостя"
+        verbose_name_plural = "Приглашения гостей"
+
+class GuestEntry(models.Model):
+    invitation = models.ForeignKey(GuestInvitation, on_delete=models.CASCADE, related_name='entries')
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField(blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    iin = models.CharField(max_length=12, blank=True, null=True)
+    photo = models.ImageField(upload_to='guest_photos/', blank=True, null=True)
 

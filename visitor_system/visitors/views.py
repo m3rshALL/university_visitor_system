@@ -9,7 +9,9 @@ from django.views.decorators.cache import never_cache, cache_page
 from django.contrib import messages # Для показа сообщений пользователю
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
     STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED
-from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm
+from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm, \
+    GuestInvitationFillForm, GuestInvitationFinalizeForm
+from .models import GuestInvitation
 from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
 from django.http import JsonResponse, HttpResponse
@@ -19,6 +21,9 @@ from datetime import timedelta
 import datetime  # Импортируем весь модуль datetime
 import json
 import logging
+import uuid
+from django.urls import reverse
+from django.core.mail import send_mail
 
 import os
 from django.conf import settings
@@ -246,7 +251,8 @@ def visit_history_view(request):
     if request.GET and filter_form.is_valid(): # is_valid() для GET форм обычно всегда True, но проверяет типы
         logger.debug(f"Applying filters: {filter_form.cleaned_data}")
         # Общие фильтры
-        guest_name = filter_form.cleaned_data.get('guest_name')
+        # guest_name = filter_form.cleaned_data.get('guest_name')
+        selected_guests = filter_form.cleaned_data.get('guests')
         guest_iin = filter_form.cleaned_data.get('guest_iin')
         entry_date_from = filter_form.cleaned_data.get('entry_date_from')
         entry_date_to = filter_form.cleaned_data.get('entry_date_to')
@@ -261,9 +267,12 @@ def visit_history_view(request):
             logger.debug("No specific status filter applied.")
         department = filter_form.cleaned_data.get('department') # Департамент есть в обеих моделях
 
-        if guest_name:
-            official_visits_qs = official_visits_qs.filter(guest__full_name__icontains=guest_name)
-            student_visits_qs = student_visits_qs.filter(guest__full_name__icontains=guest_name)
+        #if guest_name:
+        #    official_visits_qs = official_visits_qs.filter(guest__full_name__icontains=guest_name)
+        #    student_visits_qs = student_visits_qs.filter(guest__full_name__icontains=guest_name)
+        if selected_guests:
+            official_visits_qs = official_visits_qs.filter(guest__in=selected_guests)
+            student_visits_qs = student_visits_qs.filter(guest__in=selected_guests)
         if guest_iin:
             official_visits_qs = official_visits_qs.filter(guest__iin__icontains=guest_iin)
             student_visits_qs = student_visits_qs.filter(guest__iin__icontains=guest_iin)
@@ -276,14 +285,13 @@ def visit_history_view(request):
         if department:
             official_visits_qs = official_visits_qs.filter(department=department)
             student_visits_qs = student_visits_qs.filter(department=department)
-
         # Фильтры только для Visit
         employee_info = filter_form.cleaned_data.get('employee_info')
         if employee_info:
             official_visits_qs = official_visits_qs.filter(
-                 Q(employee__first_name__icontains=employee_info) |
-                 Q(employee__last_name__icontains=employee_info) |
-                 Q(employee__email__icontains=employee_info)
+                Q(employee__first_name__icontains=employee_info) |
+                Q(employee__last_name__icontains=employee_info) |
+                Q(employee__email__icontains=employee_info)
             )
 
         # Фильтры только для StudentVisit
@@ -517,6 +525,13 @@ def employee_dashboard_view(request):
     for visit_obj in upcoming_visits_week_list:
         visit_obj.visit_kind = 'official'
 
+    # Получаем заполненные, но не зарегистрированные приглашения для текущего пользователя
+    pending_invitations = GuestInvitation.objects.filter(
+        employee=user,
+        is_filled=True,
+        is_registered=False
+    ).order_by('-created_at')
+    
     # Гости, которых ожидает данный сотрудник и которые еще не вышли
     my_current_guests = Visit.objects.filter(
         employee=user,
@@ -526,7 +541,7 @@ def employee_dashboard_view(request):
     # История визитов, связанных с этим сотрудником (как принимающий или регистрирующий)
     my_visit_history = Visit.objects.filter(
         Q(employee=user) | Q(registered_by=user)
-    ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20    # Данные для графика активности визитов
+    ).select_related('guest', 'department', 'employee', 'registered_by').order_by('-entry_time')[:20] # Последние 20# Данные для графика активности визитов
     # Генерируем данные для разных периодов (сегодня, неделя, месяц)
     visit_chart_data = {}
     
@@ -677,7 +692,6 @@ def employee_dashboard_view(request):
         key=attrgetter('entry_time'),
         reverse=True
     )[:10]  # Берем только 10 самых недавних визитов
-    
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
@@ -686,6 +700,7 @@ def employee_dashboard_view(request):
         'today': today,  # Добавляем переменную today для условного форматирования в шаблоне
         'department_name': user_department.name if user_department else "Нет департамента",
         'visit_chart_data': visit_chart_data_json,  # Добавляем данные для графика
+        'pending_invitations': pending_invitations,  # Добавляем заполненные приглашения
     }
     return render(request, 'visitors/employee_dashboard.html', context)
 
@@ -1274,7 +1289,7 @@ def check_in_visit(request, visit_kind, visit_id):
         visit.save()
         messages.success(request, f"Вход для '{visit.guest.full_name}' успешно зарегистрирован.")
     except Exception as e:
-         messages.error(request, f"Ошибка при регистрации входа: {e}")
+        messages.error(request, f"Ошибка при регистрации входа: {e}")
 
     return redirect(request.META.get('HTTP_REFERER', 'visit_history')) # Возвращаемся назад
 # ------------------------------------
@@ -1328,7 +1343,7 @@ def profile_setup_view(request):
     if request.method == 'GET' and profile.phone_number and profile.department:
          # Не показываем сообщение, просто редирект
          # messages.info(request, "Ваш профиль уже настроен.")
-         return redirect('employee_dashboard') # Или куда нужно
+        return redirect('employee_dashboard') # Или куда нужно
 
     if request.method == 'POST':
         form = ProfileSetupForm(request.POST, instance=profile)
@@ -1340,9 +1355,9 @@ def profile_setup_view(request):
             next_url = request.GET.get('next')
             # Используем is_safe_url для проверки
             if next_url and url_has_allowed_host_and_scheme(url=next_url, allowed_hosts={request.get_host()}):
-                 return redirect(next_url)
+                return redirect(next_url)
             else:
-                 return redirect('employee_dashboard') # Редирект по умолчанию
+                return redirect('employee_dashboard') # Редирект по умолчанию
         else:
             logger.warning(f"Profile setup form invalid for user '{request.user.username}'. Errors: {form.errors.as_json()}")
     else: # GET запрос
@@ -1352,6 +1367,104 @@ def profile_setup_view(request):
         'form': form
     }
     return render(request, 'visitors/profile_setup.html', context)
+# --------------------------------------------------
+
+# --- Представление для логики защищённых приглашений ---
+@login_required
+def create_guest_invitation(request):
+    """Генерирует токен и ссылку для приглашения гостя напрямую, без формы"""
+    # Создаем приглашение сразу с токеном
+    invitation = GuestInvitation.objects.create(
+        employee=request.user,
+        token=uuid.uuid4()
+    )
+    
+    # Генерируем ссылку для гостя
+    link = request.build_absolute_uri(reverse('guest_invitation_fill', args=[str(invitation.token)]))
+    
+    # Показываем ссылку пользователю
+    context = {
+        'invitation_link': link,
+        'invitation': invitation
+    }
+    return render(request, 'visitors/guest_invitation_create.html', context)
+
+def guest_invitation_fill(request, token):
+    invitation = get_object_or_404(GuestInvitation, token=token)
+    if invitation.is_filled:
+        return render(request, 'visitors/guest_invitation_already_filled.html')
+    if request.method == 'POST':
+        form = GuestInvitationFillForm(request.POST, request.FILES, instance=invitation)
+        if form.is_valid():
+            invitation = form.save(commit=False)
+            invitation.is_filled = True
+            invitation.save()
+            return render(request, 'visitors/guest_invitation_filled_success.html')
+    else:
+        form = GuestInvitationFillForm(instance=invitation)
+    return render(request, 'visitors/guest_invitation_fill.html', {'form': form, 'invitation': invitation})
+
+@login_required
+def finalize_guest_invitation(request, pk):
+    invitation = get_object_or_404(GuestInvitation, pk=pk, is_filled=True, is_registered=False)
+    if request.method == 'POST':        
+        form = GuestInvitationFinalizeForm(request.POST, instance=invitation)
+        if form.is_valid():
+            invitation = form.save(commit=False)
+            # Fix for the MultipleObjectsReturned issue - use filter().first() instead of get_or_create
+            guest = Guest.objects.filter(iin=invitation.guest_iin).first()
+            if not guest:
+                # Create a new guest if no matching guest was found
+                guest = Guest.objects.create(
+                    iin=invitation.guest_iin,
+                    full_name=invitation.guest_full_name,
+                    email=invitation.guest_email,
+                    phone_number=invitation.guest_phone
+                )
+            else:
+                # Update the guest's information if they already exist
+                guest.full_name = invitation.guest_full_name
+                guest.email = invitation.guest_email
+                guest.phone_number = invitation.guest_phone
+                guest.save()
+            visit = Visit.objects.create(
+                guest=guest,
+                employee=invitation.employee,
+                department=invitation.employee.employee_profile.department,
+                purpose='Гостевой визит по приглашению',
+                expected_entry_time=invitation.visit_time,
+                registered_by=request.user,
+                employee_contact_phone=invitation.employee.employee_profile.phone_number,
+                consent_acknowledged=True,
+            )
+            invitation.is_registered = True
+            invitation.visit = visit
+            invitation.save()
+            # Отправляем уведомление гостю о регистрации визита
+            if invitation.guest_email:
+                subject_guest = f"Ваш визит зарегистрирован"
+                message_guest = (
+                    f"Здравствуйте, {invitation.guest_full_name}!\n\n"
+                    f"Ваш визит к {invitation.employee.get_full_name() or invitation.employee.username} "
+                    f"({invitation.employee.email}) зарегистрирован на {invitation.visit_time.strftime('%Y-%m-%d %H:%M')}.\n"
+                    f"Если у вас возникнут вопросы, свяжитесь с сотрудником по телефону: {invitation.guest_phone or '-'}.\n"
+                    "Спасибо, что воспользовались нашей системой."
+                )
+                try:
+                    send_mail(
+                        subject_guest,
+                        message_guest,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [invitation.guest_email],
+                        fail_silently=False
+                    )
+                except Exception as e:
+                    logger.error(f"Ошибка при отправке уведомления гостю {invitation.guest_email}: {e}")
+                messages.success(request, 'Визит успешно зарегистрирован.')
+                return redirect('employee_dashboard')
+    else:
+        form = GuestInvitationFinalizeForm(instance=invitation)
+    return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
 # --------------------------------------------------
 
 def cached_static_serve(request, path, **kwargs):

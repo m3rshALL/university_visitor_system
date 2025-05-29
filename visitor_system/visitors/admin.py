@@ -1,6 +1,6 @@
 # visitors/admin.py
 from django.contrib import admin
-from .models import Guest, Visit, StudentVisit, EmployeeProfile, Department
+from .models import Guest, Visit, StudentVisit, EmployeeProfile, Department, GuestInvitation
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
@@ -58,6 +58,12 @@ class StudentVisitAdmin(admin.ModelAdmin):
     autocomplete_fields = ('guest', 'department', 'registered_by')
     readonly_fields = ('entry_time', 'exit_time')
     date_hierarchy = 'entry_time'
+
+@admin.register(GuestInvitation)
+class GuestInvitationAdmin(admin.ModelAdmin):
+    list_display = ('guest_full_name', 'employee', 'created_at', 'is_filled', 'is_registered', 'visit_time')
+    search_fields = ('guest_full_name', 'guest_email', 'employee__username')
+    list_filter = ('is_filled', 'is_registered', 'created_at')
 
 # Перерегистрация User
 User = get_user_model()
