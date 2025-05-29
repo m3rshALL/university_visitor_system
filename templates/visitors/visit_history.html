@@ -48,11 +48,12 @@
 
                                     tableRows.forEach(row => {
                                         const visitor = row.querySelector('.sort-name')?.textContent.toLowerCase() || '';
+                                        const iin = row.querySelector('.sort-iin')?.textContent.toLowerCase() || '';
                                         const department = row.querySelector('.sort-status')?.textContent.toLowerCase() || '';
                                         const employee = row.querySelector('.sort-city')?.textContent.toLowerCase() || '';
                                         const purpose = row.querySelector('.sort-tags')?.textContent.toLowerCase() || '';
 
-                                        if (visitor.includes(query) || department.includes(query) || employee.includes(query) || purpose.includes(query)) {
+                                        if (visitor.includes(query) || iin.includes(query) || department.includes(query) || employee.includes(query) || purpose.includes(query)) {
                                             row.style.display = '';
                                         } else {
                                             row.style.display = 'none';
@@ -124,6 +125,11 @@
                         </button>
                      </th>
                      <th>
+                        <button class="table-sort" data-sort="sort-iin">
+                           ИИН
+                        </button>
+                     </th>
+                     <th>
                         <button class="table-sort" data-sort="sort-whom">
                            К кому
                         </button>
@@ -169,6 +175,7 @@
                         {% elif visit.visit_kind == 'student' %} <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
                         {% else %} {{ visit.guest.full_name }} {% endif %}
                      </td>
+                     <td class="sort-iin">{{ visit.guest.iin|default:"-" }}</td>
                      <td class="sort-city">
                         {% if visit.visit_kind == 'official' and visit.employee %} {{ visit.employee.get_full_name|default:visit.employee.username }}
                      {% elif visit.visit_kind == 'student' %} ID: {{ visit.student_id_number|default:"-" }} <br> Гр: {{ visit.student_group|default:"-" }} К: {{ visit.student_course|default:"-" }}

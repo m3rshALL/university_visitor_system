@@ -286,9 +286,9 @@ def visit_history_view(request):
         employee_info = filter_form.cleaned_data.get('employee_info')
         if employee_info:
             official_visits_qs = official_visits_qs.filter(
-                 Q(employee__first_name__icontains=employee_info) |
-                 Q(employee__last_name__icontains=employee_info) |
-                 Q(employee__email__icontains=employee_info)
+                Q(employee__first_name__icontains=employee_info) |
+                Q(employee__last_name__icontains=employee_info) |
+                Q(employee__email__icontains=employee_info)
             )
 
         # Фильтры только для StudentVisit
@@ -1409,8 +1409,9 @@ def finalize_guest_invitation(request, pk):
         if form.is_valid():
             invitation = form.save(commit=False)
             guest, _ = Guest.objects.get_or_create(
-                full_name=invitation.guest_full_name,
+                iin=invitation.guest_iin,
                 defaults={
+                    'full_name': invitation.guest_full_name,
                     'email': invitation.guest_email,
                     'phone_number': invitation.guest_phone,
                 }
@@ -1418,18 +1419,38 @@ def finalize_guest_invitation(request, pk):
             visit = Visit.objects.create(
                 guest=guest,
                 employee=invitation.employee,
-                department=invitation.employee.employeeprofile.department,
+                department=invitation.employee.employee_profile.department,
                 purpose='Гостевой визит по приглашению',
                 expected_entry_time=invitation.visit_time,
                 registered_by=request.user,
-                employee_contact_phone=invitation.employee.employeeprofile.phone_number,
+                employee_contact_phone=invitation.employee.employee_profile.phone_number,
                 consent_acknowledged=True,
             )
             invitation.is_registered = True
             invitation.visit = visit
             invitation.save()
-            messages.success(request, 'Визит успешно зарегистрирован.')
-            return redirect('employee_dashboard')
+            # Отправляем уведомление гостю о регистрации визита
+            if invitation.guest_email:
+                subject_guest = f"Ваш визит зарегистрирован"
+                message_guest = (
+                    f"Здравствуйте, {invitation.guest_full_name}!\n\n"
+                    f"Ваш визит к {invitation.employee.get_full_name() or invitation.employee.username} "
+                    f"({invitation.employee.email}) зарегистрирован на {invitation.visit_time.strftime('%Y-%m-%d %H:%M')}.\n"
+                    f"Если у вас возникнут вопросы, свяжитесь с сотрудником по телефону: {invitation.guest_phone or '-'}.\n"
+                    "Спасибо, что воспользовались нашей системой."
+                )
+                try:
+                    send_mail(
+                        subject_guest,
+                        message_guest,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [invitation.guest_email],
+                        fail_silently=False
+                    )
+                except Exception as e:
+                    logger.error(f"Ошибка при отправке уведомления гостю {invitation.guest_email}: {e}")
+                messages.success(request, 'Визит успешно зарегистрирован.')
+                return redirect('employee_dashboard')
     else:
         form = GuestInvitationFinalizeForm(instance=invitation)
     return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})

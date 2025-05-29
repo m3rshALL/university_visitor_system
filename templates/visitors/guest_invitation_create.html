@@ -1,65 +1,185 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Приглашение создано{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0">
-                        <i class="fas fa-link me-2"></i>
-                        Ссылка-приглашение создана
-                    </h4>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        Система управления посетителями
+                    </div>
+                    <h2 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M9 15l6 -6"/>
+                            <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"/>
+                            <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"/>
+                        </svg>
+                        Приглашение создано
+                    </h2>
                 </div>
-                <div class="card-body">
-                    <div class="alert alert-success" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>
-                        Защищенная ссылка для приглашения гостя успешно сгенерирована!
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Ссылка для гостя:</label>
-                        <div class="input-group">
-                            <input type="text" id="invitation-link" class="form-control" value="{{ invitation_link }}" readonly>
-                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">
-                                <i class="fas fa-copy"></i> Копировать
-                            </button>
-                        </div>
-                        <small class="text-muted">Отправьте эту ссылку гостю для заполнения данных</small>
-                    </div>
-
-                    <div class="mb-4">
-                        <h6>Что делать дальше:</h6>
-                        <ol class="list-group list-group-numbered">
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div class="ms-2 me-auto">
-                                    <div class="fw-bold">Отправьте ссылку гостю</div>
-                                    Через WhatsApp, Telegram, email или любым удобным способом
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div class="ms-2 me-auto">
-                                    <div class="fw-bold">Гость заполнит данные</div>
-                                    Имя, телефон, email, загрузит фото
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-start">
-                                <div class="ms-2 me-auto">
-                                    <div class="fw-bold">Вы получите уведомление</div>
-                                    После заполнения сможете финализировать визит
-                                </div>
-                            </li>
-                        </ol>
-                    </div>
-
-                    <div class="d-flex gap-2">
-                        <a href="{% url 'employee_dashboard' %}" class="btn btn-primary">
-                            <i class="fas fa-arrow-left me-1"></i>
-                            Вернуться к панели
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M5 12l14 0"/>
+                                <path d="M5 12l6 6"/>
+                                <path d="M5 12l6 -6"/>
+                            </svg>
+                            Назад
                         </a>
-                        <button type="button" class="btn btn-success" onclick="sendWhatsApp()">
-                            <i class="fab fa-whatsapp me-1"></i>
-                            Отправить в WhatsApp
-                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards justify-content-center">
+                <!-- Success Card -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-status-top bg-success"></div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <span class="avatar avatar-rounded bg-success-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M5 12l5 5l10 -10"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <h3 class="card-title text-success mb-1">
+                                        Приглашение успешно создано!
+                                    </h3>
+                                    <div class="text-muted">
+                                        Защищенная ссылка для приглашения гостя готова к отправке
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invitation Link Card -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M9 15l6 -6"/>
+                                    <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"/>
+                                    <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"/>
+                                </svg>
+                                Ссылка для гостя
+                            </h3>
+                            <div class="card-actions">
+                                <div class="text-muted">
+                                    Поделитесь этой ссылкой с гостем
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Ссылка-приглашение</label>
+                                <div class="input-group">
+                                    <input type="text" id="invitation-link" class="form-control font-monospace" value="{{ invitation_link }}" readonly>
+                                    <button class="btn btn-outline-primary" type="button" onclick="copyToClipboard()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"/>
+                                            <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"/>
+                                        </svg>
+                                        Копировать
+                                    </button>
+                                </div>
+                                <small class="form-hint">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/>
+                                        <path d="M12 9h.01"/>
+                                        <path d="M11 12h1v4h1"/>
+                                    </svg>
+                                    Отправьте эту ссылку гостю через любой удобный способ связи
+                                </small>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success w-100" onclick="sendWhatsApp()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"/>
+                                            <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"/>
+                                        </svg>
+                                        WhatsApp
+                                    </button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-info w-100" onclick="sendTelegram()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"/>
+                                        </svg>
+                                        Telegram
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions Card -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-check me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M3.5 5.5l1.5 1.5l2.5 -2.5"/>
+                                    <path d="M3.5 11.5l1.5 1.5l2.5 -2.5"/>
+                                    <path d="M3.5 17.5l1.5 1.5l2.5 -2.5"/>
+                                    <path d="M11 6l9 0"/>
+                                    <path d="M11 12l9 0"/>
+                                    <path d="M11 18l9 0"/>
+                                </svg>
+                                Что делать дальше
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="steps steps-vertical">
+                                <div class="step-item">
+                                    <div class="h4 m-0 me-3">1</div>
+                                    <div>
+                                        <div class="font-weight-medium">Отправьте ссылку гостю</div>
+                                        <div class="text-muted">Через WhatsApp, Telegram, email или любым удобным способом связи</div>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="h4 m-0 me-3">2</div>
+                                    <div>
+                                        <div class="font-weight-medium">Гость заполнит данные</div>
+                                        <div class="text-muted">Имя, номер телефона, email адрес и загрузит свою фотографию</div>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <div class="h4 m-0 me-3">3</div>
+                                    <div>
+                                        <div class="font-weight-medium">Вы получите уведомление</div>
+                                        <div class="text-muted">После заполнения данных сможете финализировать и зарегистрировать визит</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,26 +192,301 @@ function copyToClipboard() {
     const linkInput = document.getElementById('invitation-link');
     linkInput.select();
     linkInput.setSelectionRange(0, 99999); // For mobile devices
+    
     navigator.clipboard.writeText(linkInput.value).then(function() {
         // Временно меняем текст кнопки
         const btn = event.target.closest('button');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
-        btn.classList.remove('btn-outline-secondary');
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-success" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M5 12l5 5l10 -10"/>
+            </svg>
+            Скопировано!
+        `;
+        btn.classList.remove('btn-outline-primary');
         btn.classList.add('btn-success');
         
+        // Показываем Toast уведомление
+        showToast('Ссылка скопирована в буфер обмена!', 'success');
+        
         setTimeout(() => {
-            btn.innerHTML = originalText;
+            btn.innerHTML = originalHTML;
             btn.classList.remove('btn-success');
-            btn.classList.add('btn-outline-secondary');
-        }, 2000);
+            btn.classList.add('btn-outline-primary');
+        }, 3000);
+    }).catch(function(err) {
+        console.error('Ошибка копирования: ', err);
+        showToast('Не удалось скопировать ссылку', 'error');
     });
 }
 
 function sendWhatsApp() {
     const link = document.getElementById('invitation-link').value;
-    const message = encodeURIComponent(`Приглашение для посещения AITU\n\nПройдите по ссылке для заполнения данных:\n${link}`);
+    const message = encodeURIComponent(`🎓 Приглашение для посещения AITU
+
+Здравствуйте! Вы приглашены для посещения Astana IT University.
+
+📋 Для регистрации визита пройдите по ссылке и заполните необходимые данные:
+${link}
+
+📝 Вам потребуется указать:
+• Полное имя
+• Номер телефона
+• Email адрес
+• Загрузить фотографию
+
+⏰ После заполнения данных мы свяжемся с вами для финализации визита.
+
+С уважением,
+Astana IT University`);
+    
     window.open(`https://wa.me/?text=${message}`, '_blank');
+    showToast('Переход в WhatsApp...', 'info');
 }
+
+function sendTelegram() {
+    const link = document.getElementById('invitation-link').value;
+    const message = encodeURIComponent(`🎓 Приглашение для посещения AITU
+
+Здравствуйте! Вы приглашены для посещения Astana IT University.
+
+📋 Для регистрации визита пройдите по ссылке:
+${link}
+
+📝 Заполните необходимые данные для завершения регистрации.
+
+С уважением,
+Astana IT University`);
+    
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${message}`, '_blank');
+    showToast('Переход в Telegram...', 'info');
+}
+
+function showToast(message, type = 'info') {
+    // Создаем Toast уведомление
+    const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+    
+    const toastElement = document.createElement('div');
+    toastElement.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} border-0`;
+    toastElement.setAttribute('role', 'alert');
+    toastElement.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                ${message}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+    
+    toastContainer.appendChild(toastElement);
+    
+    // Инициализируем Toast
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+    
+    // Удаляем элемент после скрытия
+    toastElement.addEventListener('hidden.bs.toast', () => {
+        toastElement.remove();
+    });
+}
+
+function createToastContainer() {
+    const container = document.createElement('div');
+    container.className = 'toast-container position-fixed top-0 end-0 p-3';
+    container.style.zIndex = '1055';
+    document.body.appendChild(container);
+    return container;
+}
+
+// Добавляем анимацию появления карточек
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
 </script>
+
+<style>
+.card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-status-top {
+    height: 3px;
+    border-radius: 8px 8px 0 0;
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: bottom;
+    user-select: none;
+    background-color: #667382;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+.avatar.avatar-rounded {
+    border-radius: 4px;
+}
+
+.bg-success-lt {
+    background-color: rgba(46, 179, 68, 0.1) !important;
+    color: #2fb344 !important;
+}
+
+.steps.steps-vertical .step-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.steps.steps-vertical .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 2rem;
+    bottom: -1.5rem;
+    width: 2px;
+    background-color: #e9ecef;
+}
+
+.steps.steps-vertical .step-item .h4 {
+    flex-shrink: 0;
+    margin-right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #206bc4;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.font-monospace {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace !important;
+}
+
+.form-hint {
+    color: #667382;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-decoration: none;
+}
+
+.btn:hover {
+    text-decoration: none;
+}
+
+.btn-success {
+    background-color: #2fb344;
+    border-color: #2fb344;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+}
+
+.btn-outline-primary {
+    color: #206bc4;
+    border-color: #206bc4;
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #206bc4;
+    border-color: #206bc4;
+}
+
+.btn-outline-secondary {
+    color: #667382;
+    border-color: #667382;
+    background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #667382;
+    border-color: #667382;
+}
+
+.btn-ghost-secondary {
+    color: #667382;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.btn-ghost-secondary:hover {
+    color: #495057;
+    background-color: rgba(102, 115, 130, 0.1);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.3s ease-out;
+}
+</style>
 {% endblock %}
