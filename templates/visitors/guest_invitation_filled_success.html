@@ -113,8 +113,7 @@
                         <!-- Action Buttons -->
                         <div class="mt-4">
                             <div class="row g-2 justify-content-center">
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="window.close();">
+                                <div class="col-auto">                                    <button type="button" class="btn btn-outline-secondary" onclick="tryCloseWindow();">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                             <path d="M18 6l-12 12" />
@@ -260,12 +259,35 @@
 </div>
 
 <script>
+// Функция для безопасного закрытия окна с обработкой ошибок
+function tryCloseWindow() {
+    try {
+        // Пытаемся закрыть окно
+        var closeResult = window.close();
+        
+        // Проверяем, успешно ли закрылось окно
+        if (closeResult === false || window.closed === false) {
+            console.log("Не удалось закрыть окно автоматически.");
+            // Показываем сообщение пользователю с инструкциями
+            if (confirm('Вы открыли эту страницу напрямую, и браузер не может ее закрыть автоматически. Хотите вернуться на главную страницу?')) {
+                window.location.href = '/';
+            }
+        }
+    } catch (e) {
+        console.error("Ошибка при закрытии окна:", e);
+        // Показываем сообщение пользователю с инструкциями
+        if (confirm('Произошла ошибка при закрытии окна. Хотите вернуться на главную страницу?')) {
+            window.location.href = '/';
+        }
+    }
+}
+
 // Автоматическое закрытие окна через 10 секунд (опционально)
-// setTimeout(function() {
-//     if (confirm('Закрыть окно?')) {
-//         window.close();
-//     }
-// }, 10000);
+setTimeout(function() {
+    if (confirm('Закрыть окно?')) {
+        tryCloseWindow();
+    }
+}, 10000);
 
 // Анимация появления элементов
 document.addEventListener('DOMContentLoaded', function() {

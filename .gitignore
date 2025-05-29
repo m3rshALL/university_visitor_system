@@ -26,8 +26,8 @@ build/
 
 # Poetry
 .poetry/
-poetry.lock # Usually committed, but some prefer to ignore if all devs use `poetry install` without `poetry.lock`
-            # For consistency, it's generally better to commit poetry.lock
+# poetry.lock # Usually committed, but some prefer to ignore if all devs use `poetry install` without `poetry.lock`
+# For consistency, it's generally better to commit poetry.lock
 
 # Virtual environment
 .venv/

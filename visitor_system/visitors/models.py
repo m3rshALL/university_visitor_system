@@ -222,3 +222,11 @@ class GuestInvitation(models.Model):
         verbose_name = "Приглашение гостя"
         verbose_name_plural = "Приглашения гостей"
 
+class GuestEntry(models.Model):
+    invitation = models.ForeignKey(GuestInvitation, on_delete=models.CASCADE, related_name='entries')
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField(blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    iin = models.CharField(max_length=12, blank=True, null=True)
+    photo = models.ImageField(upload_to='guest_photos/', blank=True, null=True)
+

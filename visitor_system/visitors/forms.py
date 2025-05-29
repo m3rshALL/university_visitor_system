@@ -6,13 +6,12 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
 #Импортируем Django Select2 для виджета
 from django_select2.forms import Select2Widget
-from django_select2.forms import Select2MultipleWidget # Импорт для виджета множественного выбора
 from django.urls import reverse_lazy
 import logging
 from django.utils import timezone
 from notifications.tasks import send_visit_notification_task # Импортируем задачу Celery
 
-from django.forms import formset_factory # Импортируем formset_factory для создания форм с несколькими экземплярами
+# from django.forms import formset_factory # Импортируем formset_factory для создания форм с несколькими экземплярами
 
 
 logger = logging.getLogger(__name__)

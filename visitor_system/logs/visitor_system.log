@@ -9948,3 +9948,18 @@ INFO 2025-05-29 15:28:06,706 utils 27584 27588 Visit notification email for offi
 INFO 2025-05-29 15:34:00,376 utils 27584 27588 Attempting to send creation notification for official ID 144
 WARNING 2025-05-29 15:34:00,409 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
 INFO 2025-05-29 15:34:02,434 utils 27584 27588 Visit notification email for official ID 144 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 18:42:18,561 utils 27584 27588 Attempting to send creation notification for official ID 145
+WARNING 2025-05-29 18:42:18,592 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:42:21,072 utils 27584 27588 Visit notification email for official ID 145 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 18:42:44,003 utils 27584 27588 Attempting to send creation notification for official ID 146
+WARNING 2025-05-29 18:42:44,035 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:42:46,524 utils 27584 27588 Visit notification email for official ID 146 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 18:51:57,052 utils 27584 27588 Attempting to send creation notification for official ID 147
+WARNING 2025-05-29 18:51:57,084 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:51:59,392 utils 27584 27588 Visit notification email for official ID 147 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-29 18:51:59,999 log 74792 76452 Not Found: /visitors/invite/finalize/65/
+WARNING 2025-05-29 18:52:00,540 log 74792 74244 Not Found: /favicon.ico
+WARNING 2025-05-29 18:52:05,473 log 74792 77792 Not Found: /visitors/invite/finalize/65/
+INFO 2025-05-29 18:52:52,994 utils 27584 27588 Attempting to send creation notification for official ID 148
+WARNING 2025-05-29 18:52:53,026 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:52:55,349 utils 27584 27588 Visit notification email for official ID 148 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].

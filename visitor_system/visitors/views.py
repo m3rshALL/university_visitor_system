@@ -1407,25 +1407,32 @@ def guest_invitation_fill(request, token):
 @login_required
 def finalize_guest_invitation(request, pk):
     invitation = get_object_or_404(GuestInvitation, pk=pk, is_filled=True, is_registered=False)
-    if request.method == 'POST':
+    if request.method == 'POST':        
         form = GuestInvitationFinalizeForm(request.POST, instance=invitation)
         if form.is_valid():
             invitation = form.save(commit=False)
-            guest, _ = Guest.objects.get_or_create(
-                iin=invitation.guest_iin,
-                defaults={
-                    'full_name': invitation.guest_full_name,
-                    'email': invitation.guest_email,
-                    'phone_number': invitation.guest_phone,
-                }
-            )
+            # Fix for the MultipleObjectsReturned issue - use filter().first() instead of get_or_create
+            guest = Guest.objects.filter(iin=invitation.guest_iin).first()
+            if not guest:
+                # Create a new guest if no matching guest was found
+                guest = Guest.objects.create(
+                    iin=invitation.guest_iin,
+                    full_name=invitation.guest_full_name,
+                    email=invitation.guest_email,
+                    phone_number=invitation.guest_phone
+                )
+            else:
+                # Update the guest's information if they already exist
+                guest.full_name = invitation.guest_full_name
+                guest.email = invitation.guest_email
+                guest.phone_number = invitation.guest_phone
+                guest.save()
             visit = Visit.objects.create(
                 guest=guest,
                 employee=invitation.employee,
                 department=invitation.employee.employee_profile.department,
                 purpose='Гостевой визит по приглашению',
                 expected_entry_time=invitation.visit_time,
-                status=STATUS_AWAITING_ARRIVAL,
                 registered_by=request.user,
                 employee_contact_phone=invitation.employee.employee_profile.phone_number,
                 consent_acknowledged=True,
