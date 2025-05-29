@@ -64,15 +64,19 @@
                             </script>
                   </div>
                   {% comment %}
-                     <a href="#" class="btn btn-icon" aria-label="Button">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/dots -->
+                     <a class="btn btn-icon" aria-label="Button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                           <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                           <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                           <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                           <path d="M12 5v14m7-7H5"></path>
                         </svg>
-                     </a>
+   						</a>
                   {% endcomment %}
+                  <a id="filter-selected-btn" class="btn btn-outline-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Показать только отмеченные записи">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-filter">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-9l-4.414 -4.414a2 2 0 0 1 -.586 -1.414v-2.172z" />
+                     </svg>
+                     <span class="btn-text">Показать отмеченных</span>
+                  </a>
                   <div class="dropdown">
                     <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
@@ -116,7 +120,8 @@
       </div>
       <div id="advanced-table">
          <div class="table-responsive">
-            <table class="table table-vcenter table-selectable">               <thead>
+            <table class="table table-vcenter table-selectable">               
+               <thead>
                   <tr>
                      <th class="w-1"></th>
                      <th>
@@ -162,12 +167,10 @@
                   </tr>
                </thead>
                <tbody class="table-tbody">
-                {% for visit in page_obj %}
+               {% for visit in page_obj %}
                   <tr>
                      <td>
-                        {% comment %}
-                            <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true">
-                        {% endcomment %}
+                        <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true">
                      </td>
                      <td class="sort-name">
                         </span>
@@ -558,6 +561,20 @@ document.addEventListener('DOMContentLoaded', function() {    const getCellValue
         });
     });
 });
+
+// Filter by selected checkboxes
+let filterSelectedActive = false;
+const filterBtn = document.getElementById('filter-selected-btn');
+if (filterBtn) {
+    filterBtn.addEventListener('click', function() {
+        filterSelectedActive = !filterSelectedActive;
+        document.querySelectorAll('.table-tbody tr').forEach(row => {
+            const chk = row.querySelector('input.table-selectable-check');
+            row.style.display = filterSelectedActive ? ((chk && chk.checked) ? '' : 'none') : '';
+        });
+        filterBtn.textContent = filterSelectedActive ? 'Сбросить фильтр' : 'Показать отмеченных';
+    });
+}
 </script>
 
 {% endblock %}

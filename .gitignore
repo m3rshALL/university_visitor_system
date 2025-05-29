@@ -8,8 +8,10 @@
 
 # Python
 __pycache__/
-*.py[cod]
+*.py[co]
 *$py.class
+media/images
+media/i
 
 # Django
 *.log

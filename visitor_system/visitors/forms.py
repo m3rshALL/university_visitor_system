@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
 #Импортируем Django Select2 для виджета
 from django_select2.forms import Select2Widget
+from django_select2.forms import Select2MultipleWidget # Импорт для виджета множественного выбора
 from django.urls import reverse_lazy
 import logging
 from django.utils import timezone

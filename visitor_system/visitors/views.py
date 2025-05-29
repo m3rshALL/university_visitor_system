@@ -251,7 +251,8 @@ def visit_history_view(request):
     if request.GET and filter_form.is_valid(): # is_valid() для GET форм обычно всегда True, но проверяет типы
         logger.debug(f"Applying filters: {filter_form.cleaned_data}")
         # Общие фильтры
-        guest_name = filter_form.cleaned_data.get('guest_name')
+        # guest_name = filter_form.cleaned_data.get('guest_name')
+        selected_guests = filter_form.cleaned_data.get('guests')
         guest_iin = filter_form.cleaned_data.get('guest_iin')
         entry_date_from = filter_form.cleaned_data.get('entry_date_from')
         entry_date_to = filter_form.cleaned_data.get('entry_date_to')
@@ -266,9 +267,12 @@ def visit_history_view(request):
             logger.debug("No specific status filter applied.")
         department = filter_form.cleaned_data.get('department') # Департамент есть в обеих моделях
 
-        if guest_name:
-            official_visits_qs = official_visits_qs.filter(guest__full_name__icontains=guest_name)
-            student_visits_qs = student_visits_qs.filter(guest__full_name__icontains=guest_name)
+        #if guest_name:
+        #    official_visits_qs = official_visits_qs.filter(guest__full_name__icontains=guest_name)
+        #    student_visits_qs = student_visits_qs.filter(guest__full_name__icontains=guest_name)
+        if selected_guests:
+            official_visits_qs = official_visits_qs.filter(guest__in=selected_guests)
+            student_visits_qs = student_visits_qs.filter(guest__in=selected_guests)
         if guest_iin:
             official_visits_qs = official_visits_qs.filter(guest__iin__icontains=guest_iin)
             student_visits_qs = student_visits_qs.filter(guest__iin__icontains=guest_iin)
@@ -281,7 +285,6 @@ def visit_history_view(request):
         if department:
             official_visits_qs = official_visits_qs.filter(department=department)
             student_visits_qs = student_visits_qs.filter(department=department)
-
         # Фильтры только для Visit
         employee_info = filter_form.cleaned_data.get('employee_info')
         if employee_info:
@@ -1422,6 +1425,7 @@ def finalize_guest_invitation(request, pk):
                 department=invitation.employee.employee_profile.department,
                 purpose='Гостевой визит по приглашению',
                 expected_entry_time=invitation.visit_time,
+                status=STATUS_AWAITING_ARRIVAL,
                 registered_by=request.user,
                 employee_contact_phone=invitation.employee.employee_profile.phone_number,
                 consent_acknowledged=True,
