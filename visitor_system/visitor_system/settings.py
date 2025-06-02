@@ -242,7 +242,7 @@ SESSION_COOKIE_SECURE = True
 # Замените '15f6-85-159-27-200.ngrok-free.app' на ваш ТЕКУЩИЙ ngrok URL,
 # но без 'https://' в начале.
 CSRF_TRUSTED_ORIGINS = [
-    'https://91b5-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
+    'https://212b-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
     # Можно добавить и другие доверенные хосты, если нужно, например,
     # 'http://localhost:8000',
     # 'http://127.0.0.1:8000'

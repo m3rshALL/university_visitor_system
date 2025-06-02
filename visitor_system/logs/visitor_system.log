@@ -9963,3 +9963,10 @@ WARNING 2025-05-29 18:52:05,473 log 74792 77792 Not Found: /visitors/invite/fina
 INFO 2025-05-29 18:52:52,994 utils 27584 27588 Attempting to send creation notification for official ID 148
 WARNING 2025-05-29 18:52:53,026 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
 INFO 2025-05-29 18:52:55,349 utils 27584 27588 Visit notification email for official ID 148 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-30 11:55:16,220 log 34468 38200 Not Found: /favicon.ico
+INFO 2025-05-30 11:57:16,052 utils 38472 38624 Attempting to send creation notification for official ID 149
+WARNING 2025-05-30 11:57:16,189 utils 38472 38624 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-30 11:57:18,669 utils 38472 38624 Visit notification email for official ID 149 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+INFO 2025-06-02 14:05:04,592 utils 919856 925600 Attempting to send creation notification for official ID 150
+WARNING 2025-06-02 14:05:04,629 utils 919856 925600 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-02 14:05:06,835 utils 919856 925600 Visit notification email for official ID 150 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].

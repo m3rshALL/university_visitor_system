@@ -562,19 +562,207 @@ document.addEventListener('DOMContentLoaded', function() {    const getCellValue
     });
 });
 
+// Функции для сохранения и восстановления состояния чекбоксов
+function saveCheckboxStates() {
+    const states = {};
+    document.querySelectorAll('.table-selectable-check').forEach((checkbox, index) => {
+        const row = checkbox.closest('tr');
+        const visitId = row.querySelector('form')?.action.match(/(\d+)\/$/)?.[1];
+        if (visitId) {
+            states[visitId] = checkbox.checked;
+        }
+    });
+    localStorage.setItem('visitHistory_checkboxStates', JSON.stringify(states));
+}
+
+function restoreCheckboxStates() {
+    try {
+        // Получаем выбранные элементы из URL параметров
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedFromUrl = urlParams.get('selected');
+        const hasStatusFilter = urlParams.has('status');
+        
+        // Сначала очищаем все чекбоксы
+        document.querySelectorAll('.table-selectable-check').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        if (selectedFromUrl) {
+            // Восстанавливаем из URL параметров
+            const selectedIds = selectedFromUrl.split(',');
+            document.querySelectorAll('.table-selectable-check').forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const visitId = row.querySelector('form')?.action.match(/(\d+)\/$/)?.[1];
+                if (visitId && selectedIds.includes(visitId)) {
+                    checkbox.checked = true;
+                }
+            });
+        } else {
+            // Если нет параметра selected в URL, очищаем localStorage
+            localStorage.removeItem('visitHistory_checkboxStates');
+            
+            // Если нет фильтра статуса или это была команда "Все статусы" (сброс фильтра),
+            // убедимся, что все чекбоксы сброшены
+            if (!hasStatusFilter) {
+                clearAllSelections();
+            }
+        }
+    } catch (e) {
+        console.warn('Ошибка при восстановлении состояний чекбоксов:', e);
+    }
+}
+
+function getSelectedVisitIds() {
+    const selected = [];
+    document.querySelectorAll('.table-selectable-check:checked').forEach(checkbox => {
+        const row = checkbox.closest('tr');
+        const visitId = row.querySelector('form')?.action.match(/(\d+)\/$/)?.[1];
+        if (visitId) {
+            selected.push(visitId);
+        }
+    });
+    return selected;
+}
+
+function clearAllSelections() {
+    // Очищаем все чекбоксы
+    document.querySelectorAll('.table-selectable-check').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Очищаем localStorage
+    localStorage.removeItem('visitHistory_checkboxStates');
+    
+    // Сбрасываем фильтр "Показать отмеченных"
+    const filterBtn = document.getElementById('filter-selected-btn');
+    if (filterBtn) {
+        filterSelectedActive = false;
+        document.querySelectorAll('.table-tbody tr').forEach(row => {
+            row.style.display = '';
+        });
+        filterBtn.querySelector('.btn-text').textContent = 'Показать отмеченных';
+    }
+}
+
+function updateStatusFilterLinks() {
+    const selectedIds = getSelectedVisitIds();
+    const selectedParam = selectedIds.length > 0 ? `selected=${selectedIds.join(',')}` : '';
+    
+    // Получаем текущие параметры URL без selected и status
+    const currentUrl = new URL(window.location);
+    const currentParams = new URLSearchParams(currentUrl.search);
+    currentParams.delete('selected');
+    currentParams.delete('status');
+    
+    const otherParams = currentParams.toString();
+    
+    // Обновляем все ссылки фильтров статусов
+    document.querySelectorAll('.dropdown-item').forEach(link => {
+        const linkText = link.textContent.trim();
+          if (linkText === 'Все статусы') {
+            // Для ссылки "Все статусы" - создаем прямую ссылку на сброс с обязательной очисткой всех чекбоксов
+            let newHref = window.location.pathname;
+            if (otherParams) {
+                newHref += '?' + otherParams;
+            }
+            
+            // Заменяем обычную ссылку на JavaScript-функцию, которая очищает всё перед переходом
+            link.setAttribute('href', 'javascript:void(0)');
+            if (!link.hasAttribute('data-reset-listener')) {
+                link.setAttribute('data-reset-listener', 'true');
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Очищаем все чекбоксы перед переходом
+                    clearAllSelections();
+                    // Удаляем данные из localStorage
+                    localStorage.removeItem('visitHistory_checkboxStates');
+                    // Переходим по ссылке без параметров selected и status
+                    window.location.href = newHref;
+                });
+            }
+        }else {
+            // Для остальных ссылок фильтров статусов - сохраняем selected
+            const href = link.getAttribute('href');
+            if (href && href.includes('status=')) {
+                // Извлекаем статус из href
+                const statusMatch = href.match(/status=([^&]*)/);
+                if (statusMatch) {
+                    const status = statusMatch[1];
+                    let newHref = window.location.pathname + '?status=' + status;
+                    if (otherParams) newHref += '&' + otherParams;
+                    if (selectedParam) newHref += '&' + selectedParam;
+                    link.setAttribute('href', newHref);
+                }
+            }
+        }
+    });
+}
+
 // Filter by selected checkboxes
 let filterSelectedActive = false;
 const filterBtn = document.getElementById('filter-selected-btn');
 if (filterBtn) {
     filterBtn.addEventListener('click', function() {
         filterSelectedActive = !filterSelectedActive;
+        
+        if (!filterSelectedActive) {
+            // When turning off the filter, clear all checkboxes
+            document.querySelectorAll('.table-tbody tr input.table-selectable-check').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            // Clear saved states in localStorage
+            localStorage.removeItem('visitHistory_checkboxStates');
+            // Update filter links to reflect that nothing is selected
+            updateStatusFilterLinks();
+        }
+        
+        // Show/hide rows based on the filter state
         document.querySelectorAll('.table-tbody tr').forEach(row => {
             const chk = row.querySelector('input.table-selectable-check');
             row.style.display = filterSelectedActive ? ((chk && chk.checked) ? '' : 'none') : '';
         });
-        filterBtn.textContent = filterSelectedActive ? 'Сбросить фильтр' : 'Показать отмеченных';
+        
+        filterBtn.querySelector('.btn-text').textContent = filterSelectedActive ? 'Сбросить отметки' : 'Показать отмеченных';
     });
 }
+
+// Сохраняем состояние при изменении чекбоксов
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('table-selectable-check')) {
+        saveCheckboxStates();
+        updateStatusFilterLinks();
+    }
+});
+
+// Восстанавливаем состояния при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем, имеет ли URL параметр status (фильтр статуса)
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasStatus = urlParams.has('status');
+    
+    // Восстанавливаем только если есть фильтр статуса или selected параметр
+    if (hasStatus || urlParams.has('selected')) {
+        restoreCheckboxStates();
+    } else {
+        // Если нет фильтра статуса и нет selected - гарантированно очищаем все выделения
+        clearAllSelections();
+    }
+    
+    updateStatusFilterLinks();
+    
+    // Проверяем, есть ли выбранные элементы, если нет - сбрасываем фильтр
+    const selectedIds = getSelectedVisitIds();
+    if (selectedIds.length === 0) {
+        const filterBtn = document.getElementById('filter-selected-btn');
+        if (filterBtn) {
+            filterSelectedActive = false;
+            document.querySelectorAll('.table-tbody tr').forEach(row => {
+                row.style.display = '';
+            });
+            filterBtn.querySelector('.btn-text').textContent = 'Показать отмеченных';
+        }
+    }
+});
 </script>
 
 {% endblock %}
