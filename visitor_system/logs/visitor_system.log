@@ -9970,3 +9970,19 @@ INFO 2025-05-30 11:57:18,669 utils 38472 38624 Visit notification email for offi
 INFO 2025-06-02 14:05:04,592 utils 919856 925600 Attempting to send creation notification for official ID 150
 WARNING 2025-06-02 14:05:04,629 utils 919856 925600 Department 'Цифровой институт непрерывного образования' has no director assigned.
 INFO 2025-06-02 14:05:06,835 utils 919856 925600 Visit notification email for official ID 150 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-02 14:33:13,661 log 47204 877636 Not Found: /favicon.ico
+WARNING 2025-06-02 14:33:53,590 log 47204 913700 Not Found: /visitors/invite/fill/e4be3651-afb5-4e4f-8398-6106d268b0ee/success.html
+WARNING 2025-06-02 14:36:01,598 log 921348 928752 Not Found: /visitors/invite/fill/a6d8e139-0e17-4c94-9821-4a553ddf811e/success.html
+WARNING 2025-06-02 14:52:01,751 log 920208 926728 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:53:57,009 log 920208 915488 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:20,616 log 920208 929904 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:35,168 log 920208 929020 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:35,234 log 920208 925016 Not Found: /favicon.ico
+WARNING 2025-06-02 14:54:41,552 log 920208 927904 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:57,150 log 920208 930364 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:59:58,142 log 918056 930768 Not Found: /favicon.ico
+WARNING 2025-06-02 15:06:00,639 log 929512 911988 Not Found: /favicon.ico
+WARNING 2025-06-02 15:33:13,426 log 929512 929680 Not Found: /favicon.ico
+INFO 2025-06-02 15:36:50,957 utils 919856 925600 Attempting to send creation notification for official ID 151
+WARNING 2025-06-02 15:36:50,986 utils 919856 925600 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-02 15:36:53,046 utils 919856 925600 Visit notification email for official ID 151 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
