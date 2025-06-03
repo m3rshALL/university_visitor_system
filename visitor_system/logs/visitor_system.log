@@ -9986,3 +9986,15 @@ WARNING 2025-06-02 15:33:13,426 log 929512 929680 Not Found: /favicon.ico
 INFO 2025-06-02 15:36:50,957 utils 919856 925600 Attempting to send creation notification for official ID 151
 WARNING 2025-06-02 15:36:50,986 utils 919856 925600 Department 'Цифровой институт непрерывного образования' has no director assigned.
 INFO 2025-06-02 15:36:53,046 utils 919856 925600 Visit notification email for official ID 151 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-03 14:59:31,888 log 12944 29668 Not Found: /favicon.ico
+ERROR 2025-06-03 17:20:40,260 redis 26832 40152 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-06-03 17:20:40,260 redis 26832 40152 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-06-03 17:20:44,364 redis 26832 40152 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-06-03 17:20:44,364 redis 26832 40152 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-06-03 17:20:49,442 redis 26832 40152 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-06-03 17:20:49,442 redis 26832 40152 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-06-03 17:20:54,909 redis 26832 40152 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-06-03 17:20:54,909 redis 26832 40152 Connection to Redis lost: Retry (3/10) in 1.00 second.
+INFO 2025-06-03 17:21:17,316 utils 50872 35440 Attempting to send creation notification for official ID 152
+WARNING 2025-06-03 17:21:17,351 utils 50872 35440 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-03 17:21:19,131 utils 50872 35440 Visit notification email for official ID 152 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].

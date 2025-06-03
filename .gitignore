@@ -2,27 +2,38 @@
 # Never commit .env files as they might contain sensitive credentials.
 # Instead, commit a .env.example file with placeholder values.
 .env
+.env.*
+!.env.example
 
 # VS Code
 .vscode/
 
 # Python
 __pycache__/
-*.py[co]
+*.py[cod]
 *$py.class
-media/images
-media/i
+*.so
+.Python
+media/images/
+media/i/
+*.pyc
 
 # Django
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+media
+staticfiles/
 
 # Build artifacts
 dist/
 build/
 *.egg-info/
+*.egg
+eggs/
+wheels/
+develop-eggs/
 
 # Poetry
 .poetry/
@@ -34,4 +45,10 @@ build/
 venv/
 ENV/
 env/
+pythonenv*
 
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

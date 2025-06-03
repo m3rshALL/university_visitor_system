@@ -50,4 +50,5 @@ urlpatterns = [
     path('invite/fill/<uuid:token>/', views.guest_invitation_fill, name='guest_invitation_fill'),
     path('invite/finalize/<int:pk>/', views.finalize_guest_invitation, name='finalize_guest_invitation'),
     
+    
 ]

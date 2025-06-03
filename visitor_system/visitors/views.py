@@ -488,6 +488,8 @@ def employee_dashboard_view(request):
     """Панель управления для обычного сотрудника."""
     user = request.user
     
+    #group_invitations = GroupInvitation.objects.filter(created_by=request.user).order_by('-created_at')
+    
     today = timezone.now().date()
     one_week_later = today + timedelta(days=7)
     
@@ -692,6 +694,7 @@ def employee_dashboard_view(request):
         key=attrgetter('entry_time'),
         reverse=True
     )[:10]  # Берем только 10 самых недавних визитов
+    
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
@@ -701,6 +704,7 @@ def employee_dashboard_view(request):
         'department_name': user_department.name if user_department else "Нет департамента",
         'visit_chart_data': visit_chart_data_json,  # Добавляем данные для графика
         'pending_invitations': pending_invitations,  # Добавляем заполненные приглашения
+        #'group_invitations': group_invitations,  # Добавляем приглашения в группы
     }
     return render(request, 'visitors/employee_dashboard.html', context)
 
@@ -1530,3 +1534,6 @@ def service_worker_view(request):
     else:
         # Return an empty service worker if the file doesn't exist
         return HttpResponse("// Service worker not found", content_type="application/javascript")
+
+
+# --------------------------------------------------------------------------
