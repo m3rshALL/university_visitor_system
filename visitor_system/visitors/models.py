@@ -44,11 +44,96 @@ class Guest(models.Model):
         verbose_name = "Гость"
         verbose_name_plural = "Гости"
 
+class VisitPurpose(models.Model):
+    name = models.CharField(max_length=200, unique=True, verbose_name='Название цели визита')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')
+
+    class Meta:
+        verbose_name = 'Цель визита'
+        verbose_name_plural = 'Цели визитов'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+class VisitGroup(models.Model):
+    group_name = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Например, 'Делегация из XYZ', 'Участники конференции ABC'",
+        verbose_name='Название группы/мероприятия'
+    )
+    purpose = models.ForeignKey(
+        VisitPurpose,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name='Основная цель визита группы'
+    )
+    purpose_other_text = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Уточнение цели (если 'Другое')"
+    )
+    expected_entry_time = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name='Планируемое время входа группы'
+    )
+    registration_time = models.DateTimeField(
+        default=timezone.now,
+        verbose_name='Время регистрации группы'
+    )
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Примечания по группе'
+    )
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name='Департамент назначения'
+    )
+    employee = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        limit_choices_to={'is_staff': True},
+        null=True,
+        related_name='group_visits_responsible_for',
+        verbose_name='Принимающий сотрудник (основной)'
+    )
+    registered_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='registered_visit_groups',
+        verbose_name='Зарегистрировал группу'
+    )
+
+    class Meta:
+        verbose_name = 'Групповой визит'
+        verbose_name_plural = 'Групповые визиты'
+        ordering = ['-registration_time']
+
+    def __str__(self):
+        return f"{self.group_name} ({self.registration_time.strftime('%Y-%m-%d %H:%M')})"
+
 class Visit(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE, verbose_name="Гость")
     employee = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Принимающий сотрудник", related_name='visits_hosted') # Сотрудник из системы
     department = models.ForeignKey(Department, on_delete=models.PROTECT, verbose_name="Департамент назначения")
     purpose = models.TextField(verbose_name="Цель визита")
+    visit_group = models.ForeignKey(
+        VisitGroup,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='visits',
+        verbose_name='Групповой визит'
+    )
     entry_time = models.DateTimeField(
         blank=True, null=True, # Убрали default, ставится при check-in
         verbose_name="Время фактического входа"
@@ -229,4 +314,47 @@ class GuestEntry(models.Model):
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     iin = models.CharField(max_length=12, blank=True, null=True)
     photo = models.ImageField(upload_to='guest_photos/', blank=True, null=True)
+
+class GroupInvitation(models.Model):
+    token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='group_invitations', verbose_name="Пригласивший сотрудник")
+    department = models.ForeignKey(Department, on_delete=models.PROTECT, verbose_name="Департамент назначения")
+    purpose = models.TextField(verbose_name="Цель визита")
+    visit_time = models.DateTimeField(verbose_name="Время визита")
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_filled = models.BooleanField(default=False, verbose_name="Группа заполнена")
+    is_registered = models.BooleanField(default=False, verbose_name="Визит зарегистрирован")
+
+    def __str__(self):
+        return f"Групповое приглашение от {self.employee} на {self.visit_time.strftime('%Y-%m-%d %H:%M')}"
+
+    class Meta:
+        verbose_name = "Групповое приглашение"
+        verbose_name_plural = "Групповые приглашения"
+
+class GroupGuest(models.Model):
+    group_invitation = models.ForeignKey(GroupInvitation, on_delete=models.CASCADE, related_name='guests', verbose_name="Групповое приглашение")
+    full_name = models.CharField(max_length=255, verbose_name="ФИО гостя")
+    email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Email гостя")
+    phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Телефон гостя")
+    iin = models.CharField(
+        max_length=12,
+        validators=[
+            RegexValidator(regex=r'^\d{12}$', message='ИИН должен состоять ровно из 12 цифр.'),
+            MinLengthValidator(12),
+            MaxLengthValidator(12)
+        ],
+        blank=True,
+        null=True,
+        verbose_name="ИИН гостя"
+    )
+    is_filled = models.BooleanField(default=False, verbose_name="Гость заполнил данные")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} (групповой гость)"
+
+    class Meta:
+        verbose_name = "Гость группы"
+        verbose_name_plural = "Гости группы"
 

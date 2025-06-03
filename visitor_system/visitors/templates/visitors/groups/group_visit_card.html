@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-xl">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h2 class="card-title">Карточка группового визита</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <b>Пригласивший:</b> {{ group_invitation.employee.get_full_name|default:group_invitation.employee.username }}<br>
+                            <b>Департамент:</b> {{ group_invitation.department }}<br>
+                        </div>
+                        <div class="col-md-6">
+                            <b>Цель визита:</b> {{ group_invitation.purpose }}<br>
+                            <b>Время визита:</b> {{ group_invitation.visit_time|date:'d.m.Y H:i' }}<br>
+                        </div>
+                    </div>
+                    <h4 class="mb-3">Гости</h4>
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>ФИО</th>
+                                    <th>Email</th>
+                                    <th>Телефон</th>
+                                    <th>ИИН</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for guest in guests %}
+                                <tr>
+                                    <td>{{ guest.full_name }}</td>
+                                    <td>{{ guest.email }}</td>
+                                    <td>{{ guest.phone_number }}</td>
+                                    <td>{{ guest.iin }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

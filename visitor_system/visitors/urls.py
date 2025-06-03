@@ -1,6 +1,7 @@
 # visitors/urls.py
 from django.urls import path
 from . import views
+from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
 
 urlpatterns = [
     # --- единый URL для регистрации ---
@@ -10,7 +11,7 @@ urlpatterns = [
     path('register/', views.register_guest_view, name='register_guest'),
     # --- путь для регистрации студентов/абитуриентов ---
     path('register/student/', views.register_student_visit_view, name='register_student_visit'),
-    #path('register-group/', views.register_group_visit_view, name='register_group_visit'),
+    path('register/group/', views.register_group_visit_view, name='register_group_visit'),
     
     # --- URL для настройки профиля ---
     path('profile/setup/', views.profile_setup_view, name='profile_setup'),
@@ -50,5 +51,7 @@ urlpatterns = [
     path('invite/fill/<uuid:token>/', views.guest_invitation_fill, name='guest_invitation_fill'),
     path('invite/finalize/<int:pk>/', views.finalize_guest_invitation, name='finalize_guest_invitation'),
     
-    
+    path('groups/create/', create_group_invitation_view, name='create_group_invitation'),
+    path('groups/fill/<uuid:token>/', group_invitation_fill_view, name='group_invitation_fill'),
+    path('groups/card/<int:pk>/', group_visit_card_view, name='group_visit_card'),
 ]

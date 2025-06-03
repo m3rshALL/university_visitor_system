@@ -451,6 +451,112 @@
     </div>
 </div>
 
+<!-- Карточка для групповых визитов -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M17 11v-1a4 4 0 1 0-8 0v1"></path>
+                        <path d="M3 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"></path>
+                    </svg>
+                    Групповые визиты
+                </h3>
+                <div class="card-actions">
+                    <a href="{% url 'create_group_invitation' %}" class="btn btn-primary btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 5l0 14"></path>
+                            <path d="M5 12l14 0"></path>
+                        </svg>
+                        Новая группа
+                    </a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Департамент</th>
+                            <th>Цель</th>
+                            <th>Время визита</th>
+                            <th>Гостей</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for group in group_invitations %}
+                        <tr>
+                            <td>{{ group.id }}</td>
+                            <td>{{ group.department }}</td>
+                            <td>{{ group.purpose|truncatechars:30 }}</td>
+                            <td>{{ group.visit_time|date:'d.m.Y H:i' }}</td>
+                            <td>{{ group.guests.count }}</td>
+                            <td>
+                                {% if group.is_registered %}
+                                    <span class="badge bg-success-lt">Зарегистрирован</span>
+                                {% elif group.is_filled %}
+                                    <span class="badge bg-warning-lt">Ожидает регистрации</span>
+                                {% else %}
+                                    <span class="badge bg-secondary-lt">Ожидает заполнения</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'register_group_visit' %}" class="btn btn-primary btn-sm">
+                                    Зарегистрировать вход
+                                </a>
+                                <a href="{% url 'group_visit_card' group.id %}" class="btn btn-ghost-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 9h.01"></path>
+                                        <path d="M11 12h1v4h1"></path>
+                                    </svg>
+                                    Детали
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-3">
+                                <div class="empty">
+                                    <div class="empty-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group" width="40" height="40" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <circle cx="9" cy="7" r="4"></circle>
+                                            <path d="M17 11v-1a4 4 0 1 0-8 0v1"></path>
+                                            <path d="M3 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="empty-title">Нет групповых визитов</p>
+                                    <p class="empty-subtitle text-muted">
+                                        Создайте новое групповое приглашение для регистрации группы гостей
+                                    </p>
+                                    <div class="empty-action">
+                                        <a href="{% url 'create_group_invitation' %}" class="btn btn-primary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 5l0 14"></path>
+                                                <path d="M5 12l14 0"></path>
+                                            </svg>
+                                            Новая группа
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row mb-3">
     <div class="col-lg-8">

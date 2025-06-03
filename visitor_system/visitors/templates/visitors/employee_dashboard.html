@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Панель управления{% endblock %}
+
+{% block content %}
+<div class="container-xl">
+    <!-- Page title -->
+    <div class="page-header d-print-none">
+        <div class="row align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Панель управления
+                </h2>
+                <div class="text-muted mt-1">{{ department_name }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-deck row-cards">
+        <!-- Статистика -->
+        <div class="col-12">
+            <div class="row row-cards">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Текущие гости</div>
+                            </div>
+                            <div class="h1 mb-3">{{ my_current_guests.count }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Ожидаемые визиты</div>
+                            </div>
+                            <div class="h1 mb-3">{{ upcoming_visits|length }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Приглашения</div>
+                            </div>
+                            <div class="h1 mb-3">{{ pending_invitations.count }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Групповые визиты</div>
+                            </div>
+                            <div class="h1 mb-3">{{ group_invitations.count }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Текущие гости -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Текущие гости</h3>
+                </div>
+                <div class="card-body">
+                    {% if my_current_guests %}
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Гость</th>
+                                    <th>Департамент</th>
+                                    <th>Время входа</th>
+                                    <th class="w-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for visit in my_current_guests %}
+                                <tr>
+                                    <td>{{ visit.guest.full_name }}</td>
+                                    <td>{{ visit.department.name }}</td>
+                                    <td>{{ visit.entry_time|date:"H:i" }}</td>
+                                    <td>
+                                        <a href="{% url 'visitors:register_exit' visit.id %}" class="btn btn-primary btn-sm">
+                                            Зарегистрировать выход
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <circle cx="12" cy="12" r="9" />
+                                <line x1="9" y1="10" x2="15" y2="10" />
+                                <line x1="10" y1="14" x2="14" y2="14" />
+                                <line x1="12" y1="12" x2="12" y2="12.01" />
+                            </svg>
+                        </div>
+                        <p class="empty-title">Нет текущих гостей</p>
+                        <p class="empty-subtitle text-muted">
+                            Сейчас в здании нет гостей, которых вы принимаете
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Ожидаемые визиты -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Ожидаемые визиты</h3>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_visits %}
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Гость</th>
+                                    <th>Департамент</th>
+                                    <th>Время</th>
+                                    <th>Принимающий</th>
+                                    <th class="w-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for visit in upcoming_visits %}
+                                <tr>
+                                    <td>{{ visit.guest.full_name }}</td>
+                                    <td>{{ visit.department.name }}</td>
+                                    <td>{{ visit.expected_entry_time|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ visit.employee.get_full_name }}</td>
+                                    <td>
+                                        <a href="{% url 'visitors:register_entry' visit.id %}" class="btn btn-primary btn-sm">
+                                            Зарегистрировать вход
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <circle cx="12" cy="12" r="9" />
+                                <line x1="9" y1="10" x2="15" y2="10" />
+                                <line x1="10" y1="14" x2="14" y2="14" />
+                                <line x1="12" y1="12" x2="12" y2="12.01" />
+                            </svg>
+                        </div>
+                        <p class="empty-title">Нет ожидаемых визитов</p>
+                        <p class="empty-subtitle text-muted">
+                            На ближайшую неделю нет запланированных визитов
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Групповые визиты -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Групповые визиты</h3>
+                </div>
+                <div class="card-body">
+                    {% if group_invitations %}
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Название группы</th>
+                                    <th>Департамент</th>
+                                    <th>Время</th>
+                                    <th>Количество гостей</th>
+                                    <th class="w-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invitation in group_invitations %}
+                                <tr>
+                                    <td>{{ invitation.group_name }}</td>
+                                    <td>{{ invitation.department.name }}</td>
+                                    <td>{{ invitation.expected_entry_time|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ invitation.guests.count }}</td>
+                                    <td>
+                                        <a href="{% url 'visitors:register_group_entry' invitation.id %}" class="btn btn-primary btn-sm">
+                                            Зарегистрировать вход
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <circle cx="12" cy="12" r="9" />
+                                <line x1="9" y1="10" x2="15" y2="10" />
+                                <line x1="10" y1="14" x2="14" y2="14" />
+                                <line x1="12" y1="12" x2="12" y2="12.01" />
+                            </svg>
+                        </div>
+                        <p class="empty-title">Нет групповых визитов</p>
+                        <p class="empty-subtitle text-muted">
+                            Нет запланированных групповых визитов
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- История визитов -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">История визитов</h3>
+                </div>
+                <div class="card-body">
+                    {% if my_visit_history %}
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Гость</th>
+                                    <th>Департамент</th>
+                                    <th>Время входа</th>
+                                    <th>Время выхода</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for visit in my_visit_history %}
+                                <tr>
+                                    <td>{{ visit.guest.full_name }}</td>
+                                    <td>{{ visit.department.name }}</td>
+                                    <td>{{ visit.entry_time|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ visit.exit_time|date:"d.m.Y H:i"|default:"-" }}</td>
+                                    <td>
+                                        {% if visit.exit_time %}
+                                        <span class="badge bg-success">Завершён</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">В процессе</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <circle cx="12" cy="12" r="9" />
+                                <line x1="9" y1="10" x2="15" y2="10" />
+                                <line x1="10" y1="14" x2="14" y2="14" />
+                                <line x1="12" y1="12" x2="12" y2="12.01" />
+                            </svg>
+                        </div>
+                        <p class="empty-title">Нет истории визитов</p>
+                        <p class="empty-subtitle text-muted">
+                            У вас пока нет истории визитов
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

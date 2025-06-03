@@ -1,6 +1,6 @@
 # visitors/admin.py
 from django.contrib import admin
-from .models import Guest, Visit, StudentVisit, EmployeeProfile, Department, GuestInvitation
+from .models import Guest, Visit, StudentVisit, EmployeeProfile, Department, GuestInvitation, GroupInvitation, GroupGuest
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
@@ -64,6 +64,18 @@ class GuestInvitationAdmin(admin.ModelAdmin):
     list_display = ('guest_full_name', 'employee', 'created_at', 'is_filled', 'is_registered', 'visit_time')
     search_fields = ('guest_full_name', 'guest_email', 'employee__username')
     list_filter = ('is_filled', 'is_registered', 'created_at')
+
+@admin.register(GroupInvitation)
+class GroupInvitationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'employee', 'department', 'purpose', 'visit_time', 'created_at', 'is_filled', 'is_registered')
+    search_fields = ('employee__username', 'purpose')
+    list_filter = ('is_filled', 'is_registered', 'created_at', 'department')
+
+@admin.register(GroupGuest)
+class GroupGuestAdmin(admin.ModelAdmin):
+    list_display = ('id', 'group_invitation', 'full_name', 'email', 'phone_number', 'iin', 'is_filled', 'created_at')
+    search_fields = ('full_name', 'email', 'iin', 'group_invitation__id')
+    list_filter = ('is_filled', 'created_at', 'group_invitation')
 
 # Перерегистрация User
 User = get_user_model()

@@ -10,7 +10,7 @@ from django.contrib import messages # Для показа сообщений п�
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
     STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED
 from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm, \
-    GuestInvitationFillForm, GuestInvitationFinalizeForm
+    GuestInvitationFillForm, GuestInvitationFinalizeForm, GroupVisitRegistrationForm
 from .models import GuestInvitation
 from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
@@ -52,6 +52,10 @@ from django.views.decorators.cache import cache_control
 from django.contrib.staticfiles.views import serve as serve_static
 
 from notifications.utils import send_new_visit_notification_to_security
+
+from .models import GroupInvitation, GroupGuest
+from django.forms import modelformset_factory
+from django.utils.crypto import get_random_string
 
 logger = logging.getLogger(__name__)
 
@@ -488,8 +492,6 @@ def employee_dashboard_view(request):
     """Панель управления для обычного сотрудника."""
     user = request.user
     
-    #group_invitations = GroupInvitation.objects.filter(created_by=request.user).order_by('-created_at')
-    
     today = timezone.now().date()
     one_week_later = today + timedelta(days=7)
     
@@ -695,6 +697,12 @@ def employee_dashboard_view(request):
         reverse=True
     )[:10]  # Берем только 10 самых недавних визитов
     
+    group_invitations = GroupInvitation.objects.filter(
+        employee=user,
+        is_filled=True,
+        is_registered=False
+    ).select_related('department').order_by('-created_at')
+    
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
@@ -704,7 +712,7 @@ def employee_dashboard_view(request):
         'department_name': user_department.name if user_department else "Нет департамента",
         'visit_chart_data': visit_chart_data_json,  # Добавляем данные для графика
         'pending_invitations': pending_invitations,  # Добавляем заполненные приглашения
-        #'group_invitations': group_invitations,  # Добавляем приглашения в группы
+        'group_invitations': group_invitations,  # Добавляем приглашения в группы
     }
     return render(request, 'visitors/employee_dashboard.html', context)
 
@@ -1535,5 +1543,105 @@ def service_worker_view(request):
         # Return an empty service worker if the file doesn't exist
         return HttpResponse("// Service worker not found", content_type="application/javascript")
 
+@login_required
+def create_group_invitation_view(request):
+    """
+    Генерирует ссылку для группового визита и позволяет задать параметры группы (департамент, цель, время).
+    """
+    from django import forms
+    class GroupInvitationCreateForm(forms.ModelForm):
+        class Meta:
+            model = GroupInvitation
+            fields = ['department', 'purpose', 'visit_time']
+            widgets = {
+                'visit_time': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+            }
+
+    if request.method == 'POST':
+        form = GroupInvitationCreateForm(request.POST)
+        if form.is_valid():
+            group_invitation = form.save(commit=False)
+            group_invitation.employee = request.user
+            group_invitation.save()
+            link = request.build_absolute_uri(reverse('group_invitation_fill', args=[str(group_invitation.token)]))
+            return render(request, 'visitors/groups/create_group_invitation.html', {
+                'invitation_link': link,
+                'group_invitation': group_invitation
+            })
+    else:
+        form = GroupInvitationCreateForm()
+    return render(request, 'visitors/groups/create_group_invitation.html', {'form': form})
+
+
+def group_invitation_fill_view(request, token):
+    """
+    Страница для заполнения данных гостей по ссылке (до 10 человек).
+    """
+    group_invitation = get_object_or_404(GroupInvitation, token=token)
+    GroupGuestFormSet = modelformset_factory(
+        GroupGuest,
+        fields=('full_name', 'email', 'phone_number', 'iin'),
+        extra=max(0, 10 - group_invitation.guests.count()),
+        max_num=10,
+        can_delete=False
+    )
+    if group_invitation.is_filled:
+        return render(request, 'visitors/groups/group_invitation_already_filled.html', {'group_invitation': group_invitation})
+    if request.method == 'POST':
+        formset = GroupGuestFormSet(request.POST, queryset=group_invitation.guests.all())
+        if formset.is_valid():
+            guests = formset.save(commit=False)
+            for guest in guests:
+                guest.group_invitation = group_invitation
+                guest.is_filled = True
+                guest.save()
+            group_invitation.is_filled = True
+            group_invitation.save()
+            return render(request, 'visitors/groups/group_invitation_filled_success.html', {'group_invitation': group_invitation})
+    else:
+        formset = GroupGuestFormSet(queryset=group_invitation.guests.all())
+    return render(request, 'visitors/groups/group_invitation_fill.html', {
+        'group_invitation': group_invitation,
+        'formset': formset
+    })
+
+@login_required
+def group_visit_card_view(request, pk):
+    """
+    Карточка группового визита для отображения в дэшборде.
+    """
+    group_invitation = get_object_or_404(GroupInvitation, pk=pk)
+    guests = group_invitation.guests.all()
+    return render(request, 'visitors/groups/group_visit_card.html', {
+        'group_invitation': group_invitation,
+        'guests': guests
+    })
+
+# Для отображения групповых визитов в дэшборде сотрудника:
+# В employee_dashboard_view добавить:
+# group_invitations = GroupInvitation.objects.filter(employee=request.user).order_by('-created_at')
+# и передать в контекст
 
 # --------------------------------------------------------------------------
+
+@login_required
+def register_group_visit_view(request):
+    if request.method == 'POST':
+        form = GroupVisitRegistrationForm(request.POST)
+        if form.is_valid():
+            try:
+                group_visit = form.save(request.user)
+                messages.success(request, f"Групповой визит '{group_visit.group_name}' успешно зарегистрирован!")
+                return redirect('employee_dashboard')
+            except Exception as e:
+                messages.error(request, f"Ошибка при регистрации группового визита: {e}")
+        else:
+            messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
+    else:
+        form = GroupVisitRegistrationForm()
+
+    context = {
+        'form': form,
+        'title': 'Регистрация группового визита'
+    }
+    return render(request, 'visitors/register_group_visit.html', context)

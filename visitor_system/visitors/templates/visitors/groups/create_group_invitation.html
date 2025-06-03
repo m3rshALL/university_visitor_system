@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container-xl">
+    <div class="page-header d-print-none mb-4">
+        <h2 class="page-title">Создать групповое приглашение</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.department.label_tag }}
+                            {{ form.department|add_class:'form-select' }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.purpose.label_tag }}
+                            {{ form.purpose|add_class:'form-control' }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.visit_time.label_tag }}
+                            {{ form.visit_time|add_class:'form-control' }}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Создать приглашение</button>
+                    </form>
+                    {% if invitation_link %}
+                        <div class="alert alert-success mt-4">
+                            <b>Ссылка для гостей:</b><br>
+                            <a href="{{ invitation_link }}" target="_blank">{{ invitation_link }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
