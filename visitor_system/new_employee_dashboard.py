@@ -5,7 +5,7 @@ from datetime import timedelta
 from django.db.models import Count, Q
 from itertools import chain
 from operator import attrgetter
-from .models import Visit, StudentVisit, EmployeeProfile, GuestInvitation, STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN, GroupInvitation
+from .visitors.models import Visit, StudentVisit, EmployeeProfile, GuestInvitation, STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN, GroupInvitation
 from django.shortcuts import render
 from django.contrib.auth.models import User
 
@@ -183,7 +183,12 @@ def employee_dashboard_view(request):
     for inv in pending_invitations:
         print(f"DEBUG: - {inv.guest_full_name} | created: {inv.created_at}")
 
-    group_invitations = GroupInvitation.objects.filter(employee=request.user).order_by('-created_at')
+    # Получаем групповые приглашения
+    group_invitations = GroupInvitation.objects.filter(
+        employee=user,
+        is_filled=True,
+        is_registered=False
+    ).select_related('department').order_by('-created_at')
 
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента

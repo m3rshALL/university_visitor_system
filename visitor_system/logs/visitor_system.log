@@ -9998,3 +9998,27 @@ ERROR 2025-06-03 17:20:54,909 redis 26832 40152 Connection to Redis lost: Retry 
 INFO 2025-06-03 17:21:17,316 utils 50872 35440 Attempting to send creation notification for official ID 152
 WARNING 2025-06-03 17:21:17,351 utils 50872 35440 Department 'Цифровой институт непрерывного образования' has no director assigned.
 INFO 2025-06-03 17:21:19,131 utils 50872 35440 Visit notification email for official ID 152 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-04 10:24:34,546 log 33480 37508 Not Found: /visitors/group-visit/create/
+WARNING 2025-06-04 10:24:34,627 log 33480 27844 Not Found: /favicon.ico
+INFO 2025-06-04 10:40:45,032 utils 25344 26952 Attempting to send creation notification for official ID 153
+WARNING 2025-06-04 10:40:45,065 utils 25344 26952 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-04 10:40:47,369 utils 25344 26952 Visit notification email for official ID 153 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-04 12:03:03,810 log 46032 45896 Not Found: /favicon.ico
+INFO 2025-06-04 12:06:37,407 utils 23476 40224 Attempting to send creation notification for official ID 154
+WARNING 2025-06-04 12:06:37,443 utils 23476 40224 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-04 12:06:40,739 utils 23476 40224 Visit notification email for official ID 154 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-04 12:11:32,991 log 46032 46572 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-06-04 14:40:05,895 log 46060 61504 Not Found: /visitors/register/group/
+WARNING 2025-06-04 14:40:08,323 log 46060 60616 Not Found: /visitors/register/group/

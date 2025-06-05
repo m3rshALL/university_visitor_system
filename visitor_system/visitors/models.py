@@ -321,6 +321,8 @@ class GroupInvitation(models.Model):
     department = models.ForeignKey(Department, on_delete=models.PROTECT, verbose_name="Департамент назначения")
     purpose = models.TextField(verbose_name="Цель визита")
     visit_time = models.DateTimeField(verbose_name="Время визита")
+    exit_time = models.DateTimeField(blank=True, null=True, verbose_name="Время выхода")
+    is_completed = models.BooleanField(default=False, verbose_name="Визит завершен")
     created_at = models.DateTimeField(auto_now_add=True)
     is_filled = models.BooleanField(default=False, verbose_name="Группа заполнена")
     is_registered = models.BooleanField(default=False, verbose_name="Визит зарегистрирован")

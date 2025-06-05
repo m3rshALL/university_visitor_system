@@ -1,6 +1,6 @@
 # visitors/forms.py
 from django import forms
-from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile, GuestInvitation, VisitPurpose, VisitGroup
+from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile, GuestInvitation, VisitPurpose, VisitGroup, GroupInvitation, GroupGuest
 from departments.models import Department
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
@@ -395,6 +395,19 @@ class HistoryFilterForm(forms.Form):
         choices=HISTORY_STATUS_CHOICES, # Используем новый список
         widget=forms.Select(attrs={'class': 'form-select form-select-sm'})
     )
+    # Тип визита (Обычный, Студенческий, Групповой)
+    VISIT_TYPE_CHOICES = [
+        ('', 'Все типы'),
+        ('official', 'Официальный визит'),
+        ('student', 'Студенческий визит'),
+        ('group', 'Групповой визит'),
+    ]
+    visit_type = forms.ChoiceField(
+        label='Тип визита',
+        required=False,
+        choices=VISIT_TYPE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select form-select-sm'})
+    )
     # ------------------------------------
     department = forms.ModelChoiceField(
         queryset=Department.objects.all(), label='Департамент', required=False,
@@ -485,95 +498,20 @@ class GuestInvitationFinalizeForm(forms.ModelForm):
         model = GuestInvitation
         fields = ['visit_time']
 
-class GroupVisitRegistrationForm(forms.Form):
-    group_name = forms.CharField(
-        label="Название группы/мероприятия",
-        max_length=255,
-        help_text="Например, 'Делегация из XYZ', 'Участники конференции ABC'"
-    )
-    department = forms.ModelChoiceField(
-        label="Департамент назначения",
-        queryset=Department.objects.all(),
-        required=True
-    )
-    employee = forms.ModelChoiceField(
-        label="Принимающий сотрудник (основной)",
-        queryset=User.objects.filter(is_staff=True),
-        required=True
-    )
-    purpose = forms.ModelChoiceField(
-        label="Основная цель визита группы",
-        queryset=VisitPurpose.objects.all(),
-        required=True
-    )
-    purpose_other_text = forms.CharField(
-        label="Уточнение цели (если 'Другое')",
-        required=False,
-        widget=forms.Textarea(attrs={'rows': 3})
-    )
-    expected_entry_time = forms.DateTimeField(
-        label="Планируемое время входа группы",
-        required=False,
-        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'})
-    )
-    notes = forms.CharField(
-        label="Примечания по группе",
-        required=False,
-        widget=forms.Textarea(attrs={'rows': 3})
-    )
-    guests = forms.CharField(
-        label="Список гостей",
-        widget=forms.HiddenInput(),
-        required=False
-    )
+class GroupVisitRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = GroupInvitation
+        fields = ['department', 'purpose', 'visit_time']
+        widgets = {
+            'visit_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'purpose': forms.Textarea(attrs={'rows': 3}),
+        }
 
-    def clean(self):
-        cleaned_data = super().clean()
-        purpose = cleaned_data.get('purpose')
-        purpose_other_text = cleaned_data.get('purpose_other_text')
-
-        if purpose and purpose.name == 'Other' and not purpose_other_text:
-            self.add_error('purpose_other_text', 'Пожалуйста, укажите уточнение цели визита.')
-
-        return cleaned_data
-
-    def save(self, registering_user):
-        # Создаем групповой визит
-        group_visit = VisitGroup.objects.create(
-            group_name=self.cleaned_data['group_name'],
-            department=self.cleaned_data['department'],
-            employee=self.cleaned_data['employee'],
-            purpose=self.cleaned_data['purpose'],
-            purpose_other_text=self.cleaned_data.get('purpose_other_text'),
-            expected_entry_time=self.cleaned_data.get('expected_entry_time'),
-            notes=self.cleaned_data.get('notes'),
-            registered_by=registering_user
-        )
-
-        # Обрабатываем список гостей
-        guests_data = json.loads(self.cleaned_data.get('guests', '[]'))
-        for guest_data in guests_data:
-            # Создаем или находим гостя
-            guest, created = Guest.objects.get_or_create(
-                full_name=guest_data['full_name'],
-                defaults={
-                    'email': guest_data.get('email'),
-                    'phone_number': guest_data.get('phone_number'),
-                    'iin': guest_data.get('iin')
-                }
-            )
-
-            # Создаем визит для гостя
-            Visit.objects.create(
-                guest=guest,
-                visit_group=group_visit,
-                department=group_visit.department,
-                employee=group_visit.employee,
-                purpose=group_visit.purpose.name if group_visit.purpose.name != 'Other' else group_visit.purpose_other_text,
-                registered_by=registering_user,
-                expected_entry_time=group_visit.expected_entry_time,
-                status=STATUS_AWAITING_ARRIVAL
-            )
-
-        return group_visit
+    def save(self, user):
+        group_invitation = super().save(commit=False)
+        group_invitation.employee = user
+        group_invitation.is_filled = True
+        group_invitation.is_registered = True
+        group_invitation.save()
+        return group_invitation
 

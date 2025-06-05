@@ -234,65 +234,119 @@ def visit_history_view(request):
     # Получаем визиты с учетом прав доступа пользователя
     official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)
     
+    # Получаем групповые визиты - для всех, у кого есть права на историю визитов
+    # Выбираем только зарегистрированные групповые визиты
+    group_visits_qs = GroupInvitation.objects.filter(is_registered=True).select_related(
+        'department', 'employee'
+    ).prefetch_related('guests')
+    
+    # Фильтруем групповые визиты по правам доступа, аналогично другим типам визитов
+    is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    is_staff = user.is_staff
+    
+    if not is_reception and not is_staff:
+        if not user.is_authenticated or user.pk is None:
+            group_visits_qs = group_visits_qs.none()
+        else:
+            try:
+                employee_profile = EmployeeProfile.objects.get(user=user)
+                if employee_profile.department:
+                    # Если это обычный сотрудник с департаментом, показываем групповые визиты этого департамента
+                    group_visits_qs = group_visits_qs.filter(department=employee_profile.department)
+                else:
+                    # Если нет департамента - не показываем групповые визиты других департаментов
+                    group_visits_qs = group_visits_qs.none()
+            except EmployeeProfile.DoesNotExist:
+                group_visits_qs = group_visits_qs.none()
+    
     # Определяем, должен ли пользователь видеть полные фильтры
     is_reception_or_staff = user.is_staff or user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
 
     # Инициализируем форму фильтра GET-данными
     filter_form = HistoryFilterForm(request.GET or None)
     
-    # relevant_statuses = [STATUS_CHECKED_IN, STATUS_CHECKED_OUT] # Статусы для истории
-
-    #official_visits_qs = Visit.objects.select_related(
-    #    'guest', 'employee', 'department', 'registered_by', 'department__director' # Добавим director для возможного использования
-    #)# .filter(status__in=relevant_statuses) # <-- Добавлен фильтр по статусу
-
-    #student_visits_qs = StudentVisit.objects.select_related(
-    #    'guest', 'department', 'registered_by' # Добавим director для возможного использования
-    #)# .filter(status__in=relevant_statuses) # <-- Добавлен фильтр по статусу
-    # ---------------------------------------------
-
     # Применяем фильтры, если форма была отправлена (есть GET параметры)
-    if request.GET and filter_form.is_valid(): # is_valid() для GET форм обычно всегда True, но проверяет типы
+    if request.GET and filter_form.is_valid():
         logger.debug(f"Applying filters: {filter_form.cleaned_data}")
         # Общие фильтры
-        # guest_name = filter_form.cleaned_data.get('guest_name')
         selected_guests = filter_form.cleaned_data.get('guests')
         guest_iin = filter_form.cleaned_data.get('guest_iin')
         entry_date_from = filter_form.cleaned_data.get('entry_date_from')
         entry_date_to = filter_form.cleaned_data.get('entry_date_to')
-        # --- ИЗМЕНЕННАЯ ЛОГИКА ФИЛЬТРА ПО СТАТУСУ ---
+        # Фильтрация по типу визита
+        visit_type = filter_form.cleaned_data.get('visit_type')
+        if visit_type:
+            logger.debug(f"Filtering by visit_type: '{visit_type}'")
+            if visit_type == 'official':
+                # Если выбран только официальный тип, отключаем другие типы визитов
+                student_visits_qs = student_visits_qs.none()
+                group_visits_qs = group_visits_qs.none()
+            elif visit_type == 'student':
+                # Если выбран только студенческий тип, отключаем другие типы визитов
+                official_visits_qs = official_visits_qs.none()
+                group_visits_qs = group_visits_qs.none()
+            elif visit_type == 'group':
+                # Если выбран только групповой тип, отключаем другие типы визитов
+                official_visits_qs = official_visits_qs.none()
+                student_visits_qs = student_visits_qs.none()
+                  # Применяем фильтр по статусу
         status = filter_form.cleaned_data.get('status')
-        if status: # Если статус выбран (не пустая строка '' из 'Любой статус')
+        if status:
             logger.debug(f"Filtering by status: '{status}'")
             official_visits_qs = official_visits_qs.filter(status=status)
             student_visits_qs = student_visits_qs.filter(status=status)
-            logger.debug(f"Count after status filter - Official: {official_visits_qs.count()}, Student: {student_visits_qs.count()}")
-        else:
-            logger.debug("No specific status filter applied.")
-        department = filter_form.cleaned_data.get('department') # Департамент есть в обеих моделях
+            # Для групповых визитов используем логику сопоставления статусов:
+            # - CHECKED_IN: зарегистрированные и не завершенные
+            # - CHECKED_OUT: зарегистрированные и завершенные
+            # - Другие статусы: не показываем групповые визиты
+            if status == STATUS_CHECKED_IN:
+                group_visits_qs = group_visits_qs.filter(is_registered=True, is_completed=False)
+            elif status == STATUS_CHECKED_OUT:
+                group_visits_qs = group_visits_qs.filter(is_registered=True, is_completed=True)
+            else:
+                group_visits_qs = group_visits_qs.none()
+                
+        department = filter_form.cleaned_data.get('department')
 
-        #if guest_name:
-        #    official_visits_qs = official_visits_qs.filter(guest__full_name__icontains=guest_name)
-        #    student_visits_qs = student_visits_qs.filter(guest__full_name__icontains=guest_name)
         if selected_guests:
             official_visits_qs = official_visits_qs.filter(guest__in=selected_guests)
             student_visits_qs = student_visits_qs.filter(guest__in=selected_guests)
+            # Для групповых визитов нужно проверять у каждого гостя в группе
+            # Это более сложная логика, поэтому пока оставим как есть
+        
         if guest_iin:
             official_visits_qs = official_visits_qs.filter(guest__iin__icontains=guest_iin)
             student_visits_qs = student_visits_qs.filter(guest__iin__icontains=guest_iin)
+            # Для групповых визитов нужна фильтрация по ИИН гостей в группе
+            group_visits_qs = group_visits_qs.filter(guests__iin__icontains=guest_iin)
+        
         if entry_date_from:
             official_visits_qs = official_visits_qs.filter(entry_time__date__gte=entry_date_from)
             student_visits_qs = student_visits_qs.filter(entry_time__date__gte=entry_date_from)
+            # Для групповых визитов используем visit_time
+            group_visits_qs = group_visits_qs.filter(visit_time__date__gte=entry_date_from)
+        
         if entry_date_to:
             official_visits_qs = official_visits_qs.filter(entry_time__date__lte=entry_date_to)
             student_visits_qs = student_visits_qs.filter(entry_time__date__lte=entry_date_to)
+            # Для групповых визитов используем visit_time
+            group_visits_qs = group_visits_qs.filter(visit_time__date__lte=entry_date_to)
+        
         if department:
             official_visits_qs = official_visits_qs.filter(department=department)
             student_visits_qs = student_visits_qs.filter(department=department)
+            group_visits_qs = group_visits_qs.filter(department=department)
+        
         # Фильтры только для Visit
         employee_info = filter_form.cleaned_data.get('employee_info')
         if employee_info:
             official_visits_qs = official_visits_qs.filter(
+                Q(employee__first_name__icontains=employee_info) |
+                Q(employee__last_name__icontains=employee_info) |
+                Q(employee__email__icontains=employee_info)
+            )
+            # Также применяем фильтр к групповым визитам
+            group_visits_qs = group_visits_qs.filter(
                 Q(employee__first_name__icontains=employee_info) |
                 Q(employee__last_name__icontains=employee_info) |
                 Q(employee__email__icontains=employee_info)
@@ -304,30 +358,50 @@ def visit_history_view(request):
         if student_id:
             student_visits_qs = student_visits_qs.filter(student_id_number__icontains=student_id)
         if student_group:
-            student_visits_qs = student_visits_qs.filter(student_group__icontains=student_group)
-
-    # Добавляем атрибут для различения в шаблоне
+            student_visits_qs = student_visits_qs.filter(student_group__icontains=student_group)    # Добавляем атрибут для различения в шаблоне
     for v in official_visits_qs: v.visit_kind = 'official'
-    for v in student_visits_qs: v.visit_kind = 'student'
+    for v in student_visits_qs: v.visit_kind = 'student'    # Добавляем аналогичный атрибут для групповых визитов
+    for v in group_visits_qs: 
+        v.visit_kind = 'group'
+        # Добавляем требуемые атрибуты для совместимости с шаблоном
+        if v.is_completed:
+            v.status = STATUS_CHECKED_OUT  # Считаем завершенную группу как "вышедшую"
+        else:
+            v.status = STATUS_CHECKED_IN  # Считаем незавершенную зарегистрированную группу как "в здании"
+        v.entry_time = v.visit_time
+        v.exit_time = v.exit_time  # Используем фактическое время выхода если есть
+        # Добавляем гостей как атрибуты для более удобного доступа
+        guests_count = v.guests.count()
+        if guests_count > 0:
+            # Получаем первого гостя в группе для отображения в списке
+            first_guest = v.guests.first()
+            v.guest = first_guest
+            v.guests_count = guests_count
+        else:
+            v.guest = None
+            v.guests_count = 0
     
     def get_sort_key(visit):
         # Сортируем по релевантному времени: фактическое > планируемое
         # None ставим в самый конец (самое старое время)
         relevant_time = None
-        if visit.entry_time:
+        if hasattr(visit, 'entry_time') and visit.entry_time:
             relevant_time = visit.entry_time
         elif hasattr(visit, 'expected_entry_time') and visit.expected_entry_time:
             relevant_time = visit.expected_entry_time
+        elif hasattr(visit, 'visit_time') and visit.visit_time:
+            relevant_time = visit.visit_time
 
         # Даем очень старую дату для None, чтобы они были последними при reverse=True
         very_old_time = timezone.make_aware(datetime.datetime.min, timezone.get_default_timezone())
         return relevant_time if relevant_time else very_old_time
 
+    # Объединяем все три типа визитов в один список
     combined_list = sorted(
-        chain(official_visits_qs, student_visits_qs),
-        key=get_sort_key, # Используем новую функцию ключа
-        reverse=True # Самые свежие (по фактическому или планируемому входу) - вверху
-    )    # ---------------------------------------------
+        chain(official_visits_qs, student_visits_qs, group_visits_qs),
+        key=get_sort_key, # Используем функцию ключа
+        reverse=True # Самые свежие - вверху
+    )# ---------------------------------------------
     # TODO: Добавить пагинацию для combined_list, если данных много
     # --- Логика пагинации ---
     try:
@@ -586,7 +660,7 @@ def employee_dashboard_view(request):
             hourly_data[hour] += visit['count']
     
     visit_chart_data['today'] = hourly_data
-      # Данные для графика по дням недели
+    # Данные для графика по дням недели
     week_start = today_start - timedelta(days=today_start.weekday())  # Понедельник текущей недели
     week_end = week_start + timedelta(days=7)
     weekly_data = [0] * 7  # Пн, Вт, Ср, Чт, Пт, Сб, Вс
@@ -621,7 +695,7 @@ def employee_dashboard_view(request):
         weekly_data[idx] += visit['count']
     
     visit_chart_data['week'] = weekly_data
-      # Данные для графика по дням месяца
+    # Данные для графика по дням месяца
     month_start = today_start.replace(day=1)  # Первый день текущего месяца
     next_month = month_start.month + 1 if month_start.month < 12 else 1
     next_month_year = month_start.year if month_start.month < 12 else month_start.year + 1
@@ -659,7 +733,7 @@ def employee_dashboard_view(request):
     visit_chart_data['month'] = monthly_data# Конвертируем в JSON для передачи в шаблон
     import json
     visit_chart_data_json = json.dumps(visit_chart_data)
-      # Получаем недавние визиты (включая уже покинувших посетителей) 
+    # Получаем недавние визиты (включая уже покинувших посетителей) 
     # за последние 7 дней из текущего департамента
     recent_time_threshold = timezone.now() - timedelta(days=7)
     
@@ -688,20 +762,56 @@ def employee_dashboard_view(request):
     
     # Добавляем атрибут для различения типов визитов в шаблоне
     for v in recent_official_visits: v.visit_kind = 'official'
-    for v in recent_student_visits: v.visit_kind = 'student'
-    
-    # Объединяем и сортируем по времени входа (самые новые вверху)
+    for v in recent_student_visits: v.visit_kind = 'student'    # Объединяем и сортируем по времени входа (самые новые вверху)
     recent_visits = sorted(
         chain(recent_official_visits, recent_student_visits),
         key=attrgetter('entry_time'),
         reverse=True
     )[:10]  # Берем только 10 самых недавних визитов
     
-    group_invitations = GroupInvitation.objects.filter(
-        employee=user,
-        is_filled=True,
-        is_registered=False
-    ).select_related('department').order_by('-created_at')
+    # Инициализируем переменные до try-except блока
+    has_invitation_data_issues = False
+    group_invitations = []
+    
+    # Рассчитаем процентное соотношение типов визитов для графика
+    official_count = Visit.objects.filter(department_filter).count()
+    student_count = StudentVisit.objects.filter(student_department_filter).count()
+    total_count = official_count + student_count
+    
+    official_percent = int((official_count / total_count) * 100) if total_count > 0 else 50
+    student_percent = int((student_count / total_count) * 100) if total_count > 0 else 50
+    
+    try:
+        # Получаем групповые приглашения с предварительной загрузкой данных о гостях
+        group_invitations = GroupInvitation.objects.filter(
+            employee=user,
+            is_filled=True,
+            is_registered=False
+        ).select_related('department').prefetch_related('guests').order_by('-created_at')
+        
+        # Для каждого приглашения безопасно вычисляем количество гостей и добавляем как атрибут
+        for invite in group_invitations:
+            try:
+                guest_count = invite.guests.count()
+                invite.guest_count = guest_count
+                
+                # Проверяем обязательные поля
+                if not invite.token or not invite.department:
+                    logger.warning(f"Приглашение {invite.pk} имеет некорректные данные (отсутствуют token или department)")
+                    has_invitation_data_issues = True
+            except Exception as inner_e:
+                logger.warning(f"Не удалось получить количество гостей для приглашения {invite.pk}: {inner_e}")
+                invite.guest_count = 0
+                has_invitation_data_issues = True
+            
+    except Exception as e:
+        logger.error(f"Ошибка при получении групповых приглашений: {e}", exc_info=True)
+        group_invitations = []
+        has_invitation_data_issues = True
+    
+    # Если были проблемы с данными, добавим предупреждение для пользователя
+    if has_invitation_data_issues:
+        messages.warning(request, "Некоторые групповые приглашения могут отображаться некорректно из-за проблем с данными.")
     
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
@@ -713,6 +823,9 @@ def employee_dashboard_view(request):
         'visit_chart_data': visit_chart_data_json,  # Добавляем данные для графика
         'pending_invitations': pending_invitations,  # Добавляем заполненные приглашения
         'group_invitations': group_invitations,  # Добавляем приглашения в группы
+        'has_invitation_data_issues': has_invitation_data_issues,  # Флаг проблем с данными приглашений
+        'official_visits_percent': official_percent,  # Процент официальных визитов для графика
+        'student_visits_percent': student_percent,   # Процент студенческих визитов для графика
     }
     return render(request, 'visitors/employee_dashboard.html', context)
 
@@ -1359,6 +1472,7 @@ def profile_setup_view(request):
 
     if request.method == 'POST':
         form = ProfileSetupForm(request.POST, instance=profile)
+
         if form.is_valid():
             form.save()
             messages.success(request, "Ваш профиль успешно настроен!")
@@ -1625,23 +1739,71 @@ def group_visit_card_view(request, pk):
 # --------------------------------------------------------------------------
 
 @login_required
-def register_group_visit_view(request):
+def register_group_visit_view(request, invitation_id):
+    """
+    Регистрирует групповой визит на основе заполненного приглашения.
+    """
+    try:
+        invitation = GroupInvitation.objects.get(
+            id=invitation_id,
+            employee=request.user,
+            is_filled=True,
+            is_registered=False
+        )
+    except GroupInvitation.DoesNotExist:
+        messages.error(request, "Приглашение не найдено или уже зарегистрировано.")
+        return redirect('employee_dashboard')
+
     if request.method == 'POST':
-        form = GroupVisitRegistrationForm(request.POST)
+        form = GroupVisitRegistrationForm(request.POST, instance=invitation)
         if form.is_valid():
             try:
-                group_visit = form.save(request.user)
-                messages.success(request, f"Групповой визит '{group_visit.group_name}' успешно зарегистрирован!")
+                group_invitation = form.save(request.user)
+                messages.success(request, "Групповой визит успешно зарегистрирован!")
                 return redirect('employee_dashboard')
             except Exception as e:
                 messages.error(request, f"Ошибка при регистрации группового визита: {e}")
         else:
             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
     else:
-        form = GroupVisitRegistrationForm()
+        form = GroupVisitRegistrationForm(instance=invitation)
 
     context = {
         'form': form,
+        'invitation': invitation,
         'title': 'Регистрация группового визита'
     }
     return render(request, 'visitors/register_group_visit.html', context)
+
+# --- View для отметки выхода ГРУППЫ ---
+@login_required
+@require_POST
+def mark_group_exit_view(request, visit_id):
+    """Отмечает выход группы (модель GroupInvitation)."""
+    try:
+        # Пытаемся получить объект GroupInvitation по ID
+        group_visit = get_object_or_404(GroupInvitation, pk=visit_id)
+
+        # Проверяем, зарегистрирована ли группа и не отмечен ли уже выход
+        if not group_visit.is_registered or group_visit.is_completed:
+            messages.warning(request, f"Невозможно отметить выход для группового визита. "
+                                      f"Визит либо не зарегистрирован, либо уже завершен.")
+            return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
+
+        # Отмечаем выход группы
+        group_visit.exit_time = timezone.now()
+        group_visit.is_completed = True
+        group_visit.save(update_fields=['exit_time', 'is_completed'])
+
+        messages.success(request, f"Выход для группового визита успешно зарегистрирован.")
+        return redirect('visit_history')
+
+    except Http404:
+        logger.warning(f"Attempted to mark exit for non-existent GroupInvitation ID: {visit_id} by user {request.user.username}")
+        messages.error(request, f"Ошибка: Групповой визит с ID {visit_id} не найден. Возможно, он был удален.")
+        return redirect('visit_history')
+
+    except Exception as e:
+        logger.error(f"Unexpected error marking group exit for visit ID {visit_id}: {e}", exc_info=True)
+        messages.error(request, "Произошла непредвиденная ошибка при отметке выхода группы.")
+        return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
