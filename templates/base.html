@@ -46,7 +46,7 @@
     .card + .card {
         margin-top: 1.5rem;
     }
-</style>    
+	</style>    
 
 </head>
 <body>    <!-- BEGIN PRELOADER -->
@@ -98,7 +98,17 @@
 	<div class="d-none d-md-flex">
 	<div class="nav-item dropdown">
 		<a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-                <span class="avatar avatar-sm bg-azure-lt rounded me-2">{{ user.get_full_name|slice:":2" }}</span>
+				<span class="avatar avatar-sm bg-azure-lt rounded me-2">
+					{% if user.first_name and user.last_name %}
+						{{ user.first_name|first }}{{ user.last_name|first }}
+					{% elif user.first_name %}
+						{{ user.first_name|first }}{{ user.first_name|slice:"1:2" }}
+					{% elif user.last_name %}
+						{{ user.last_name|first }}{{ user.last_name|slice:"1:2" }}
+					{% else %}
+						{{ user.username|slice:":2" }}
+					{% endif %}
+				</span>
 			<div class="d-none d-xl-block ps-2">
 				<div>{{ user.get_full_name|default:user.username }}</div>
 				<div class="mt-1 small text-secondary">Сотрудник</div>
@@ -144,51 +154,51 @@
 						<div class="col">
 							<!-- BEGIN NAVBAR MENU -->
 <ul class="navbar-nav">
-		<li class="nav-item {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
-			<a class="nav-link" href="{% url 'employee_dashboard' %}" >
-				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/home -->
-	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg></span>
+				<li class="nav-item {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
+					<a class="nav-link" href="{% url 'employee_dashboard' %}" >
+						<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/home -->
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg></span>
+						<span class="nav-link-title">
+							Главная
+						</span>
+					</a>
+				</li>
+			{% comment %}
+				<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+								<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/package -->
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /><path d="M16 5.25l-8 4.5" /></svg></span>
+								<span class="nav-link-title">
+									Text me
+								</span>
+							</a>
+							<div class="dropdown-menu">
+									<div class="dropdown-menu-columns">
+									<div class="dropdown-menu-column">
+									<a class="dropdown-item" href="./accordion.html">
+										Accordion
+										<span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+									</a>
+									<a class="dropdown-item" href="./alerts.html">
+										AlertsS
+									</a>
+									<div class="dropend">
+									</div>	
+								</div>
+						</li>
+			{% endcomment %}
+				<li class="nav-item {% if request.resolver_match.url_name == 'register_guest' %}active{% endif %}">
+					<a class="nav-link" href="{% url 'register_guest' %}" >
+						
+						<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M9 11l3 3l8 -8" /><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg></span>
+						
+						<span class="nav-link-title">
+							Регистрация гостя
+						</span>
+					</a>
+				</li>
 
-				<span class="nav-link-title">
-					Главная
-				</span>
-			</a>
-		</li>
-		{% comment %}
-            <li class="nav-item dropdown">
-            			<a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-            				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/package -->
-            	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /><path d="M16 5.25l-8 4.5" /></svg></span>
-            				<span class="nav-link-title">
-            					Text me
-            				</span>
-            			</a>
-            			<div class="dropdown-menu">
-            					<div class="dropdown-menu-columns">
-            					<div class="dropdown-menu-column">
-            					<a class="dropdown-item" href="./accordion.html">
-            						Accordion
-            						<span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-            					</a>
-            					<a class="dropdown-item" href="./alerts.html">
-            						AlertsS
-            					</a>
-            					<div class="dropend">
-            					</div>	
-            				</div>
-            		</li>
-        {% endcomment %}
-		<li class="nav-item {% if request.resolver_match.url_name == 'register_guest' %}active{% endif %}">
-			<a class="nav-link" href="{% url 'register_guest' %}" >
-				
-				<span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
-	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M9 11l3 3l8 -8" /><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg></span>
-				
-				<span class="nav-link-title">
-					Регистрация гостя
-				</span>
-			</a>
-		</li>
 
         {% if perms.visitors.can_register_student_visit %}
         <li class="nav-item {% if request.resolver_match.url_name == 'register_student_visit' %}active{% endif %}">
@@ -211,12 +221,25 @@
 	<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-history"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 8l0 4l2 2" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></svg></span>
 				
 				<span class="nav-link-title">
-					История визитов
+					Визиты
 				</span>
 			</a>
 		</li>
-    {% endif %}
-    {% endif %}
+				{% endif %}
+		{% endif %}
+			<!-- Добавить в навигационное меню -->
+		<li class="nav-item {% if request.resolver_match.namespace == 'classroom_book' %}active{% endif %}">
+			<a class="nav-link" href="{% url 'classroom_book:classroom_index' %}">
+				<span class="nav-link-icon d-md-none d-lg-inline-block">
+					<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-key" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+						<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+						<path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l6.558 -6.558l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0z"></path>
+						<path d="M15 9h.01"></path>
+					</svg>
+				</span>
+				<span class="nav-link-title">Бронирование аудиторий</span>
+			</a>
+		</li>
 </ul>
 </div>
 <!-- END NAVBAR MENU -->

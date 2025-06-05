@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container-xl">
+    <div class="page-header d-print-none mb-4">
+        <h2 class="page-title">Групповой визит: заполнение данных гостей</h2>
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <b>Пригласивший:</b> {{ group_invitation.employee.get_full_name|default:group_invitation.employee.username }}<br>
+                    <b>Департамент:</b> {{ group_invitation.department }}<br>
+                    <b>Цель визита:</b> {{ group_invitation.purpose }}<br>
+                </div>
+                <div class="col-md-6">
+                    <b>Время визита:</b> {{ group_invitation.visit_time|date:'d.m.Y H:i' }}<br>
+                </div>
+            </div>
+            <form method="post" id="group-form">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                <div id="guests-formset">
+                    {% for form in formset %}
+                    <div class="card mb-2 guest-form-row">
+                        <div class="card-body row g-2 align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label">ФИО</label>
+                                {{ form.full_name|add_class:'form-control' }}
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Email</label>
+                                {{ form.email|add_class:'form-control' }}
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Телефон</label>
+                                {{ form.phone_number|add_class:'form-control' }}
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">ИИН</label>
+                                {{ form.iin|add_class:'form-control' }}
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger btn-icon remove-guest-btn" title="Удалить гостя" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-outline-primary" id="add-guest-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+                        Добавить ещё гостя
+                    </button>
+                </div>
+                <button type="submit" class="btn btn-success">Сохранить гостей</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Функция для добавления класса к виджету формы (Django не делает это по умолчанию)
+function addClassToInputs() {
+    document.querySelectorAll('#guests-formset input').forEach(function(input) {
+        input.classList.add('form-control');
+    });
+}
+addClassToInputs();
+
+// Динамическое добавление гостя
+const addBtn = document.getElementById('add-guest-btn');
+const formsetDiv = document.getElementById('guests-formset');
+let totalForms = document.getElementById('id_form-TOTAL_FORMS');
+const maxForms = 10;
+
+addBtn.addEventListener('click', function() {
+    let formCount = parseInt(totalForms.value);
+    if (formCount >= maxForms) return;
+    let emptyFormHtml = `
+    <div class="card mb-2 guest-form-row">
+        <div class="card-body row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">ФИО</label>
+                <input type="text" name="form-${formCount}-full_name" class="form-control" maxlength="255" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="form-${formCount}-email" class="form-control" maxlength="255" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Телефон</label>
+                <input type="text" name="form-${formCount}-phone_number" class="form-control" maxlength="20" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">ИИН</label>
+                <input type="text" name="form-${formCount}-iin" class="form-control" maxlength="12" />
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger btn-icon remove-guest-btn" title="Удалить гостя">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>`;
+    formsetDiv.insertAdjacentHTML('beforeend', emptyFormHtml);
+    formCount++;
+    totalForms.value = formCount;
+    updateRemoveButtons();
+});
+
+function updateRemoveButtons() {
+    document.querySelectorAll('.remove-guest-btn').forEach(function(btn) {
+        btn.style.display = document.querySelectorAll('.guest-form-row').length > 1 ? '' : 'none';
+        btn.onclick = function() {
+            if (document.querySelectorAll('.guest-form-row').length > 1) {
+                btn.closest('.guest-form-row').remove();
+                totalForms.value = document.querySelectorAll('.guest-form-row').length;
+            }
+        };
+    });
+}
+updateRemoveButtons();
+</script>
+{% endblock %} 
