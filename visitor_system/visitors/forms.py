@@ -1,6 +1,6 @@
 # visitors/forms.py
 from django import forms
-from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile
+from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile, GuestInvitation, VisitPurpose, VisitGroup, GroupInvitation, GroupGuest
 from departments.models import Department
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
@@ -10,8 +10,9 @@ from django.urls import reverse_lazy
 import logging
 from django.utils import timezone
 from notifications.tasks import send_visit_notification_task # Импортируем задачу Celery
+import json
 
-from django.forms import formset_factory # Импортируем formset_factory для создания форм с несколькими экземплярами
+# from django.forms import formset_factory # Импортируем formset_factory для создания форм с несколькими экземплярами
 
 
 logger = logging.getLogger(__name__)
@@ -394,6 +395,19 @@ class HistoryFilterForm(forms.Form):
         choices=HISTORY_STATUS_CHOICES, # Используем новый список
         widget=forms.Select(attrs={'class': 'form-select form-select-sm'})
     )
+    # Тип визита (Обычный, Студенческий, Групповой)
+    VISIT_TYPE_CHOICES = [
+        ('', 'Все типы'),
+        ('official', 'Официальный визит'),
+        ('student', 'Студенческий визит'),
+        ('group', 'Групповой визит'),
+    ]
+    visit_type = forms.ChoiceField(
+        label='Тип визита',
+        required=False,
+        choices=VISIT_TYPE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select form-select-sm'})
+    )
     # ------------------------------------
     department = forms.ModelChoiceField(
         queryset=Department.objects.all(), label='Департамент', required=False,
@@ -430,10 +444,75 @@ class ProfileSetupForm(forms.ModelForm):
         queryset=Department.objects.order_by('name'), # Сортируем департаменты
         label="Ваш департамент", required=True,
         empty_label="Выберите департамент..." # Подсказка для пустого значения
-    )
-
+    )    
     class Meta:
         model = EmployeeProfile
         fields = ['phone_number', 'department'] # Только эти поля
 # -------------------------------------
+
+class GuestInvitationFillForm(forms.ModelForm):
+    guest_iin = forms.CharField(
+        label="ИИН (12 цифр)",
+        max_length=12,
+        required=True,
+        validators=[
+            RegexValidator(regex=r'^\d{12}$', message='ИИН должен состоять ровно из 12 цифр.'),
+            MinLengthValidator(12), 
+            MaxLengthValidator(12)
+        ],
+        widget=forms.TextInput(attrs={
+            'placeholder': '123456789012',
+            'pattern': '[0-9]{12}',
+            'class': 'form-control'
+        })
+    )
+    
+    class Meta:
+        model = GuestInvitation
+        fields = ['guest_full_name', 'guest_email', 'guest_phone', 'guest_iin', 'guest_photo']
+        widgets = {
+            'guest_full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Иванов Иван Иванович'}),
+            'guest_iin': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '123456789012',
+                'pattern': '[0-9]{12}',
+                'title': 'ИИН должен состоять ровно из 12 цифр.'
+            }),            
+            'guest_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'ivan@example.com'}),
+            'guest_phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+7 700 123 45 67'}),
+            'guest_photo': forms.ClearableFileInput(attrs={'accept': 'image/*', 'class': 'form-control'}),
+        }
+
+class GuestInvitationFinalizeForm(forms.ModelForm):
+    visit_time = forms.DateTimeField(
+        label="Время визита",
+        required=True,
+        widget=forms.DateTimeInput(attrs={
+            'type': 'datetime-local',
+            'class': 'form-control'
+        }),
+        help_text="Укажите планируемое время визита"
+    )
+    
+    class Meta:
+        model = GuestInvitation
+        fields = ['visit_time']
+
+class GroupVisitRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = GroupInvitation
+        fields = ['group_name', 'department', 'purpose', 'visit_time']
+        widgets = {
+            'visit_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'purpose': forms.Textarea(attrs={'rows': 3}),
+            'group_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Например: Делегация из университета XYZ'}),
+        }
+
+    def save(self, user):
+        group_invitation = super().save(commit=False)
+        group_invitation.employee = user
+        group_invitation.is_filled = True
+        group_invitation.is_registered = True
+        group_invitation.save()
+        return group_invitation
 

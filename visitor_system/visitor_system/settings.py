@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_select2',
     'django_filters',
-    'debug_toolbar',
+    # 'debug_toolbar',
     
     'pwa',
     'widget_tweaks',
@@ -63,13 +63,14 @@ INSTALLED_APPS = [
     'visitors',
     'departments',
     'notifications',
+    'classroom_book',
     
 ]
 
 
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",  # Middleware для Django Debug Toolbar
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",  # Middleware для Django Debug Toolbar
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', # Для работы с WhiteNoise
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -85,6 +86,9 @@ MIDDLEWARE = [
 ]
 
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
@@ -238,7 +242,7 @@ SESSION_COOKIE_SECURE = True
 # Замените '15f6-85-159-27-200.ngrok-free.app' на ваш ТЕКУЩИЙ ngrok URL,
 # но без 'https://' в начале.
 CSRF_TRUSTED_ORIGINS = [
-    'https://aaa5-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
+    'https://4efb-85-159-27-200.ngrok-free.app' # <-- ВАШ NGROK URL
     # Можно добавить и другие доверенные хосты, если нужно, например,
     # 'http://localhost:8000',
     # 'http://127.0.0.1:8000'

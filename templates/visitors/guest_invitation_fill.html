@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Заполнение приглашения</title>
+<!-- Мета-тег для корректного отображения на мобильных устройствах -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Добавляем библиотеку IMask для создания масок ввода -->
+<script src="https://unpkg.com/imask@6.4.3/dist/imask.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+<!-- Стили для мобильной адаптации -->
+<style>
+    @media (max-width: 768px) {
+        .page-header {
+            padding: 1rem 0;
+        }
+        .page-title {
+            font-size: 1.25rem;
+        }
+        .page-subtitle {
+            font-size: 0.875rem;
+        }
+        .card {
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+        }
+        .card-header {
+            padding: 0.75rem 1rem;
+        }
+        .card-body {
+            padding: 1rem;
+        }
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .form-control {
+            font-size: 16px; /* Предотвращает зум на iOS */
+            padding: 0.75rem;
+        }
+        .btn {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        .alert {
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .alert-title {
+            font-size: 1rem;
+        }
+        .form-text {
+            font-size: 0.75rem;
+        }
+        /* Скрываем некоторые декоративные элементы на мобильных */
+        .card-sm .avatar {
+            width: 2rem;
+            height: 2rem;
+        }
+        .icon-tabler {
+            width: 18px;
+            height: 18px;
+        }
+        /* Улучшаем отступы для мобильных */
+        .container-xl {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        /* Делаем кнопки на всю ширину на мобильных */
+        .card-footer .btn {
+            flex: 1;
+            margin: 0 0.25rem;
+        }
+        .card-footer {
+            padding: 1rem;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .card-footer .btn:first-child {
+            margin-bottom: 0.5rem;
+        }
+    }
+      @media (max-width: 576px) {
+        .col-md-6 {
+            margin-bottom: 1rem;
+        }
+        .row.g-3 {
+            gap: 0.5rem;
+        }
+        /* На очень маленьких экранах делаем кнопки вертикально */
+        .card-footer {
+            flex-direction: column;
+        }
+        .card-footer .btn {
+            width: 100%;
+            margin: 0;
+        }
+        /* Улучшаем читаемость на маленьких экранах */
+        .card-title {
+            font-size: 1rem;
+        }
+        .form-text {
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+        /* Оптимизируем высоту элементов формы */
+        .form-control {
+            min-height: 44px;
+        }
+        /* Улучшаем отображение файлового поля */
+        input[type="file"] {
+            padding: 0.5rem;
+            font-size: 14px;
+        }
+    }
+    
+    /* Дополнительные улучшения для всех мобильных устройств */
+    @media (max-width: 768px) {
+        /* Улучшаем видимость активных элементов */
+        .form-control:focus {
+            border-width: 2px;
+            box-shadow: 0 0 0 0.2rem rgba(32, 107, 196, 0.25);
+        }
+        
+        /* Оптимизируем spacing для touch интерфейса */
+        .btn {
+            min-height: 44px;
+            margin: 0.25rem 0;
+        }
+        
+        /* Улучшаем отображение иконок */
+        .icon-tabler {
+            flex-shrink: 0;
+        }
+        
+        /* Оптимизируем alert для мобильных */
+        .alert {
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .alert-title {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+    }
+</style>
+
+{% block content %}
+<!-- BEGIN PAGE HEADER -->
+{% comment %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">                
+                <div class="col">
+                    <h2 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check me-2 text-primary" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h2.5" />
+                            <path d="M15 19l2 2l4 -4" />
+                        </svg>
+                        <span class="d-none d-sm-inline">Приглашение в университет</span>
+                        <span class="d-sm-none">Приглашение</span>
+                    </h2>
+                    <div class="page-subtitle">
+                        <span class="d-none d-md-inline">Приглашение от</span> <strong>{{ invitation.employee.get_full_name|default:invitation.employee.username }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endcomment %}
+<!-- END PAGE HEADER -->
+
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                
+                <!-- Welcome Card -->
+                <div class="card mb-3 mb-md-4">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-handshake me-2" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M11 4h2a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1z" />
+                                <path d="M19 10v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-8" />
+                                <path d="M9 10v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-8" />
+                                <path d="M15 6l-2 -2l-2 2" />
+                                <path d="M5 10h14" />
+                            </svg>
+                            Добро пожаловать!
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info" role="alert">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+                                </div>
+                                <div class="ms-2">
+                                    <h4 class="alert-title">Заполните ваши данные</h4>
+                                    <div class="text-muted">
+                                        <span class="d-none d-md-inline">Пожалуйста, внимательно заполните все обязательные поля для посещения университета. Ваши данные будут использованы для оформления пропуска.</span>
+                                        <span class="d-md-none">Заполните все обязательные поля для получения пропуска.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employee Info Cards - стекируются на мобильных -->
+                        <div class="row g-2 g-md-3">
+                            <div class="col-12 col-md-6">
+                                <div class="card card-sm">
+                                    <div class="card-body p-2 p-md-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-primary text-white avatar avatar-sm">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium small">
+                                                    <span class="d-none d-sm-inline">Принимающий сотрудник</span>
+                                                    <span class="d-sm-none">Сотрудник</span>
+                                                </div>
+                                                <div class="text-muted small">
+                                                    {{ invitation.employee.get_full_name|default:invitation.employee.username }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-md-6">
+                                <div class="card card-sm">
+                                    <div class="card-body p-2 p-md-3">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-green text-white avatar avatar-sm">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+                                                        <path d="M9 12l2 2l4 -4" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium small">
+                                                    <span class="d-none d-sm-inline">Статус приглашения</span>
+                                                    <span class="d-sm-none">Статус</span>
+                                                </div>
+                                                <div class="text-muted small">
+                                                    Активное
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guest Data Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-forms me-2" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M12 3a3 3 0 0 0 -3 3v12a3 3 0 0 0 3 3" />
+                                <path d="M6 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3" />
+                                <path d="M13 7h7a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-7" />
+                                <path d="M5 7h7a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-7" />
+                                <path d="M17 12h.01" />
+                                <path d="M13 12h.01" />
+                            </svg>
+                            <span class="d-none d-sm-inline">Ваши персональные данные</span>
+                            <span class="d-sm-none">Ваши данные</span>
+                        </h3>
+                        
+                    </div>
+                    <div class="card-body">
+                        
+                        <!-- Display form errors if any -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M12 9v2m0 4v.01" />
+                                            <path d="M5 19h14a2 2 0 0 0 1.414 -3.414l-7 -7a2 2 0 0 0 -2.828 0l-7 7a2 2 0 0 0 1.414 3.414z" />
+                                        </svg>
+                                    </div>
+                                    <div class="ms-2">
+                                        <h4 class="alert-title">Ошибки в форме</h4>
+                                        <div class="text-muted">
+                                            {% for error in form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <form method="post" enctype="multipart/form-data" novalidate class="needs-validation">
+                            {% csrf_token %}
+                            
+                            <!-- Full Name Field -->
+                            <div class="mb-3">
+                                <label for="{{ form.guest_full_name.id_for_label }}" class="form-label required">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                    </svg>
+                                    {{ form.guest_full_name.label }}
+                                </label>
+                                {{ form.guest_full_name }}
+                                {% if form.guest_full_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.guest_full_name.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">
+                                    <span class="d-none d-sm-inline">Введите ваше полное ФИО как в документе</span>
+                                    <span class="d-sm-none">ФИО как в документе</span>
+                                </div>
+                            </div>
+
+                            <!-- IIN Field -->
+                            <div class="mb-3">
+                                <label for="{{ form.guest_iin.id_for_label }}" class="form-label required">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                                        <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                        <path d="M15 8l2 0" />
+                                        <path d="M15 12l2 0" />
+                                        <path d="M7 16l10 0" />
+                                    </svg>
+                                    {{ form.guest_iin.label }}
+                                </label>
+                                {{ form.guest_iin }}
+                                {% if form.guest_iin.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.guest_iin.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">
+                                    <span class="d-none d-sm-inline">12-значный индивидуальный идентификационный номер</span>
+                                    <span class="d-sm-none">12-значный ИИН</span>
+                                </div>
+                            </div>
+
+                            <!-- Email and Phone Row - стекируются на мобильных -->
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="{{ form.guest_email.id_for_label }}" class="form-label required">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                                                <path d="M3 7l9 6l9 -6" />
+                                            </svg>
+                                            {{ form.guest_email.label }}
+                                        </label>
+                                        {{ form.guest_email }}
+                                        {% if form.guest_email.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.guest_email.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-text">
+                                            <span class="d-none d-sm-inline">Для отправки уведомлений</span>
+                                            <span class="d-sm-none">Для уведомлений</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="guest_phone_masked" class="form-label required">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                                            </svg>
+                                            {{ form.guest_phone.label }}
+                                        </label>
+                                        <!-- Поле с маской для отображения -->
+                                        <input type="tel" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __" inputmode="numeric">
+                                        {% if form.guest_phone.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.guest_phone.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <!-- Скрытое поле для хранения значения без маски -->
+                                        <input type="hidden" name="{{ form.guest_phone.html_name }}" id="{{ form.guest_phone.id_for_label }}" value="{{ form.guest_phone.value|default:'' }}">
+                                        <div class="form-text">
+                                            <span class="d-none d-sm-inline">Контактный номер телефона</span>
+                                            <span class="d-sm-none">Номер телефона</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Photo Upload -->
+                            <div class="mb-4">
+                                <label for="{{ form.guest_photo.id_for_label }}" class="form-label required">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-camera me-1" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+                                        <path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                    </svg>
+                                    {{ form.guest_photo.label }}
+                                </label>
+                                <div class="card card-sm">
+                                    <div class="card-body p-2 p-md-3">
+                                        {{ form.guest_photo }}
+                                        {% if form.guest_photo.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.guest_photo.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-text mt-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle me-1" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                                <path d="M12 9h.01" />
+                                                <path d="M11 12h1v4h1" />
+                                            </svg>
+                                            <span class="d-none d-sm-inline">Загрузите вашу фотографию 3x4 для пропуска</span>
+                                            <span class="d-sm-none">Фото для пропуска</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Data Processing Notice -->
+                            <div class="alert alert-warning" role="alert">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M12 9v4" />
+                                                    <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                                    <path d="M12 16h.01" />
+                                                </svg>
+                                    </div>
+                                    <div class="ms-2">
+                                        <h4 class="alert-title">
+                                            <span class="d-none d-sm-inline">Обработка персональных данных</span>
+                                            <span class="d-sm-none">Обработка данных</span>
+                                        </h4>
+                                        <div class="text-muted">
+                                            <span class="d-none d-sm-inline">Заполняя эту форму, вы соглашаетесь на обработку ваших персональных данных в соответствии с <strong>Законом РК "О персональных данных и их защите"</strong></span>
+                                            <span class="d-sm-none">Заполняя форму, вы соглашаетесь на обработку данных согласно <strong>Закону РК</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                                <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left me-1" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M5 12l14 0" />
+                                        <path d="M5 12l6 6" />
+                                        <path d="m5 12l6 -6" />
+                                    </svg>
+                                    <span class="d-none d-sm-inline">Назад</span>
+                                    <span class="d-sm-none">←</span>
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send me-1" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M10 14l11 -11" />
+                                        <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                                    </svg>
+                                    <span class="d-none d-sm-inline">Отправить данные</span>
+                                    <span class="d-sm-none">Отправить</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация маски для телефона
+    const phoneField = document.getElementById('guest_phone_masked');
+    const hiddenPhoneField = document.getElementById('{{ form.guest_phone.id_for_label }}');
+    
+    if (phoneField && hiddenPhoneField) {
+        const phoneMask = IMask(phoneField, {
+            mask: '+{7} (000) 000 00 00',
+            definitions: {
+                '0': /[0-9]/
+            }
+        });
+
+        // Устанавливаем начальное значение, если есть
+        if (hiddenPhoneField.value) {
+            phoneMask.value = hiddenPhoneField.value;
+        }
+
+        // Обновляем скрытое поле при изменении
+        phoneMask.on('accept', function() {
+            hiddenPhoneField.value = phoneMask.unmaskedValue;
+        });
+    }    // Валидация формы с улучшенной обратной связью для мобильных
+    const form = document.querySelector('form');
+    if (form) {
+        // Добавляем состояние загрузки для улучшения UX на мобильных
+        form.addEventListener('submit', function(e) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            let firstInvalidField = null;
+
+            // Проверка валидности полей
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                    if (!firstInvalidField) {
+                        firstInvalidField = field;
+                    }
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                // Прокручиваем к первому неверному полю и фокусируемся на нем
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    setTimeout(() => {
+                        firstInvalidField.focus();
+                    }, 300);
+                }
+                
+                // Показываем уведомление
+                const existingAlert = document.querySelector('.validation-alert');
+                if (existingAlert) {
+                    existingAlert.remove();
+                }
+                
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger validation-alert mt-3';
+                alertDiv.innerHTML = `
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M12 9v2m0 4v.01" />
+                                <path d="M5 19h14a2 2 0 0 0 1.414 -3.414l-7 -7a2 2 0 0 0 -2.828 0l-7 7a2 2 0 0 0 1.414 3.414z" />
+                            </svg>
+                        </div>
+                        <div class="ms-2">
+                            <h4 class="alert-title">Заполните обязательные поля</h4>
+                            <div class="text-muted">Пожалуйста, заполните все обязательные поля формы</div>
+                        </div>
+                    </div>
+                `;
+                
+                form.insertBefore(alertDiv, form.firstChild);
+                
+                // Автоматически скрываем уведомление через 5 секунд
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000);
+            } else {
+                // Показываем состояние загрузки при отправке формы
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = `
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span class="d-none d-sm-inline">Отправка...</span>
+                        <span class="d-sm-none">...</span>
+                    `;
+                    
+                    // Если форма не отправилась через 10 секунд, возвращаем кнопку в исходное состояние
+                    setTimeout(() => {
+                        if (submitBtn.disabled) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = `
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send me-1" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M10 14l11 -11" />
+                                    <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                                </svg>
+                                <span class="d-none d-sm-inline">Отправить данные</span>
+                                <span class="d-sm-none">Отправить</span>
+                            `;
+                        }
+                    }, 10000);
+                }
+            }
+        });
+    }
+
+    // Улучшенная обработка ошибок валидации в реальном времени
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.hasAttribute('required') && !this.value.trim()) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+        });
+        
+        input.addEventListener('input', function() {
+            if (this.classList.contains('is-invalid') && this.value.trim()) {
+                this.classList.remove('is-invalid');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

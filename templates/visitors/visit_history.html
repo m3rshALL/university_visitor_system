@@ -48,11 +48,12 @@
 
                                     tableRows.forEach(row => {
                                         const visitor = row.querySelector('.sort-name')?.textContent.toLowerCase() || '';
+                                        const iin = row.querySelector('.sort-iin')?.textContent.toLowerCase() || '';
                                         const department = row.querySelector('.sort-status')?.textContent.toLowerCase() || '';
                                         const employee = row.querySelector('.sort-city')?.textContent.toLowerCase() || '';
                                         const purpose = row.querySelector('.sort-tags')?.textContent.toLowerCase() || '';
 
-                                        if (visitor.includes(query) || department.includes(query) || employee.includes(query) || purpose.includes(query)) {
+                                        if (visitor.includes(query) || iin.includes(query) || department.includes(query) || employee.includes(query) || purpose.includes(query)) {
                                             row.style.display = '';
                                         } else {
                                             row.style.display = 'none';
@@ -63,16 +64,19 @@
                             </script>
                   </div>
                   {% comment %}
-                     <a href="#" class="btn btn-icon" aria-label="Button">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/dots -->
+                     <a class="btn btn-icon" aria-label="Button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                           <path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                           <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                           <path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                           <path d="M12 5v14m7-7H5"></path>
                         </svg>
-                     </a>
+   						</a>
                   {% endcomment %}
-                  <div class="dropdown">
+                  <a id="filter-selected-btn" class="btn btn-outline-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Показать только отмеченные записи">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-filter">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-9l-4.414 -4.414a2 2 0 0 1 -.586 -1.414v-2.172z" />
+                     </svg>
+                     <span class="btn-text">Показать отмеченных</span>
+                  </a>                  <div class="dropdown">
                     <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
                         Статусы
@@ -102,6 +106,33 @@
                         </a>
                     </div>
                   </div>
+                  
+                  <div class="dropdown ms-2">
+                    <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users-group"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" /><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M17 10h2a2 2 0 0 1 2 2v1" /><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M3 13v-1a2 2 0 0 1 2 -2h2" /></svg>
+                        Тип визита
+                    </a>
+                     
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item {% if not request.GET.visit_type %}active{% endif %}" 
+                           href="{% url 'visit_history' %}{% if request.GET.urlencode and '&visit_type=' not in request.GET.urlencode and 'visit_type=' not in request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}">
+                            Все типы
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item {% if request.GET.visit_type == 'official' %}active{% endif %}" 
+                           href="?visit_type=official{% if request.GET.urlencode and 'visit_type=' not in request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                            <span class="badge bg-blue-lt">Официальный визит</span>
+                        </a>
+                        <a class="dropdown-item {% if request.GET.visit_type == 'student' %}active{% endif %}"
+                           href="?visit_type=student{% if request.GET.urlencode and 'visit_type=' not in request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                            <span class="badge bg-orange-lt">Студенческий визит</span>
+                        </a>
+                        <a class="dropdown-item {% if request.GET.visit_type == 'group' %}active{% endif %}"
+                           href="?visit_type=group{% if request.GET.urlencode and 'visit_type=' not in request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">
+                            <span class="badge bg-green-lt">Групповой визит</span>
+                        </a>
+                    </div>
+                  </div>
                   {% if user.is_staff or perms.visitors.can_view_visit_statistics %}  
                   <a href="{% url 'export_visits_xlsx' %}?{{ request.GET.urlencode }}" class="btn btn-0 {% if show_filters %}ms-2{% endif %}">
                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-excel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>                   
@@ -115,12 +146,18 @@
       </div>
       <div id="advanced-table">
          <div class="table-responsive">
-            <table class="table table-vcenter table-selectable">               <thead>
+            <table class="table table-vcenter table-selectable">               
+               <thead>
                   <tr>
                      <th class="w-1"></th>
                      <th>
                         <button class="table-sort" data-sort="sort-name">
                            Посетитель
+                        </button>
+                     </th>
+                     <th>
+                        <button class="table-sort" data-sort="sort-iin">
+                           ИИН
                         </button>
                      </th>
                      <th>
@@ -156,27 +193,52 @@
                   </tr>
                </thead>
                <tbody class="table-tbody">
-                {% for visit in page_obj %}
+               {% for visit in page_obj %}
                   <tr>
                      <td>
-                        {% comment %}
-                            <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true">
-                        {% endcomment %}
-                     </td>
+                        <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true">
+                     </td>                     
                      <td class="sort-name">
-                        </span>
-                        {% if visit.visit_kind == 'official' %} <a href="{% url 'visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
-                        {% elif visit.visit_kind == 'student' %} <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
-                        {% else %} {{ visit.guest.full_name }} {% endif %}
+                        </span>                        {% if visit.visit_kind == 'official' %} <a href="{% url 'visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
+                        {% elif visit.visit_kind == 'student' %} <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>                        {% elif visit.visit_kind == 'group' %} 
+                            <a href="{% url 'group_visit_card' visit.id %}">
+                            <span class="badge bg-orange-lt me-1">Группа</span>
+                            {% if visit.guest %}
+                                {{ visit.guest.full_name }}
+                                {% if visit.guests_count > 1 %}
+                                    <span class="badge bg-orange-lt ms-1">+{{ visit.guests_count|add:"-1" }}</span>
+                                {% endif %}
+                            {% else %}
+                                {{ visit.purpose|default:"Групповой визит"|truncatechars:25 }}
+                            {% endif %}
+                            </a>
+                        {% else %} 
+                            {{ visit.guest.full_name }} 
+                        {% endif %}
                      </td>
+                      <td class="sort-iin">
+                        {% if visit.visit_kind == 'group' %}
+                           -
+                        {% else %}
+                           {{ visit.guest.iin|default:"-" }}
+                        {% endif %}
+                      </td>
                      <td class="sort-city">
-                        {% if visit.visit_kind == 'official' and visit.employee %} {{ visit.employee.get_full_name|default:visit.employee.username }}
-                     {% elif visit.visit_kind == 'student' %} ID: {{ visit.student_id_number|default:"-" }} <br> Гр: {{ visit.student_group|default:"-" }} К: {{ visit.student_course|default:"-" }}
-                     {% else %} - {% endif %}
+                        {% if visit.visit_kind == 'official' and visit.employee %} 
+                            {{ visit.employee.get_full_name|default:visit.employee.username }}
+                        {% elif visit.visit_kind == 'student' %} 
+                            ID: {{ visit.student_id_number|default:"-" }} <br> Гр: {{ visit.student_group|default:"-" }} К: {{ visit.student_course|default:"-" }}
+                        {% elif visit.visit_kind == 'group' and visit.employee %} 
+                            {{ visit.employee.get_full_name|default:visit.employee.username }}
+                            <span class="badge bg-info-lt ms-1">Группа</span>
+                        {% else %} 
+                            - 
+                        {% endif %}
                      </td>
                      <td class="sort-status">
                         <span class="">{{ visit.department.name|default:"-" }}</span>									
-                     </td>                     <td class="sort-entry">
+                     </td>                     
+                     <td class="sort-entry">
                         <span class="">
                             {% if visit.entry_time %} {{ visit.entry_time|date:"Y-m-d H:i" }}
                             {% elif visit.status == 'AWAITING' %} {# Используйте ваше значение STATUS_AWAITING_ARRIVAL #}
@@ -193,7 +255,7 @@
                     {% elif visit.status == 'AWAITING' %} <span class="text-muted">-</span> {# Ожидающим не показываем статус выхода #}
                     {% elif visit.status == 'CANCELLED' %} <span class="text-muted">-</span> {# Отмененным тоже #}
                     {% else %} <span class="text-muted">-</span> {% endif %}
-                     </td>
+                     </td>                     
                      <td class="sort-tags">
                         <div class="badges-list">
                            {% if visit.purpose %}
@@ -202,10 +264,25 @@
                               <span class="text-muted">-</span>
                            {% endif %}
                         </div>
-                     </td>
-                     <td class="sort-category py-0">
+                     </td>                       
+                     <td class="sort-category py-0">                        
                         <span class="on-unchecked">
-                        {% if visit.status == 'AWAITING' %}
+                        {% if visit.visit_kind == 'group' and visit.status == 'CHECKED_OUT' %}
+                            <span class="badge bg-secondary-lt">Завершен</span>
+                        {% elif visit.visit_kind == 'group' and visit.status == 'CHECKED_IN' %}
+                             {# Кнопка Check-out для группы #}
+                             <form action="{% url 'mark_group_exit' visit.id %}" method="post" class="d-inline">
+                                 {% csrf_token %}
+                                 <button type="submit" class="badge bg-success-lt btn btn-sm" title="Отметить выход группы">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                       <polyline points="16 17 21 12 16 7" />
+                                       <line x1="21" y1="12" x2="9" y2="12" />
+                                    </svg>
+                                    Выход группы
+                                 </button>
+                             </form>
+                        {% elif visit.status == 'AWAITING' %}
                             {# Кнопка Check-in #}
                             <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
                                 {% csrf_token %}
@@ -219,7 +296,7 @@
                               </button>
                             </form>
                             {# Кнопка Cancel #}
-                            <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                            <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline-ms-1">
                                 {% csrf_token %}
                                 <button type="submit" class="badge bg-danger-lt btn btn-sm" title="Отменить визит"
                                        onclick="return confirm('Отменить этот визит?');">
@@ -230,10 +307,9 @@
                                     </svg>
                                     Отменить
                               </button>
-                            </form>
-
-                        {% elif visit.status == 'CHECKED_IN' %}
-                             {# Кнопка Check-out #}
+                            </form>                            
+                            {% elif visit.status == 'CHECKED_IN' and visit.visit_kind != 'group' %}
+                             {# Кнопка Check-out - только для не-групповых визитов (у групп своя кнопка выше) #}
                              <form {% if visit.visit_kind == 'official' %} action="{% url 'mark_guest_exit' visit.id %}"
                                    {% elif visit.visit_kind == 'student' %} action="{% url 'mark_student_exit' visit.id %}"
                                    {% endif %} method="post" class="d-inline">
@@ -254,6 +330,64 @@
                         </span>
                         <div class="on-checked">
                            <div class="d-flex justify-content-end">
+                              {% if visit.visit_kind == 'group' and visit.status == 'CHECKED_OUT' %}
+                                <span class="badge bg-secondary-lt">Завершен</span>
+                              {% elif visit.visit_kind == 'group' and visit.status == 'CHECKED_IN' %}
+                                {# Кнопка Check-out для группы #}
+                                <form action="{% url 'mark_group_exit' visit.id %}" method="post" class="d-inline">
+                                  {% csrf_token %}
+                                  <button type="submit" class="badge bg-success-lt btn btn-sm" title="Отметить выход группы">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                      <polyline points="16 17 21 12 16 7" />
+                                      <line x1="21" y1="12" x2="9" y2="12" />
+                                    </svg>
+                                    Выход группы
+                                  </button>
+                                </form>                              
+                                {% elif visit.status == 'AWAITING' %}
+                                {# Кнопка Check-in #}
+                                <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                                  {% csrf_token %}
+                                  <button type="submit" class="badge bg-success-lt btn btn-sm" title="Зарегистрировать вход">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                                      <polyline points="10 17 15 12 10 7" />
+                                      <line x1="15" y1="12" x2="3" y2="12" />
+                                    </svg>
+                                    Вход
+                                  </button>
+                                </form>
+                                {# Кнопка Cancel #}
+                                <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline ms-1">
+                                  {% csrf_token %}
+                                  <button type="submit" class="badge bg-danger-lt btn btn-sm" title="Отменить визит" onclick="return confirm('Отменить этот визит?');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                      <circle cx="12" cy="12" r="10" />
+                                      <line x1="15" y1="9" x2="9" y2="15" />
+                                      <line x1="9" y1="9" x2="15" y2="15" />
+                                    </svg>
+                                    Отменить
+                                  </button>
+                                </form>
+                              {% elif visit.status == 'CHECKED_IN' and visit.visit_kind != 'group' %}
+                                {# Кнопка Check-out - только для не-групповых визитов (у групп своя кнопка выше) #}
+                                <form {% if visit.visit_kind == 'official' %} action="{% url 'mark_guest_exit' visit.id %}"
+                                      {% elif visit.visit_kind == 'student' %} action="{% url 'mark_student_exit' visit.id %}"
+                                      {% endif %} method="post" class="d-inline">
+                                  {% csrf_token %}
+                                  <button type="submit" class="badge bg-secondary-lt btn btn-sm" title="Отметить выход">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1">
+                                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                      <polyline points="16 17 21 12 16 7" />
+                                      <line x1="21" y1="12" x2="9" y2="12" />
+                                    </svg>
+                                    Выход
+                                  </button>
+                                </form>
+                              {% else %}
+                                <span class="text-muted">-</span>
+                              {% endif %}
                            </div>
                         </div>
                      </td>
@@ -295,7 +429,8 @@
                         prev
                      </a>
                   </li>
-               {% endif %}               {% if page_obj.number > 3 %}
+               {% endif %}               
+               {% if page_obj.number > 3 %}
                   <li class="page-item">
                      <a class="page-link" href="?page=1{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">1</a>
                   </li>
@@ -312,7 +447,8 @@
                         <li class="page-item active">
                            <span class="page-link">{{ i }}</span>
                         </li>
-                     {% else %}                        <li class="page-item">
+                     {% else %}                        
+                     <li class="page-item">
                            <a class="page-link" href="?page={{ i }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">{{ i }}</a>
                         </li>
                      {% endif %}
@@ -324,10 +460,12 @@
                      <li class="page-item disabled">
                         <span class="page-link">...</span>
                      </li>
-                  {% endif %}                  <li class="page-item">
+                  {% endif %}                  
+                  <li class="page-item">
                      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">{{ page_obj.paginator.num_pages }}</a>
                   </li>
-               {% endif %}               {% if page_obj.has_next %}
+               {% endif %}               
+               {% if page_obj.has_next %}
                   <li class="page-item">
                      <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if filter_params_url %}&{{ filter_params_url }}{% endif %}">
                         next
@@ -550,6 +688,208 @@ document.addEventListener('DOMContentLoaded', function() {    const getCellValue
                 .forEach(tr => tbody.appendChild(tr));
         });
     });
+});
+
+// Функции для сохранения и восстановления состояния чекбоксов
+function saveCheckboxStates() {
+    const states = {};
+    document.querySelectorAll('.table-selectable-check').forEach((checkbox, index) => {
+        const row = checkbox.closest('tr');
+        const visitId = row.querySelector('form')?.action.match(/(\d+)\/$/)?.[1];
+        if (visitId) {
+            states[visitId] = checkbox.checked;
+        }
+    });
+    localStorage.setItem('visitHistory_checkboxStates', JSON.stringify(states));
+}
+
+function restoreCheckboxStates() {
+    try {
+        // Получаем выбранные элементы из URL параметров
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedFromUrl = urlParams.get('selected');
+        const hasStatusFilter = urlParams.has('status');
+        
+        // Сначала очищаем все чекбоксы
+        document.querySelectorAll('.table-selectable-check').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        if (selectedFromUrl) {
+            // Восстанавливаем из URL параметров
+            const selectedIds = selectedFromUrl.split(',');
+            document.querySelectorAll('.table-selectable-check').forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const visitId = row.querySelector('form')?.action.match(/(\d+)\/$/)?.[1];
+                if (visitId && selectedIds.includes(visitId)) {
+                    checkbox.checked = true;
+                }
+            });
+        } else {
+            // Если нет параметра selected в URL, очищаем localStorage
+            localStorage.removeItem('visitHistory_checkboxStates');
+            
+            // Если нет фильтра статуса или это была команда "Все статусы" (сброс фильтра),
+            // убедимся, что все чекбоксы сброшены
+            if (!hasStatusFilter) {
+                clearAllSelections();
+            }
+        }
+    } catch (e) {
+        console.warn('Ошибка при восстановлении состояний чекбоксов:', e);
+    }
+}
+
+function getSelectedVisitIds() {
+    const selected = [];
+    document.querySelectorAll('.table-selectable-check:checked').forEach(checkbox => {
+        const row = checkbox.closest('tr');
+        const visitId = row.querySelector('form')?.action.match(/(\d+)\/$/)?.[1];
+        if (visitId) {
+            selected.push(visitId);
+        }
+    });
+    return selected;
+}
+
+function clearAllSelections() {
+    // Очищаем все чекбоксы
+    document.querySelectorAll('.table-selectable-check').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Очищаем localStorage
+    localStorage.removeItem('visitHistory_checkboxStates');
+    
+    // Сбрасываем фильтр "Показать отмеченных"
+    const filterBtn = document.getElementById('filter-selected-btn');
+    if (filterBtn) {
+        filterSelectedActive = false;
+        document.querySelectorAll('.table-tbody tr').forEach(row => {
+            row.style.display = '';
+        });
+        filterBtn.querySelector('.btn-text').textContent = 'Показать отмеченных';
+    }
+}
+
+function updateStatusFilterLinks() {
+    const selectedIds = getSelectedVisitIds();
+    const selectedParam = selectedIds.length > 0 ? `selected=${selectedIds.join(',')}` : '';
+    
+    // Получаем текущие параметры URL без selected и status
+    const currentUrl = new URL(window.location);
+    const currentParams = new URLSearchParams(currentUrl.search);
+    currentParams.delete('selected');
+    currentParams.delete('status');
+    
+    const otherParams = currentParams.toString();
+    
+    // Обновляем все ссылки фильтров статусов
+    document.querySelectorAll('.dropdown-item').forEach(link => {
+        const linkText = link.textContent.trim();
+          if (linkText === 'Все статусы') {
+            // Для ссылки "Все статусы" - создаем прямую ссылку на сброс с обязательной очисткой всех чекбоксов
+            let newHref = window.location.pathname;
+            if (otherParams) {
+                newHref += '?' + otherParams;
+            }
+            
+            // Заменяем обычную ссылку на JavaScript-функцию, которая очищает всё перед переходом
+            link.setAttribute('href', 'javascript:void(0)');
+            if (!link.hasAttribute('data-reset-listener')) {
+                link.setAttribute('data-reset-listener', 'true');
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Очищаем все чекбоксы перед переходом
+                    clearAllSelections();
+                    // Удаляем данные из localStorage
+                    localStorage.removeItem('visitHistory_checkboxStates');
+                    // Переходим по ссылке без параметров selected и status
+                    window.location.href = newHref;
+                });
+            }
+        }else {
+            // Для остальных ссылок фильтров статусов - сохраняем selected
+            const href = link.getAttribute('href');
+            if (href && href.includes('status=')) {
+                // Извлекаем статус из href
+                const statusMatch = href.match(/status=([^&]*)/);
+                if (statusMatch) {
+                    const status = statusMatch[1];
+                    let newHref = window.location.pathname + '?status=' + status;
+                    if (otherParams) newHref += '&' + otherParams;
+                    if (selectedParam) newHref += '&' + selectedParam;
+                    link.setAttribute('href', newHref);
+                }
+            }
+        }
+    });
+}
+
+// Filter by selected checkboxes
+let filterSelectedActive = false;
+const filterBtn = document.getElementById('filter-selected-btn');
+if (filterBtn) {
+    filterBtn.addEventListener('click', function() {
+        filterSelectedActive = !filterSelectedActive;
+        
+        if (!filterSelectedActive) {
+            // When turning off the filter, clear all checkboxes
+            document.querySelectorAll('.table-tbody tr input.table-selectable-check').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            // Clear saved states in localStorage
+            localStorage.removeItem('visitHistory_checkboxStates');
+            // Update filter links to reflect that nothing is selected
+            updateStatusFilterLinks();
+        }
+        
+        // Show/hide rows based on the filter state
+        document.querySelectorAll('.table-tbody tr').forEach(row => {
+            const chk = row.querySelector('input.table-selectable-check');
+            row.style.display = filterSelectedActive ? ((chk && chk.checked) ? '' : 'none') : '';
+        });
+        
+        filterBtn.querySelector('.btn-text').textContent = filterSelectedActive ? 'Сбросить отметки' : 'Показать отмеченных';
+    });
+}
+
+// Сохраняем состояние при изменении чекбоксов
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('table-selectable-check')) {
+        saveCheckboxStates();
+        updateStatusFilterLinks();
+    }
+});
+
+// Восстанавливаем состояния при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем, имеет ли URL параметр status (фильтр статуса)
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasStatus = urlParams.has('status');
+    
+    // Восстанавливаем только если есть фильтр статуса или selected параметр
+    if (hasStatus || urlParams.has('selected')) {
+        restoreCheckboxStates();
+    } else {
+        // Если нет фильтра статуса и нет selected - гарантированно очищаем все выделения
+        clearAllSelections();
+    }
+    
+    updateStatusFilterLinks();
+    
+    // Проверяем, есть ли выбранные элементы, если нет - сбрасываем фильтр
+    const selectedIds = getSelectedVisitIds();
+    if (selectedIds.length === 0) {
+        const filterBtn = document.getElementById('filter-selected-btn');
+        if (filterBtn) {
+            filterSelectedActive = false;
+            document.querySelectorAll('.table-tbody tr').forEach(row => {
+                row.style.display = '';
+            });
+            filterBtn.querySelector('.btn-text').textContent = 'Показать отмеченных';
+        }
+    }
 });
 </script>
 

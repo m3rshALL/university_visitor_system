@@ -1,0 +1,242 @@
+<!-- filepath: d:\university_visitor_system\templates\classroom\classroom_list.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Список аудиторий{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">Аудитории</h2>
+                <div class="page-pretitle">
+                    Доступные аудитории для бронирования
+                </div>
+            </div>
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a href="{% url 'classroom_book:classroom_index' %}" class="btn btn-outline-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l14 0"></path>
+                            <path d="M5 12l6 6"></path>
+                            <path d="M5 12l6 -6"></path>
+                        </svg>
+                        Назад
+                    </a>
+                    <a href="{% url 'classroom_book:book_classroom' %}" class="btn btn-primary d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                        Забронировать
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-xl">
+        <!-- Фильтры -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Блок</label>
+                        <select name="building" class="form-select">
+                            <option value="">Все блоки</option>
+                            {% for building_name in buildings %}
+                            <option value="{{ building_name }}" {% if current_filters.building == building_name %}selected{% endif %}>{{ building_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Этаж</label>
+                        <select name="floor" class="form-select">
+                            <option value="">Все этажи</option>
+                            {% for floor_num in floors %}
+                            <option value="{{ floor_num }}" {% if current_filters.floor == floor_num|stringformat:"i" %}selected{% endif %}>{{ floor_num }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Вместимость от</label>
+                        <input type="number" class="form-control" name="capacity" value="{{ current_filters.capacity }}" min="0" placeholder="Мин. количество">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Особенности</label>
+                        <input type="text" class="form-control" name="features" value="{{ current_filters.features }}" placeholder="Например: проектор">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-filter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"></path>
+                                </svg>
+                                Фильтр
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Список аудиторий -->
+        <div class="row row-cards">
+            {% for classroom in page_obj %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <div class="avatar avatar-lg bg-blue-lt d-flex align-items-center justify-content-center">
+                                    <span class="fw-bold">{{ classroom.building }}</span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h3 class="card-title mb-1">Аудитория {{ classroom.number }}</h3>
+                                <div class="text-muted">
+                                    {{ classroom.building }} блок, {{ classroom.floor }} этаж
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            {% if classroom.capacity %}
+                            <div class="mb-2">
+                                <span class="badge bg-blue-lt">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                    </svg>
+                                    Вместимость: {{ classroom.capacity }} мест
+                                </span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if classroom.features %}
+                            <div class="text-muted text-truncate mb-2" title="{{ classroom.features }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-details" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M13 5h8"></path>
+                                    <path d="M13 9h5"></path>
+                                    <path d="M13 15h8"></path>
+                                    <path d="M13 19h5"></path>
+                                    <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                    <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                </svg>
+                                {{ classroom.features|truncatechars:50 }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="mt-3">
+                            <a href="{% url 'classroom_book:book_specific_classroom' classroom_id=classroom.id %}" class="btn btn-primary w-100">
+                                Забронировать
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty">
+                    <div class="empty-img">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building" width="128" height="128" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M3 21l18 0"></path>
+                            <path d="M9 8l1 0"></path>
+                            <path d="M9 12l1 0"></path>
+                            <path d="M9 16l1 0"></path>
+                            <path d="M14 8l1 0"></path>
+                            <path d="M14 12l1 0"></path>
+                            <path d="M14 16l1 0"></path>
+                            <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16"></path>
+                        </svg>
+                    </div>
+                    <p class="empty-title">Аудитории не найдены</p>
+                    <p class="empty-subtitle text-muted">
+                        Попробуйте изменить параметры фильтрации или свяжитесь с администратором
+                    </p>
+                    <div class="empty-action">
+                        <a href="{% url 'classroom_book:classroom_list' %}" class="btn btn-primary">
+                            Сбросить фильтры
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <div class="d-flex mt-4">
+            <ul class="pagination ms-auto">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M11 7l-5 5l5 5" />
+                            <path d="M17 7l-5 5l5 5" />
+                        </svg>
+                        Первая
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M15 6l-6 6l6 6" />
+                        </svg>
+                        Пред.
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <a class="page-link" href="#">{{ num }}</a>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                        След.
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M9 6l6 6l-6 6" />
+                        </svg>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% for key, value in current_filters.items %}{% if value %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                        Последняя
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M13 7l5 5l-5 5" />
+                            <path d="M7 7l5 5l-5 5" />
+                        </svg>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
