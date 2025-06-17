@@ -64,6 +64,35 @@
                         </a>
                     </div>
                     <div class="col-md-4 col-lg-3">
+                        <a href="{% url 'create_guest_invitation' %}" class="card card-link card-link-pop">
+                            <div class="card-body text-center">
+                                <div class="text-indigo mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"></path>
+                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"></path>
+                                    </svg>
+                                </div>
+                                <div>Приглашение гостя</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <a href="{% url 'create_group_invitation' %}" class="card card-link card-link-pop">
+                            <div class="card-body text-center">
+                                <div class="text-orange mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M17 11v-1a4 4 0 1 0-8 0v1"></path>
+                                        <path d="M3 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"></path>
+                                    </svg>
+                                </div>
+                                <div>Групповое приглашение</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
                         <a href="{% url 'classroom_book:book_classroom' %}" class="card card-link card-link-pop">
                             <div class="card-body text-center">
                                 <div class="text-green mb-2">
@@ -160,14 +189,33 @@
                         <tr>
                             <td class="text-nowrap">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-azure-lt rounded me-2">{{ visit.guest.full_name|slice:":2" }}</div>
-                                    <div>
-                                        <div class="font-weight-medium">{{ visit.guest.full_name }}</div>
-                                        {% if visit.guest_iin %}
-                                        <div class="text-muted small">ИИН: {{ visit.guest_iin }}</div>
-                                        {% endif %}
-                                    </div>
-                                </div>                            </td>
+                                    {% if visit.visit_kind == 'group' %}
+                                        <div class="avatar avatar-sm bg-orange-lt rounded me-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <circle cx="9" cy="7" r="4"></circle>
+                                                <path d="M17 11v-1a4 4 0 1 0-8 0v1"></path>
+                                                <path d="M3 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-weight-medium">
+                                                <span class="badge bg-orange-lt me-1">Группа</span>
+                                                {{ visit.purpose|truncatechars:30 }}
+                                            </div>
+                                            <div class="text-muted small">{{ visit.guests_count }} гостей</div>
+                                        </div>
+                                    {% else %}
+                                        <div class="avatar avatar-sm bg-azure-lt rounded me-2">{{ visit.guest.full_name|slice:":2" }}</div>
+                                        <div>
+                                            <div class="font-weight-medium">{{ visit.guest.full_name }}</div>
+                                            {% if visit.guest_iin %}
+                                            <div class="text-muted small">ИИН: {{ visit.guest_iin }}</div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </td>
                             <td class="text-nowrap">
                                 <span class="badge {% if visit.expected_entry_time.date == today %}bg-blue-lt{% else %}bg-purple-lt{% endif %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -190,8 +238,22 @@
                                     </svg>
                                     {{ visit.expected_entry_time|date:"H:i" }}
                                 </span>
-                            </td>                            <td>
-                                {% if visit.visit_kind == 'official' and visit.employee %}
+                            </td>
+                            <td>
+                                {% if visit.visit_kind == 'group' %}
+                                    {% if visit.employee == user %}
+                                        <span class="badge bg-green-lt me-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                                <path d="M15 19l2 2l4 -4"></path>
+                                            </svg>
+                                            К вам
+                                        </span>
+                                    {% endif %}
+                                    {{ visit.employee.get_full_name|default:visit.employee.username }}
+                                {% elif visit.visit_kind == 'official' and visit.employee %}
                                     {% if visit.employee == user %}
                                         <span class="badge bg-green-lt me-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -211,36 +273,88 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <span class="text-muted">{{ visit.department.name|default:"-" }}</span>
+                                {% if visit.visit_kind == 'group' %}
+                                    <span class="text-muted">{{ visit.department.name|default:"-" }}</span>
+                                {% else %}
+                                    <span class="text-muted">{{ visit.department.name|default:"-" }}</span>
+                                {% endif %}
                             </td>
-                            <td>{{ visit.purpose|default:"-"|truncatechars:30 }}</td>
+                            <td>
+                                {% if visit.visit_kind == 'group' %}
+                                    {{ visit.purpose|default:"-"|truncatechars:30 }}
+                                {% else %}
+                                    {{ visit.purpose|default:"-"|truncatechars:30 }}
+                                {% endif %}
+                            </td>
                             <td class="text-nowrap">
-                                <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-success btn-sm" title="Зарегистрировать вход">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                {% if visit.status == 'AWAITING_ARRIVAL' %}
+                                    {% if visit.visit_kind == 'group' %}
+                                        <a href="{% url 'register_group_visit' visit.id %}" class="btn btn-success btn-sm" title="Зарегистрировать вход группы">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <circle cx="9" cy="7" r="4"></circle>
+                                                <path d="M17 11v-1a4 4 0 1 0-8 0v1"></path>
+                                                <path d="M3 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"></path>
+                                            </svg>
+                                            Прибыла группа
+                                        </a>
+                                    {% else %}
+                                        <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success btn-sm" title="Зарегистрировать вход">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M15 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+                                                    <path d="M21 12h-13l3 -3"></path>
+                                                    <path d="M11 15l-3 -3"></path>
+                                                </svg>
+                                                Прибыл
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                {% elif visit.status == 'CHECKED_IN' %}
+                                    {% if visit.visit_kind == 'group' %}
+                                        <span class="badge bg-green-lt">В здании</span>
+                                    {% else %}
+                                        <form action="{% url 'mark_visit_exit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-warning btn-sm" title="Отметить выход">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+                                                    <path d="M7 12h14l-3 -3m0 6l3 -3"></path>
+                                                </svg>
+                                                Выход
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                {% endif %}
+                                {% if visit.visit_kind == 'group' %}
+                                    <a href="{% url 'group_visit_card' visit.group_invitation.id %}" class="btn btn-ghost-secondary btn-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M15 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
-                                            <path d="M21 12h-13l3 -3"></path>
-                                            <path d="M11 15l-3 -3"></path>
+                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                            <path d="M12 9h.01"></path>
+                                            <path d="M11 12h1v4h1"></path>
                                         </svg>
-                                        Прибыл
-                                    </button>
-                                </form>
-                                <a href="{% if visit.visit_kind == 'official' %}{% url 'visit_detail' visit.id %}{% else %}{% url 'student_visit_detail' visit.id %}{% endif %}" class="btn btn-ghost-secondary btn-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
-                                        <path d="M12 9h.01"></path>
-                                        <path d="M11 12h1v4h1"></path>
-                                    </svg>
-                                    Детали
-                                </a>
+                                        Детали
+                                    </a>
+                                {% else %}
+                                    <a href="{% if visit.visit_kind == 'official' %}{% url 'visit_detail' visit.id %}{% else %}{% url 'student_visit_detail' visit.id %}{% endif %}" class="btn btn-ghost-secondary btn-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                            <path d="M12 9h.01"></path>
+                                            <path d="M11 12h1v4h1"></path>
+                                        </svg>
+                                        Детали
+                                    </a>
+                                {% endif %}
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center py-3">
+                            <td colspan="7" class="text-center py-3">
                                 <div class="empty">
                                     <div class="empty-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-off" width="40" height="40" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -251,7 +365,8 @@
                                             <path d="M4 11h7m4 0h5"></path>
                                             <path d="M3 3l18 18"></path>
                                         </svg>
-                                    </div>                                    <p class="empty-title">Нет ожидаемых визитов</p>
+                                    </div>
+                                    <p class="empty-title">Нет ожидаемых визитов</p>
                                     <p class="empty-subtitle text-muted">
                                         На ближайшую неделю не запланировано предварительных визитов ни для вас, ни для ваших коллег по департаменту
                                     </p>
@@ -463,7 +578,7 @@
                         <path d="M17 11v-1a4 4 0 1 0-8 0v1"></path>
                         <path d="M3 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"></path>
                     </svg>
-                    Групповые визиты
+                    Групповые визиты (ожидают регистрации)
                 </h3>
                 <div class="card-actions">
                     <a href="{% url 'create_group_invitation' %}" class="btn btn-primary btn-sm">
@@ -493,7 +608,8 @@
                         {% for group in group_invitations %}
                         <tr>
                             <td>{{ group.id }}</td>
-                            <td>{{ group.department }}</td>
+                            
+                            <td>{{ group.department|default_if_none:"Не указан" }}</td>
                             <td>{{ group.purpose|truncatechars:30 }}</td>
                             <td>{{ group.visit_time|date:'d.m.Y H:i' }}</td>
                             <td>{{ group.guests.count }}</td>
@@ -507,7 +623,13 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'group_visit_card' group.id %}" class="btn btn-primary btn-sm">
+                                <a href="{% url 'register_group_visit' group.id %}" class="btn btn-primary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                        <path d="M15 19l2 2l4 -4"></path>
+                                    </svg>
                                     Зарегистрировать вход
                                 </a>
                                 <a href="{% url 'group_visit_card' group.id %}" class="btn btn-ghost-secondary btn-sm">

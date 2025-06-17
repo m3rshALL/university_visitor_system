@@ -10022,3 +10022,152 @@ Traceback (most recent call last):
 django.core.exceptions.PermissionDenied
 WARNING 2025-06-04 14:40:05,895 log 46060 61504 Not Found: /visitors/register/group/
 WARNING 2025-06-04 14:40:08,323 log 46060 60616 Not Found: /visitors/register/group/
+ERROR 2025-06-05 12:45:30,326 views 39816 40312 Ошибка при получении групповых приглашений: column visitors_groupguest.photo does not exist
+LINE 1: ...est"."phone_number", "visitors_groupguest"."iin", "visitors_...
+                                                             ^
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column visitors_groupguest.photo does not exist
+LINE 1: ...est"."phone_number", "visitors_groupguest"."iin", "visitors_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\views.py", line 793, in employee_dashboard_view
+    for invite in group_invitations:
+                  ^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1947, in _fetch_all
+    self._prefetch_related_objects()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1326, in _prefetch_related_objects
+    prefetch_related_objects(self._result_cache, *self._prefetch_related_lookups)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 2393, in prefetch_related_objects
+    obj_list, additional_lookups = prefetch_one_level(
+                                   ~~~~~~~~~~~~~~~~~~^
+        obj_to_fetch,
+        ^^^^^^^^^^^^^
+    ...<2 lines>...
+        level,
+        ^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 2557, in prefetch_one_level
+    ) = prefetcher.get_prefetch_querysets(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        instances, lookup.get_current_querysets(level)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 797, in get_prefetch_querysets
+    for rel_obj in queryset:
+                   ^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1945, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column visitors_groupguest.photo does not exist
+LINE 1: ...est"."phone_number", "visitors_groupguest"."iin", "visitors_...
+                                                             ^
+
+WARNING 2025-06-05 13:55:03,523 views 4968 29672 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 13:56:38,561 log 4968 15732 Not Found: /favicon.ico
+WARNING 2025-06-05 13:57:06,252 views 4968 40380 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:18:50,733 log 33948 37716 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-05 16:19:08,209 log 33948 37668 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-05 16:19:35,932 log 39332 34908 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-05 16:24:40,155 views 39684 6572 Приглашение 113 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:24:40,156 views 39684 6572 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:21,551 views 39684 35980 Приглашение 113 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:21,551 views 39684 35980 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:54,348 views 39684 41368 Приглашение 113 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:54,348 views 39684 41368 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:28:24,935 views 39684 36212 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:28:43,439 views 39684 36044 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:41:10,689 views 39884 40416 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:46:00,692 views 33284 40080 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:53:03,936 views 34496 24624 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:55:01,691 views 2624 41332 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:55:08,656 views 2624 39176 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:55:14,405 views 2624 39140 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 18:37:02,511 views 40692 39372 Приглашение 119 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 18:42:23,035 views 26604 37060 Приглашение 121 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 10:21:49,652 views 26076 27484 Приглашение 122 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 10:33:12,509 views 26076 23300 Приглашение 122 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 11:22:50,723 views 26076 40496 Приглашение 122 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 11:51:48,741 log 43000 42428 Not Found: /favicon.ico
+WARNING 2025-06-16 11:58:23,421 log 43000 44628 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-06-16 18:52:39,487 log 75852 84712 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-06-16 18:52:41,267 log 75852 81724 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied

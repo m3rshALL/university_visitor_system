@@ -199,18 +199,19 @@
                         <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true">
                      </td>                     
                      <td class="sort-name">
-                        </span>
-                        {% if visit.visit_kind == 'official' %} <a href="{% url 'visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
-                        {% elif visit.visit_kind == 'student' %} <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
-                        {% elif visit.visit_kind == 'group' %} 
+                        </span>                        {% if visit.visit_kind == 'official' %} <a href="{% url 'visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
+                        {% elif visit.visit_kind == 'student' %} <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>                        {% elif visit.visit_kind == 'group' %} 
+                            <a href="{% url 'group_visit_card' visit.id %}">
+                            <span class="badge bg-orange-lt me-1">Группа</span>
                             {% if visit.guest %}
                                 {{ visit.guest.full_name }}
                                 {% if visit.guests_count > 1 %}
-                                    <span class="badge bg-primary-lt ms-1">+{{ visit.guests_count|add:"-1" }}</span>
+                                    <span class="badge bg-orange-lt ms-1">+{{ visit.guests_count|add:"-1" }}</span>
                                 {% endif %}
                             {% else %}
-                                Групповой визит
+                                {{ visit.purpose|default:"Групповой визит"|truncatechars:25 }}
                             {% endif %}
+                            </a>
                         {% else %} 
                             {{ visit.guest.full_name }} 
                         {% endif %}
@@ -295,7 +296,7 @@
                               </button>
                             </form>
                             {# Кнопка Cancel #}
-                            <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                            <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline-ms-1">
                                 {% csrf_token %}
                                 <button type="submit" class="badge bg-danger-lt btn btn-sm" title="Отменить визит"
                                        onclick="return confirm('Отменить этот визит?');">

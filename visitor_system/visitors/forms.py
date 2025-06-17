@@ -501,10 +501,11 @@ class GuestInvitationFinalizeForm(forms.ModelForm):
 class GroupVisitRegistrationForm(forms.ModelForm):
     class Meta:
         model = GroupInvitation
-        fields = ['department', 'purpose', 'visit_time']
+        fields = ['group_name', 'department', 'purpose', 'visit_time']
         widgets = {
             'visit_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'purpose': forms.Textarea(attrs={'rows': 3}),
+            'group_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Например: Делегация из университета XYZ'}),
         }
 
     def save(self, user):

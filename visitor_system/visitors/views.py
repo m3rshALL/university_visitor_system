@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.cache import never_cache, cache_page
 
-from django.contrib import messages # Для показа сообщений пользователю
+from django.contrib import messages
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
     STATUS_CHECKED_IN, STATUS_CHECKED_OUT, STATUS_AWAITING_ARRIVAL, STATUS_CANCELLED
 from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm, \
@@ -14,18 +14,15 @@ from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryF
 from .models import GuestInvitation
 from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
-from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 import datetime
 from datetime import timedelta
-import datetime  # Импортируем весь модуль datetime
 import json
 import logging
 import uuid
 from django.urls import reverse
 from django.core.mail import send_mail
-
-import os
+import os # Add this import
 from django.conf import settings
 
 from django.contrib.auth.models import Group # Импорт модели группы пользователей
@@ -44,11 +41,9 @@ from openpyxl.utils import get_column_letter
 
 from django.views.decorators.http import require_POST # Для ограничения методов
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
-from django.views.decorators.cache import cache_page, cache_control
 from django.core.cache import cache
 from django.views.decorators.vary import vary_on_cookie
 
-from django.views.decorators.cache import cache_control
 from django.contrib.staticfiles.views import serve as serve_static
 
 from notifications.utils import send_new_visit_notification_to_security
@@ -232,11 +227,12 @@ def visit_history_view(request):
     # Если есть GET-параметры, это фильтрация - не кэшируем
     user = request.user # Получаем текущего пользователя
     # Получаем визиты с учетом прав доступа пользователя
-    official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)
-    
-    # Получаем групповые визиты - для всех, у кого есть права на историю визитов
+    official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)    # Получаем групповые визиты - для всех, у кого есть права на историю визитов
     # Выбираем только зарегистрированные групповые визиты
-    group_visits_qs = GroupInvitation.objects.filter(is_registered=True).select_related(
+    group_visits_qs = GroupInvitation.objects.filter(
+        is_registered=True,  # Берем только зарегистрированные групповые визиты
+        visit_time__isnull=False  # Убедимся, что у групповых визитов указано время
+    ).select_related(
         'department', 'employee'
     ).prefetch_related('guests')
     
@@ -269,7 +265,7 @@ def visit_history_view(request):
     if request.GET and filter_form.is_valid():
         logger.debug(f"Applying filters: {filter_form.cleaned_data}")
         # Общие фильтры
-        selected_guests = filter_form.cleaned_data.get('guests')
+        guest_name_query = filter_form.cleaned_data.get('guest_name') # Corrected: was 'guests', changed variable name
         guest_iin = filter_form.cleaned_data.get('guest_iin')
         entry_date_from = filter_form.cleaned_data.get('entry_date_from')
         entry_date_to = filter_form.cleaned_data.get('entry_date_to')
@@ -289,30 +285,32 @@ def visit_history_view(request):
                 # Если выбран только групповой тип, отключаем другие типы визитов
                 official_visits_qs = official_visits_qs.none()
                 student_visits_qs = student_visits_qs.none()
-                  # Применяем фильтр по статусу
+                # Применяем фильтр по статусу
         status = filter_form.cleaned_data.get('status')
         if status:
             logger.debug(f"Filtering by status: '{status}'")
             official_visits_qs = official_visits_qs.filter(status=status)
             student_visits_qs = student_visits_qs.filter(status=status)
             # Для групповых визитов используем логику сопоставления статусов:
-            # - CHECKED_IN: зарегистрированные и не завершенные
-            # - CHECKED_OUT: зарегистрированные и завершенные
-            # - Другие статусы: не показываем групповые визиты
             if status == STATUS_CHECKED_IN:
-                group_visits_qs = group_visits_qs.filter(is_registered=True, is_completed=False)
+                group_visits_qs = group_visits_qs.filter(is_registered=True, is_completed=False, visit_time__lte=timezone.now())
             elif status == STATUS_CHECKED_OUT:
                 group_visits_qs = group_visits_qs.filter(is_registered=True, is_completed=True)
-            else:
+            elif status == STATUS_AWAITING_ARRIVAL:
+                group_visits_qs = group_visits_qs.filter(is_registered=True, is_completed=False, visit_time__gt=timezone.now())
+            elif status == STATUS_CANCELLED: # GroupInvitation doesn't have a CANCELLED status
+                group_visits_qs = group_visits_qs.none()
+            else: # For any other status from choices not explicitly handled
                 group_visits_qs = group_visits_qs.none()
                 
         department = filter_form.cleaned_data.get('department')
 
-        if selected_guests:
-            official_visits_qs = official_visits_qs.filter(guest__in=selected_guests)
-            student_visits_qs = student_visits_qs.filter(guest__in=selected_guests)
-            # Для групповых визитов нужно проверять у каждого гостя в группе
-            # Это более сложная логика, поэтому пока оставим как есть
+        # Apply guest_name_query filter
+        if guest_name_query:
+            official_visits_qs = official_visits_qs.filter(guest__full_name__icontains=guest_name_query)
+            student_visits_qs = student_visits_qs.filter(guest__full_name__icontains=guest_name_query)
+            # Filter group visits by guest name (any guest in the group)
+            group_visits_qs = group_visits_qs.filter(guests__full_name__icontains=guest_name_query)
         
         if guest_iin:
             official_visits_qs = official_visits_qs.filter(guest__iin__icontains=guest_iin)
@@ -365,11 +363,14 @@ def visit_history_view(request):
         v.visit_kind = 'group'
         # Добавляем требуемые атрибуты для совместимости с шаблоном
         if v.is_completed:
-            v.status = STATUS_CHECKED_OUT  # Считаем завершенную группу как "вышедшую"
-        else:
-            v.status = STATUS_CHECKED_IN  # Считаем незавершенную зарегистрированную группу как "в здании"
+            v.status = STATUS_CHECKED_OUT
+        else: # is_registered = True, visit_time is not null, and not is_completed
+            if v.visit_time and v.visit_time > timezone.now():
+                v.status = STATUS_AWAITING_ARRIVAL
+            else: # visit_time is now or in the past, and not completed
+                v.status = STATUS_CHECKED_IN
         v.entry_time = v.visit_time
-        v.exit_time = v.exit_time  # Используем фактическое время выхода если есть
+        v.exit_time = v.exit_time  # Fixed: Use the model's exit_time field
         # Добавляем гостей как атрибуты для более удобного доступа
         guests_count = v.guests.count()
         if guests_count > 0:
@@ -380,6 +381,9 @@ def visit_history_view(request):
         else:
             v.guest = None
             v.guests_count = 0
+            
+        # Добавляем ссылку на само групповое приглашение для доступа в шаблоне
+        v.group_invitation = v
     
     def get_sort_key(visit):
         # Сортируем по релевантному времени: фактическое > планируемое
@@ -402,7 +406,8 @@ def visit_history_view(request):
         key=get_sort_key, # Используем функцию ключа
         reverse=True # Самые свежие - вверху
     )# ---------------------------------------------
-    # TODO: Добавить пагинацию для combined_list, если данных много
+
+
     # --- Логика пагинации ---
     try:
         items_per_page = int(request.GET.get('per_page', 20))  # Получаем количество записей из GET параметра
@@ -574,7 +579,6 @@ def employee_dashboard_view(request):
         user_department = user.employee_profile.department
     except (AttributeError, EmployeeProfile.DoesNotExist):
         user_department = None
-    
     # Получаем визиты на ближайшую неделю для сотрудников своего департамента
     if user_department:
         # Получаем всех сотрудников департамента
@@ -587,7 +591,7 @@ def employee_dashboard_view(request):
             employee_id__in=department_employee_ids,  # Фильтруем по списку ID сотрудников департамента
             expected_entry_time__date__gte=today,
             expected_entry_time__date__lt=one_week_later,
-            status=STATUS_AWAITING_ARRIVAL,  # Ожидаемая регистрация
+            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],  # Ожидаемая регистрация и уже в здании
         ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
     else:
         # Если у пользователя нет департамента, показываем только его визиты
@@ -595,13 +599,73 @@ def employee_dashboard_view(request):
             employee=user,
             expected_entry_time__date__gte=today,
             expected_entry_time__date__lt=one_week_later,
-            status=STATUS_AWAITING_ARRIVAL,  # Ожидаемая регистрация
+            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],  # Ожидаемая регистрация и уже в здании
         ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
     
     # Convert queryset to list and add visit_kind for template URL generation
     upcoming_visits_week_list = list(upcoming_visits_qs)
     for visit_obj in upcoming_visits_week_list:
         visit_obj.visit_kind = 'official'
+    # Получаем студенческие визиты на ту же неделю
+    if user_department:
+        student_visits_qs = StudentVisit.objects.filter(
+            department=user_department,
+            entry_time__date__gte=today,
+            entry_time__date__lt=one_week_later,
+            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],
+        ).select_related('guest', 'department').order_by('entry_time')
+    else:
+        student_visits_qs = StudentVisit.objects.filter(
+            registered_by=user,
+            entry_time__date__gte=today,
+            entry_time__date__lt=one_week_later,
+            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],
+        ).select_related('guest', 'department').order_by('entry_time')
+    
+    # Добавляем студенческие визиты в список
+    student_visits_list = list(student_visits_qs)
+    for visit_obj in student_visits_list:
+        visit_obj.visit_kind = 'student'
+    # Получаем зарегистрированные групповые визиты на ту же неделю
+    if user_department:
+        group_visits_qs = GroupInvitation.objects.filter(
+            department=user_department,
+            visit_time__date__gte=today,
+            visit_time__date__lt=one_week_later,
+            is_registered=True,
+            is_completed=False,  # Только незавершенные (не вышедшие)
+        ).select_related('department', 'employee').prefetch_related('guests').order_by('visit_time')
+    else:
+        group_visits_qs = GroupInvitation.objects.filter(
+            employee=user,
+            visit_time__date__gte=today,
+            visit_time__date__lt=one_week_later,
+            is_registered=True,
+            is_completed=False,  # Только незавершенные (не вышедшие)
+        ).select_related('department', 'employee').prefetch_related('guests').order_by('visit_time')
+    # Добавляем групповые визиты в список
+    group_visits_list = list(group_visits_qs)
+    for visit_obj in group_visits_list:
+        visit_obj.visit_kind = 'group'
+        # Добавляем совместимость с шаблоном
+        visit_obj.expected_entry_time = visit_obj.visit_time
+        visit_obj.status = STATUS_AWAITING_ARRIVAL  # Групповые визиты в ожидании прибытия
+        # Добавляем ссылку на само групповое приглашение для шаблона
+        visit_obj.group_invitation = visit_obj
+        # Добавляем информацию о гостях для отображения
+        guests_count = visit_obj.guests.count()
+        if guests_count > 0:
+            first_guest = visit_obj.guests.first()
+            visit_obj.guest = first_guest
+            visit_obj.guests_count = guests_count
+        else:
+            visit_obj.guest = None
+            visit_obj.guests_count = 0
+
+    # Объединяем все три списка и сортируем по времени входа
+    upcoming_visits_week_list.extend(student_visits_list)
+    upcoming_visits_week_list.extend(group_visits_list)
+    upcoming_visits_week_list.sort(key=lambda x: getattr(x, 'expected_entry_time', None) or getattr(x, 'entry_time', None) or getattr(x, 'visit_time', None))
 
     # Получаем заполненные, но не зарегистрированные приглашения для текущего пользователя
     pending_invitations = GuestInvitation.objects.filter(
@@ -780,13 +844,13 @@ def employee_dashboard_view(request):
     
     official_percent = int((official_count / total_count) * 100) if total_count > 0 else 50
     student_percent = int((student_count / total_count) * 100) if total_count > 0 else 50
-    
     try:
         # Получаем групповые приглашения с предварительной загрузкой данных о гостях
+        # Изменяем фильтрацию для получения и заполненных, и незаполненных приглашений
         group_invitations = GroupInvitation.objects.filter(
             employee=user,
-            is_filled=True,
-            is_registered=False
+            is_filled=True,  # Получаем только заполненные
+            is_registered=False  # Которые еще не зарегистрированы
         ).select_related('department').prefetch_related('guests').order_by('-created_at')
         
         # Для каждого приглашения безопасно вычисляем количество гостей и добавляем как атрибут
@@ -796,8 +860,8 @@ def employee_dashboard_view(request):
                 invite.guest_count = guest_count
                 
                 # Проверяем обязательные поля
-                if not invite.token or not invite.department:
-                    logger.warning(f"Приглашение {invite.pk} имеет некорректные данные (отсутствуют token или department)")
+                if not invite.token:  # Удален чек invite.department
+                    logger.warning(f"Приглашение {invite.pk} имеет некорректные данные (отсутствует token)")
                     has_invitation_data_issues = True
             except Exception as inner_e:
                 logger.warning(f"Не удалось получить количество гостей для приглашения {invite.pk}: {inner_e}")
@@ -1393,6 +1457,7 @@ def get_employee_details_view(request, user_id):
 # -----------------------------------------------
 
 # --- View для отметки Check-in ---
+
 @login_required
 @require_POST # Разрешаем только POST запросы для безопасности
 def check_in_visit(request, visit_kind, visit_id):
@@ -1660,31 +1725,24 @@ def service_worker_view(request):
 @login_required
 def create_group_invitation_view(request):
     """
-    Генерирует ссылку для группового визита и позволяет задать параметры группы (департамент, цель, время).
+    Генерирует ссылку для группового визита без параметров группы (департамент, цель, время).
+    Параметры группы будут заданы позже при регистрации группового визита.
     """
-    from django import forms
-    class GroupInvitationCreateForm(forms.ModelForm):
-        class Meta:
-            model = GroupInvitation
-            fields = ['department', 'purpose', 'visit_time']
-            widgets = {
-                'visit_time': forms.DateTimeInput(attrs={'type': 'datetime-local'})
-            }
-
-    if request.method == 'POST':
-        form = GroupInvitationCreateForm(request.POST)
-        if form.is_valid():
-            group_invitation = form.save(commit=False)
-            group_invitation.employee = request.user
-            group_invitation.save()
-            link = request.build_absolute_uri(reverse('group_invitation_fill', args=[str(group_invitation.token)]))
-            return render(request, 'visitors/groups/create_group_invitation.html', {
-                'invitation_link': link,
-                'group_invitation': group_invitation
-            })
-    else:
-        form = GroupInvitationCreateForm()
-    return render(request, 'visitors/groups/create_group_invitation.html', {'form': form})
+    # Создаем приглашение сразу с токеном без запроса параметров группы
+    group_invitation = GroupInvitation.objects.create(
+        employee=request.user,
+        token=uuid.uuid4()
+    )
+    
+    # Генерируем ссылку для гостей
+    link = request.build_absolute_uri(reverse('group_invitation_fill', args=[str(group_invitation.token)]))
+    
+    # Показываем ссылку пользователю
+    context = {
+        'invitation_link': link,
+        'group_invitation': group_invitation
+    }
+    return render(request, 'visitors/groups/create_group_invitation.html', context)
 
 
 def group_invitation_fill_view(request, token):
@@ -1694,22 +1752,39 @@ def group_invitation_fill_view(request, token):
     group_invitation = get_object_or_404(GroupInvitation, token=token)
     GroupGuestFormSet = modelformset_factory(
         GroupGuest,
-        fields=('full_name', 'email', 'phone_number', 'iin'),
+        fields=('full_name', 'email', 'phone_number', 'iin', 'photo'),
         extra=max(0, 10 - group_invitation.guests.count()),
         max_num=10,
         can_delete=False
     )
-    if group_invitation.is_filled:
-        return render(request, 'visitors/groups/group_invitation_already_filled.html', {'group_invitation': group_invitation})
-    if request.method == 'POST':
-        formset = GroupGuestFormSet(request.POST, queryset=group_invitation.guests.all())
+        
+    if request.method == 'POST':        
+        formset = GroupGuestFormSet(request.POST, request.FILES, queryset=group_invitation.guests.all())
+        # Получаем данные о визите из формы
+        visit_time = request.POST.get('visit_time')
+        purpose = request.POST.get('purpose')
+        # Проверяем наличие обязательных полей
+        if not visit_time or not purpose:
+            from django.contrib import messages
+            messages.error(request, "Необходимо заполнить время прибытия и цель визита")
+            formset = GroupGuestFormSet(request.POST, request.FILES, queryset=group_invitation.guests.all())
+            return render(request, 'visitors/groups/group_invitation_fill.html', {
+                'group_invitation': group_invitation,
+                'formset': formset
+            })
+        
         if formset.is_valid():
             guests = formset.save(commit=False)
             for guest in guests:
                 guest.group_invitation = group_invitation
                 guest.is_filled = True
                 guest.save()
+                
+            # Сохраняем информацию о визите
             group_invitation.is_filled = True
+            group_invitation.visit_time = visit_time
+            group_invitation.purpose = purpose
+            
             group_invitation.save()
             return render(request, 'visitors/groups/group_invitation_filled_success.html', {'group_invitation': group_invitation})
     else:
@@ -1742,6 +1817,7 @@ def group_visit_card_view(request, pk):
 def register_group_visit_view(request, invitation_id):
     """
     Регистрирует групповой визит на основе заполненного приглашения.
+    Позволяет добавить информацию: название группы, департамент, цель, время визита.
     """
     try:
         invitation = GroupInvitation.objects.get(
@@ -1752,6 +1828,13 @@ def register_group_visit_view(request, invitation_id):
         )
     except GroupInvitation.DoesNotExist:
         messages.error(request, "Приглашение не найдено или уже зарегистрировано.")
+        return redirect('employee_dashboard')
+
+    # Получаем всех гостей приглашения
+    guests = invitation.guests.all()
+
+    if not guests.exists():
+        messages.warning(request, "В приглашении нет ни одного гостя. Дождитесь когда гости заполнят свои данные.")
         return redirect('employee_dashboard')
 
     if request.method == 'POST':
@@ -1771,9 +1854,10 @@ def register_group_visit_view(request, invitation_id):
     context = {
         'form': form,
         'invitation': invitation,
+        'guests': guests,
         'title': 'Регистрация группового визита'
     }
-    return render(request, 'visitors/register_group_visit.html', context)
+    return render(request, 'visitors/groups/register_group_visit.html', context)
 
 # --- View для отметки выхода ГРУППЫ ---
 @login_required

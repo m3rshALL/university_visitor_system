@@ -19,10 +19,11 @@
                         </div>
                     </div>
                     <h4 class="mb-3">Гости</h4>
-                    <div class="table-responsive">
+                    <div class="table-responsive">                        
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
+                                    <th>Фото</th>
                                     <th>ФИО</th>
                                     <th>Email</th>
                                     <th>Телефон</th>
@@ -32,6 +33,15 @@
                             <tbody>
                                 {% for guest in guests %}
                                 <tr>
+                                    <td>
+                                        {% if guest.photo %}
+                                            <div class="avatar avatar-md" style="background-image: url({{ guest.photo.url }})"></div>
+                                        {% else %}
+                                            <div class="avatar avatar-md bg-secondary-lt">
+                                                {{ guest.full_name|slice:":2" }}
+                                            </div>
+                                        {% endif %}
+                                    </td>
                                     <td>{{ guest.full_name }}</td>
                                     <td>{{ guest.email }}</td>
                                     <td>{{ guest.phone_number }}</td>

@@ -318,17 +318,21 @@ class GuestEntry(models.Model):
 class GroupInvitation(models.Model):
     token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='group_invitations', verbose_name="Пригласивший сотрудник")
-    department = models.ForeignKey(Department, on_delete=models.PROTECT, verbose_name="Департамент назначения")
-    purpose = models.TextField(verbose_name="Цель визита")
-    visit_time = models.DateTimeField(verbose_name="Время визита")
+    department = models.ForeignKey(Department, on_delete=models.PROTECT, verbose_name="Департамент назначения", blank=True, null=True)
+    purpose = models.TextField(verbose_name="Цель визита", blank=True, null=True)
+    visit_time = models.DateTimeField(verbose_name="Время визита", blank=True, null=True)
     exit_time = models.DateTimeField(blank=True, null=True, verbose_name="Время выхода")
     is_completed = models.BooleanField(default=False, verbose_name="Визит завершен")
     created_at = models.DateTimeField(auto_now_add=True)
     is_filled = models.BooleanField(default=False, verbose_name="Группа заполнена")
     is_registered = models.BooleanField(default=False, verbose_name="Визит зарегистрирован")
+    group_name = models.CharField(max_length=255, verbose_name="Название группы", blank=True, null=True)
 
     def __str__(self):
-        return f"Групповое приглашение от {self.employee} на {self.visit_time.strftime('%Y-%m-%d %H:%M')}"
+        if self.visit_time:
+            return f"Групповое приглашение от {self.employee} на {self.visit_time.strftime('%Y-%m-%d %H:%M')}"
+        else:
+            return f"Групповое приглашение от {self.employee} (время не указано)"
 
     class Meta:
         verbose_name = "Групповое приглашение"
@@ -350,6 +354,7 @@ class GroupGuest(models.Model):
         null=True,
         verbose_name="ИИН гостя"
     )
+    photo = models.ImageField(upload_to='group_guests/', blank=True, null=True, verbose_name="Фото гостя")
     is_filled = models.BooleanField(default=False, verbose_name="Гость заполнил данные")
     created_at = models.DateTimeField(auto_now_add=True)
 
