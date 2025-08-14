@@ -19,13 +19,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-# from django.views.decorators.cache import cache_control
-# from django.contrib.staticfiles.views import serve as serve_static
-from visitors import views as visitor_views # Главная страница - панель сотрудника
-# from django.views.defaults import permission_denied, page_not_found, server_error
+from visitors import views as visitor_views
 from django.shortcuts import render
 from debug_toolbar.toolbar import debug_toolbar_urls
-from visitors.views import cached_static_serve, manifest_json_view, service_worker_view
+from visitors.views import manifest_json_view, service_worker_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -54,14 +51,9 @@ urlpatterns = [
 
 # Добавляем маршруты для статических и медиа файлов в режиме DEBUG
 if settings.DEBUG:
-    # Keep media files as they were
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
-    # For static files, use our custom view with cache headers
-    urlpatterns += [
-        path(f'{settings.STATIC_URL[1:]}/<path:path>', cached_static_serve)
-    ]
-    urlpatterns.extend(debug_toolbar_urls())  # Добавляем URL-ы от debug_toolbar
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns.extend(debug_toolbar_urls())
 
 if not settings.DEBUG:
     handler403 = lambda request, exception: render(request, 'errors/403.html', status=403)

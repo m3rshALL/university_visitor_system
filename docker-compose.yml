@@ -5,30 +5,107 @@ services:
     image: postgres:14
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Инициализационный скрипт
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=visitor_system_db  # Используем стандартное имя базы данных
+      - POSTGRES_DB=visitor_system_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  visitor_system:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  web:
     build: .
     volumes:
       - .:/app
+      - staticfiles_volume:/app/visitor_system/staticfiles
+      - media_volume:/app/visitor_system/media
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - POSTGRES_USER=visitor_system_user
       - POSTGRES_PASSWORD=Sako2020
-      - POSTGRES_DB=visitor_system_db  # Указываем правильное имя базы данных
+      - POSTGRES_DB=visitor_system_db
+      - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-b_2g0i5hh+p3k()3^_pgjz3#e9hpxk^ub(dm&+i^y=do=w-^p+
+      - DJANGO_SETTINGS_MODULE=visitor_system.settings.dev
+      - IN_DOCKER=True
+      - EMAIL_HOST=smtp.gmail.com
+      - EMAIL_PORT=587
+      - EMAIL_USE_TLS=True
+      - EMAIL_HOST_USER=sakoakimbaev1997@gmail.com
+      - EMAIL_HOST_PASSWORD=gpww udih dxtu kvdy
+      - DEFAULT_FROM_EMAIL=sakoakimbaev1997@gmail.com
+      - MS_CLIENT_ID=f3875618-b7fa-4f1d-91cd-1788e75806f3
+      - MS_CLIENT_SECRET=Jn48Q~~j0Fru5Y-dJ_uzkorsR.tYUkgpucC_xagh
+      - MS_TENANT_ID=158f15f3-83e0-4906-824c-69bdc50d9d61
+
+  celery-worker:
+    build: .
+    command: celery -A visitor_system worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - POSTGRES_USER=visitor_system_user
+      - POSTGRES_PASSWORD=Sako2020
+      - POSTGRES_DB=visitor_system_db
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=visitor_system.settings.dev
+      - IN_DOCKER=True
+
+  celery-beat:
+    build: .
+    command: celery -A visitor_system beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - POSTGRES_USER=visitor_system_user
+      - POSTGRES_PASSWORD=Sako2020
+      - POSTGRES_DB=visitor_system_db
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=visitor_system.settings.dev
+      - IN_DOCKER=True
 
 volumes:
   postgres_data:
+  staticfiles_volume:
+  media_volume:

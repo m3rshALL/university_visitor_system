@@ -4,7 +4,7 @@ from celery import Celery
 
 # Установите переменную окружения DJANGO_SETTINGS_MODULE для celery.
 # Замените 'visitor_system.settings' на ваш путь к settings.py
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'visitor_system.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'visitor_system.settings.dev')
 
 # Создаем экземпляр Celery
 # 'visitor_system' - имя вашего проекта Django
