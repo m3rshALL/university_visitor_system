@@ -1,5 +1,6 @@
 # visitors/models.py
 from django.db import models
+from django.db.models import Index, Q
 from django.contrib.auth.models import User # Стандартная модель пользователя Django
 from departments.models import Department
 from django.utils import timezone
@@ -179,6 +180,17 @@ class Visit(models.Model):
         verbose_name_plural = "Визиты (к сотрудникам/другие)"
         ordering = ['-entry_time', '-expected_entry_time'] # Сортировка
         permissions = [("can_view_visit_statistics", "Может просматривать статистику визитов")]
+        indexes = [
+            Index(fields=['status'], name='visit_status_idx'),
+            Index(fields=['entry_time'], name='visit_entry_time_idx'),
+            Index(fields=['exit_time'], name='visit_exit_time_idx'),
+            Index(fields=['employee'], name='visit_employee_idx'),
+            Index(fields=['department'], name='visit_department_idx'),
+            Index(fields=['visit_group'], name='visit_group_idx'),
+            Index(fields=['guest'], name='visit_guest_idx'),
+            Index(name='visit_active_idx', fields=['status'], condition=Q(exit_time__isnull=True)),
+            Index(name='visit_awaiting_idx', fields=['status'], condition=Q(status=STATUS_AWAITING_ARRIVAL)),
+        ]
         # -------------------------------------
 
 
@@ -242,6 +254,14 @@ class StudentVisit(models.Model):
         ordering = ['-entry_time']
         permissions = [
             ("can_register_student_visit", "Может регистрировать визиты студентов/абитуриентов"),
+        ]
+        indexes = [
+            Index(fields=['status'], name='student_visit_status_idx'),
+            Index(fields=['entry_time'], name='student_visit_entry_time_idx'),
+            Index(fields=['exit_time'], name='student_visit_exit_time_idx'),
+            Index(fields=['department'], name='student_visit_department_idx'),
+            Index(fields=['registered_by'], name='student_visit_registered_by_idx'),
+            Index(name='student_visit_active_idx', fields=['status'], condition=Q(exit_time__isnull=True)),
         ]
 # ---------------------------------------------------
 
