@@ -4,9 +4,10 @@ version = "0.1"
 description = ""
 authors = ["Sagat Akimbay"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 django = "^5.0.0"
 django-allauth = "^65.7.0"
 requests = "^2.32.3"
