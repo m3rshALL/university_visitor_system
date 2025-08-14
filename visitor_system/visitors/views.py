@@ -21,6 +21,9 @@ import json
 import logging
 import uuid
 from django.urls import reverse
+from django.core import signing
+from qrcode import QRCode
+from io import BytesIO
 from django.core.mail import send_mail
 import os # Add this import
 from django.conf import settings
@@ -165,6 +168,74 @@ def register_guest_view(request):
 
     context = {'guest_form': form} # Передаем форму под именем guest_form
     return render(request, 'visitors/register_guest.html', context)
+@login_required
+def qr_scan_view(request):
+    return render(request, 'visitors/qr_scan.html')
+
+
+@login_required
+@require_POST
+def qr_resolve_view(request):
+    """Обработчик результата сканирования. Поддерживает:
+    - подписанные токены формата signer.dumps({kind, id, action})
+    - прямые ссылки нашего приложения
+    """
+    raw = request.POST.get('code', '').strip()
+    if not raw:
+        messages.error(request, 'Пустой код')
+        return redirect('qr_scan')
+
+    # Пробуем распарсить как подписанный токен
+    try:
+        data = signing.Signer().unsign_object(raw)
+        kind = data.get('kind')
+        pk = int(data.get('id'))
+        action = data.get('action', 'checkin')
+    except Exception:
+        # Фоллбэк: парсим как URL нашего сайта вида /visitors/checkin/<kind>/<id>/
+        try:
+            from urllib.parse import urlparse
+            p = urlparse(raw)
+            path = p.path or raw
+            parts = [x for x in path.split('/') if x]
+            # ожидаем .../visitors/checkin/<kind>/<id>
+            kind = parts[-2]
+            pk = int(parts[-1])
+            action = 'checkin'
+        except Exception:
+            messages.error(request, 'Некорректный код/ссылка')
+            return redirect('qr_scan')
+
+    # Выполняем действие
+    if action == 'checkin':
+        return check_in_visit(request, kind, pk)
+    elif action == 'checkout':
+        if kind == 'official':
+            return mark_guest_exit_view(request, pk)
+        elif kind == 'student':
+            return mark_student_exit_view(request, pk)
+    messages.error(request, 'Неизвестное действие')
+    return redirect('qr_scan')
+
+
+@login_required
+def qr_code_view(request, kind: str, pk: int):
+    """Отдаёт PNG QR код с подписанной полезной нагрузкой.
+    kind: official|student
+    action: по умолчанию checkin
+    """
+    payload = {'kind': kind, 'id': pk, 'action': 'checkin'}
+    token = signing.Signer().sign_object(payload)
+    url = request.build_absolute_uri(reverse('qr_resolve'))
+
+    qr = QRCode(border=1)
+    qr.add_data(token)  # Можно изменить на url с query, но токен компактнее
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    bio = BytesIO()
+    img.save(bio, format='PNG')
+    return HttpResponse(bio.getvalue(), content_type='image/png')
+
 # ----------------------------------------------------------------------
 
 """@login_required

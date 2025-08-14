@@ -1,5 +1,5 @@
 # Этап 1: Установка зависимостей
-FROM python:3.13-slim-bullseye
+FROM python:3.12-slim-bullseye
 
 # Установка системных зависимостей
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -27,14 +27,10 @@ RUN pip install poetry==1.7.1 \
 # Устанавливаем зависимости из poetry.lock
 RUN poetry install --no-dev --no-interaction --no-ansi
 
-# Явно проверяем, что Django установлен, или устанавливаем его
-RUN pip list | grep Django || pip install django==5.2
-
 # Копируем весь код проекта
 COPY . /app/
 
-# Проверяем установку Django
-RUN python -m pip list | grep Django || echo "Django не установлен!"
+RUN python -m pip list | grep Django || echo "Django не найден в списке пакетов!"
 
 # Создаем улучшенный entrypoint скрипт с проверкой и созданием БД
 RUN echo '#!/bin/bash\n\

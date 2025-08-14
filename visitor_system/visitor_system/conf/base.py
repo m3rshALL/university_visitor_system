@@ -11,7 +11,19 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-insecure-placeholder')
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = [h for h in os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if h]
+_allowed_hosts_raw = os.getenv('DJANGO_ALLOWED_HOSTS', '').strip()
+if _allowed_hosts_raw:
+	ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_raw.split(',') if h.strip()]
+else:
+	ALLOWED_HOSTS = []
+
+# В режиме разработки всегда добавляем локальные хосты
+dev_hosts = {'127.0.0.1', 'localhost', 'testserver', '0.0.0.0'}
+if DEBUG:
+	ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | dev_hosts)
+else:
+	# В проде добавим только testserver для тестов/CI
+	ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | {'testserver'})
 
 INTERNAL_IPS = ['127.0.0.1']
 

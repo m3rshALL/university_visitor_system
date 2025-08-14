@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Сканер QR{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+	<h2>Сканер QR</h2>
+	<p>Для простоты тестирования введите или вставьте считанную строку/ссылку в поле ниже. В проде сюда можно подключить веб‑сканер камеры.</p>
+	<form method="post" action="{% url 'qr_resolve' %}">
+		{% csrf_token %}
+		<div class="mb-3">
+			<label for="code" class="form-label">Код/Ссылка</label>
+			<input type="text" id="code" name="code" class="form-control" placeholder="https://... или подписанный токен" required>
+		</div>
+		<button type="submit" class="btn btn-primary">Обработать</button>
+	</form>
+</div>
+{% endblock %}
+
+

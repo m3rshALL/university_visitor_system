@@ -29,6 +29,7 @@ services:
 
   visitor_system:
     build: .
+    command: bash -lc "cd visitor_system && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
     ports:
@@ -39,13 +40,14 @@ services:
       redis:
         condition: service_healthy
     environment:
+      - DJANGO_SETTINGS_MODULE=visitor_system.conf.dev
       - DJANGO_DEBUG=True
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - POSTGRES_DB=visitor_system_db
-      - POSTGRES_USER=visitor_system_user
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0
@@ -65,8 +67,8 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - POSTGRES_DB=visitor_system_db
-      - POSTGRES_USER=visitor_system_user
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0
@@ -85,8 +87,8 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - POSTGRES_DB=visitor_system_db
-      - POSTGRES_USER=visitor_system_user
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0

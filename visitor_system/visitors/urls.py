@@ -2,6 +2,7 @@
 from django.urls import path
 from . import views
 from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
+from .views import qr_scan_view, qr_resolve_view, qr_code_view
 
 urlpatterns = [
     # --- единый URL для регистрации ---
@@ -56,4 +57,9 @@ urlpatterns = [
     path('groups/fill/<uuid:token>/', views.group_invitation_fill_view, name='group_invitation_fill'),
     path('groups/card/<int:pk>/', views.group_visit_card_view, name='group_visit_card'),
     path('groups/register/<int:invitation_id>/', views.register_group_visit_view, name='register_group_visit'),
+
+    # --- QR ---
+    path('qr/scan/', qr_scan_view, name='qr_scan'),
+    path('qr/resolve/', qr_resolve_view, name='qr_resolve'),
+    path('qr/code/<str:kind>/<int:pk>.png', qr_code_view, name='qr_code'),
 ]

@@ -14,6 +14,11 @@
                 Информация о посетителе
             </div>
             <div class="card-body">
+                <div class="mb-3">
+                    <a href="{% url 'qr_code' 'student' student_visit.id %}" class="btn btn-outline-primary btn-sm" target="_blank">
+                        Показать QR (вход)
+                    </a>
+                </div>
                 <dl class="row mb-0">
                     <dt class="col-sm-4">ФИО:</dt>
                     <dd class="col-sm-8">{{ student_visit.guest.full_name }}</dd>

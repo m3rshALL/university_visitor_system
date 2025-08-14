@@ -10171,3 +10171,530 @@ Traceback (most recent call last):
   File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
     raise PermissionDenied
 django.core.exceptions.PermissionDenied
+INFO 2025-08-14 17:38:21,194 autoreload 37644 16744 Watching for file changes with StatReloader
+ERROR 2025-08-14 17:38:23,692 exception 37644 35064 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:38:23,932 log 37644 35064 Bad Request: /
+WARNING 2025-08-14 17:38:23,932 basehttp 37644 35064 "GET / HTTP/1.1" 400 90531
+ERROR 2025-08-14 17:38:24,223 exception 37644 19460 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:38:24,233 log 37644 19460 Bad Request: /favicon.ico
+WARNING 2025-08-14 17:38:24,234 basehttp 37644 19460 "GET /favicon.ico HTTP/1.1" 400 90340
+INFO 2025-08-14 17:40:09,607 autoreload 37644 16744 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:40:10,554 autoreload 34948 34832 Watching for file changes with StatReloader
+INFO 2025-08-14 17:40:16,253 autoreload 34948 34832 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:40:17,176 autoreload 32656 33724 Watching for file changes with StatReloader
+INFO 2025-08-14 17:42:08,071 autoreload 32656 33724 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:42:09,115 autoreload 30456 35496 Watching for file changes with StatReloader
+ERROR 2025-08-14 17:42:09,480 exception 30456 36940 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:42:09,496 log 30456 36940 Bad Request: /
+WARNING 2025-08-14 17:42:09,497 basehttp 30456 36940 "GET / HTTP/1.1" 400 90716
+ERROR 2025-08-14 17:42:09,617 exception 30456 35380 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:42:09,628 log 30456 35380 Bad Request: /favicon.ico
+WARNING 2025-08-14 17:42:09,628 basehttp 30456 35380 "GET /favicon.ico HTTP/1.1" 400 90388
+INFO 2025-08-14 17:42:18,904 autoreload 30456 35496 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:42:19,834 autoreload 34616 33972 Watching for file changes with StatReloader
+INFO 2025-08-14 17:42:26,461 autoreload 34616 33972 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:42:27,470 autoreload 29676 33104 Watching for file changes with StatReloader
+INFO 2025-08-14 17:43:27,841 autoreload 29676 33104 D:\university_visitor_system\visitor_system\visitor_system\conf\dev.py changed, reloading.
+INFO 2025-08-14 17:43:28,773 autoreload 37156 34372 Watching for file changes with StatReloader
+ERROR 2025-08-14 17:43:32,462 exception 37156 29516 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:43:32,480 log 37156 29516 Bad Request: /
+WARNING 2025-08-14 17:43:32,486 basehttp 37156 29516 "GET / HTTP/1.1" 400 90716
+ERROR 2025-08-14 17:43:32,612 exception 37156 36268 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:43:32,624 log 37156 36268 Bad Request: /favicon.ico
+WARNING 2025-08-14 17:43:32,624 basehttp 37156 36268 "GET /favicon.ico HTTP/1.1" 400 90388
+INFO 2025-08-14 17:43:43,017 autoreload 35528 33280 Watching for file changes with StatReloader
+ERROR 2025-08-14 17:43:45,333 exception 35528 37424 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:43:45,352 log 35528 37424 Bad Request: /
+WARNING 2025-08-14 17:43:45,353 basehttp 35528 37424 "GET / HTTP/1.1" 400 90716
+ERROR 2025-08-14 17:43:45,465 exception 35528 35732 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:43:45,475 log 35528 35732 Bad Request: /favicon.ico
+WARNING 2025-08-14 17:43:45,475 basehttp 35528 35732 "GET /favicon.ico HTTP/1.1" 400 90388
+ERROR 2025-08-14 17:43:46,739 exception 35528 34800 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:43:46,749 log 35528 34800 Bad Request: /
+WARNING 2025-08-14 17:43:46,750 basehttp 35528 34800 "GET / HTTP/1.1" 400 90716
+ERROR 2025-08-14 17:43:46,855 exception 35528 34980 Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING 2025-08-14 17:43:46,866 log 35528 34980 Bad Request: /favicon.ico
+WARNING 2025-08-14 17:43:46,866 basehttp 35528 34980 "GET /favicon.ico HTTP/1.1" 400 90388
+INFO 2025-08-14 17:44:30,421 autoreload 35528 33280 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:44:31,530 autoreload 2440 4756 Watching for file changes with StatReloader
+INFO 2025-08-14 17:44:43,411 autoreload 2440 4756 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:44:44,307 autoreload 32388 16552 Watching for file changes with StatReloader
+INFO 2025-08-14 17:44:48,983 autoreload 32388 16552 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:44:50,083 autoreload 36524 37176 Watching for file changes with StatReloader
+INFO 2025-08-14 17:44:51,119 basehttp 36524 33784 "GET / HTTP/1.1" 302 0
+INFO 2025-08-14 17:44:51,154 basehttp 36524 33784 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-08-14 17:44:51,297 basehttp 36524 13908 "GET /accounts/login/?next=/ HTTP/1.1" 200 6694
+INFO 2025-08-14 17:44:51,326 basehttp 36524 13908 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-08-14 17:44:51,328 basehttp 36524 38284 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-08-14 17:44:51,329 basehttp 36524 8296 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-08-14 17:44:51,331 basehttp 36524 38284 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-08-14 17:44:51,343 basehttp 36524 8296 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-08-14 17:44:51,370 basehttp 36524 17784 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-08-14 17:44:51,378 basehttp 36524 33912 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-08-14 17:44:51,383 basehttp 36524 33352 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-08-14 17:44:51,414 basehttp 36524 15320 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-08-14 17:44:51,629 autoreload 36524 37176 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:44:52,601 autoreload 38244 2356 Watching for file changes with StatReloader
+WARNING 2025-08-14 17:44:53,027 log 38244 35024 Not Found: /favicon.ico
+WARNING 2025-08-14 17:44:53,027 basehttp 38244 35024 "GET /favicon.ico HTTP/1.1" 404 4305
+ERROR 2025-08-14 17:44:53,774 log 38244 35024 Internal Server Error: /accounts/microsoft/login/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\views.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\views.py", line 19, in dispatch
+    return provider.redirect_from_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\provider.py", line 50, in redirect_from_request
+    return self.redirect(request, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\provider.py", line 127, in redirect
+    client.get_redirect_url(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        oauth2_adapter.authorize_url, scope, auth_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\client.py", line 50, in get_redirect_url
+    return "%s?%s" % (authorization_url, urlencode(params))
+                                         ~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\http.py", line 55, in urlencode
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot encode None for key 'client_id' in a query string. Did you mean to pass an empty string or omit the value?
+ERROR 2025-08-14 17:44:53,777 basehttp 38244 35024 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 500 113438
+INFO 2025-08-14 17:45:24,066 autoreload 38244 2356 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:45:24,960 autoreload 12880 38404 Watching for file changes with StatReloader
+ERROR 2025-08-14 17:45:40,676 log 12880 38116 Internal Server Error: /accounts/microsoft/login/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\views.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\views.py", line 19, in dispatch
+    return provider.redirect_from_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\provider.py", line 50, in redirect_from_request
+    return self.redirect(request, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\provider.py", line 127, in redirect
+    client.get_redirect_url(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        oauth2_adapter.authorize_url, scope, auth_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\client.py", line 50, in get_redirect_url
+    return "%s?%s" % (authorization_url, urlencode(params))
+                                         ~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\http.py", line 55, in urlencode
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot encode None for key 'client_id' in a query string. Did you mean to pass an empty string or omit the value?
+ERROR 2025-08-14 17:45:40,679 basehttp 12880 38116 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 500 113575
+ERROR 2025-08-14 17:45:41,423 log 12880 38116 Internal Server Error: /accounts/microsoft/login/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\views.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\views.py", line 19, in dispatch
+    return provider.redirect_from_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\provider.py", line 50, in redirect_from_request
+    return self.redirect(request, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\provider.py", line 127, in redirect
+    client.get_redirect_url(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        oauth2_adapter.authorize_url, scope, auth_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\client.py", line 50, in get_redirect_url
+    return "%s?%s" % (authorization_url, urlencode(params))
+                                         ~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\http.py", line 55, in urlencode
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot encode None for key 'client_id' in a query string. Did you mean to pass an empty string or omit the value?
+ERROR 2025-08-14 17:45:41,425 basehttp 12880 38116 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 500 113575
+ERROR 2025-08-14 17:45:41,935 log 12880 38116 Internal Server Error: /accounts/microsoft/login/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\views.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\views.py", line 19, in dispatch
+    return provider.redirect_from_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\provider.py", line 50, in redirect_from_request
+    return self.redirect(request, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\provider.py", line 127, in redirect
+    client.get_redirect_url(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        oauth2_adapter.authorize_url, scope, auth_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\client.py", line 50, in get_redirect_url
+    return "%s?%s" % (authorization_url, urlencode(params))
+                                         ~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\http.py", line 55, in urlencode
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot encode None for key 'client_id' in a query string. Did you mean to pass an empty string or omit the value?
+ERROR 2025-08-14 17:45:41,937 basehttp 12880 38116 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 500 113575
+INFO 2025-08-14 17:45:48,449 autoreload 12880 38404 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:45:50,202 autoreload 14720 33696 Watching for file changes with StatReloader
+ERROR 2025-08-14 17:45:50,692 log 14720 36552 Internal Server Error: /accounts/microsoft/login/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\views.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\views.py", line 19, in dispatch
+    return provider.redirect_from_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\provider.py", line 50, in redirect_from_request
+    return self.redirect(request, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\provider.py", line 127, in redirect
+    client.get_redirect_url(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        oauth2_adapter.authorize_url, scope, auth_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\client.py", line 50, in get_redirect_url
+    return "%s?%s" % (authorization_url, urlencode(params))
+                                         ~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\http.py", line 55, in urlencode
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot encode None for key 'client_id' in a query string. Did you mean to pass an empty string or omit the value?
+ERROR 2025-08-14 17:45:50,695 basehttp 14720 36552 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 500 113575
+INFO 2025-08-14 17:46:14,556 autoreload 14720 33696 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:46:15,503 autoreload 38468 31420 Watching for file changes with StatReloader
+INFO 2025-08-14 17:46:36,648 autoreload 38468 31420 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:46:37,733 autoreload 33144 25960 Watching for file changes with StatReloader
+INFO 2025-08-14 17:46:47,489 autoreload 33144 25960 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:46:48,365 autoreload 37584 32764 Watching for file changes with StatReloader
+INFO 2025-08-14 17:47:11,536 autoreload 37584 32764 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-14 17:47:12,391 autoreload 38188 36752 Watching for file changes with StatReloader
+ERROR 2025-08-14 17:47:39,184 log 38188 34960 Internal Server Error: /accounts/microsoft/login/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\views.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\views.py", line 19, in dispatch
+    return provider.redirect_from_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\provider.py", line 50, in redirect_from_request
+    return self.redirect(request, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\provider.py", line 127, in redirect
+    client.get_redirect_url(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        oauth2_adapter.authorize_url, scope, auth_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\client.py", line 50, in get_redirect_url
+    return "%s?%s" % (authorization_url, urlencode(params))
+                                         ~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\http.py", line 55, in urlencode
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot encode None for key 'client_id' in a query string. Did you mean to pass an empty string or omit the value?
+ERROR 2025-08-14 17:47:39,187 basehttp 38188 34960 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 500 113575
+ERROR 2025-08-14 17:47:39,944 log 38188 34960 Internal Server Error: /accounts/microsoft/login/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\views.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\views.py", line 19, in dispatch
+    return provider.redirect_from_request(request)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\base\provider.py", line 50, in redirect_from_request
+    return self.redirect(request, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\provider.py", line 127, in redirect
+    client.get_redirect_url(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        oauth2_adapter.authorize_url, scope, auth_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\allauth\socialaccount\providers\oauth2\client.py", line 50, in get_redirect_url
+    return "%s?%s" % (authorization_url, urlencode(params))
+                                         ~~~~~~~~~^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\http.py", line 55, in urlencode
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: Cannot encode None for key 'client_id' in a query string. Did you mean to pass an empty string or omit the value?
+ERROR 2025-08-14 17:47:39,946 basehttp 38188 34960 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 500 113575
+INFO 2025-08-14 17:47:46,531 autoreload 25348 2356 Watching for file changes with StatReloader
+INFO 2025-08-14 17:47:49,599 basehttp 25348 32500 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-08-14 17:48:47,560 autoreload 33008 33776 Watching for file changes with StatReloader
+INFO 2025-08-14 17:48:49,883 basehttp 33008 14592 "GET / HTTP/1.1" 302 0
+INFO 2025-08-14 17:48:49,889 basehttp 33008 14592 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-08-14 17:48:49,932 basehttp 33008 26880 "GET /accounts/login/?next=/ HTTP/1.1" 200 6694
+INFO 2025-08-14 17:48:49,956 basehttp 33008 26880 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-08-14 17:48:49,959 basehttp 33008 26880 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-08-14 17:48:49,962 basehttp 33008 26880 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-08-14 17:48:49,964 basehttp 33008 26880 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-08-14 17:48:49,965 basehttp 33008 26880 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-08-14 17:48:49,969 basehttp 33008 26880 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-08-14 17:48:49,971 basehttp 33008 26880 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-08-14 17:48:49,973 basehttp 33008 26880 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+WARNING 2025-08-14 17:48:51,462 log 33008 26880 Not Found: /favicon.ico
+WARNING 2025-08-14 17:48:51,463 basehttp 33008 26880 "GET /favicon.ico HTTP/1.1" 404 4305
+INFO 2025-08-14 17:48:51,517 basehttp 33008 26880 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-08-14 17:48:56,820 basehttp 33008 26880 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAdE8AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-jmpszYnQyaFRZt9TFd0ahVp1c4q4byC6CwXVeeKn93_8A3Wj_pAfkV8fr4kNJ1_RNueyF2FQo3nI1JYVhAKOe1GX6mbMeviYhT-h4xlsjjC3_IvjShhEHxHFn1P6uCNtGVGdPTjRt5P995HkmaIcpzGxot9tjdsrMWFjAwUDRecQNeytqLc4sXXYlUAvfeGvGpnKW12k0Lg7z6cq-OtkJ_cZ6kaDznIRmxlG5BcjEIhFpkgCVESXTtNUTDh2YWnyGsprXRncfHTKODf8PHWXwwltHrDWovLMZ3c-mipL7MmCCfmvVzMJ_pZadb20JlSz-0yRYRv_l7XU0EoHfn_l2hhvaQCnz-rG9k8m80k-NFpZJ9U-58HLD4JixU3oOs8QwgUdM8J0-pooW4U34wUW1loBiwG5SSm3nToqabjTwOB13FrWh-QMSYz68oyB1dP5WUb62mQTnjiTt4PT5OaBTsJK4KmYR8aNZoNX2jei_kaE6SRwXr9QNhBuYai0DAKm15LBrmfC8AHXNPQH45vPiMPbj_HfIPK9GZD0hH8-NohJNU0oL-gaMpnnPwnhIYP2GyzXVWQ8nHUNFyNaYKsoY5gYQYP_dkYA8GFeSgF2R8Kfne4ybestm4H9aByuZaYoYX1OrxL7PqE9v1FOkUXBYH1J3wcmNnm5IbEIC1D8-rjMcwWZgQlWoySMysYOLl9-xOGjxsF4BKC0uFMrMZ1P8n8Y8ncF2EotvUjHVzMfJWot1BpAX3DoLKurpjyAn&state=gFzO1j42SSya76dB&session_state=004d8ba9-262a-29ff-2a96-9b8d07982867 HTTP/1.1" 302 0
+INFO 2025-08-14 17:48:56,951 basehttp 33008 26880 "GET / HTTP/1.1" 200 95754
+INFO 2025-08-14 17:48:56,981 basehttp 33008 26880 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-08-14 17:48:57,116 basehttp 33008 26880 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-08-14 17:48:57,181 basehttp 33008 26880 "GET /media/guest_photos/72x72_7ubsthY.png HTTP/1.1" 200 9337
+INFO 2025-08-14 17:48:57,182 basehttp 33008 35276 "GET /media/guest_photos/IMG_2095.jpeg HTTP/1.1" 200 721083
+INFO 2025-08-14 17:48:57,452 basehttp 33008 35276 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-08-14 17:48:57,870 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:48:57,873 basehttp 33008 35276 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 200 22275
+INFO 2025-08-14 17:48:59,526 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:48:59,876 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:35,616 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:35,684 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:42,492 basehttp 33008 35276 "GET / HTTP/1.1" 200 95350
+INFO 2025-08-14 17:49:42,714 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:49:44,753 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:44,792 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:46,994 basehttp 33008 35276 "GET /visitors/groups/create/ HTTP/1.1" 200 21252
+INFO 2025-08-14 17:49:47,120 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:49:48,770 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:48,808 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:52,841 basehttp 33008 35276 "GET /visitors/groups/fill/dea4a9c1-a34f-4972-8aec-dfd564a0e031/ HTTP/1.1" 200 47385
+INFO 2025-08-14 17:49:53,140 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:49:54,695 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:49:54,736 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:03,315 basehttp 33008 35276 "GET /visitors/register/ HTTP/1.1" 200 67077
+INFO 2025-08-14 17:50:03,336 basehttp 33008 26880 "GET /static/django_select2/django_select2.css HTTP/1.1" 200 54
+INFO 2025-08-14 17:50:03,336 basehttp 33008 35276 "GET /static/admin/css/vendor/select2/select2.min.css HTTP/1.1" 200 14966
+INFO 2025-08-14 17:50:03,338 basehttp 33008 35276 "GET /static/admin/js/vendor/select2/i18n/ru.js HTTP/1.1" 200 1171
+INFO 2025-08-14 17:50:03,338 basehttp 33008 26880 "GET /static/admin/js/vendor/select2/select2.full.min.js HTTP/1.1" 200 79212
+INFO 2025-08-14 17:50:03,339 basehttp 33008 35276 "GET /static/django_select2/django_select2.js HTTP/1.1" 200 2561
+INFO 2025-08-14 17:50:03,802 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:50:05,218 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:05,392 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:07,260 basehttp 33008 35276 "GET /visitors/history/ HTTP/1.1" 200 149374
+INFO 2025-08-14 17:50:07,394 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:50:08,961 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:09,009 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:12,579 basehttp 33008 35276 "GET /classroom-book/ HTTP/1.1" 200 22062
+INFO 2025-08-14 17:50:12,594 basehttp 33008 35276 "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2025-08-14 17:50:12,727 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:50:14,150 basehttp 33008 35276 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 95356
+INFO 2025-08-14 17:50:14,389 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:50:14,403 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:15,091 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:16,412 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:16,451 basehttp 33008 19136 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:37,811 basehttp 33008 35276 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 95356
+INFO 2025-08-14 17:50:38,091 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:50:40,119 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:40,858 basehttp 33008 35276 "GET /visitors/qr/scan/ HTTP/1.1" 200 12280
+INFO 2025-08-14 17:50:40,985 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:50:42,540 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:50:58,078 basehttp 33008 35276 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 95356
+INFO 2025-08-14 17:50:58,257 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:00,497 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:01,989 basehttp 33008 35276 "GET /visitors/groups/create/ HTTP/1.1" 200 21252
+INFO 2025-08-14 17:51:02,188 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:03,747 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+WARNING 2025-08-14 17:51:10,711 log 33008 35276 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-08-14 17:51:10,728 basehttp 33008 35276 "GET /visitors/register/student/ HTTP/1.1" 403 135
+INFO 2025-08-14 17:51:12,426 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:15,736 basehttp 33008 35276 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 95356
+INFO 2025-08-14 17:51:15,920 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:17,931 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:20,261 basehttp 33008 35276 "GET /visitors/history/ HTTP/1.1" 200 149374
+INFO 2025-08-14 17:51:20,460 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:22,015 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:26,151 basehttp 33008 35276 "GET /visitors/history/?status=AWAITING HTTP/1.1" 200 129436
+INFO 2025-08-14 17:51:26,367 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:27,926 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:32,456 basehttp 33008 35276 "GET /visitors/history/?status=CHECKED_OUT HTTP/1.1" 200 66155
+INFO 2025-08-14 17:51:32,653 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:34,204 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:35,422 basehttp 33008 35276 "GET /visitors/history/?status=CHECKED_OUT HTTP/1.1" 200 66155
+INFO 2025-08-14 17:51:35,535 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:37,076 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:40,019 basehttp 33008 35276 "GET /visitors/history/?status=CHECKED_OUT HTTP/1.1" 200 66155
+INFO 2025-08-14 17:51:40,133 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:41,676 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:47,121 basehttp 33008 35276 "GET /visitors/history/?status=CHECKED_OUT HTTP/1.1" 200 66155
+INFO 2025-08-14 17:51:47,230 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:48,779 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:52,454 basehttp 33008 35276 "GET /visitors/history/ HTTP/1.1" 200 149374
+INFO 2025-08-14 17:51:52,576 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:54,134 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:54,932 basehttp 33008 35276 "GET /visitors/history/?visit_type=group HTTP/1.1" 200 44627
+INFO 2025-08-14 17:51:55,127 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:56,684 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:51:57,616 basehttp 33008 35276 "GET /visitors/history/ HTTP/1.1" 200 149374
+INFO 2025-08-14 17:51:57,840 basehttp 33008 7832 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:51:59,504 basehttp 33008 35276 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 17:57:32,554 autoreload 33008 33776 D:\university_visitor_system\visitor_system\visitor_system\celery.py changed, reloading.
+INFO 2025-08-14 17:57:33,497 autoreload 38032 35444 Watching for file changes with StatReloader
+INFO 2025-08-14 17:57:36,831 basehttp 38032 37392 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 95356
+INFO 2025-08-14 17:57:37,502 basehttp 38032 35772 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-14 17:57:39,240 basehttp 38032 37392 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-08-14 18:00:18,563 autoreload 38032 35444 D:\university_visitor_system\visitor_system\visitor_system\celery.py changed, reloading.
+INFO 2025-08-14 18:00:19,641 autoreload 37016 36428 Watching for file changes with StatReloader
+INFO 2025-08-14 18:00:46,992 autoreload 37016 36428 D:\university_visitor_system\visitor_system\visitor_system\celery.py changed, reloading.
+INFO 2025-08-14 18:00:47,848 autoreload 36556 33336 Watching for file changes with StatReloader
+INFO 2025-08-14 18:01:00,696 autoreload 36556 33336 D:\university_visitor_system\visitor_system\visitor_system\celery.py changed, reloading.
+INFO 2025-08-14 18:01:02,002 autoreload 35068 35600 Watching for file changes with StatReloader
