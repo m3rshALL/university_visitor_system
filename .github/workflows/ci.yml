@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: visitor_system_db
+        ports: [ '5432:5432' ]
+        options: >-
+          --health-cmd="pg_isready -U postgres" 
+          --health-interval=5s 
+          --health-timeout=5s 
+          --health-retries=5
+      redis:
+        image: redis:7-alpine
+        ports: [ '6379:6379' ]
+        options: >-
+          --health-cmd "redis-cli ping" 
+          --health-interval 5s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry==1.7.1
+          poetry config virtualenvs.create false
+
+      - name: Install dependencies
+        run: |
+          poetry install --no-interaction
+
+      - name: Lint (flake8)
+        run: |
+          poetry run flake8
+
+      - name: Run Django tests
+        env:
+          DJANGO_SETTINGS_MODULE: visitor_system.conf.dev
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: visitor_system_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          CELERY_BROKER_URL: redis://localhost:6379/0
+          CELERY_RESULT_BACKEND: redis://localhost:6379/0
+        run: |
+          cd visitor_system
+          python manage.py migrate --noinput
+          python manage.py test -v 2
+
+
