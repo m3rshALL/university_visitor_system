@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Мои бронирования{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">Мои бронирования</h2>
+                <div class="page-pretitle">
+                    История и текущие бронирования аудиторий
+                </div>
+            </div>
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a href="{% url 'classroom_book:book_classroom' %}" class="btn btn-primary d-none d-sm-inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                        Новое бронирование
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-cards">
+            {% if active %}
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Активные бронирования</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Аудитория</th>
+                                    <th>Дата</th>
+                                    <th>Время</th>
+                                    <th>Цель</th>
+                                    <th>Статус</th>
+                                    <th class="w-1">Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in active %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex py-1 align-items-center">
+                                            <span class="avatar me-2 bg-blue-lt">{{ booking.classroom.number|slice:":2" }}</span>
+                                            <div class="flex-fill">
+                                                <div class="font-weight-medium">{{ booking.classroom.number }}</div>
+                                                <div class="text-muted">{{ booking.classroom.building }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ booking.start_time|date:"d.m.Y" }}</td>
+                                    <td>{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</td>
+                                    <td>{{ booking.purpose }}</td>
+                                    <td>
+                                        {% if booking.status == 'reserved' %}
+                                            <span class="badge bg-primary-lt">Забронирован</span>
+                                        {% elif booking.status == 'issued' %}
+                                            <span class="badge bg-success">Ключ выдан</span>
+                                        {% else %}
+                                            <span class="badge bg-blue-lt">{{ booking.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-list flex-nowrap">
+                                            <form action="{% url 'classroom_book:return_key' booking.id %}" method="post" class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="badge bg-success-lt btn btn-sm">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                    </svg>
+                                                    Вернуть ключ
+                                                </button>
+                                            </form>
+                                            <form action="{% url 'classroom_book:cancel_booking' booking.id %}" method="post" class="d-inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="badge bg-danger-lt btn btn-sm">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M18 6l-12 12"></path>
+                                                        <path d="M6 6l12 12"></path>
+                                                    </svg>
+                                                    Отменить
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="empty">
+                    <div class="empty-img">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-off" width="128" height="128" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M19.823 19.824a2 2 0 0 1 -1.823 1.176h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 1.175 -1.823m3.825 -.177h9a2 2 0 0 1 2 2v9"></path>
+                            <path d="M16 3v4"></path>
+                            <path d="M8 3v1"></path>
+                            <path d="M4 11h7m4 0h5"></path>
+                            <path d="M11 15h1"></path>
+                            <path d="M12 15v1"></path>
+                            <path d="M3 3l18 18"></path>
+                        </svg>
+                    </div>
+                    <p class="empty-title">У вас нет активных бронирований</p>
+                    <p class="empty-subtitle text-muted">
+                        Забронируйте аудиторию для проведения занятий или других мероприятий
+                    </p>
+                    <div class="empty-action">
+                        <a href="{% url 'classroom_book:book_classroom' %}" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 5l0 14"></path>
+                                <path d="M5 12l14 0"></path>
+                            </svg>
+                            Забронировать аудиторию
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if past %}
+            <div class="col-12 mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">История бронирований</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-vcenter table-striped card-table">
+                            <thead>
+                                <tr>
+                                    <th>Аудитория</th>
+                                    <th>Дата</th>
+                                    <th>Время</th>
+                                    <th>Цель</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in past %}
+                                <tr>
+                                    <td>{{ booking.classroom.number }} ({{ booking.classroom.building }})</td>
+                                    <td>{{ booking.start_time|date:"d.m.Y" }}</td>
+                                    <td>{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</td>
+                                    <td>{{ booking.purpose }}</td>
+                                    <td>
+                                        {% if booking.is_returned %}
+                                            <span class="badge bg-secondary-lt">Возвращен</span>
+                                        {% elif booking.is_cancelled %}
+                                            <span class="badge bg-danger-lt">Отменен</span>
+                                        {% elif booking.status == 'expired' %}
+                                            <span class="badge bg-warning-lt">Просрочен</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary-lt">{{ booking.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

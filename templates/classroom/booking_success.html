@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Бронирование успешно{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+  <div class="container-xl">
+    <div class="row g-2 align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check text-success me-2" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M5 12l5 5l10 -10"/>
+          </svg>
+          Аудитория успешно забронирована!
+        </h2>
+        <div class="page-pretitle text-success">
+          Ваше бронирование создано и готово к использованию
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body">
+  <div class="container-xl">
+    <div class="row row-cards">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-status-top bg-success"></div>
+          <div class="card-header">
+            <h3 class="card-title">Детали бронирования</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label text-muted">Аудитория</label>
+                  <div class="h4 mb-0">{{ booking.classroom.number }}</div>
+                  <div class="text-muted">{{ booking.classroom.building }} блок, {{ booking.classroom.floor }} этаж</div>
+                </div>
+                
+                <div class="row mb-3">
+                  <div class="col-sm-6">
+                    <label class="form-label text-muted">Дата</label>
+                    <div class="h5 mb-0">{{ booking.start_time|date:"d.m.Y" }}</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label text-muted">Время</label>
+                    <div class="h5 mb-0">{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</div>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label text-muted">Цель</label>
+                  <div class="h5 mb-0">{{ booking.purpose }}</div>
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label text-muted">Ключ</label>
+                  <div class="h5 mb-0">
+                    {% if booking.key %}
+                      Ключ #{{ booking.key.key_number }}
+                      <span class="badge bg-success-lt">Зарезервирован</span>
+                    {% else %}
+                      <span class="text-warning">Ключ будет назначен автоматически</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+                <div class="col-lg-6">
+                <div class="card bg-azure-lt">
+                  <div class="card-header">
+                    <h4 class="card-title">QR-код для быстрого доступа</h4>
+                  </div>
+                  <div class="card-body text-center">
+                    {% if qr_code %}
+                      <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
+                      <p class="text-muted">Отсканируйте QR-код для быстрого подтверждения получения ключа</p>
+                      <div class="small text-muted">
+                        Или используйте ссылку: <br>
+                        <code class="text-break small">{{ booking_url }}</code>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Следующие шаги</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-start">
+                  <div class="avatar avatar-md bg-primary text-white me-3 flex-shrink-0">1</div>
+                  <div>
+                    <h4 class="mb-1">Получите ключ</h4>
+                    <p class="text-muted mb-0">Обратитесь к дежурному для получения ключа от аудитории {{ booking.classroom.number }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-start">
+                  <div class="avatar avatar-md bg-success text-white me-3 flex-shrink-0">2</div>
+                  <div>
+                    <h4 class="mb-1">Используйте аудиторию</h4>
+                    <p class="text-muted mb-0">Проведите занятие или мероприятие в забронированное время</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-start">
+                  <div class="avatar avatar-md bg-warning text-white me-3 flex-shrink-0">3</div>
+                  <div>
+                    <h4 class="mb-1">Верните ключ</h4>
+                    <p class="text-muted mb-0">После использования верните ключ и отметьте возврат в системе</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-12">
+      <div class="alert alert-info">
+        <div class="d-flex">
+          <div class="me-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <circle cx="12" cy="12" r="9"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+              <polyline points="11,12 12,12 12,16 13,16"/>
+            </svg>
+          </div>
+          <div>
+            <h4 class="alert-title">Важная информация!</h4>
+            <div class="text-muted">
+              <ul class="mb-0">
+                <li>Не забудьте вернуть ключ после использования</li>
+                <li>В случае проблем обращайтесь к дежурному</li>
+                <li>QR-код действует только для этого бронирования</li>
+                <li>Отменить бронирование можно в разделе "Мои бронирования"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+      <div class="row justify-content-center mt-4">
+      <div class="col-12">
+        <div class="d-flex flex-column flex-sm-row justify-content-between gap-2">
+          <a href="{% url 'classroom_book:classroom_index' %}" class="btn btn-outline-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M5 12l14 0"/>
+              <path d="M5 12l6 6"/>
+              <path d="M5 12l6 -6"/>
+            </svg>
+            Вернуться к главной
+          </a>
+          
+          <div class="d-flex flex-column flex-sm-row gap-2">
+            <a href="{% url 'classroom_book:my_bookings' %}" class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M9 6l11 0"/>
+                <path d="M9 12l11 0"/>
+                <path d="M9 18l11 0"/>
+                <path d="M5 6l0 .01"/>
+                <path d="M5 12l0 .01"/>
+                <path d="M5 18l0 .01"/>
+              </svg>
+              Мои бронирования
+            </a>
+            
+            <a href="{% url 'classroom_book:book_classroom' %}" class="btn btn-success">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 5l0 14"/>
+                <path d="M5 12l14 0"/>
+              </svg>
+              Забронировать еще
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Автоматическое перенаправление через 10 секунд (опционально)
+document.addEventListener('DOMContentLoaded', function() {
+  // Можно добавить автоматическое перенаправление если нужно
+  // setTimeout(function() {
+  //   window.location.href = "{% url 'classroom_book:my_bookings' %}";
+  // }, 10000);
+});
+</script>
+{% endblock %}

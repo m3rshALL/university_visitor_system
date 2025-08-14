@@ -1,0 +1,14 @@
+from .base import *  # noqa
+
+# Prod overrides
+DEBUG = False
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+SECURE_HSTS_SECONDS = 60 * 60 * 24 * 30
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+DJANGO_LOG_TO_STDOUT = True
+
+

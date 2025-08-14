@@ -1,6 +1,7 @@
 # visitors/urls.py
 from django.urls import path
 from . import views
+from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
 
 urlpatterns = [
     # --- единый URL для регистрации ---
@@ -10,7 +11,7 @@ urlpatterns = [
     path('register/', views.register_guest_view, name='register_guest'),
     # --- путь для регистрации студентов/абитуриентов ---
     path('register/student/', views.register_student_visit_view, name='register_student_visit'),
-    #path('register-group/', views.register_group_visit_view, name='register_group_visit'),
+    path('register/group/<int:invitation_id>/', views.register_group_visit_view, name='register_group_visit'),
     
     # --- URL для настройки профиля ---
     path('profile/setup/', views.profile_setup_view, name='profile_setup'),
@@ -27,6 +28,7 @@ urlpatterns = [
     
     path('exit/<int:visit_id>/', views.mark_guest_exit_view, name='mark_guest_exit'),
     path('exit/student/<int:visit_id>/', views.mark_student_exit_view, name='mark_student_exit'),
+    path('exit/group/<int:visit_id>/', views.mark_group_exit_view, name='mark_group_exit'),
     
     path('special-feature/', views.example_special_feature_view, name='special_feature'),
     
@@ -45,4 +47,13 @@ urlpatterns = [
     # --- URL для деталей департамента ---
     path('ajax/department-details/', views.get_department_details_view, name='get_department_details'),
     
+    # --- Приглашения гостей ---
+    path('invite/', views.create_guest_invitation, name='create_guest_invitation'),
+    path('invite/fill/<uuid:token>/', views.guest_invitation_fill, name='guest_invitation_fill'),
+    path('invite/finalize/<int:pk>/', views.finalize_guest_invitation, name='finalize_guest_invitation'),
+    
+    path('groups/create/', views.create_group_invitation_view, name='create_group_invitation'),
+    path('groups/fill/<uuid:token>/', views.group_invitation_fill_view, name='group_invitation_fill'),
+    path('groups/card/<int:pk>/', views.group_visit_card_view, name='group_visit_card'),
+    path('groups/register/<int:invitation_id>/', views.register_group_visit_view, name='register_group_visit'),
 ]

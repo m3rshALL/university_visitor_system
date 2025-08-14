@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container-xl">
+    <div class="page-header d-print-none mb-4">
+        <h2 class="page-title">Регистрация группового визита</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Информация о визите</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label required">{{ form.group_name.label }}</label>
+                            {{ form.group_name|add_class:'form-control' }}
+                            {% if form.group_name.help_text %}
+                                <small class="form-hint">{{ form.group_name.help_text }}</small>
+                            {% endif %}
+                            {% if form.group_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.group_name.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label required">{{ form.department.label }}</label>
+                            {{ form.department|add_class:'form-select' }}
+                            {% if form.department.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.department.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label required">{{ form.purpose.label }}</label>
+                            {{ form.purpose|add_class:'form-control' }}
+                            {% if form.purpose.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.purpose.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label required">{{ form.visit_time.label }}</label>
+                            {{ form.visit_time|add_class:'form-control' }}
+                            {% if form.visit_time.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.visit_time.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary">Зарегистрировать визит</button>
+                            <a href="{% url 'employee_dashboard' %}" class="btn btn-link">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Карточка с информацией о гостях -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3 class="card-title">Список гостей ({{ guests.count }})</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Фото</th>
+                                    <th>ФИО</th>
+                                    <th>Email</th>
+                                    <th>Телефон</th>
+                                    <th>ИИН</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for guest in guests %}
+                                <tr>
+                                    <td>
+                                        {% if guest.photo %}
+                                            <div class="avatar avatar-md" style="background-image: url({{ guest.photo.url }})"></div>
+                                        {% else %}
+                                            <div class="avatar avatar-md bg-secondary-lt">
+                                                {{ guest.full_name|slice:":2" }}
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ guest.full_name }}</td>
+                                    <td>{{ guest.email }}</td>
+                                    <td>{{ guest.phone_number }}</td>
+                                    <td>{{ guest.iin }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Нет информации о гостях</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

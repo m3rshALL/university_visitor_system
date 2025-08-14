@@ -9585,3 +9585,589 @@ WARNING 2025-05-27 16:14:05,280 log 42716 12284 Not Found: /offline.html
 WARNING 2025-05-27 16:14:11,322 log 42716 43132 Not Found: /offline.html
 WARNING 2025-05-27 16:14:12,983 log 42716 12048 Not Found: /offline.html
 WARNING 2025-05-27 17:11:25,926 log 77980 79212 Not Found: /offline.html
+WARNING 2025-05-27 18:30:35,637 log 67996 65876 Not Found: /offline.html
+WARNING 2025-05-27 18:31:10,764 log 67996 84120 Not Found: /offline.html
+WARNING 2025-05-27 18:31:15,232 log 67996 87760 Not Found: /offline.html
+WARNING 2025-05-27 18:31:17,611 log 67996 84920 Not Found: /offline.html
+WARNING 2025-05-27 18:41:20,693 log 67996 83980 Not Found: /offline.html
+WARNING 2025-05-27 18:41:52,083 log 81076 85904 Not Found: /offline.html
+WARNING 2025-05-27 18:42:41,096 log 86240 83576 Not Found: /offline.html
+WARNING 2025-05-27 18:42:48,651 log 86240 81932 Not Found: /offline.html
+WARNING 2025-05-27 18:45:13,325 log 86240 86112 Not Found: /offline.html
+WARNING 2025-05-27 18:46:18,766 log 86240 86260 Not Found: /offline.html
+WARNING 2025-05-27 18:46:54,480 log 86240 79420 Not Found: /offline.html
+WARNING 2025-05-27 19:02:23,847 log 84284 90152 Not Found: /classroom_book/book/
+WARNING 2025-05-27 19:56:30,298 log 93272 94980 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-27 19:56:32,859 log 93272 37972 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-27 19:56:35,985 log 93272 95852 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-27 19:56:38,795 log 93272 94228 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-27 19:56:41,233 log 93272 93616 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-27 19:57:19,218 log 96804 95236 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-27 19:57:57,276 log 96116 96584 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 10:11:36,232 log 3836 28096 Not Found: /favicon.ico
+WARNING 2025-05-28 11:41:24,888 log 38556 40392 Not Found: /favicon.ico
+WARNING 2025-05-28 11:43:15,172 log 38556 36148 Not Found: /favicon.ico
+WARNING 2025-05-28 12:05:52,560 log 44732 41884 Not Found: /classroom/book/
+WARNING 2025-05-28 12:21:46,480 log 45616 44224 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:02,298 log 45296 6916 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:05,025 log 45296 44828 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:05,857 log 45296 43772 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:09,940 log 45296 43732 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:39,945 log 45296 520 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:40,532 log 45296 39348 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:22:48,109 log 45296 43792 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:05,222 log 46408 45568 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:06,597 log 46408 45776 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:07,370 log 46408 46704 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:13,201 log 46408 46096 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:14,426 log 46408 43308 Bad Request: /classroom-book/api/check-availability/
+WARNING 2025-05-28 12:23:27,667 log 46408 46804 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 12:23:55,767 log 45852 46396 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 14:24:10,809 log 41672 12876 Not Found: /favicon.ico
+WARNING 2025-05-28 14:32:48,478 log 41672 54204 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-05-28 14:37:52,395 log 41672 57652 Not Found: /favicon.ico
+INFO 2025-05-28 15:48:31,040 forms 41672 65092 Using guest object: Санжаров Самат (ID: 10), Created: False
+INFO 2025-05-28 15:48:31,041 forms 41672 65092 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-05-28 15:48:31,093 forms 41672 65092 Celery task queued for Visit ID 134
+INFO 2025-05-28 15:48:31,093 forms 41672 65092 Saved Visit ID 134, Status: AWAITING, Consent Ack: True
+INFO 2025-05-28 15:48:31,095 utils 29088 29120 Attempting to send creation notification for official ID 134
+ERROR 2025-05-28 15:48:31,098 views 41672 65092 Ошибка при вызове send_new_visit_notification_to_security для гостя: Invalid block tag on line 71: 'endautoescape', expected 'endif'. Did you forget to register or load this tag?
+WARNING 2025-05-28 15:48:31,127 utils 29088 29120 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-28 15:48:33,372 utils 29088 29120 Visit notification email for official ID 134 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-28 15:48:33,377 utils 29088 29120 Attempting to send creation notification for official ID 134
+WARNING 2025-05-28 15:48:33,507 utils 29088 29120 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-28 15:48:35,277 utils 29088 29120 Visit notification email for official ID 134 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-28 17:09:49,803 log 45068 71716 Not Found: /favicon.ico
+WARNING 2025-05-28 17:11:27,606 log 20588 8164 Not Found: /favicon.ico
+WARNING 2025-05-28 17:15:09,441 log 73628 72832 Not Found: /favicon.ico
+WARNING 2025-05-28 17:59:27,181 log 75536 77688 Not Found: /favicon.ico
+WARNING 2025-05-28 17:59:33,223 log 75536 31452 Forbidden (CSRF cookie not set.): /visitors/invite/fill/a8d252ee-5ec5-42e7-9f50-73512b7c5075/
+WARNING 2025-05-28 18:21:46,187 log 80060 79880 Not Found: /dashboard/
+WARNING 2025-05-28 18:21:46,310 log 80060 79388 Not Found: /dashboard/
+WARNING 2025-05-28 18:21:46,480 log 80060 78392 Not Found: /favicon.ico
+WARNING 2025-05-28 18:21:46,517 log 80060 78760 Not Found: /favicon.ico
+WARNING 2025-05-28 18:21:47,096 log 80060 79408 Not Found: /dashboard/
+WARNING 2025-05-28 18:22:07,218 log 80872 79940 Not Found: /dashboard/
+INFO 2025-05-28 18:26:13,777 autoreload 76852 81376 Watching for file changes with StatReloader
+INFO 2025-05-28 18:26:15,610 basehttp 76852 50744 "GET / HTTP/1.1" 200 41382
+INFO 2025-05-28 18:26:15,879 basehttp 76852 81888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:26:17,807 basehttp 76852 50744 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:26:18,346 basehttp 76852 50744 "GET / HTTP/1.1" 200 41382
+INFO 2025-05-28 18:26:18,432 basehttp 76852 81888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:26:20,311 basehttp 76852 50744 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:26:43,753 basehttp 76852 50744 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 41388
+INFO 2025-05-28 18:26:43,833 basehttp 76852 79316 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 41388
+INFO 2025-05-28 18:26:44,058 basehttp 76852 81888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:26:44,061 basehttp 76852 80848 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:26:46,180 basehttp 76852 79316 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:26:46,968 basehttp 76852 79316 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 41388
+INFO 2025-05-28 18:26:47,053 basehttp 76852 80848 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:26:49,013 basehttp 76852 79316 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:27:00,866 basehttp 76852 79316 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 41388
+INFO 2025-05-28 18:27:00,884 basehttp 76852 50744 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 18:27:00,886 basehttp 76852 50744 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 18:27:00,887 basehttp 76852 77196 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 18:27:00,887 basehttp 76852 77812 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 18:27:00,889 basehttp 76852 79040 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 18:27:00,889 basehttp 76852 50744 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 18:27:00,891 basehttp 76852 77196 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 18:27:00,891 basehttp 76852 79316 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 18:27:00,891 basehttp 76852 53520 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 18:27:00,891 basehttp 76852 77812 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 18:27:01,251 basehttp 76852 80848 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:27:01,252 basehttp 76852 77812 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-05-28 18:27:13,265 basehttp 76852 77812 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 41388
+INFO 2025-05-28 18:27:13,346 basehttp 76852 80848 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:27:15,154 basehttp 76852 77812 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:27:18,191 basehttp 76852 80848 "GET /manifest.json HTTP/1.1" 200 1341
+WARNING 2025-05-28 18:27:18,230 log 76852 79316 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 18:27:18,230 basehttp 76852 79316 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4584
+INFO 2025-05-28 18:27:18,243 basehttp 76852 77812 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 41388
+INFO 2025-05-28 18:27:18,301 basehttp 76852 77812 "GET /static/tabler/js/tabler-theme.js.map HTTP/1.1" 200 2420
+INFO 2025-05-28 18:27:18,327 basehttp 76852 50744 "GET /static/tabler/css/tabler-socials.css.map HTTP/1.1" 200 7077
+INFO 2025-05-28 18:27:18,327 basehttp 76852 79316 "GET /static/tabler/css/tabler-vendors.css.map HTTP/1.1" 200 14617
+INFO 2025-05-28 18:27:18,327 basehttp 76852 77196 "GET /static/tabler/css/tabler-payments.css.map HTTP/1.1" 200 27576
+INFO 2025-05-28 18:27:18,328 basehttp 76852 53520 "GET /static/tabler/css/tabler-flags.css.map HTTP/1.1" 200 27431
+INFO 2025-05-28 18:27:18,328 basehttp 76852 79040 "GET /static/tabler/css/tabler-marketing.css.map HTTP/1.1" 200 123740
+INFO 2025-05-28 18:27:18,330 basehttp 76852 77812 "GET /static/tabler/css/tabler.css.map HTTP/1.1" 200 842486
+INFO 2025-05-28 18:27:43,539 basehttp 76852 81248 "GET /static/img/icons/icon-72x72.png HTTP/1.1" 200 9306
+INFO 2025-05-28 18:27:43,541 basehttp 76852 81248 "GET /static/img/icons/icon-96x96.png HTTP/1.1" 200 12903
+INFO 2025-05-28 18:27:43,555 basehttp 76852 81248 "GET /static/img/icons/icon-128x128.png HTTP/1.1" 200 18695
+INFO 2025-05-28 18:27:43,563 basehttp 76852 81248 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 200 22275
+INFO 2025-05-28 18:27:43,568 basehttp 76852 81248 "GET /static/img/icons/icon-152x152.png HTTP/1.1" 200 23878
+INFO 2025-05-28 18:27:43,574 basehttp 76852 81248 "GET /static/img/icons/icon-192x192.png HTTP/1.1" 200 33832
+INFO 2025-05-28 18:27:43,577 basehttp 76852 81248 "GET /static/img/icons/icon-384x384.png HTTP/1.1" 200 105390
+INFO 2025-05-28 18:27:43,579 basehttp 76852 81248 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-05-28 18:27:52,683 basehttp 76852 77812 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 41388
+INFO 2025-05-28 18:27:52,711 basehttp 76852 50744 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 18:27:52,712 basehttp 76852 79316 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 18:27:52,713 basehttp 76852 79040 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 18:27:52,713 basehttp 76852 53520 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 18:27:52,713 basehttp 76852 77196 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 18:27:52,714 basehttp 76852 77812 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 18:27:52,721 basehttp 76852 50744 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 18:27:52,721 basehttp 76852 79316 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 18:27:52,721 basehttp 76852 80848 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:27:52,722 basehttp 76852 79040 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 18:27:52,727 basehttp 76852 53520 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 18:27:52,744 basehttp 76852 53520 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 200 22275
+WARNING 2025-05-28 18:27:52,776 log 76852 77812 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-28 18:27:52,777 basehttp 76852 77812 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4584
+INFO 2025-05-28 18:27:52,778 basehttp 76852 53520 "GET /static/tabler/css/tabler-socials.css.map HTTP/1.1" 200 7077
+INFO 2025-05-28 18:27:52,778 basehttp 76852 79316 "GET /static/tabler/css/tabler-flags.css.map HTTP/1.1" 200 27431
+INFO 2025-05-28 18:27:52,779 basehttp 76852 79040 "GET /static/tabler/css/tabler-payments.css.map HTTP/1.1" 200 27576
+INFO 2025-05-28 18:27:52,779 basehttp 76852 77196 "GET /static/tabler/css/tabler-vendors.css.map HTTP/1.1" 200 14617
+INFO 2025-05-28 18:27:52,779 basehttp 76852 50744 "GET /static/tabler/css/tabler-marketing.css.map HTTP/1.1" 200 123740
+INFO 2025-05-28 18:27:52,784 basehttp 76852 53520 "GET /static/tabler/css/tabler.css.map HTTP/1.1" 200 842486
+INFO 2025-05-28 18:27:52,903 basehttp 76852 53520 "GET /static/tabler/js/tabler-theme.js.map HTTP/1.1" 200 2420
+INFO 2025-05-28 18:27:53,169 basehttp 76852 53520 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-05-28 18:27:55,224 basehttp 76852 53520 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:28:24,203 basehttp 76852 53520 "POST /accounts/logout/ HTTP/1.1" 302 0
+INFO 2025-05-28 18:28:24,207 basehttp 76852 53520 "GET / HTTP/1.1" 302 0
+INFO 2025-05-28 18:28:24,213 basehttp 76852 53520 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-05-28 18:28:24,252 basehttp 76852 50744 "GET /accounts/login/?next=/ HTTP/1.1" 200 6694
+WARNING 2025-05-28 18:28:24,357 log 76852 50744 Not Found: /favicon.ico
+WARNING 2025-05-28 18:28:24,357 basehttp 76852 50744 "GET /favicon.ico HTTP/1.1" 404 4473
+INFO 2025-05-28 18:28:25,884 basehttp 76852 50744 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:28:26,792 basehttp 76852 50744 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-05-28 18:28:30,501 basehttp 76852 50744 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:28:39,333 basehttp 76852 78772 "GET /visitors/invite/ HTTP/1.1" 200 16496
+INFO 2025-05-28 18:28:39,820 basehttp 76852 80656 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:28:40,790 basehttp 76852 78772 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:28:40,919 basehttp 76852 80656 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:28:41,053 basehttp 76852 78772 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:28:42,935 basehttp 76852 78772 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:28:47,457 basehttp 76852 78772 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:28:47,559 basehttp 76852 80656 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:28:49,749 basehttp 76852 78772 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:29:01,828 basehttp 76852 78772 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:29:01,918 basehttp 76852 80656 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:29:03,746 basehttp 76852 78772 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:29:12,203 basehttp 76852 78772 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:29:12,299 basehttp 76852 80656 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:29:14,160 basehttp 76852 78772 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:29:14,203 basehttp 76852 81684 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:29:14,250 basehttp 76852 80656 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:29:16,066 basehttp 76852 81684 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:29:16,084 basehttp 76852 75220 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 18:29:16,086 basehttp 76852 81684 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 18:29:16,086 basehttp 76852 75220 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 18:29:16,088 basehttp 76852 81684 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 18:29:16,088 basehttp 76852 75220 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 18:29:16,090 basehttp 76852 81684 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 18:29:16,091 basehttp 76852 75220 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 18:29:16,092 basehttp 76852 75220 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 18:29:16,092 basehttp 76852 81684 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 18:29:16,094 basehttp 76852 81684 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 18:29:16,104 basehttp 76852 78772 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:29:16,422 basehttp 76852 80656 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:29:16,423 basehttp 76852 78772 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+WARNING 2025-05-28 18:33:59,449 log 76852 74968 Not Found: /employee-dashboard/
+WARNING 2025-05-28 18:33:59,449 basehttp 76852 74968 "GET /employee-dashboard/?id=c9487346-c4bc-4f0d-af24-787930c78359&vscodeBrowserReqId=1748439239138 HTTP/1.1" 404 4574
+INFO 2025-05-28 18:39:36,272 basehttp 76852 79932 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:39:36,792 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:39:38,391 basehttp 76852 79932 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:39:38,402 basehttp 76852 77180 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:39:38,417 basehttp 76852 79532 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 18:39:38,418 basehttp 76852 79932 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 18:39:38,421 basehttp 76852 79532 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 18:39:38,421 basehttp 76852 77180 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 18:39:38,421 basehttp 76852 79932 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 18:39:38,422 basehttp 76852 79532 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 18:39:38,423 basehttp 76852 77180 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 18:39:38,424 basehttp 76852 79932 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 18:39:38,425 basehttp 76852 79532 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 18:39:38,425 basehttp 76852 77180 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 18:39:38,802 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:39:38,803 basehttp 76852 77180 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-05-28 18:41:31,687 basehttp 76852 77180 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:41:31,905 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:41:33,759 basehttp 76852 77180 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:41:34,158 basehttp 76852 77180 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:41:34,275 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:41:36,123 basehttp 76852 77180 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:41:37,892 basehttp 76852 79192 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:41:38,331 basehttp 76852 79192 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:41:42,591 basehttp 76852 79192 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:41:42,977 basehttp 76852 79192 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 18:41:43,080 basehttp 76852 80556 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 18:41:43,119 basehttp 76852 81908 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 18:41:43,120 basehttp 76852 79368 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 18:41:43,121 basehttp 76852 77988 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 18:41:43,121 basehttp 76852 79572 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 18:41:43,149 basehttp 76852 80236 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 18:41:43,149 basehttp 76852 77004 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 18:41:43,251 basehttp 76852 73696 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 18:41:43,251 basehttp 76852 78416 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 18:41:43,836 basehttp 76852 81908 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:41:44,029 basehttp 76852 80556 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-05-28 18:41:47,618 basehttp 76852 77180 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:41:47,640 basehttp 76852 79532 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 18:41:47,640 basehttp 76852 79932 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 18:41:47,641 basehttp 76852 77180 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 18:41:47,644 basehttp 76852 79532 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 18:41:47,644 basehttp 76852 79932 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 18:41:47,645 basehttp 76852 77180 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 18:41:47,646 basehttp 76852 79532 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 18:41:47,647 basehttp 76852 79932 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 18:41:47,648 basehttp 76852 77180 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 18:41:47,648 basehttp 76852 79532 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 18:41:47,997 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:41:47,998 basehttp 76852 79532 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+WARNING 2025-05-28 18:42:13,868 log 76852 78496 Not Found: /employee-dashboard/
+WARNING 2025-05-28 18:42:13,868 basehttp 76852 78496 "GET /employee-dashboard/?id=b8a35db0-e153-447b-8a75-cf7bc876e4a5&vscodeBrowserReqId=1748439733557 HTTP/1.1" 404 4574
+INFO 2025-05-28 18:42:46,703 basehttp 76852 79532 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:42:46,969 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:42:48,960 basehttp 76852 79532 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:45:50,728 basehttp 76852 79532 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:45:50,892 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:45:53,011 basehttp 76852 79532 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:45:58,123 basehttp 76852 79532 "GET /visitors/register/ HTTP/1.1" 200 66961
+INFO 2025-05-28 18:45:58,253 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:45:59,832 basehttp 76852 79532 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:46:03,286 basehttp 76852 79532 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:46:03,388 basehttp 76852 80888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:46:05,348 basehttp 76852 79532 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:47:19,814 basehttp 76852 80800 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:47:20,267 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:47:21,916 basehttp 76852 80800 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:47:22,186 basehttp 76852 80800 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:47:22,205 basehttp 76852 78440 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 18:47:22,205 basehttp 76852 81552 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 18:47:22,206 basehttp 76852 81552 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 18:47:22,207 basehttp 76852 78440 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 18:47:22,208 basehttp 76852 81552 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 18:47:22,209 basehttp 76852 80800 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 18:47:22,210 basehttp 76852 78440 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 18:47:22,210 basehttp 76852 80800 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 18:47:22,211 basehttp 76852 81552 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 18:47:22,212 basehttp 76852 78440 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 18:47:22,577 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:47:22,577 basehttp 76852 78440 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-05-28 18:51:21,286 basehttp 76852 78440 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:51:21,492 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:51:23,575 basehttp 76852 78440 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:51:24,408 basehttp 76852 78440 "GET /visitors/invite/ HTTP/1.1" 200 16496
+INFO 2025-05-28 18:51:24,483 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:51:26,017 basehttp 76852 78440 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:51:34,776 basehttp 76852 78440 "GET /visitors/invite/ HTTP/1.1" 200 16496
+INFO 2025-05-28 18:51:34,866 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:51:36,391 basehttp 76852 78440 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:51:38,032 basehttp 76852 78440 "GET /visitors/invite/ HTTP/1.1" 200 16496
+INFO 2025-05-28 18:51:38,075 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:51:39,731 basehttp 76852 78440 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:51:43,202 basehttp 76852 78440 "GET /visitors/invite/ HTTP/1.1" 200 16496
+INFO 2025-05-28 18:51:43,256 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:51:44,911 basehttp 76852 78440 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:51:49,579 basehttp 76852 78440 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 55254
+INFO 2025-05-28 18:51:49,690 basehttp 76852 80692 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 18:51:51,596 basehttp 76852 78440 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 18:57:44,778 autoreload 76852 81376 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-05-28 18:57:45,730 autoreload 79080 73220 Watching for file changes with StatReloader
+INFO 2025-05-28 18:58:07,919 autoreload 79080 73220 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-05-28 18:58:08,946 autoreload 79660 81276 Watching for file changes with StatReloader
+INFO 2025-05-28 18:59:51,061 autoreload 79660 81276 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-05-28 18:59:52,155 autoreload 77636 81924 Watching for file changes with StatReloader
+INFO 2025-05-28 18:59:59,579 autoreload 77636 81924 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-05-28 19:00:00,276 autoreload 82048 78588 Watching for file changes with StatReloader
+INFO 2025-05-28 19:00:02,043 basehttp 82048 83488 "GET / HTTP/1.1" 302 0
+INFO 2025-05-28 19:00:02,233 basehttp 82048 83488 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-05-28 19:00:02,276 basehttp 82048 84076 "GET /accounts/login/?next=/ HTTP/1.1" 200 6694
+WARNING 2025-05-28 19:00:02,440 log 82048 84076 Not Found: /favicon.ico
+WARNING 2025-05-28 19:00:02,440 basehttp 82048 84076 "GET /favicon.ico HTTP/1.1" 404 4473
+INFO 2025-05-28 19:00:04,048 basehttp 82048 84076 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 19:00:09,536 basehttp 82048 84076 "POST /accounts/login/ HTTP/1.1" 302 0
+INFO 2025-05-28 19:00:09,616 basehttp 82048 84076 "GET / HTTP/1.1" 200 42076
+INFO 2025-05-28 19:00:09,760 basehttp 82048 78676 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 19:00:11,605 basehttp 82048 84076 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 19:00:12,374 basehttp 82048 84076 "GET / HTTP/1.1" 200 41382
+INFO 2025-05-28 19:00:12,460 basehttp 82048 78676 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 19:00:14,356 basehttp 82048 84076 "GET / HTTP/1.1" 200 41382
+INFO 2025-05-28 19:00:14,377 basehttp 82048 84828 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-05-28 19:00:14,377 basehttp 82048 84456 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-05-28 19:00:14,377 basehttp 82048 84076 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-05-28 19:00:14,377 basehttp 82048 82612 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-05-28 19:00:14,377 basehttp 82048 84408 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-05-28 19:00:14,380 basehttp 82048 84076 "GET /static/css/preloader.css HTTP/1.1" 200 1563
+INFO 2025-05-28 19:00:14,381 basehttp 82048 82612 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-05-28 19:00:14,382 basehttp 82048 84456 "GET /static/css/style.css HTTP/1.1" 200 3271
+INFO 2025-05-28 19:00:14,382 basehttp 82048 84408 "GET /static/js/preloader.js HTTP/1.1" 200 2787
+INFO 2025-05-28 19:00:14,383 basehttp 82048 84828 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-05-28 19:00:14,397 basehttp 82048 22556 "GET /serviceworker.js HTTP/1.1" 200 14347
+INFO 2025-05-28 19:00:14,789 basehttp 82048 78676 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 19:00:14,791 basehttp 82048 22556 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 200 171997
+INFO 2025-05-28 19:00:21,631 autoreload 82048 78588 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-05-28 19:00:22,380 autoreload 73540 84244 Watching for file changes with StatReloader
+INFO 2025-05-28 19:00:57,917 autoreload 73540 84244 D:\university_visitor_system\visitor_system\visitors\views.py changed, reloading.
+INFO 2025-05-28 19:00:58,668 autoreload 84960 83364 Watching for file changes with StatReloader
+INFO 2025-05-28 19:01:23,014 basehttp 84960 80844 "GET / HTTP/1.1" 200 41382
+INFO 2025-05-28 19:01:23,422 basehttp 84960 84436 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-05-28 19:01:25,265 basehttp 84960 80844 "GET /serviceworker.js HTTP/1.1" 200 14347
+WARNING 2025-05-29 11:25:25,672 log 22812 13492 Not Found: /favicon.ico
+WARNING 2025-05-29 11:25:47,255 log 22812 15804 Not Found: /favicon.ico
+WARNING 2025-05-29 12:03:08,268 log 22812 31372 Forbidden (CSRF cookie not set.): /visitors/invite/fill/5f00f4bb-cac8-4ca3-98b2-3a8923643670/
+INFO 2025-05-29 12:41:29,859 utils 27584 27588 Attempting to send creation notification for official ID 135
+WARNING 2025-05-29 12:41:29,892 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 12:41:32,160 utils 27584 27588 Visit notification email for official ID 135 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 13:08:18,887 utils 27584 27588 Attempting to send creation notification for official ID 136
+WARNING 2025-05-29 13:08:18,921 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 13:08:21,346 utils 27584 27588 Visit notification email for official ID 136 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 13:10:15,868 utils 27584 27588 Attempting to send creation notification for official ID 137
+WARNING 2025-05-29 13:10:15,904 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 13:10:18,774 utils 27584 27588 Visit notification email for official ID 137 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 13:17:51,603 utils 27584 27588 Attempting to send creation notification for official ID 138
+WARNING 2025-05-29 13:17:51,638 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 13:17:53,545 utils 27584 27588 Visit notification email for official ID 138 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 13:26:43,466 utils 27584 27588 Attempting to send creation notification for official ID 139
+WARNING 2025-05-29 13:26:43,498 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 13:26:45,337 utils 27584 27588 Visit notification email for official ID 139 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 13:35:06,864 utils 27584 27588 Attempting to send creation notification for official ID 140
+WARNING 2025-05-29 13:35:06,898 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 13:35:08,760 utils 27584 27588 Visit notification email for official ID 140 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 13:50:24,145 utils 27584 27588 Attempting to send creation notification for official ID 141
+WARNING 2025-05-29 13:50:24,177 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 13:50:26,351 utils 27584 27588 Visit notification email for official ID 141 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 15:26:18,017 utils 27584 27588 Attempting to send creation notification for official ID 142
+WARNING 2025-05-29 15:26:18,155 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 15:26:20,500 utils 27584 27588 Visit notification email for official ID 142 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 15:28:04,441 utils 27584 27588 Attempting to send creation notification for official ID 143
+WARNING 2025-05-29 15:28:04,474 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 15:28:06,706 utils 27584 27588 Visit notification email for official ID 143 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 15:34:00,376 utils 27584 27588 Attempting to send creation notification for official ID 144
+WARNING 2025-05-29 15:34:00,409 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 15:34:02,434 utils 27584 27588 Visit notification email for official ID 144 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 18:42:18,561 utils 27584 27588 Attempting to send creation notification for official ID 145
+WARNING 2025-05-29 18:42:18,592 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:42:21,072 utils 27584 27588 Visit notification email for official ID 145 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 18:42:44,003 utils 27584 27588 Attempting to send creation notification for official ID 146
+WARNING 2025-05-29 18:42:44,035 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:42:46,524 utils 27584 27588 Visit notification email for official ID 146 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+INFO 2025-05-29 18:51:57,052 utils 27584 27588 Attempting to send creation notification for official ID 147
+WARNING 2025-05-29 18:51:57,084 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:51:59,392 utils 27584 27588 Visit notification email for official ID 147 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-29 18:51:59,999 log 74792 76452 Not Found: /visitors/invite/finalize/65/
+WARNING 2025-05-29 18:52:00,540 log 74792 74244 Not Found: /favicon.ico
+WARNING 2025-05-29 18:52:05,473 log 74792 77792 Not Found: /visitors/invite/finalize/65/
+INFO 2025-05-29 18:52:52,994 utils 27584 27588 Attempting to send creation notification for official ID 148
+WARNING 2025-05-29 18:52:53,026 utils 27584 27588 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-05-29 18:52:55,349 utils 27584 27588 Visit notification email for official ID 148 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-05-30 11:55:16,220 log 34468 38200 Not Found: /favicon.ico
+INFO 2025-05-30 11:57:16,052 utils 38472 38624 Attempting to send creation notification for official ID 149
+WARNING 2025-05-30 11:57:16,189 utils 38472 38624 Department 'Медиа студия' has no director assigned.
+INFO 2025-05-30 11:57:18,669 utils 38472 38624 Visit notification email for official ID 149 SENT successfully to ['Host:pass-system@astanait.edu.kz', 'Registrar:pass-system@astanait.edu.kz'].
+INFO 2025-06-02 14:05:04,592 utils 919856 925600 Attempting to send creation notification for official ID 150
+WARNING 2025-06-02 14:05:04,629 utils 919856 925600 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-02 14:05:06,835 utils 919856 925600 Visit notification email for official ID 150 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-02 14:33:13,661 log 47204 877636 Not Found: /favicon.ico
+WARNING 2025-06-02 14:33:53,590 log 47204 913700 Not Found: /visitors/invite/fill/e4be3651-afb5-4e4f-8398-6106d268b0ee/success.html
+WARNING 2025-06-02 14:36:01,598 log 921348 928752 Not Found: /visitors/invite/fill/a6d8e139-0e17-4c94-9821-4a553ddf811e/success.html
+WARNING 2025-06-02 14:52:01,751 log 920208 926728 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:53:57,009 log 920208 915488 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:20,616 log 920208 929904 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:35,168 log 920208 929020 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:35,234 log 920208 925016 Not Found: /favicon.ico
+WARNING 2025-06-02 14:54:41,552 log 920208 927904 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:54:57,150 log 920208 930364 Not Found: /visitors/invite/fill/cc227dc4-faeb-4b63-9f06-9c154b018b5a/success.html
+WARNING 2025-06-02 14:59:58,142 log 918056 930768 Not Found: /favicon.ico
+WARNING 2025-06-02 15:06:00,639 log 929512 911988 Not Found: /favicon.ico
+WARNING 2025-06-02 15:33:13,426 log 929512 929680 Not Found: /favicon.ico
+INFO 2025-06-02 15:36:50,957 utils 919856 925600 Attempting to send creation notification for official ID 151
+WARNING 2025-06-02 15:36:50,986 utils 919856 925600 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-02 15:36:53,046 utils 919856 925600 Visit notification email for official ID 151 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-03 14:59:31,888 log 12944 29668 Not Found: /favicon.ico
+ERROR 2025-06-03 17:20:40,260 redis 26832 40152 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-06-03 17:20:40,260 redis 26832 40152 Connection to Redis lost: Retry (0/10) now.
+ERROR 2025-06-03 17:20:44,364 redis 26832 40152 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-06-03 17:20:44,364 redis 26832 40152 Connection to Redis lost: Retry (1/10) in 1.00 second.
+ERROR 2025-06-03 17:20:49,442 redis 26832 40152 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-06-03 17:20:49,442 redis 26832 40152 Connection to Redis lost: Retry (2/10) in 1.00 second.
+ERROR 2025-06-03 17:20:54,909 redis 26832 40152 Connection to Redis lost: Retry (3/10) in 1.00 second.
+ERROR 2025-06-03 17:20:54,909 redis 26832 40152 Connection to Redis lost: Retry (3/10) in 1.00 second.
+INFO 2025-06-03 17:21:17,316 utils 50872 35440 Attempting to send creation notification for official ID 152
+WARNING 2025-06-03 17:21:17,351 utils 50872 35440 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-03 17:21:19,131 utils 50872 35440 Visit notification email for official ID 152 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-04 10:24:34,546 log 33480 37508 Not Found: /visitors/group-visit/create/
+WARNING 2025-06-04 10:24:34,627 log 33480 27844 Not Found: /favicon.ico
+INFO 2025-06-04 10:40:45,032 utils 25344 26952 Attempting to send creation notification for official ID 153
+WARNING 2025-06-04 10:40:45,065 utils 25344 26952 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-04 10:40:47,369 utils 25344 26952 Visit notification email for official ID 153 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-04 12:03:03,810 log 46032 45896 Not Found: /favicon.ico
+INFO 2025-06-04 12:06:37,407 utils 23476 40224 Attempting to send creation notification for official ID 154
+WARNING 2025-06-04 12:06:37,443 utils 23476 40224 Department 'Цифровой институт непрерывного образования' has no director assigned.
+INFO 2025-06-04 12:06:40,739 utils 23476 40224 Visit notification email for official ID 154 SENT successfully to ['Host:sagat.akimbay@astanait.edu.kz', 'Registrar:sagat.akimbay@astanait.edu.kz'].
+WARNING 2025-06-04 12:11:32,991 log 46032 46572 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-06-04 14:40:05,895 log 46060 61504 Not Found: /visitors/register/group/
+WARNING 2025-06-04 14:40:08,323 log 46060 60616 Not Found: /visitors/register/group/
+ERROR 2025-06-05 12:45:30,326 views 39816 40312 Ошибка при получении групповых приглашений: column visitors_groupguest.photo does not exist
+LINE 1: ...est"."phone_number", "visitors_groupguest"."iin", "visitors_...
+                                                             ^
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column visitors_groupguest.photo does not exist
+LINE 1: ...est"."phone_number", "visitors_groupguest"."iin", "visitors_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\visitor_system\visitors\views.py", line 793, in employee_dashboard_view
+    for invite in group_invitations:
+                  ^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1947, in _fetch_all
+    self._prefetch_related_objects()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1326, in _prefetch_related_objects
+    prefetch_related_objects(self._result_cache, *self._prefetch_related_lookups)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 2393, in prefetch_related_objects
+    obj_list, additional_lookups = prefetch_one_level(
+                                   ~~~~~~~~~~~~~~~~~~^
+        obj_to_fetch,
+        ^^^^^^^^^^^^^
+    ...<2 lines>...
+        level,
+        ^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 2557, in prefetch_one_level
+    ) = prefetcher.get_prefetch_querysets(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        instances, lookup.get_current_querysets(level)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 797, in get_prefetch_querysets
+    for rel_obj in queryset:
+                   ^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 384, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1945, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column visitors_groupguest.photo does not exist
+LINE 1: ...est"."phone_number", "visitors_groupguest"."iin", "visitors_...
+                                                             ^
+
+WARNING 2025-06-05 13:55:03,523 views 4968 29672 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 13:56:38,561 log 4968 15732 Not Found: /favicon.ico
+WARNING 2025-06-05 13:57:06,252 views 4968 40380 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:18:50,733 log 33948 37716 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-05 16:19:08,209 log 33948 37668 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-05 16:19:35,932 log 39332 34908 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-05 16:24:40,155 views 39684 6572 Приглашение 113 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:24:40,156 views 39684 6572 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:21,551 views 39684 35980 Приглашение 113 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:21,551 views 39684 35980 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:54,348 views 39684 41368 Приглашение 113 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:27:54,348 views 39684 41368 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:28:24,935 views 39684 36212 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:28:43,439 views 39684 36044 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:41:10,689 views 39884 40416 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:46:00,692 views 33284 40080 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:53:03,936 views 34496 24624 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:55:01,691 views 2624 41332 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:55:08,656 views 2624 39176 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 16:55:14,405 views 2624 39140 Приглашение 112 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 18:37:02,511 views 40692 39372 Приглашение 119 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-05 18:42:23,035 views 26604 37060 Приглашение 121 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 10:21:49,652 views 26076 27484 Приглашение 122 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 10:33:12,509 views 26076 23300 Приглашение 122 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 11:22:50,723 views 26076 40496 Приглашение 122 имеет некорректные данные (отсутствуют token или department)
+WARNING 2025-06-16 11:51:48,741 log 43000 42428 Not Found: /favicon.ico
+WARNING 2025-06-16 11:58:23,421 log 43000 44628 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-06-16 18:52:39,487 log 75852 84712 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-06-16 18:52:41,267 log 75852 81724 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied

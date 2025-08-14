@@ -1,5 +1,4 @@
 const CACHE_NAME = 'visitor-system-cache-v2';
-const OFFLINE_URL = '/offline.html';
 const DB_VERSION = 1;
 
 // Ресурсы для кеширования - обновлены пути к существующим файлам
@@ -20,12 +19,6 @@ const STATIC_ASSETS = [
     '/static/img/icons/icon-384x384.png',
     '/static/img/icons/icon-512x512.png',
     '/static/img/icons/apple-touch-icon.png'
-];
-
-// Какие страницы следует кешировать для оффлайн доступа
-const PAGES_TO_CACHE = [
-    '/',
-    '/offline.html'
 ];
 
 // Установка Service Worker и заполнение кеша

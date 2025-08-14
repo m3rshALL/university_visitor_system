@@ -5,7 +5,7 @@ from datetime import timedelta
 from django.db.models import Count, Q
 from itertools import chain
 from operator import attrgetter
-from .models import Visit, StudentVisit, EmployeeProfile, STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN
+from .visitors.models import Visit, StudentVisit, EmployeeProfile, GuestInvitation, STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN, GroupInvitation
 from django.shortcuts import render
 from django.contrib.auth.models import User
 
@@ -160,25 +160,45 @@ def employee_dashboard_view(request):
             registered_by=user,
             entry_time__gte=recent_time_threshold
         ).select_related('guest', 'department').order_by('-entry_time')[:10]
-    
-    # Добавляем атрибут для различения типов визитов в шаблоне
+      # Добавляем атрибут для различения типов визитов в шаблоне
     for v in recent_official_visits: v.visit_kind = 'official'
     for v in recent_student_visits: v.visit_kind = 'student'
     
     # Объединяем и сортируем по времени входа (самые новые вверху)
     recent_visits = sorted(
         chain(recent_official_visits, recent_student_visits),
-        key=attrgetter('entry_time'),
-        reverse=True
+        key=attrgetter('entry_time'),        reverse=True
     )[:10]  # Берем только 10 самых недавних визитов
+
+    # Получаем заполненные приглашения, ожидающие финализации
+    pending_invitations = GuestInvitation.objects.filter(
+        employee=user,
+        is_filled=True,
+        is_registered=False
+    ).order_by('-created_at')
+    
+    # Отладочная информация
+    print(f"DEBUG: User: {user.username}")
+    print(f"DEBUG: Total pending invitations for user: {pending_invitations.count()}")
+    for inv in pending_invitations:
+        print(f"DEBUG: - {inv.guest_full_name} | created: {inv.created_at}")
+
+    # Получаем групповые приглашения
+    group_invitations = GroupInvitation.objects.filter(
+        employee=user,
+        is_filled=True,
+        is_registered=False
+    ).select_related('department').order_by('-created_at')
 
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
         'my_visit_history': my_visit_history,
         'recent_visits': recent_visits,  # Добавляем недавние визиты в контекст
+        'pending_invitations': pending_invitations,  # Добавляем заполненные приглашения
         'today': today,  # Добавляем переменную today для условного форматирования в шаблоне
         'department_name': user_department.name if user_department else "Нет департамента",
         'visit_chart_data': visit_chart_data_json,  # Добавляем данные для графика
+        'group_invitations': group_invitations,
     }
     return render(request, 'visitors/employee_dashboard.html', context)

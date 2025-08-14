@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        Групповые визиты
+                    </div>
+                    <h2 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 5l0 14"/>
+                            <path d="M5 12l14 0"/>
+                        </svg>
+                        Создать групповое приглашение
+                    </h2>
+                </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M15 6l-6 6l6 6"/>
+                            </svg>
+                            Назад
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    {% if invitation_link %}
+                        <!-- Успешное создание ссылки -->
+                        <div class="card">
+                            <div class="card-status-top bg-success"></div>
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <div class="avatar avatar-xl mb-3 bg-success-lt">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M5 12l5 5l10 -10"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-success">Ссылка успешно создана!</h3>
+                                    <p class="text-muted mb-4">
+                                        Отправьте эту ссылку гостям, чтобы они могли заполнить свою информацию
+                                    </p>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-flat">
+                                            <input type="text" class="form-control font-monospace" value="{{ invitation_link }}" id="invitationLink" readonly>
+                                            <span class="input-group-text">
+                                                <button class="btn btn-link p-0 m-0 border-0" type="button" onclick="copyLink()" title="Копировать ссылку">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <rect x="8" y="8" width="12" height="12" rx="2"/>
+                                                        <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"/>
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info mt-4">
+                                    <div class="d-flex">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <circle cx="12" cy="12" r="9"/>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                                <polyline points="11,12 12,12 12,16 13,16"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="alert-title">Следующие шаги:</h4>
+                                            <div class="text-muted">
+                                                После того, как гости заполнят свою информацию, вы сможете зарегистрировать групповой визит из панели управления и указать детали: название группы, департамент, цель и время визита.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <a href="{% url 'employee_dashboard' %}" class="btn btn-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/>
+                                            <path d="M3 7l9 6l9 -6"/>
+                                        </svg>
+                                        Вернуться на главную
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Форма создания ссылки -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Создание группового приглашения</h3>
+                                <div class="card-actions">
+                                    <div class="dropdown">
+                                        <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                <circle cx="12" cy="12" r="1"/>
+                                                <circle cx="12" cy="19" r="1"/>
+                                                <circle cx="12" cy="5" r="1"/>
+                                            </svg>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a href="#" class="dropdown-item">Помощь</a>
+                                            <a href="{% url 'employee_dashboard' %}" class="dropdown-item">Отмена</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-8">
+                                        <div class="text-center mb-4">
+                                            <div class="avatar avatar-xl mb-3 bg-primary-lt">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <circle cx="9" cy="7" r="4"/>
+                                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/>
+                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/>
+                                                </svg>
+                                            </div>
+                                            <h3>Создание ссылки для групповых гостей</h3>
+                                            <p class="text-muted">
+                                                Нажмите кнопку ниже, чтобы создать уникальную ссылку для приглашения группы гостей.
+                                            </p>
+                                        </div>
+
+                                        <div class="steps steps-counter steps-vertical">
+                                            <div class="step-item">
+                                                <div class="h4 m-0">Создание ссылки</div>
+                                                <div class="text-muted">Система создаст уникальную ссылку для приглашения</div>
+                                            </div>
+                                            <div class="step-item">
+                                                <div class="h4 m-0">Отправка гостям</div>
+                                                <div class="text-muted">Отправьте ссылку гостям для заполнения их данных</div>
+                                            </div>
+                                            <div class="step-item">
+                                                <div class="h4 m-0">Регистрация визита</div>
+                                                <div class="text-muted">После заполнения данных зарегистрируйте групповой визит</div>
+                                            </div>
+                                        </div>
+
+                                        <form method="post" class="mt-4">
+                                            {% csrf_token %}
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-primary btn-lg">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"/>
+                                                        <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"/>
+                                                    </svg>
+                                                    Создать ссылку для приглашения
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if invitation_link %}
+<script>
+function copyLink() {
+    var copyText = document.getElementById("invitationLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    
+    navigator.clipboard.writeText(copyText.value).then(function() {
+        // Используем Tabler toast для уведомления
+        var toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            document.body.appendChild(toastContainer);
+        }
+        
+        var toast = document.createElement('div');
+        toast.className = 'toast align-items-center text-white bg-success border-0';
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M5 12l5 5l10 -10"/>
+                    </svg>
+                    Ссылка скопирована в буфер обмена!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        
+        toastContainer.appendChild(toast);
+        var bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+        
+        // Удаляем toast после скрытия
+        toast.addEventListener('hidden.bs.toast', function() {
+            toast.remove();
+        });
+    }).catch(function(err) {
+        // Fallback для старых браузеров
+        document.execCommand("copy");
+        alert("Ссылка скопирована: " + copyText.value);
+    });
+}
+</script>
+{% endif %}
+{% endblock %}
