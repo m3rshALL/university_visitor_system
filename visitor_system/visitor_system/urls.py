@@ -25,7 +25,7 @@ from visitors import views as visitor_views # Главная страница - 
 # from django.views.defaults import permission_denied, page_not_found, server_error
 from django.shortcuts import render
 # from debug_toolbar.toolbar import debug_toolbar_urls
-from visitors.views import cached_static_serve, manifest_json_view, service_worker_view
+from visitors.views import manifest_json_view, service_worker_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -58,10 +58,7 @@ if settings.DEBUG:
     # Keep media files as they were
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
-    # For static files, use our custom view with cache headers
-    urlpatterns += [
-        path(f'{settings.STATIC_URL[1:]}/<path:path>', cached_static_serve)
-    ]
+    # Для статики используем стандартную раздачу в DEBUG через django.contrib.staticfiles
     # urlpatterns.extend(debug_toolbar_urls())  # Добавляем URL-ы от debug_toolbar
 
 if not settings.DEBUG:
