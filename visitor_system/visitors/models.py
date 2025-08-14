@@ -260,7 +260,7 @@ class StudentVisit(models.Model):
             Index(fields=['entry_time'], name='student_visit_entry_time_idx'),
             Index(fields=['exit_time'], name='student_visit_exit_time_idx'),
             Index(fields=['department'], name='student_visit_department_idx'),
-            Index(fields=['registered_by'], name='student_visit_registered_by_idx'),
+            Index(fields=['registered_by'], name='stud_visit_reg_by_idx'),
             Index(name='student_visit_active_idx', fields=['status'], condition=Q(exit_time__isnull=True)),
         ]
 # ---------------------------------------------------
