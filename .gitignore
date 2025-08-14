@@ -24,12 +24,37 @@ build/
 
 # Poetry
 .poetry/
-poetry.lock # Usually committed, but some prefer to ignore if all devs use `poetry install` without `poetry.lock`
-            # For consistency, it's generally better to commit poetry.lock
+# poetry.lock is committed for reproducible builds
 
 # Virtual environment
 .venv/
 venv/
 ENV/
 env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Static files
+visitor_system/staticfiles/
+!visitor_system/staticfiles/.gitkeep
+
+# Media files
+visitor_system/media/
+!visitor_system/media/.gitkeep
+
+# Logs
+visitor_system/logs/
+!visitor_system/logs/.gitkeep
+
+# Old settings backup
+visitor_system/visitor_system/settings.py.old
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
 
