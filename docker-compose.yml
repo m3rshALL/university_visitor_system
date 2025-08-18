@@ -29,7 +29,7 @@ services:
 
   visitor_system:
     build: .
-    command: bash -lc "cd visitor_system && python manage.py runserver 0.0.0.0:8000"
+    command: bash -lc "cd visitor_system && gunicorn visitor_system.asgi:application -k uvicorn.workers.UvicornWorker -w 2 -b 0.0.0.0:8000"
     volumes:
       - .:/app
     ports:
@@ -53,6 +53,19 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - REDIS_CACHE_URL=redis://redis:6379/1
+
+  nginx:
+    image: nginx:1.27-alpine
+    depends_on:
+      - visitor_system
+    volumes:
+      - ./visitor_system/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./visitor_system/staticfiles:/app/visitor_system/staticfiles:ro
+      - ./visitor_system/media:/app/visitor_system/media:ro
+      - ./visitor_system/nginx/certs:/etc/nginx/certs:ro
+    ports:
+      - "80:80"
+      - "443:443"
 
   celery-worker:
     build: .
@@ -93,6 +106,15 @@ services:
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  flower:
+    image: mher/flower:1.2
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: ["flower", "--broker=redis://redis:6379/0", "--port=5555"]
+    ports:
+      - "5555:5555"
 
 volumes:
   postgres_data:

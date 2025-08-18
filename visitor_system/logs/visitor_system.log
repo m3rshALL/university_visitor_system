@@ -10698,3 +10698,7 @@ INFO 2025-08-14 18:00:46,992 autoreload 37016 36428 D:\university_visitor_system
 INFO 2025-08-14 18:00:47,848 autoreload 36556 33336 Watching for file changes with StatReloader
 INFO 2025-08-14 18:01:00,696 autoreload 36556 33336 D:\university_visitor_system\visitor_system\visitor_system\celery.py changed, reloading.
 INFO 2025-08-14 18:01:02,002 autoreload 35068 35600 Watching for file changes with StatReloader
+INFO 2025-08-14 18:03:13,696 autoreload 35068 35600 D:\university_visitor_system\visitor_system\visitor_system\conf\dev.py changed, reloading.
+INFO 2025-08-14 18:03:15,054 autoreload 28216 34184 Watching for file changes with StatReloader
+INFO 2025-08-14 18:03:20,693 autoreload 28216 34184 D:\university_visitor_system\visitor_system\visitors\urls.py changed, reloading.
+INFO 2025-08-14 18:03:21,772 autoreload 7844 37484 Watching for file changes with StatReloader

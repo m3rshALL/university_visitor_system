@@ -98,6 +98,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'visitor_system.wsgi.application'
+ASGI_APPLICATION = 'visitor_system.asgi.application'
 
 
 DATABASES = {

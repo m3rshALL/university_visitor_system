@@ -90,5 +90,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Открываем порт, на котором будет работать веб-приложение
 EXPOSE 8000
 
-# Используем entrypoint скрипт
+# Используем entrypoint скрипт по умолчанию, но команду передаём из docker-compose
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
