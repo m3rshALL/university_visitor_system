@@ -26,8 +26,15 @@ from visitors import views as visitor_views # Главная страница - 
 from django.shortcuts import render
 # from debug_toolbar.toolbar import debug_toolbar_urls
 from visitors.views import manifest_json_view, service_worker_view
+from django.views.generic import TemplateView
+from django.http import JsonResponse
+from django.db import connections
+from django.core.cache import caches
+from visitor_system.celery import app as celery_app
+from visitors import views as visitors_views
 
 urlpatterns = [
+    path('', include('django_prometheus.urls')),
     path('admin/', admin.site.urls),
     #path('auth/', include('authentication.urls')), # URL для аутентификации
     path('accounts/', include('allauth.urls')), # URL для аутентификации через allauth
@@ -47,7 +54,15 @@ urlpatterns = [
     path('', include('pwa.urls')),  # <- добавляем PWA
     
     # Страница для оффлайн-режима
-    # path('offline.html', lambda request: render(request, 'offline.html'), name='offline'),
+    path('offline.html', TemplateView.as_view(template_name='errors/offline.html'), name='offline'),
+
+    # Healthcheck
+    path('healthz', lambda request: (
+        (connections['default'].cursor().execute('SELECT 1'), caches['default'].set('healthz', 'ok', 5)) and JsonResponse({'status': 'ok'})
+    ), name='healthz'),
+    path('healthz/celery', lambda request: (
+        JsonResponse({'status': 'ok', 'workers': len(celery_app.control.ping(timeout=1.0))})
+    ), name='healthz_celery'),
 
     # Можно добавить другие корневые URL, если нужно
 ]

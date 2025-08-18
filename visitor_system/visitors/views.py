@@ -43,6 +43,7 @@ from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 
 from django.views.decorators.http import require_POST # Для ограничения методов
+from django.utils.decorators import method_decorator
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
 from django.core.cache import cache
 from django.views.decorators.vary import vary_on_cookie
@@ -70,8 +71,12 @@ def get_scoped_visits_qs(user):
     - Администраторы (is_staff) и члены группы RECEPTION_GROUP_NAME видят все визиты.
     - Остальные сотрудники видят визиты только своего департамента.
     """
-    official_visits_qs = Visit.objects.select_related('guest', 'employee', 'department', 'registered_by')
-    student_visits_qs = StudentVisit.objects.select_related('guest', 'department', 'registered_by')
+    official_visits_qs = (
+        Visit.objects.select_related('guest', 'employee', 'department', 'registered_by')
+    )
+    student_visits_qs = (
+        StudentVisit.objects.select_related('guest', 'department', 'registered_by')
+    )
 
     is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
     is_staff = user.is_staff
@@ -130,7 +135,7 @@ def combine_visit_lists(official_visits_qs, student_visits_qs):
 
     # Объединяем и сортируем списки визитов
     combined_list = sorted(
-        chain(official_visits_qs, student_visits_qs),
+        chain(official_visits_qs.iterator(), student_visits_qs.iterator()),
         key=get_sort_key,
         reverse=True  # Самые свежие (по фактическому или планируемому входу) - вверху
     )
@@ -176,6 +181,17 @@ def qr_scan_view(request):
 @login_required
 @require_POST
 def qr_resolve_view(request):
+    # Простейший rate limit для QR: до 10 запросов/5с на IP
+    try:
+        ip = request.META.get('REMOTE_ADDR', 'unknown')
+        from django.core.cache import cache
+        k = f"qr_rl_{ip}"
+        c = cache.get(k, 0)
+        if c and int(c) >= 10:
+            return JsonResponse({'error': 'too_many_requests'}, status=429)
+        cache.incr(k) if cache.get(k) else cache.set(k, 1, timeout=5)
+    except Exception:
+        pass
     """Обработчик результата сканирования. Поддерживает:
     - подписанные токены формата signer.dumps({kind, id, action})
     - прямые ссылки нашего приложения
@@ -1398,6 +1414,17 @@ def export_visits_xlsx(request):
 
 @login_required
 def employee_autocomplete_view(request):
+    # Простое rate limit: не чаще 5 запросов/10 сек на IP
+    try:
+        ip = request.META.get('REMOTE_ADDR', 'unknown')
+        cache_key = f"autocomplete_rl_{ip}"
+        from django.core.cache import cache
+        cnt = cache.get(cache_key, 0)
+        if cnt and int(cnt) >= 25:
+            return JsonResponse({'results': [], 'count': 0}, status=429)
+        cache.incr(cache_key) if cache.get(cache_key) else cache.set(cache_key, 1, timeout=10)
+    except Exception:
+        pass
     print(f"--- Autocomplete Request ---") # Отладочное сообщение
     print(f"GET params: {request.GET}")   # Печатаем все GET параметры
 

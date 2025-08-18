@@ -52,10 +52,12 @@ INSTALLED_APPS = [
 	'departments',
 	'notifications',
 	'classroom_book',
+	'django_prometheus',
 ]
 
 
 MIDDLEWARE = [
+	'django_prometheus.middleware.PrometheusBeforeMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'whitenoise.middleware.WhiteNoiseMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,6 +68,7 @@ MIDDLEWARE = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'allauth.account.middleware.AccountMiddleware',
 	'visitors.middleware.ProfileSetupMiddleware',
+	'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 
@@ -150,6 +153,8 @@ LOGOUT_REDIRECT_URL = '/'
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_ADAPTER = 'authentication.adapter.UniversityAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'authentication.adapter.UniversitySocialAccountAdapter'
 
 client_id = os.getenv('MICROSOFT_CLIENT_ID')
 client_secret = os.getenv('MICROSOFT_CLIENT_SECRET')
@@ -286,6 +291,21 @@ LOGGING = {
 	},
 }
 
+
+# Sentry SDK (опционально)
+SENTRY_DSN = os.getenv('SENTRY_DSN', '')
+if SENTRY_DSN:
+	import sentry_sdk  # type: ignore
+	from sentry_sdk.integrations.django import DjangoIntegration  # type: ignore
+
+	sentry_sdk.init(
+		dsn=SENTRY_DSN,
+		integrations=[DjangoIntegration()],
+		traces_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')),
+		send_default_pii=True,
+		release=os.getenv('SENTRY_RELEASE', ''),
+		environment=os.getenv('SENTRY_ENV', 'dev'),
+	)
 
 CACHES = {
 	'default': {

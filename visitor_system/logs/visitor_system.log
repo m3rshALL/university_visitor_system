@@ -10702,3 +10702,481 @@ INFO 2025-08-14 18:03:13,696 autoreload 35068 35600 D:\university_visitor_system
 INFO 2025-08-14 18:03:15,054 autoreload 28216 34184 Watching for file changes with StatReloader
 INFO 2025-08-14 18:03:20,693 autoreload 28216 34184 D:\university_visitor_system\visitor_system\visitors\urls.py changed, reloading.
 INFO 2025-08-14 18:03:21,772 autoreload 7844 37484 Watching for file changes with StatReloader
+WARNING 2025-08-18 18:52:19,506 log 30 140400568178432 Not Found: /favicon.ico
+INFO 2025-08-18 18:52:32,741 middleware 30 140400604735232 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:52:34,622 middleware 30 140400604735232 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:53:00,556 middleware 29 140400568178432 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:53:10,773 middleware 29 140400558737152 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:53:22,538 middleware 30 140400557688576 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:53:29,220 middleware 30 140400333420288 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:53:59,994 middleware 29 140400604735232 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:54:01,847 middleware 29 140400604735232 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:59:22,883 middleware 29 140400325027584 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 18:59:24,853 middleware 29 140400325027584 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:00:33,140 middleware 30 140400333420288 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:00:39,982 middleware 30 140400557688576 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:01:04,225 autoreload 49304 48832 Watching for file changes with StatReloader
+INFO 2025-08-18 19:01:06,535 middleware 30 140400557688576 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:01:08,464 middleware 30 140400557688576 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:01:19,782 middleware 29 140400333420288 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:01:25,650 middleware 29 140400325027584 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:01:32,806 middleware 29 140400333420288 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:02:21,765 middleware 30 140400557688576 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:05:47,763 middleware 30 140400557688576 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:08:50,455 middleware 29 140400333420288 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:08:52,290 middleware 29 140400333420288 [Middleware] User 'sagat.akimbay' profile incomplete. Redirecting to setup.
+INFO 2025-08-18 19:09:00,239 views 29 140400333420288 User 'sagat.akimbay' completed profile setup.
+WARNING 2025-08-18 19:12:04,628 log 30 140400568178432 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-08-18 19:17:45,847 log 30 140400568178432 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-08-18 19:21:09,212 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:17,470 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:20,433 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:22,640 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:22,679 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:24,683 log 29 140400558737152 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-08-18 19:21:24,742 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:25,002 log 29 140400558737152 Not Found: /favicon.ico
+WARNING 2025-08-18 19:21:25,927 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:25,953 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:26,770 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:29,206 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:29,227 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:30,500 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:42,284 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:44,362 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:46,416 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:48,300 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:50,417 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:50,486 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:51,319 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:52,880 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:21:52,912 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:22:31,423 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:22:35,988 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:23:04,038 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:23:06,301 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:40:02,913 log 30 140400568178432 Not Found: /healthz/
+WARNING 2025-08-18 19:40:02,946 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:40:03,216 log 29 140400558737152 Not Found: /favicon.ico
+WARNING 2025-08-18 19:40:04,754 log 29 140400558737152 Not Found: /offline.html
+WARNING 2025-08-18 19:40:12,365 log 30 140400568178432 Not Found: /healthz
+WARNING 2025-08-18 19:40:12,394 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:40:14,231 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:41:28,016 log 29 140400558737152 Not Found: /healthz/celery
+WARNING 2025-08-18 19:41:28,064 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:41:29,827 log 29 140400558737152 Not Found: /offline.html
+WARNING 2025-08-18 19:42:26,936 log 30 140400568178432 Not Found: /healthz
+WARNING 2025-08-18 19:42:26,981 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:42:29,020 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:43:01,930 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:43:05,544 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:43:06,546 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:43:08,697 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:43:11,693 log 30 140400568178432 Not Found: /offline.html
+ERROR 2025-08-18 19:43:57,087 log 30 140400568178432 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+ERROR 2025-08-18 19:44:12,463 log 29 140400558737152 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+ERROR 2025-08-18 19:44:15,605 log 29 140400558737152 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+ERROR 2025-08-18 19:44:20,010 log 30 140400568178432 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+ERROR 2025-08-18 19:44:32,398 log 30 140400568178432 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+WARNING 2025-08-18 19:44:51,001 log 30 140400568178432 Not Found: /healthz
+WARNING 2025-08-18 19:44:53,713 log 29 140400558737152 Not Found: /healthz
+WARNING 2025-08-18 19:45:13,261 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:45:16,589 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:45:16,973 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:45:19,062 log 29 140400558737152 Not Found: /offline.html
+WARNING 2025-08-18 19:45:19,270 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:45:21,155 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:45:23,326 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:45:23,549 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:45:26,300 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:45:26,902 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:45:29,018 log 29 140400558737152 Not Found: /offline.html
+WARNING 2025-08-18 19:45:34,951 log 30 140400568178432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:45:35,383 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:47:00,041 log 29 140400558737152 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:47:03,424 log 30 140400568178432 Not Found: /offline.html
+WARNING 2025-08-18 19:52:13,595 log 30 140685291407104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:52:15,404 log 30 140685291407104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:52:16,027 log 30 140685042759424 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-18 19:52:16,027 log 30 140685291407104 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-18 19:52:22,913 log 29 140685299799808 Not Found: /metrics/
+WARNING 2025-08-18 19:52:22,955 log 29 140685299799808 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-18 19:52:23,179 log 29 140685299799808 Not Found: /favicon.ico
+WARNING 2025-08-18 19:52:30,500 log 29 140685299799808 Not Found: /.well-known/appspecific/com.chrome.devtools.json

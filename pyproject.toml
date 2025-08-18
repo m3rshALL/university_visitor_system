@@ -6,7 +6,7 @@ authors = ["Sagat Akimbay"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 django = "^5.0.0"
 django-allauth = "^65.7.0"
 requests = "^2.32.3"
@@ -24,7 +24,8 @@ django-redis = "^5.4.0"
 psycopg2-binary = "^2.9.10"
 pyngrok = "^7.2.5"
 gunicorn = "^23.0.0"
-uvicorn = "^0.30.0"
+uvicorn = "^0.29.0"
+flower = "^2.0.1"
 django-pwa = "^2.0.1"
 django-widget-tweaks = "^1.5.0"
 faker = "^37.3.0"
@@ -32,6 +33,9 @@ whitenoise = "^6.9.0"
 django-debug-toolbar = "^5.2.0"
 qrcode = "^8.2"
 pytz = "^2025.2"
+sentry-sdk = "^2.7.1"
+django-prometheus = "^2.3.0"
+django-csp = "^3.8"
 
 
 [tool.poetry.group.dev.dependencies]

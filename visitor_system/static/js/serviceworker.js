@@ -1,7 +1,11 @@
-const CACHE_NAME = 'visitor-system-cache-v2';
+const CACHE_NAME = 'visitor-system-cache-v3';
 const DB_VERSION = 1;
 
 // Ресурсы для кеширования - обновлены пути к существующим файлам
+const OFFLINE_URL = '/offline.html';
+const PAGES_TO_CACHE = [
+    '/', '/visitors/history/',
+];
 const STATIC_ASSETS = [
     '/',
     OFFLINE_URL,

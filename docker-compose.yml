@@ -1,11 +1,8 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:14
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Инициализационный скрипт
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
@@ -29,7 +26,7 @@ services:
 
   visitor_system:
     build: .
-    command: bash -lc "cd visitor_system && gunicorn visitor_system.asgi:application -k uvicorn.workers.UvicornWorker -w 2 -b 0.0.0.0:8000"
+    command: bash -lc "gunicorn visitor_system.asgi:application -k uvicorn.workers.UvicornWorker -w 2 -b 0.0.0.0:8000"
     volumes:
       - .:/app
     ports:
@@ -69,7 +66,7 @@ services:
 
   celery-worker:
     build: .
-    command: bash -lc "cd visitor_system && celery -A visitor_system worker -l info"
+    command: bash -lc "celery -A visitor_system worker -l info"
     depends_on:
       db:
         condition: service_healthy
@@ -89,7 +86,7 @@ services:
 
   celery-beat:
     build: .
-    command: bash -lc "cd visitor_system && celery -A visitor_system beat -l info"
+    command: bash -lc "celery -A visitor_system beat -l info"
     depends_on:
       db:
         condition: service_healthy
@@ -108,11 +105,24 @@ services:
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
 
   flower:
-    image: mher/flower:1.2
+    build: .
     depends_on:
+      db:
+        condition: service_healthy
       redis:
         condition: service_healthy
-    command: ["flower", "--broker=redis://redis:6379/0", "--port=5555"]
+    command: bash -lc "celery -A visitor_system flower --broker=redis://redis:6379/0 --port=5555"
+    environment:
+      - DJANGO_SETTINGS_MODULE=visitor_system.conf.dev
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=visitor_system_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     ports:
       - "5555:5555"
 
