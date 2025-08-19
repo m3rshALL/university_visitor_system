@@ -215,6 +215,17 @@
 		</li>
         {% endif %}
         
+        <li class="nav-item {% if request.resolver_match.namespace == 'realtime_dashboard' %}active{% endif %}">
+			<a class="nav-link" href="{% url 'realtime_dashboard:dashboard' %}" >
+				<span class="nav-link-icon d-md-none d-lg-inline-block">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="7" y="8" width="10" height="8" rx="1" ry="1"/></svg>
+				</span>
+				<span class="nav-link-title">
+					Дашборд
+				</span>
+			</a>
+		</li>
+        
         <li class="nav-item {% if request.resolver_match.url_name == 'visit_history' %}active{% endif %}">
 			<a class="nav-link" href="{% url 'visit_history' %}" >
 				

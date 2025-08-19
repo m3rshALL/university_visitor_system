@@ -46,6 +46,11 @@ INSTALLED_APPS = [
 	'django_filters',
 	'pwa',
 	'widget_tweaks',
+	'django_prometheus',
+	'rest_framework',
+	'axes',
+	'csp',
+	'channels',
 
 	'authentication',
 	'visitors',
@@ -53,10 +58,7 @@ INSTALLED_APPS = [
 	'notifications',
 	'classroom_book',
 	'egov_integration',  # Интеграция с egov.kz
-	'django_prometheus',
-	'rest_framework',
-	'axes',
-	'csp',
+	'realtime_dashboard',
 ]
 
 
@@ -109,6 +111,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'visitor_system.wsgi.application'
 ASGI_APPLICATION = 'visitor_system.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [os.environ.get('REDIS_URL', f"redis://{os.environ.get('REDIS_HOST', 'localhost')}:{os.environ.get('REDIS_PORT', '6379')}/0")],
+        },
+    },
+}
 
 
 DATABASES = {
@@ -205,10 +215,11 @@ AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 # CSP (пока в report-only, чтобы не ломать существующие инлайны)
 CSP_REPORT_ONLY = True
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
-CSP_IMG_SRC = ("'self'", 'data:')
-CSP_FONT_SRC = ("'self'", 'data:')
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com')
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net')
+CSP_IMG_SRC = ("'self'", 'data:', 'https:')
+CSP_FONT_SRC = ("'self'", 'data:', 'https://fonts.gstatic.com')
+CSP_CONNECT_SRC = ("'self'", 'ws:', 'wss:')
 
 # Referrer Policy
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'

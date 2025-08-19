@@ -1,0 +1,934 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Дашборд в реальном времени{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.css">
+<style>
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.widget {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.widget:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.widget-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.widget-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.widget-refresh {
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.widget-refresh:hover {
+    color: #007bff;
+}
+
+.counter-widget {
+    text-align: center;
+}
+
+.counter-value {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.counter-label {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.counter-change {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.counter-change.positive {
+    color: #28a745;
+}
+
+.counter-change.negative {
+    color: #dc3545;
+}
+
+.chart-widget {
+    height: 300px;
+}
+
+.activity-feed {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 14px;
+    color: white;
+}
+
+.activity-icon.visit-created { background: #007bff; }
+.activity-icon.visit-checked-in { background: #28a745; }
+.activity-icon.visit-checked-out { background: #6c757d; }
+.activity-icon.security-alert { background: #dc3545; }
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.activity-message {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.activity-time {
+    font-size: 11px;
+    color: #999;
+}
+
+.table-widget {
+    overflow-x: auto;
+}
+
+.table-widget table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-widget th,
+.table-widget td {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.table-widget th {
+    background: #f8f9fa;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #666;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-active { background: #28a745; }
+.status-pending { background: #ffc107; }
+.status-inactive { background: #6c757d; }
+
+.refresh-indicator {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.color-blue { color: #007bff; }
+.color-green { color: #28a745; }
+.color-orange { color: #fd7e14; }
+.color-purple { color: #6f42c1; }
+.color-red { color: #dc3545; }
+
+.grid-w-3 { grid-column: span 3; }
+.grid-w-4 { grid-column: span 4; }
+.grid-w-6 { grid-column: span 6; }
+.grid-w-8 { grid-column: span 8; }
+.grid-w-12 { grid-column: span 12; }
+
+.grid-h-2 { grid-row: span 2; }
+.grid-h-3 { grid-row: span 3; }
+.grid-h-4 { grid-row: span 4; }
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+    
+    .widget {
+        grid-column: span 1 !important;
+    }
+}
+
+/* Toasts */
+.toast-container { position: fixed; top: 16px; right: 16px; z-index: 1060; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 14px; min-width: 260px; border-left: 4px solid #206bc4; }
+.toast.success { border-color: #28a745; }
+.toast.warning { border-color: #ffc107; }
+.toast.danger { border-color: #dc3545; }
+.toast .title { font-weight: 600; margin-bottom: 4px; }
+.toast .msg { font-size: 13px; color: #555; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div id="toast-root" class="toast-container"></div>
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3">
+                    <i class="fas fa-tachometer-alt me-2"></i>
+                    Дашборд в реальном времени
+                </h1>
+                <div class="d-flex align-items-center gap-2">
+                    <select id="filter-department" class="form-select form-select-sm" style="width:auto;">
+                        <option value="">Все департаменты</option>
+                    </select>
+                    <select id="filter-period" class="form-select form-select-sm" style="width:auto;">
+                        <option value="24h">Последние 24 часа</option>
+                        <option value="today">Сегодня</option>
+                        <option value="7d">7 дней</option>
+                        <option value="30d">30 дней</option>
+                    </select>
+                    <span class="badge bg-success me-2" id="connection-status">
+                        <i class="fas fa-wifi me-1"></i>
+                        Подключено
+                    </span>
+                    <button class="btn btn-outline-primary btn-sm" id="refresh-all-btn">
+                        <i class="fas fa-sync-alt me-1"></i>
+                        Обновить все
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="dashboard-grid" id="dashboard-grid">
+        {% for widget in widgets %}
+        <div class="widget grid-w-{{ widget.width }} grid-h-{{ widget.height }}" 
+             data-widget-id="{{ widget.id }}" 
+             data-widget-type="{{ widget.widget_type }}"
+             data-refresh-interval="{{ widget.refresh_interval }}"
+             data-metric="{{ widget.config.metric|default:'' }}">
+            
+            <div class="widget-header">
+                <h5 class="widget-title">{{ widget.title }}</h5>
+                <span class="widget-refresh" data-widget-id="{{ widget.id }}">
+                    <i class="fas fa-sync-alt"></i>
+                </span>
+            </div>
+            
+            <div class="widget-content" id="widget-content-{{ widget.id }}">
+                <div class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Загрузка...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" onerror="console.error('Failed to load Chart.js')"></script>
+<script>
+// Глобальные переменные
+let charts = {};
+let refreshIntervals = {};
+let isRefreshing = false;
+let chartReady = typeof Chart !== 'undefined';
+
+// Объявляем функцию refreshAllWidgets в глобальной области
+function refreshAllWidgets() {
+    console.log('refreshAllWidgets called, isRefreshing:', isRefreshing);
+    
+    if (isRefreshing) return;
+    
+    isRefreshing = true;
+    const widgets = document.querySelectorAll('.widget');
+    
+    console.log('Found widgets:', widgets.length);
+    
+    widgets.forEach(widget => {
+        const widgetId = widget.dataset.widgetId;
+        const last = widget.getAttribute('data-last-ts');
+        // Лёгкий diff: для counters/activity/table всегда обновляем; для charts — только если timestamp изменился
+        const widgetType = widget.dataset.widgetType;
+        const critical = widgetType === 'counter' || widgetType === 'table' || widgetType === 'activity_feed';
+        if (critical) {
+            console.log('Refreshing widget (critical):', widgetId);
+            refreshWidget(widgetId);
+        } else {
+            // Получим свежий мета штамп из /metrics и сравним
+            // Опрашиваем только один раз
+        }
+    });
+    
+    setTimeout(() => {
+        isRefreshing = false;
+        console.log('Refresh completed');
+    }, 2000);
+}
+
+// Делаем функцию доступной глобально
+window.refreshAllWidgets = refreshAllWidgets;
+
+// Инициализация дашборда
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing dashboard...');
+    
+    // Проверяем доступность Chart.js
+    if (typeof Chart === 'undefined') {
+        console.warn('Chart.js не загружен! Пробуем динамическую подгрузку...');
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+        s.onload = () => {
+            chartReady = true;
+            console.log('Chart.js loaded dynamically');
+            try { refreshAllWidgets(); } catch (e) { console.warn('Refresh after chart load failed', e); }
+        };
+        s.onerror = () => console.error('Dynamic Chart.js load failed');
+        document.head.appendChild(s);
+    } else {
+        chartReady = true;
+        console.log('Chart.js загружен успешно');
+    }
+    // Отключаем ServiceWorker для дашборда (dev) во избежание кеш-конфликтов
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+            regs.forEach(r => r.unregister());
+            console.log('ServiceWorker unregistered for dashboard');
+        }).catch(() => {});
+    }
+    
+    // Удаляем возможные устаревшие inline-обработчики (если отдали кешированную версию)
+    try {
+        const btn = document.getElementById('refresh-all-btn');
+        if (btn && btn.hasAttribute('onclick')) {
+            btn.removeAttribute('onclick');
+            console.log('Removed inline onclick from refresh-all-btn');
+        }
+        document.querySelectorAll('.widget-refresh[onclick]').forEach(el => {
+            el.removeAttribute('onclick');
+        });
+    } catch (e) { console.warn('Cleanup onclick failed', e); }
+
+    initializeDashboard();
+    setupAutoRefresh();
+
+    // WebSocket подключения для живых обновлений
+    try {
+        const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        const wsUrl = `${wsScheme}://${window.location.host}/ws/dashboard/`;
+        console.log('Connecting WS:', wsUrl);
+        const socket = new WebSocket(wsUrl);
+
+        socket.onopen = () => console.log('WS connected');
+        socket.onclose = () => console.warn('WS disconnected');
+        socket.onerror = (e) => console.error('WS error', e);
+        socket.onmessage = (event) => {
+            try {
+                const message = JSON.parse(event.data);
+                console.log('WS message:', message);
+
+                if (message.type === 'metrics' && message.data) {
+                    showToast('Обновление данных', 'Поступили новые метрики', 'success');
+                    refreshAllWidgets();
+                }
+
+                if (message.type === 'event') {
+                    const ev = message.data || {};
+                    showToast(ev.title || 'Событие', ev.message || '', ev.priority === 'high' ? 'danger' : 'info');
+                    // Обновляем только события и активные визиты
+                    document.querySelectorAll('.widget').forEach(w => {
+                        const type = w.dataset.widgetType;
+                        if (type === 'activity_feed' || type === 'table' || type === 'counter') {
+                            refreshWidget(w.dataset.widgetId);
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error('WS parse error:', err);
+            }
+        };
+    } catch (e) {
+        console.error('WS init failed', e);
+    }
+    
+    // Тестируем доступность функции refreshAllWidgets и навешиваем обработчик на кнопку
+    console.log('Testing refreshAllWidgets function:', typeof window.refreshAllWidgets);
+    console.log('Function available:', typeof refreshAllWidgets);
+    const refreshBtn = document.getElementById('refresh-all-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            try { refreshAllWidgets(); } catch (err) { console.error('refreshAllWidgets error:', err); }
+        });
+    }
+
+    // Инициализация фильтров
+    initFilters();
+
+    // Навешиваем обработчики на иконки обновления в заголовках виджетов
+    document.querySelectorAll('.widget-refresh').forEach(el => {
+        const id = el.getAttribute('data-widget-id');
+        el.addEventListener('click', function(ev) {
+            ev.preventDefault();
+            if (id) {
+                try { refreshWidget(id); } catch (err) { console.error('refreshWidget error:', err); }
+            }
+        });
+    });
+});
+function initFilters() {
+    const depSelect = document.getElementById('filter-department');
+    const periodSelect = document.getElementById('filter-period');
+    if (!depSelect || !periodSelect) return;
+    // Восстановить сохранённые фильтры
+    try {
+        const saved = JSON.parse(localStorage.getItem('dashboardFilters') || '{}');
+        if (saved && saved.period) periodSelect.value = saved.period;
+        if (saved && saved.department_id) depSelect.value = saved.department_id;
+        document.body.dataset.filterDepartment = saved.department_id || '';
+        document.body.dataset.filterPeriod = saved.period || '';
+    } catch {}
+    // Первичное заполнение департаментов из общего запроса
+    fetch(`/dashboard/api/metrics/`, { credentials: 'same-origin', cache: 'no-store' })
+        .then(r => r.ok ? r.json() : Promise.reject(r.status))
+        .then(meta => {
+            const stats = meta?.data?.department_stats || [];
+            // Очищаем кроме первой опции "Все департаменты"
+            Array.from(depSelect.options).slice(1).forEach(o => o.remove());
+            stats.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.department_id || '';
+                opt.textContent = s.department;
+                depSelect.appendChild(opt);
+            });
+            // Применим сохранённый департамент
+            try {
+                const saved = JSON.parse(localStorage.getItem('dashboardFilters') || '{}');
+                if (saved && saved.department_id) depSelect.value = saved.department_id;
+            } catch {}
+        }).catch(() => {});
+
+    const apply = () => {
+        const dep = depSelect.value;
+        const period = periodSelect.value;
+        document.body.dataset.filterDepartment = dep;
+        document.body.dataset.filterPeriod = period;
+        try { localStorage.setItem('dashboardFilters', JSON.stringify({ department_id: dep, period })); } catch {}
+        refreshAllWidgetsWithMeta(dep, period);
+    };
+    depSelect.addEventListener('change', apply);
+    periodSelect.addEventListener('change', apply);
+}
+
+function refreshAllWidgetsWithMeta(dep, period) {
+    const qs = new URLSearchParams();
+    if (dep) qs.set('department_id', dep);
+    if (period) qs.set('period', period);
+    fetch(`/dashboard/api/metrics/${qs.toString() ? `?${qs.toString()}` : ''}`, {
+        credentials: 'same-origin', cache: 'no-store'
+    })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(meta => {
+        if (!meta.success || !meta.data) return;
+        const ts = meta.data.timestamp;
+        if (!window.__lastMetricState) window.__lastMetricState = {};
+        document.querySelectorAll('.widget').forEach(widget => {
+            const widgetId = widget.dataset.widgetId;
+            const metric = widget.dataset.metric;
+            const newData = metric ? meta.data[metric] : null;
+            const newStr = JSON.stringify(newData);
+            const prevStr = window.__lastMetricState[metric];
+            if (prevStr !== newStr) {
+                window.__lastMetricState[metric] = newStr;
+                const payload = {
+                    widget_type: widget.dataset.widgetType,
+                    data: newData,
+                    config: { metric },
+                    timestamp: ts
+                };
+                renderWidget(widgetId, payload);
+            }
+        });
+    })
+    .catch(err => console.error('refreshAllWidgetsWithMeta failed', err));
+}
+
+function initializeDashboard() {
+    console.log('Инициализация дашборда...');
+    
+    // Первичная загрузка: тянем общие метрики и рендерим все виджеты одним запросом
+    const dep = document.body.dataset.filterDepartment || '';
+    const period = document.body.dataset.filterPeriod || '';
+    refreshAllWidgetsWithMeta(dep, period);
+}
+
+function setupAutoRefresh() {
+    const widgets = document.querySelectorAll('.widget');
+    
+    // Вместо множества запросов — один общий
+    const refreshInterval = 30000;
+    setInterval(() => {
+        if (!isRefreshing) {
+            const dep = document.body.dataset.filterDepartment || '';
+            const period = document.body.dataset.filterPeriod || '';
+            console.log('Global auto-refresh (meta)');
+            refreshAllWidgetsWithMeta(dep, period);
+        }
+    }, refreshInterval);
+}
+
+function refreshWidget(widgetId) {
+    const widget = document.querySelector(`[data-widget-id="${widgetId}"]`);
+    const content = document.getElementById(`widget-content-${widgetId}`);
+    if (!widget || !content) {
+        console.warn('Widget DOM not found for id', widgetId);
+        return;
+    }
+    
+    if (!widget || !content) return;
+    
+    // Показываем индикатор загрузки
+    const refreshIcon = widget.querySelector('.widget-refresh i');
+    if (refreshIcon) refreshIcon.classList.add('refresh-indicator');
+    
+    const dep = document.body.dataset.filterDepartment || '';
+    const period = document.body.dataset.filterPeriod || '';
+    const qs = new URLSearchParams();
+    if (dep) qs.set('department_id', dep);
+    if (period) qs.set('period', period);
+    fetch(`/dashboard/api/widgets/${widgetId}/data/${qs.toString() ? `?${qs.toString()}` : ''}`, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' },
+        cache: 'no-store'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                renderWidget(widgetId, data.data);
+            } else {
+                showWidgetError(content, data.error);
+            }
+        })
+        .catch(error => {
+            console.error(`Ошибка загрузки виджета ${widgetId}:`, error);
+            // Фолбэк: пробуем получить общие метрики и собрать данные для виджета локально
+            const metricName = widget.getAttribute('data-metric');
+            if (!metricName) {
+                showWidgetError(content, 'Ошибка загрузки данных');
+                return;
+            }
+            fetch(`/dashboard/api/metrics/`, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json' },
+                cache: 'no-store'
+            })
+            .then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            })
+            .then(meta => {
+                if (meta.success && meta.data && meta.data[metricName] !== undefined) {
+                    const fallback = {
+                        widget_type: widget.dataset.widgetType,
+                        data: meta.data[metricName],
+                        config: { metric: metricName },
+                        timestamp: meta.data.timestamp || new Date().toISOString()
+                    };
+                    console.log('Fallback render for widget', widgetId, 'metric', metricName, fallback);
+                    renderWidget(widgetId, fallback);
+                } else {
+                    showWidgetError(content, 'Данные недоступны');
+                }
+            })
+            .catch(e2 => {
+                console.error('Fallback metrics load failed', e2);
+                showWidgetError(content, 'Ошибка загрузки данных');
+            });
+        })
+        .finally(() => {
+            if (refreshIcon) refreshIcon.classList.remove('refresh-indicator');
+        });
+}
+
+function renderWidget(widgetId, data) {
+    const widget = document.querySelector(`[data-widget-id="${widgetId}"]`);
+    const content = document.getElementById(`widget-content-${widgetId}`);
+    const widgetType = widget.dataset.widgetType;
+    if (data && data.timestamp) {
+        widget.setAttribute('data-last-ts', data.timestamp);
+    }
+    
+    // Добавляем отладочную информацию
+    console.log(`Rendering widget ${widgetId} (${widgetType}):`, data);
+    
+    switch (widgetType) {
+        case 'counter':
+            renderCounterWidget(content, data);
+            break;
+        case 'chart_line':
+            renderLineChartWidget(widgetId, content, data);
+            break;
+        case 'chart_pie':
+            renderPieChartWidget(widgetId, content, data);
+            break;
+        case 'activity_feed':
+            renderActivityFeedWidget(content, data);
+            break;
+        case 'table':
+            renderTableWidget(content, data);
+            break;
+        default:
+            content.innerHTML = '<p class="text-muted">Неподдерживаемый тип виджета</p>';
+    }
+}
+
+function renderCounterWidget(content, data) {
+    const config = data.config || {};
+    const metric = data.data || {};
+    
+    let value = 0;
+    let label = 'Значение';
+    
+    // Определяем значение в зависимости от типа метрики
+    if (config.metric === 'visitors_count') {
+        value = metric.total_all || 0;
+        label = 'Всего визитов';
+    } else if (config.metric === 'active_visits') {
+        value = metric.count || 0;
+        label = 'В здании сейчас';
+    } else if (config.metric === 'today_registrations') {
+        value = metric.total_today || 0;
+        label = 'Сегодня';
+    } else if (config.metric === 'avg_visit_duration') {
+        value = metric.avg_duration_minutes || 0;
+        label = 'Минут в среднем';
+    }
+    
+    const colorClass = config.color ? `color-${config.color}` : 'color-blue';
+    
+    content.innerHTML = `
+        <div class="counter-widget">
+            <div class="counter-value ${colorClass}">${value}</div>
+            <div class="counter-label">${label}</div>
+        </div>
+    `;
+}
+
+function renderLineChartWidget(widgetId, content, data) {
+    const canvasId = `chart-${widgetId}`;
+    content.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+    
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    const metric = Array.isArray(data.data) ? data.data : (data.data?.hourly_data || []);
+
+    if (!chartReady || typeof Chart === 'undefined') {
+        content.innerHTML = '<p class="text-muted">Графики временно недоступны</p>';
+        return;
+    }
+    
+    // Уничтожаем предыдущий график если есть
+    if (charts[widgetId]) {
+        charts[widgetId].destroy();
+    }
+    
+    charts[widgetId] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: metric.map(item => item.hour || ''),
+            datasets: [{
+                label: 'Визиты',
+                data: metric.map(item => item.total || 0),
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function renderPieChartWidget(widgetId, content, data) {
+    const canvasId = `chart-${widgetId}`;
+    content.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+    
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    const metric = Array.isArray(data.data) ? data.data : data.data || [];
+
+    if (!chartReady || typeof Chart === 'undefined') {
+        content.innerHTML = '<p class="text-muted">Диаграмма временно недоступна</p>';
+        return;
+    }
+    
+    // Уничтожаем предыдущий график если есть
+    if (charts[widgetId]) {
+        charts[widgetId].destroy();
+    }
+    
+    // Берем топ-5 департаментов
+    const topDepartments = metric.slice(0, 5);
+    
+    charts[widgetId] = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: topDepartments.map(item => item.department || ''),
+            datasets: [{
+                data: topDepartments.map(item => item.total_visits || 0),
+                backgroundColor: [
+                    '#007bff',
+                    '#28a745',
+                    '#fd7e14',
+                    '#6f42c1',
+                    '#dc3545'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+function renderActivityFeedWidget(content, data) {
+    // data.data может быть массивом событий или объектом с recent_events
+    let events = [];
+    if (Array.isArray(data.data)) {
+        events = data.data;
+    } else if (data.data && Array.isArray(data.data.recent_events)) {
+        events = data.data.recent_events;
+    }
+    console.log('Activity feed events:', events);
+    
+    if (events.length === 0) {
+        content.innerHTML = '<p class="text-muted text-center">Нет событий</p>';
+        return;
+    }
+    
+    let html = '<div class="activity-feed">';
+    
+    events.forEach(event => {
+        const iconClass = getEventIconClass(event.type);
+        const timeAgo = getTimeAgo(event.timestamp);
+        
+        html += `
+            <div class="activity-item">
+                <div class="activity-icon ${iconClass}">
+                    <i class="fas ${getEventIcon(event.type)}"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">${event.title}</div>
+                    <div class="activity-message">${event.message}</div>
+                    <div class="activity-time">${timeAgo}</div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    content.innerHTML = html;
+}
+
+function renderTableWidget(content, data) {
+    const visits = (data.data && Array.isArray(data.data.visits)) ? data.data.visits : [];
+    console.log('Table visits:', visits);
+    
+    console.log('Rendering table widget with visits:', visits);
+    
+    if (visits.length === 0) {
+        content.innerHTML = '<p class="text-muted text-center">Нет активных визитов</p>';
+        return;
+    }
+    
+    let html = `
+        <div class="table-widget">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Гость</th>
+                        <th>Департамент</th>
+                        <th>Время входа</th>
+                        <th>Длительность</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    visits.forEach(visit => {
+        const entryTime = visit.entry_time ? new Date(visit.entry_time).toLocaleTimeString() : '-';
+        const duration = visit.duration_minutes ? `${visit.duration_minutes} мин` : '-';
+        
+        html += `
+            <tr>
+                <td>
+                    <span class="status-indicator status-active"></span>
+                    ${visit.guest_name}
+                </td>
+                <td>${visit.department}</td>
+                <td>${entryTime}</td>
+                <td>${duration}</td>
+            </tr>
+        `;
+    });
+    
+    html += '</tbody></table></div>';
+    content.innerHTML = html;
+}
+
+function showWidgetError(content, message) {
+    content.innerHTML = `
+        <div class="text-center py-3">
+            <i class="fas fa-exclamation-triangle text-warning mb-2" style="font-size: 24px;"></i>
+            <p class="text-muted mb-0">${message}</p>
+        </div>
+    `;
+}
+
+function showToast(title, msg, kind='info', ttl=3500) {
+    const root = document.getElementById('toast-root');
+    if (!root) return;
+    const div = document.createElement('div');
+    div.className = `toast ${kind}`;
+    div.innerHTML = `<div class="title">${title}</div><div class="msg">${msg}</div>`;
+    root.appendChild(div);
+    setTimeout(() => {
+        div.style.opacity = '0';
+        setTimeout(() => root.removeChild(div), 300);
+    }, ttl);
+}
+
+// Функция refreshAllWidgets уже объявлена выше
+
+function getEventIconClass(eventType) {
+    switch (eventType) {
+        case 'visit_created': return 'visit-created';
+        case 'visit_checked_in': return 'visit-checked-in';
+        case 'visit_checked_out': return 'visit-checked-out';
+        case 'security_alert': return 'security-alert';
+        default: return 'visit-created';
+    }
+}
+
+function getEventIcon(eventType) {
+    switch (eventType) {
+        case 'visit_created': return 'fa-plus';
+        case 'visit_checked_in': return 'fa-sign-in-alt';
+        case 'visit_checked_out': return 'fa-sign-out-alt';
+        case 'security_alert': return 'fa-exclamation-triangle';
+        default: return 'fa-info';
+    }
+}
+
+function getTimeAgo(timestamp) {
+    const now = new Date();
+    const time = new Date(timestamp);
+    const diffMs = now - time;
+    const diffMins = Math.floor(diffMs / 60000);
+    
+    if (diffMins < 1) return 'только что';
+    if (diffMins < 60) return `${diffMins} мин назад`;
+    
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) return `${diffHours} ч назад`;
+    
+    const diffDays = Math.floor(diffHours / 24);
+    return `${diffDays} дн назад`;
+}
+
+// Очистка интервалов при уходе со страницы
+window.addEventListener('beforeunload', function() {
+    Object.values(refreshIntervals).forEach(interval => {
+        clearInterval(interval);
+    });
+    
+    Object.values(charts).forEach(chart => {
+        chart.destroy();
+    });
+});
+
+// Функция refreshAllWidgets уже доступна глобально
+</script>
+{% endblock %}

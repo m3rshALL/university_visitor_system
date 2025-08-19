@@ -8,14 +8,24 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
 """
 
 import os
-
-try:
-    from django.core.asgi import get_asgi_application  # type: ignore  # pylint: disable=import-error
-except ImportError:  # pragma: no cover
-    # Локальная среда линтера без Django
-    def get_asgi_application():  # type: ignore
-        raise RuntimeError("Django is not available in the lint environment")
+from django.core.asgi import get_asgi_application
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from django.urls import path
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.getenv('DJANGO_SETTINGS_MODULE', 'visitor_system.conf.dev'))
 
-application = get_asgi_application()
+django_asgi_app = get_asgi_application()
+
+# WebSocket URLS
+try:
+    from realtime_dashboard.websocket import websocket_urlpatterns
+except Exception:
+    websocket_urlpatterns = []
+
+application = ProtocolTypeRouter({
+    "http": django_asgi_app,
+    "websocket": AuthMiddlewareStack(
+        URLRouter(websocket_urlpatterns)
+    ),
+})

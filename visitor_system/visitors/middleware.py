@@ -9,8 +9,14 @@ from django.apps import apps
 
 logger = logging.getLogger(__name__)
 
-SETUP_EXEMPT_URL_NAMES = [ 'profile_setup', 'account_logout', 'password_reset', 'password_reset_done', 'password_reset_confirm', 'password_reset_complete' ]
-SETUP_EXEMPT_URL_PREFIXES = ['/static/', '/media/', '/admin/', '/__debug__/', '/accounts/'] # Добавили debug toolbar
+SETUP_EXEMPT_URL_NAMES = [ 
+    'profile_setup', 'account_logout', 'password_reset', 'password_reset_done', 
+    'password_reset_confirm', 'password_reset_complete',
+    # Дашборд и его API
+    'realtime_dashboard:dashboard', 'realtime_dashboard:metrics_api', 'realtime_dashboard:events_api',
+    'realtime_dashboard:widget_data_api', 'realtime_dashboard:mark_event_read'
+]
+SETUP_EXEMPT_URL_PREFIXES = ['/static/', '/media/', '/admin/', '/__debug__/', '/accounts/', '/dashboard/'] # Добавили дашборд
 
 class ProfileSetupMiddleware:
     def __init__(self, get_response):

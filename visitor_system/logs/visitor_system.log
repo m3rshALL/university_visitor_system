@@ -12133,3 +12133,416 @@ INFO 2025-08-19 13:53:08,004 apps 40956 42252 AXES: BEGIN version 6.5.2, blockin
 ERROR 2025-08-19 13:53:09,107 services 40956 42252 API egov.kz error: 404 - {"error":"IndexMissingException[[health] missing]","status":404}
 ERROR 2025-08-19 13:53:09,152 services 40956 42252 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
 ERROR 2025-08-19 13:53:09,166 services 40956 42252 IIN verification failed: Request failed: Expecting value: line 1 column 1 (char 0)
+INFO 2025-08-19 14:04:22,613 apps 37104 1824 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:04:31,431 apps 44796 42368 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:04:39,420 apps 34324 32584 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:04:41,507 apps 38336 21512 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 14:05:23,705 log 29 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:05:23,847 log 29 140152433276672 Not Found: /favicon.ico
+WARNING 2025-08-19 14:05:38,541 log 29 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:06:12,620 log 30 140152433276672 Not Found: /realtime_dashboard:dashboard
+WARNING 2025-08-19 14:06:16,138 log 30 140152433276672 Not Found: /realtime_dashboard
+WARNING 2025-08-19 14:06:18,746 log 30 140152433276672 Not Found: /realtime_dashboard/
+WARNING 2025-08-19 14:06:43,183 log 30 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:06:55,272 log 29 140152433276672 Not Found: /api/metrics/
+WARNING 2025-08-19 14:06:58,120 log 29 140152433276672 Not Found: /api/metrics
+WARNING 2025-08-19 14:07:05,741 log 30 140152433276672 Not Found: /api-auth
+INFO 2025-08-19 14:07:34,464 apps 30660 37248 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:07:35,241 apps 41400 40396 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:07:35,251 autoreload 41400 40396 Watching for file changes with StatReloader
+WARNING 2025-08-19 14:07:47,383 log 29 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:07:56,474 log 29 140152433276672 Not Found: /dashboard//dashboard/
+WARNING 2025-08-19 14:07:58,369 log 29 140152433276672 Not Found: /dashboard/dashboard/
+WARNING 2025-08-19 14:08:01,250 log 29 140152433276672 Not Found: /dashboard
+INFO 2025-08-19 14:08:09,230 autoreload 41400 40396 D:\university_visitor_system\visitor_system\visitor_system\urls.py changed, reloading.
+INFO 2025-08-19 14:08:10,345 apps 31848 30604 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:08:10,354 autoreload 31848 30604 Watching for file changes with StatReloader
+WARNING 2025-08-19 14:08:17,231 log 30 140152433276672 Not Found: /dashboard
+INFO 2025-08-19 14:09:26,493 apps 554 140513512802112 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 14:10:00,246 log 30 140152433276672 Not Found: /dahsboard/
+WARNING 2025-08-19 14:10:00,438 log 30 140152433276672 Not Found: /favicon.ico
+INFO 2025-08-19 14:11:34,823 apps 30304 41540 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:12:17,173 apps 41088 10856 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:13:17,209 apps 28972 30528 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:13:24,805 apps 28540 45808 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 14:13:43,265 log 29 140152433276672 Not Found: /dashboard/employee/
+WARNING 2025-08-19 14:13:43,433 log 29 140152433276672 Not Found: /favicon.ico
+WARNING 2025-08-19 14:13:45,242 log 29 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:13:45,673 log 29 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:13:47,092 log 29 140152433276672 Not Found: /dashboard
+INFO 2025-08-19 14:14:13,914 apps 42620 44836 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:14:14,787 attempts 42620 44836 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:14:14.761792+00:00
+INFO 2025-08-19 14:14:14,787 database 42620 44836 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+INFO 2025-08-19 14:14:14,882 middleware 42620 44836 [Middleware] User 'testuser' profile incomplete. Redirecting to setup.
+INFO 2025-08-19 14:14:14,890 attempts 42620 44836 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:14:14.889567+00:00
+INFO 2025-08-19 14:14:14,890 database 42620 44836 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+INFO 2025-08-19 14:14:15,005 middleware 42620 44836 [Middleware] User 'testuser' profile incomplete. Redirecting to setup.
+INFO 2025-08-19 14:14:52,818 apps 6596 43512 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:14:53,244 attempts 6596 43512 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:14:53.241658+00:00
+INFO 2025-08-19 14:14:53,245 database 6596 43512 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+INFO 2025-08-19 14:14:53,298 attempts 6596 43512 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:14:53.297724+00:00
+INFO 2025-08-19 14:14:53,298 database 6596 43512 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+WARNING 2025-08-19 14:15:34,247 log 30 140152433276672 Not Found: /dashboard
+WARNING 2025-08-19 14:15:35,067 log 30 140152433276672 Not Found: /dashboard
+WARNING 2025-08-19 14:15:38,738 log 30 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:15:38,988 log 30 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:15:44,565 log 29 140152433276672 Not Found: /dashboard/
+WARNING 2025-08-19 14:15:52,168 log 30 140152433276672 Not Found: /dashboard/api/metrics/
+INFO 2025-08-19 14:19:13,944 apps 13 139784668911424 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:19:16,973 apps 14 140140033115968 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:19:27,728 apps 21 140343847806784 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:19:36,310 apps 27 139985759209280 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:20:01,800 apps 48 140538259703616 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:20:01,886 apps 49 140538259703616 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:20:37,250 apps 147 139743522445120 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 14:20:47,453 views 48 140538155906816 Error getting dashboard events: 'RealtimeEventService' object has no attribute 'get_recent_events'
+ERROR 2025-08-19 14:20:47,455 log 48 140538183350016 Internal Server Error: /dashboard/api/events/
+WARNING 2025-08-19 14:20:57,478 log 49 140538146465536 Not Found: /dashboard/admin/
+INFO 2025-08-19 14:21:10,849 apps 196 140344187811648 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:21:11,596 attempts 196 140344187811648 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:21:11.592282+00:00
+INFO 2025-08-19 14:21:11,596 database 196 140344187811648 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+ERROR 2025-08-19 14:23:11,228 services 48 140538121287424 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-19 14:23:11,232 services 48 140538121287424 Passport verification failed: Request failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-19 14:23:18,723 log 49 140538146465536 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+INFO 2025-08-19 14:23:22,858 forms 48 140538121287424 Using guest object: Акимбаев Сагат (ID: 1), Created: False
+INFO 2025-08-19 14:23:22,859 forms 48 140538121287424 Visit None created with status CHECKED_IN.
+INFO 2025-08-19 14:23:22,930 services 48 140538121287424 Realtime event created: Новый визит зарегистрирован
+INFO 2025-08-19 14:23:22,930 forms 48 140538121287424 Saved Visit ID 6, Status: CHECKED_IN, Consent Ack: True
+ERROR 2025-08-19 14:23:22,931 utils 48 140538121287424 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+INFO 2025-08-19 14:23:51,047 services 48 140538121287424 Realtime event created: Посетитель покинул здание
+INFO 2025-08-19 14:24:39,386 services 48 140538129680128 Realtime event created: Посетитель покинул здание
+INFO 2025-08-19 14:24:51,849 apps 508 140666297902912 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:25:26,573 apps 532 139946122581824 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:25:26,691 services 532 139946122581824 Realtime event created: Тестовое событие
+INFO 2025-08-19 14:25:56,595 apps 538 140082742232896 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:25:56,715 services 538 140082742232896 Realtime event created: Тестовое событие
+INFO 2025-08-19 14:26:42,177 apps 550 139960408545088 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:26:42,272 attempts 550 139960408545088 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:26:42.269034+00:00
+INFO 2025-08-19 14:26:42,272 database 550 139960408545088 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+ERROR 2025-08-19 14:26:43,047 views 550 139960408545088 Error getting dashboard events: 'RealtimeEventService' object has no attribute 'get_recent_events'
+ERROR 2025-08-19 14:26:43,048 log 550 139960408545088 Internal Server Error: /dashboard/api/events/
+INFO 2025-08-19 14:27:32,666 apps 11 139753417852736 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:27:32,766 attempts 11 139753417852736 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:27:32.763933+00:00
+INFO 2025-08-19 14:27:32,766 database 11 139753417852736 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+INFO 2025-08-19 14:27:34,106 apps 19 140291624277824 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:27:36,586 apps 20 140642099476288 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:28:21,528 apps 35 139749312558912 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:28:21,594 apps 36 139749312558912 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 14:32:17,177 log 36 139749207713536 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+INFO 2025-08-19 14:32:21,965 forms 35 139748974786304 Using guest object: Акимбаев Сагат (ID: 1), Created: False
+INFO 2025-08-19 14:32:21,965 forms 35 139748974786304 Visit None created with status CHECKED_IN.
+INFO 2025-08-19 14:32:22,039 services 35 139748974786304 Realtime event created: Новый визит зарегистрирован
+INFO 2025-08-19 14:32:22,039 forms 35 139748974786304 Saved Visit ID 7, Status: CHECKED_IN, Consent Ack: True
+ERROR 2025-08-19 14:32:22,040 utils 35 139748974786304 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+INFO 2025-08-19 14:34:13,431 apps 373 139670148347712 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:34:13,546 attempts 373 139670148347712 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 21:34:13.543838+00:00
+INFO 2025-08-19 14:34:13,547 database 373 139670148347712 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "<unknown>", path_info: "<unknown>"}.
+WARNING 2025-08-19 14:34:34,884 log 36 139749207713536 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:34:42,345 log 35 139748966393600 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:34:59,691 log 36 139749207713536 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 14:35:09,646 apps 13 140336699123520 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:35:12,653 apps 14 140355696920384 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:35:59,845 apps 29 140073383266112 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:36:00,000 apps 30 140073383266112 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:38:23,310 apps 13 140304747112256 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:38:26,277 apps 14 140660681287488 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:39:05,114 apps 29 140698994247488 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:39:05,152 apps 30 140698994247488 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 14:39:45,371 log 29 140698822207232 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:40:35,637 log 29 140698822207232 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:40:38,771 log 29 140698822207232 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:40:45,125 log 30 140698833647360 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:40:47,677 log 30 140698833647360 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 14:41:41,044 apps 13 140566400137024 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:41:43,628 apps 14 140566584129344 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:42:22,111 apps 29 139741929490240 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:42:22,215 apps 30 139741929490240 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 14:43:05,378 log 30 139741824644864 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:43:10,803 log 30 139741824644864 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:43:13,089 log 30 139741824644864 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:43:44,753 log 29 139741592811264 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:44:33,407 log 30 139741824644864 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 14:54:30,074 apps 13 140090405517120 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:54:32,562 apps 14 140442416711488 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:55:23,232 apps 29 140467857495872 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:55:23,246 apps 30 140467857495872 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 14:55:24,139 log 29 140467780093696 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 14:55:31,113 log 30 140467780093696 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 14:56:44,197 apps 13 140553661581120 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:56:46,963 apps 14 140363775166272 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:57:27,030 apps 29 140538376468288 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:57:27,145 apps 30 140538376468288 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:59:01,254 apps 13 139642906994496 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:59:03,716 apps 14 139758022534976 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:59:44,193 apps 29 140532795209536 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 14:59:44,285 apps 30 140532795209536 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:01:46,382 apps 13 139824185960256 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:01:49,060 apps 14 139929912137536 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:02:31,815 apps 29 139994504365888 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:02:31,975 apps 30 139994504365888 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 15:03:10,486 log 30 139994324793088 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 15:04:50,652 apps 13 140110442051392 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:04:53,100 apps 14 140367849469760 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:05:32,928 apps 29 140555180742464 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:05:32,935 apps 30 140555180742464 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 15:05:57,240 log 29 140555008677632 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 15:07:08,488 apps 13 140292493109056 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:07:11,347 apps 14 139906328631104 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:07:52,576 apps 29 139849604892480 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:07:52,681 apps 30 139849604892480 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:10:03,574 apps 13 139664004708160 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:10:06,063 apps 14 140432033126208 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:10:46,978 apps 29 140284010547008 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:10:47,024 apps 30 140284010547008 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 15:11:08,967 log 29 140283824039680 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:11:10,806 log 29 140283824039680 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:11:13,894 log 30 140283907933952 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 15:13:25,679 apps 13 140450589329216 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:13:28,248 apps 14 140327458187072 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:14:06,485 apps 29 139783150778176 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:14:06,489 apps 30 139783150778176 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 15:14:07,279 log 29 139783037540096 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:14:08,004 log 29 139783037540096 Not Found: /ws/dashboard/
+WARNING 2025-08-19 15:26:48,877 log 29 139783037540096 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:26:49,774 log 30 139783019640576 Not Found: /ws/dashboard/
+INFO 2025-08-19 15:28:33,546 apps 13 140617799550784 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:28:36,573 apps 14 139984130570048 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:29:16,780 apps 29 140625412769600 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:29:16,862 apps 30 140625412769600 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:31:59,799 apps 13 140414650124096 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:32:02,574 apps 14 139849470011200 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:32:41,319 apps 29 140478138296128 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:32:41,382 apps 30 140478138296128 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 15:32:56,805 log 30 140477966219008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:32:58,145 log 29 140477950482176 Not Found: /ws/dashboard/
+WARNING 2025-08-19 15:36:01,634 log 29 140477950482176 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:36:01,905 log 29 140477950482176 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 15:36:01,917 log 29 140477950482176 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 15:36:17,212 log 30 140477966219008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:36:26,963 log 30 140477966219008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:36:30,568 log 30 140477966219008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:36:31,795 log 29 140477950482176 Not Found: /ws/dashboard/
+WARNING 2025-08-19 15:37:08,093 log 29 140477950482176 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:37:08,531 log 29 140477939992320 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 15:37:08,531 log 29 140477950482176 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 15:37:09,168 log 30 140477966219008 Not Found: /ws/dashboard/
+WARNING 2025-08-19 15:37:29,550 log 30 140477966219008 Not Found: /dashboard/WS
+WARNING 2025-08-19 15:37:29,584 log 30 140477966219008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:37:29,920 log 30 140477966219008 Not Found: /favicon.ico
+WARNING 2025-08-19 15:37:33,726 log 29 140477950482176 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:37:34,064 log 29 140477950482176 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 15:37:34,067 log 29 140477939992320 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 15:37:34,247 log 30 140477966219008 Not Found: /ws/dashboard/
+WARNING 2025-08-19 15:38:18,217 log 29 140477939992320 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:38:19,061 log 29 140477939992320 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 15:38:19,061 log 29 140477950482176 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 15:38:19,465 log 29 140477950482176 Not Found: /ws/dashboard/
+WARNING 2025-08-19 15:39:10,321 log 29 140477939992320 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 15:39:10,942 log 30 140477966219008 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 15:39:10,944 log 30 140477957826304 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 15:39:11,557 log 29 140477939992320 Not Found: /ws/dashboard/
+INFO 2025-08-19 15:40:58,844 apps 13 139820221241152 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:41:01,629 apps 14 139916971345728 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:53:32,791 apps 13 140253765666624 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:53:35,227 apps 14 139713098327872 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:54:12,361 apps 29 139671942092608 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:54:12,430 apps 30 139671942092608 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 15:54:27,440 log 30 139671838295808 Not Found: /favicon.ico
+INFO 2025-08-19 15:54:52,370 attempts 30 139671812069120 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 22:54:52.366270+00:00
+INFO 2025-08-19 15:54:52,371 database 30 139671812069120 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/microsoft/login/callback/"}.
+WARNING 2025-08-19 15:54:52,835 log 30 139671864690432 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 15:54:52,835 log 30 139671838295808 Not Found: /static/js/offline-sync.js
+INFO 2025-08-19 15:55:27,187 apps 13 139871285999424 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:55:29,653 apps 14 139656167855936 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:56:03,642 apps 29 140560130168640 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 15:56:03,647 apps 30 140560130168640 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 15:56:46,730 log 30 140560001144576 Not Found: /ws/dashboard/
+INFO 2025-08-19 16:06:51,860 apps 13 139656981636928 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:06:54,355 apps 14 139687784142656 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:07:30,803 apps 29 140454864889664 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:07:30,852 apps 30 140454864889664 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:16:23,523 apps 13 140037387048768 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:16:25,969 apps 14 139950734378816 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:17:04,313 apps 29 140054457567040 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:17:04,417 apps 30 140054457567040 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 16:17:29,801 log 29 140054335936256 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 16:17:30,344 log 30 140054371772160 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 16:17:34,819 log 29 140054335936256 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 16:17:34,822 log 30 140054371772160 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 16:17:50,060 log 30 140054380164864 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 16:17:50,060 log 30 140054371772160 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 16:17:51,413 log 29 140054335936256 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 16:17:54,581 log 30 140054371772160 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 16:17:55,194 log 29 140054344328960 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 16:17:55,195 log 29 140054335936256 Not Found: /static/js/offline-handler.js
+INFO 2025-08-19 16:21:47,430 apps 13 140544856926016 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:21:50,187 apps 14 140004379531072 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:23:16,780 apps 13 140196941834048 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:23:19,345 apps 14 139673639163712 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:23:59,197 apps 13 139935475468096 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:24:01,552 apps 14 140321854826304 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:24:53,876 apps 29 140035463964480 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:24:53,881 apps 30 140035463964480 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 16:25:19,449 log 29 140035118589696 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 16:25:19,449 log 29 140035350726400 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 16:25:24,792 log 29 140035350726400 Not Found: /ws/dashboard/
+WARNING 2025-08-19 16:25:53,036 log 30 140035351758592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 16:27:07,401 log 29 140035118589696 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 16:27:07,676 log 29 140035118589696 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 16:27:07,697 log 30 140035351758592 Not Found: /static/js/offline-sync.js
+INFO 2025-08-19 16:29:40,122 apps 13 140361412581184 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:29:42,518 apps 14 140099284588352 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:30:18,646 apps 29 140704552941376 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 16:30:18,717 apps 30 140704552941376 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 17:06:21,608 log 30 140704448096000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:06:23,947 log 30 140704448096000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:06:24,655 log 30 140704448096000 Not Found: /ws/dashboard/
+WARNING 2025-08-19 17:06:25,805 log 29 140704475539200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:06:26,202 log 29 140704475539200 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 17:06:26,231 log 30 140704448096000 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 17:06:44,086 log 29 140704475539200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:17:30,984 log 30 140704448096000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:17:32,274 log 30 140704448096000 Not Found: /ws/dashboard/
+WARNING 2025-08-19 17:17:42,783 log 30 140704448096000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:17:43,002 log 30 140704439703296 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 17:17:43,002 log 30 140704448096000 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 17:17:45,471 log 30 140704448096000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:17:49,051 log 29 140704475539200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:34:32,429 log 30 140704448096000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:34:53,536 log 29 140704475539200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:34:53,777 log 29 140704475539200 Not Found: /ws/dashboard/
+WARNING 2025-08-19 17:35:03,444 log 30 140704448096000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:35:03,712 log 29 140704475539200 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 17:35:03,711 log 30 140704439703296 Not Found: /ws/dashboard/
+WARNING 2025-08-19 17:35:03,742 log 30 140704439703296 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 17:35:07,213 log 29 140704475539200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:35:07,540 log 29 140704475539200 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 17:35:07,544 log 30 140704439703296 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 17:35:07,545 log 29 140704475539200 Not Found: /ws/dashboard/
+WARNING 2025-08-19 17:37:21,919 log 30 140704439703296 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 17:37:22,539 log 30 140704448096000 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 17:37:22,544 log 30 140704439703296 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-19 17:37:23,321 log 29 140704475539200 Not Found: /ws/dashboard/
+INFO 2025-08-19 17:39:51,633 apps 13 140277355775808 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 17:39:55,485 apps 14 140711808870208 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 17:40:34,972 apps 29 140230947788608 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 17:40:34,983 apps 30 140230947788608 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 17:40:48,372 log 30 140230826157824 Not Found: /ws/dashboard/
+WARNING 2025-08-19 17:40:49,057 log 30 140230826157824 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-19 17:40:49,068 log 29 140230826141440 Not Found: /static/js/offline-handler.js
