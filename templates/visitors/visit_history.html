@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load iin_filters %}
 
 {% block title %}История визитов{% endblock %}
 
@@ -220,7 +221,7 @@
                         {% if visit.visit_kind == 'group' %}
                            -
                         {% else %}
-                           {{ visit.guest.iin|default:"-" }}
+                           {{ visit.guest.iin|mask_iin }}
                         {% endif %}
                       </td>
                      <td class="sort-city">

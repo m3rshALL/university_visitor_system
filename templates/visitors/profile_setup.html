@@ -34,28 +34,19 @@
                             {% csrf_token %}
                             {% if request.GET.next %}
                                 <input type="hidden" name="next" value="{{ request.GET.next }}">
-                            {% endif %}                            
-                            <div class="mb-3">
-                                <label class="form-label" for="phone_masked">
-                                    {{ form.phone_number.label }}
-                                    <span class="form-label-description">Рабочий</span>
-                                </label>
-                                <div class="input-group input-group-flat">
-                                    <span class="input-group-text">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
-                                        </svg>
-                                    </span>
-                                    <input type="text" id="phone_masked" class="form-control" data-mask="+7 (000) 000-00-00" placeholder="+7 (___) ___-__-__">
-                                    <!-- Скрытое поле для фактического значения -->
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="guest_phone_masked" class="form-label required">Номер телефона:</label>
+                                    <input type="text" id="guest_phone_masked" class="form-control" placeholder="+7 771 111 11 11" maxlength="16">
+                                    {% if form.phone_number.errors %}
+                                        <div class="invalid-feedback d-block">{% for e in form.phone_number.errors %}{{ e }}{% endfor %}</div>
+                                    {% endif %}
+                                    
+                                    <!-- Скрытое поле для хранения значения без маски -->
                                     <input type="hidden" name="{{ form.phone_number.html_name }}" id="{{ form.phone_number.id_for_label }}" value="{{ form.phone_number.value|default:'' }}">
                                 </div>
-                                {% if form.phone_number.errors %}
-                                    <div class="invalid-feedback d-block">{% for e in form.phone_number.errors %}{{e}}{% endfor %}</div>
-                                {% else %}
-                                    
-                                {% endif %}
                             </div>
 
                             <div class="mb-3">
@@ -78,10 +69,11 @@
                                     </span>
                                     {{ form.department }}
                                 </div>
+                                {% if form.department.help_text %}
+                                    <div class="form-text">{{ form.department.help_text }}</div>
+                                {% endif %}
                                 {% if form.department.errors %}
                                     <div class="invalid-feedback d-block">{% for e in form.department.errors %}{{e}}{% endfor %}</div>
-                                {% else %}
-                                    
                                 {% endif %}
                             </div>
 
@@ -118,7 +110,84 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Add required classes to form controls if they don't have them already
+
+        // Маска для телефона
+        const phoneMaskElement = document.getElementById('guest_phone_masked');
+        const phoneHiddenElement = document.getElementById('{{ form.phone_number.id_for_label }}');
+        
+        if (phoneMaskElement && phoneHiddenElement) {
+            const phoneMask = IMask(phoneMaskElement, {
+                mask: '+{7} 000 000 00 00',
+                lazy: false
+            });
+            
+            // Инициализация значением из hidden-поля, если оно есть
+            if (phoneHiddenElement.value) {
+                // Форматируем значение, убирая все, кроме цифр
+                let phoneValue = phoneHiddenElement.value.replace(/\D/g, '');
+                if (phoneValue.startsWith('7')) {
+                    phoneMask.unmaskedValue = phoneValue.substring(1); // убираем код страны в маске
+                } else if (phoneValue.startsWith('8') && phoneValue.length === 11) {
+                    phoneMask.unmaskedValue = '7' + phoneValue.substring(1);
+                } else {
+                    phoneMask.unmaskedValue = phoneValue;
+                }
+            }
+              // Обновление hidden-поля при вводе
+            phoneMaskElement.addEventListener('input', function() {
+                // Сохраняем строго в формате +7XXXXXXXXXX
+                let d = phoneMask.unmaskedValue.replace(/\D/g, '');
+                if (d.length === 11 && d.startsWith('8')) d = '7' + d.substring(1);
+                if (d.length === 10) d = '7' + d;
+                if (d.startsWith('7')) {
+                    phoneHiddenElement.value = '+7' + d.substring(1);
+                }
+                
+                // Визуальная валидация номера телефона
+                validatePhoneNumber();
+            });
+            
+            // Функция для валидации номера телефона
+            function validatePhoneNumber() {
+                // Номер считается валидным, если в нем ровно 10 цифр (без учета +7)
+                const isValid = phoneMask.unmaskedValue && phoneMask.unmaskedValue.length === 10;
+                
+                if (phoneMask.unmaskedValue.length > 0) {
+                    if (isValid) {
+                        phoneMaskElement.classList.remove('is-invalid');
+                        phoneMaskElement.classList.add('is-valid');
+                    } else {
+                        phoneMaskElement.classList.remove('is-valid');
+                        phoneMaskElement.classList.add('is-invalid');
+                    }
+                } else {
+                    // Если поле пустое, убираем все классы валидации
+                    phoneMaskElement.classList.remove('is-valid', 'is-invalid');
+                }
+                
+                return isValid;
+            }
+            
+            // Проверка при потере фокуса
+            phoneMaskElement.addEventListener('blur', validatePhoneNumber);
+            
+            // Проверка при отправке формы
+            const form = phoneMaskElement.closest('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    if (!validatePhoneNumber() && phoneMask.unmaskedValue.length > 0) {
+                        e.preventDefault();
+                        phoneMaskElement.focus();
+                    }
+                });
+            }
+            
+            // Начальная валидация
+            if (phoneMask.unmaskedValue.length > 0) {
+                validatePhoneNumber();
+            }
+        }
+        // Классика: добавить классы Bootstrap и проставить invalid для ошибок
         document.querySelectorAll('form input:not([type=hidden]), form select').forEach(function(control) {
             if (control.tagName === 'SELECT') {
                 if (!control.classList.contains('form-select')) {
@@ -129,8 +198,6 @@
                     control.classList.add('form-control');
                 }
             }
-            
-            // Add is-invalid class if errors exist
             const errorDiv = control.closest('.mb-3')?.querySelector('.invalid-feedback');
             if (errorDiv && errorDiv.innerText.trim() !== '') {
                 control.classList.add('is-invalid');
@@ -138,43 +205,8 @@
                 control.classList.remove('is-invalid');
             }
         });
-
-        // Обработка маски телефона
-        const phoneMaskedElement = document.getElementById('phone_masked');
-        const phoneHiddenElement = document.getElementById('{{ form.phone_number.id_for_label }}');
-        
-        if (phoneMaskedElement && phoneHiddenElement) {
-            // Установить начальное значение маски из скрытого поля, если оно есть
-            if (phoneHiddenElement.value) {
-                let phoneValue = phoneHiddenElement.value.replace(/\D/g, '');
-                
-                // Если начинается с 7, убираем её из unmaskedValue
-                if (phoneValue.startsWith('7')) {
-                    phoneValue = phoneValue.substring(1);
-                }
-                
-                // Форматируем номер для отображения
-                if (phoneValue.length === 10) {
-                    phoneMaskedElement.value = '+7 (' + phoneValue.substring(0, 3) + ') ' + 
-                        phoneValue.substring(3, 6) + '-' + 
-                        phoneValue.substring(6, 8) + '-' + 
-                        phoneValue.substring(8, 10);
-                }
-            }
-            
-            // Обновление скрытого поля при изменении маскированного поля
-            phoneMaskedElement.addEventListener('input', function() {
-                // Получаем только цифры из введенного номера
-                const digits = this.value.replace(/\D/g, '');
-                
-                // Добавляем +7 спереди и сохраняем в скрытое поле
-                if (digits.length > 0) {
-                    phoneHiddenElement.value = '+7' + digits.substring(digits.startsWith('7') ? 1 : 0);
-                } else {
-                    phoneHiddenElement.value = '';
-                }
-            });
-        }
     });
+
+
 </script>
 {% endblock %}

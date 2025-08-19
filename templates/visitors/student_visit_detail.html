@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load iin_filters %}
 
 {% block title %}Детали визита студента/абитуриента №{{ student_visit.id }}{% endblock %}
 
@@ -24,7 +25,7 @@
                     <dd class="col-sm-8">{{ student_visit.guest.full_name }}</dd>
 
                     <dt class="col-sm-4">ИИН:</dt>
-                    <dd class="col-sm-8">{{ student_visit.guest.iin|default:"Не указан" }}</dd>
+                    <dd class="col-sm-8">{{ student_visit.guest.iin|mask_iin }}</dd>
 
                     <dt class="col-sm-4">Телефон:</dt>
                     <dd class="col-sm-8">{{ student_visit.guest.phone_number|default:"Не указан" }}</dd>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load iin_filters %}
 {% block title %}Панель сотрудника{% endblock %}
 
 {% block content %}
@@ -229,7 +230,7 @@
                                         <div>
                                             <div class="font-weight-medium">{{ visit.guest.full_name }}</div>
                                             {% if visit.guest_iin %}
-                                            <div class="text-muted small">ИИН: {{ visit.guest_iin }}</div>
+                                            <div class="text-muted small">ИИН: {{ visit.guest_iin|mask_iin }}</div>
                                             {% endif %}
                                         </div>
                                     {% endif %}
@@ -489,7 +490,7 @@
                                             <path d="M15 12l2 0"></path>
                                             <path d="M7 16l10 0"></path>
                                         </svg>
-                                        {{ invitation.guest_iin }}
+                                        {{ invitation.guest_iin|mask_iin }}
                                     </span>
                                 {% else %}
                                     <span class="text-muted">Не указан</span>

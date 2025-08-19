@@ -43,6 +43,9 @@ from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 
 from django.views.decorators.http import require_POST # Для ограничения методов
+from rest_framework.views import APIView  # type: ignore
+from rest_framework.response import Response  # type: ignore
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle  # type: ignore
 from django.utils.decorators import method_decorator
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
 from django.core.cache import cache
@@ -400,9 +403,11 @@ def visit_history_view(request):
             group_visits_qs = group_visits_qs.filter(guests__full_name__icontains=guest_name_query)
         
         if guest_iin:
-            official_visits_qs = official_visits_qs.filter(guest__iin__icontains=guest_iin)
-            student_visits_qs = student_visits_qs.filter(guest__iin__icontains=guest_iin)
-            # Для групповых визитов нужна фильтрация по ИИН гостей в группе
+            # Хэшируем ввод и ищем совпадения по полному ИИН через хэш и маске по последним 4
+            import hashlib
+            iin_hash = hashlib.sha256(guest_iin.encode()).hexdigest()
+            official_visits_qs = official_visits_qs.filter(guest__iin_hash=iin_hash)
+            student_visits_qs = student_visits_qs.filter(guest__iin_hash=iin_hash)
             group_visits_qs = group_visits_qs.filter(guests__iin__icontains=guest_iin)
         
         if entry_date_from:
@@ -1231,8 +1236,10 @@ def export_visits_xlsx(request):
             official_visits_qs = official_visits_qs.filter(guest__full_name__icontains=guest_name)
             student_visits_qs = student_visits_qs.filter(guest__full_name__icontains=guest_name)
         if guest_iin:
-            official_visits_qs = official_visits_qs.filter(guest__iin__icontains=guest_iin)
-            student_visits_qs = student_visits_qs.filter(guest__iin__icontains=guest_iin)
+            import hashlib
+            iin_hash = hashlib.sha256(guest_iin.encode()).hexdigest()
+            official_visits_qs = official_visits_qs.filter(guest__iin_hash=iin_hash)
+            student_visits_qs = student_visits_qs.filter(guest__iin_hash=iin_hash)
         if entry_date_from:
             official_visits_qs = official_visits_qs.filter(
                 Q(entry_time__date__gte=entry_date_from) |
@@ -1330,7 +1337,7 @@ def export_visits_xlsx(request):
                 "Гость сотрудника/Другое", # Тип
                 status_str, # Статус
                 visit.guest.full_name,
-                visit.guest.iin,
+                getattr(visit.guest, 'iin', None),
                 visit.guest.phone_number,
                 visit.guest.email,
                 visit.employee.get_full_name() if visit.employee else '-', # Сотрудник ФИО
@@ -1357,7 +1364,7 @@ def export_visits_xlsx(request):
                 "Студент/Абитуриент", # Тип
                 status_str, # Статус
                 visit.guest.full_name,
-                visit.guest.iin,
+                getattr(visit.guest, 'iin', None),
                 visit.guest.phone_number,
                 visit.guest.email,
                 '-', # Сотрудник ФИО

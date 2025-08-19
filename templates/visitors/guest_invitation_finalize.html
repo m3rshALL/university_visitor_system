@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load iin_filters %}
 
 {% block title %}Финализация визита гостя{% endblock %}
 
@@ -112,7 +113,7 @@
                                             </svg>
                                             ИИН
                                         </label>
-                                        <div class="font-monospace">{{ invitation.guest_iin }}</div>
+                                        <div class="font-monospace">{{ invitation.guest_iin|mask_iin }}</div>
                                     </div>
                                     {% endif %}
                                 </div>

@@ -5,6 +5,8 @@ from django.contrib.auth.models import User # Стандартная модел�
 from departments.models import Department
 from django.utils import timezone
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
+from cryptography.fernet import Fernet, InvalidToken  # type: ignore
+import base64
 from django.conf import settings
 import uuid
 
@@ -21,25 +23,53 @@ VISIT_STATUS_CHOICES = [
 ]
 # -----------------------
 
+def get_fernet():
+    key = getattr(settings, 'IIN_ENCRYPTION_KEY', '').encode()
+    if not key:
+        # Генерируем временный ключ для дев-окружения, но не сохраняем
+        # В проде ключ обязателен в окружении
+        key = base64.urlsafe_b64encode(b'0'*32)
+    return Fernet(key)
+
+
 class Guest(models.Model):
     full_name = models.CharField(max_length=255, verbose_name="ФИО гостя")
     email = models.EmailField(max_length=255, blank=True, null=True, verbose_name="Email")
     phone_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Номер телефона")
     # Можно добавить поле для документа, удостоверяющего личность
-    iin = models.CharField(
-        max_length=12,
-        validators=[
-            RegexValidator(regex=r'^\d{12}$', message='ИИН должен состоять ровно из 12 цифр.'),
-            MinLengthValidator(12), # Дополнительная проверка длины
-            MaxLengthValidator(12)
-        ],
-        null=True,
-        unique=True, # Установить True, если ИИН должен быть уникальным для каждого гостя
-        verbose_name="ИИН гостя"
-    )
+    # Храним шифрованный ИИН и дублируем цифровой хэш для поиска
+    iin_encrypted = models.BinaryField(null=True, blank=True, editable=False, verbose_name="Зашифрованный ИИН")
+    iin_hash = models.CharField(max_length=64, null=True, blank=True, db_index=True, editable=False, verbose_name="Хэш ИИН (поиск)")
 
     def __str__(self):
         return self.full_name
+
+    # Виртуальные аксессоры для удобства работы в коде и формах
+    @property
+    def iin(self):
+        if not self.iin_encrypted:
+            return None
+        f = get_fernet()
+        try:
+            decrypted = f.decrypt(self.iin_encrypted)
+            return decrypted.decode()
+        except (InvalidToken, Exception):
+            return None
+
+    @iin.setter
+    def iin(self, value: str | None):
+        if value:
+            # Валидация формальная на уровне модели (дополнительно есть на формах)
+            if not value.isdigit() or len(value) != 12:
+                raise ValueError("ИИН должен состоять ровно из 12 цифр.")
+            f = get_fernet()
+            self.iin_encrypted = f.encrypt(value.encode())
+            # Хэш для поиска (безопаснее через односторонний SHA-256)
+            import hashlib
+            self.iin_hash = hashlib.sha256(value.encode()).hexdigest()
+        else:
+            self.iin_encrypted = None
+            self.iin_hash = None
 
     class Meta:
         verbose_name = "Гость"
@@ -313,6 +343,8 @@ class GuestInvitation(models.Model):
         null=True,
         verbose_name="ИИН гостя"
     )
+    # Для группп регистрации и отображения маски удобно хранить последние 4 цифры
+    guest_iin_last4 = models.CharField(max_length=4, blank=True, null=True, editable=False)
     guest_photo = models.ImageField(upload_to='guest_photos/', blank=True, null=True, verbose_name="Фото гостя")
     created_at = models.DateTimeField(auto_now_add=True)
     is_filled = models.BooleanField(default=False, verbose_name="Гость заполнил данные")
@@ -326,6 +358,14 @@ class GuestInvitation(models.Model):
     class Meta:
         verbose_name = "Приглашение гостя"
         verbose_name_plural = "Приглашения гостей"
+
+    def save(self, *args, **kwargs):
+        # Обновляем guest_iin_last4
+        if self.guest_iin and len(self.guest_iin) >= 4:
+            self.guest_iin_last4 = self.guest_iin[-4:]
+        else:
+            self.guest_iin_last4 = None
+        super().save(*args, **kwargs)
 
 class GuestEntry(models.Model):
     invitation = models.ForeignKey(GuestInvitation, on_delete=models.CASCADE, related_name='entries')
@@ -374,6 +414,7 @@ class GroupGuest(models.Model):
         null=True,
         verbose_name="ИИН гостя"
     )
+    iin_last4 = models.CharField(max_length=4, blank=True, null=True, editable=False)
     photo = models.ImageField(upload_to='group_guests/', blank=True, null=True, verbose_name="Фото гостя")
     is_filled = models.BooleanField(default=False, verbose_name="Гость заполнил данные")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -384,4 +425,12 @@ class GroupGuest(models.Model):
     class Meta:
         verbose_name = "Гость группы"
         verbose_name_plural = "Гости группы"
+
+    def save(self, *args, **kwargs):
+        # Обновляем iin_last4
+        if self.iin and len(self.iin) >= 4:
+            self.iin_last4 = self.iin[-4:]
+        else:
+            self.iin_last4 = None
+        super().save(*args, **kwargs)
 

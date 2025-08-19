@@ -17,6 +17,32 @@ import json
 
 logger = logging.getLogger(__name__)
 
+# --- Валидация телефонов (E.164: +XXXXXXXXXXX) ---
+PHONE_E164_VALIDATOR = RegexValidator(
+    regex=r'^\+?[1-9]\d{9,14}$',
+    message='Введите номер в международном формате, например: +7XXXXXXXXXX'
+)
+
+def normalize_phone(value: str | None) -> str | None:
+    """Очищает номер телефона от нецифровых символов и приводит к формату +<country><digits>.
+    Для 10-11 цифр без кода страны пытаемся привести к +7 (КЗ/RU) как дефолт (если начинается с 8 -> 7).
+    """
+    if not value:
+        return None
+    digits = ''.join(ch for ch in str(value) if ch.isdigit())
+    if not digits:
+        return None
+    # Если 11 цифр и начинается с 8, меняем на 7 (частый случай локального формата)
+    if len(digits) == 11 and digits.startswith('8'):
+        digits = '7' + digits[1:]
+    # Если 10 цифр, добавим код страны 7 по умолчанию
+    if len(digits) == 10:
+        digits = '7' + digits
+    # Ограничиваем строго формату +7XXXXXXXXXX
+    if not digits.startswith('7') or len(digits) != 11:
+        return None
+    return '+' + digits
+
 # Определяем варианты выбора для цели визита
 PURPOSE_CHOICES = [
     ('', '---------'), # Пустой выбор
@@ -61,7 +87,19 @@ class GuestRegistrationForm(forms.Form):
     # --- Поля Гостя (остаются как были) ---
     guest_full_name = forms.CharField(label="ФИО гостя", max_length=255)
     guest_email = forms.EmailField(label="Email гостя (необязательно)", required=False)
-    guest_phone = forms.CharField(label="Телефон гостя (обязательно)", max_length=20, required=True)
+    guest_phone = forms.CharField(
+        label="Телефон гостя (обязательно)", max_length=20, required=True,
+        validators=[PHONE_E164_VALIDATOR],
+        help_text="Укажите номер в формате +7XXXXXXXXXX",
+        widget=forms.TextInput(attrs={
+            'placeholder': '+7 771 111 11 11',
+            'data-mask': 'phone',
+            'inputmode': 'tel',
+            'autocomplete': 'tel',
+            'maxlength': '16',
+            'pattern': '\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}\\s\\d{2}'
+        })
+    )
     guest_iin = forms.CharField(
         label="ИИН гостя (12 цифр, обязательно)", max_length=12, required=True,
         validators=[
@@ -133,7 +171,17 @@ class GuestRegistrationForm(forms.Form):
     )
     # ------------------------------------------------------
     employee_contact_phone_form = forms.CharField(
-        label="Контактный тел. сотрудника", max_length=20, required=True
+        label="Контактный тел. сотрудника", max_length=20, required=True,
+        validators=[PHONE_E164_VALIDATOR],
+        help_text="В международном формате, например +7XXXXXXXXXX",
+        widget=forms.TextInput(attrs={
+            'placeholder': '+7 771 111 11 11',
+            'data-mask': 'phone',
+            'inputmode': 'tel',
+            'autocomplete': 'tel',
+            'maxlength': '16',
+            'pattern': '\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}\\s\\d{2}'
+        })
     )
     # -------------------
     
@@ -158,6 +206,22 @@ class GuestRegistrationForm(forms.Form):
             self.add_error('purpose_other_text', '...')
         # ...
         return cleaned_data
+    
+    def clean_guest_phone(self):
+        value = self.cleaned_data.get('guest_phone')
+        normalized = normalize_phone(value)
+        if not normalized:
+            raise forms.ValidationError('Укажите корректный номер телефона')
+        PHONE_E164_VALIDATOR(normalized)
+        return normalized
+
+    def clean_employee_contact_phone_form(self):
+        value = self.cleaned_data.get('employee_contact_phone_form')
+        normalized = normalize_phone(value)
+        if not normalized:
+            raise forms.ValidationError('Укажите корректный номер телефона')
+        PHONE_E164_VALIDATOR(normalized)
+        return normalized
     # -----------------------------------------
 
     def save(self, registering_user, registration_type): # Принимает тип 'now' или 'later'
@@ -175,7 +239,10 @@ class GuestRegistrationForm(forms.Form):
         guest_iin_value = guest_data.get('iin')
         # Ищем по ИИН, только если он не пустой
         if guest_iin_value:
-            guest = Guest.objects.filter(iin=guest_iin_value).first()
+            # Поиск по хэшу ИИН
+            import hashlib
+            iin_hash = hashlib.sha256(guest_iin_value.encode()).hexdigest()
+            guest = Guest.objects.filter(iin_hash=iin_hash).first()
             if guest:
                 print(f"Найден существующий гость по ИИН: {guest.full_name}")
             else:
@@ -273,7 +340,19 @@ class StudentVisitRegistrationForm(forms.Form):
     # --- Поля Гостя (как в GuestRegistrationForm) ---
     guest_full_name = forms.CharField(label="ФИО посетителя", max_length=255)
     guest_email = forms.EmailField(label="Email (необязательно)", required=False)
-    guest_phone = forms.CharField(label="Телефон (необязательно)", max_length=20, required=False)
+    guest_phone = forms.CharField(
+        label="Телефон (необязательно)", max_length=20, required=False,
+        validators=[PHONE_E164_VALIDATOR],
+        help_text="Например: +7XXXXXXXXXX",
+        widget=forms.TextInput(attrs={
+            'placeholder': '+7 771 111 11 11',
+            'data-mask': 'phone',
+            'inputmode': 'tel',
+            'autocomplete': 'tel',
+            'maxlength': '16',
+            'pattern': '\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}\\s\\d{2}'
+        })
+    )
     guest_iin = forms.CharField(
         label="ИИН (12 цифр, необязательно)", max_length=12, required=False,
         validators=[
@@ -320,6 +399,14 @@ class StudentVisitRegistrationForm(forms.Form):
 
         return cleaned_data
 
+    def clean_guest_phone(self):
+        value = self.cleaned_data.get('guest_phone')
+        if not value:
+            return value
+        normalized = normalize_phone(value)
+        PHONE_E164_VALIDATOR(normalized)
+        return normalized
+
     def save(self, registering_user):
         # 1. Найти или создать Гостя
         guest_data = {
@@ -330,7 +417,9 @@ class StudentVisitRegistrationForm(forms.Form):
         }
         guest = None
         if guest_data['iin']:
-            guest = Guest.objects.filter(iin=guest_data['iin']).first()
+            import hashlib
+            iin_hash = hashlib.sha256(guest_data['iin'].encode()).hexdigest()
+            guest = Guest.objects.filter(iin_hash=iin_hash).first()
         if not guest:
              guest, created = Guest.objects.get_or_create(full_name=guest_data['full_name'], defaults=guest_data)
         else:
@@ -438,7 +527,17 @@ class ProfileSetupForm(forms.ModelForm):
     # Делаем поля обязательными на уровне формы
     phone_number = forms.CharField(
         label="Ваш рабочий телефон", required=True, max_length=50,
-        widget=forms.TextInput(attrs={'placeholder': '+7 (XXX) XXX-XX-XX'})
+        validators=[PHONE_E164_VALIDATOR],
+        help_text="Укажите телефон в формате +7XXXXXXXXXX",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': '+7 771 111 11 11',
+            'data-mask': 'phone',
+            'inputmode': 'tel',
+            'autocomplete': 'tel',
+            'maxlength': '16',
+            'pattern': '\\+7\\s\\d{3}\\s\\d{3}\\s\\d{2}\\s\\d{2}'
+        })
     )
     department = forms.ModelChoiceField(
         queryset=Department.objects.order_by('name'), # Сортируем департаменты
@@ -472,6 +571,13 @@ class GuestInvitationFillForm(forms.ModelForm):
         fields = ['guest_full_name', 'guest_email', 'guest_phone', 'guest_iin', 'guest_photo']
         widgets = {
             'guest_full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Иванов Иван Иванович'}),
+            'guest_phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '+7 (___) ___-__-__',
+                'data-mask': 'phone',
+                'inputmode': 'tel',
+                'autocomplete': 'tel',
+            }),
             'guest_iin': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': '123456789012',
@@ -479,9 +585,16 @@ class GuestInvitationFillForm(forms.ModelForm):
                 'title': 'ИИН должен состоять ровно из 12 цифр.'
             }),            
             'guest_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'ivan@example.com'}),
-            'guest_phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+7 700 123 45 67'}),
             'guest_photo': forms.ClearableFileInput(attrs={'accept': 'image/*', 'class': 'form-control'}),
         }
+
+    def clean_guest_phone(self):
+        value = self.cleaned_data.get('guest_phone')
+        if not value:
+            return value
+        normalized = normalize_phone(value)
+        PHONE_E164_VALIDATOR(normalized)
+        return normalized
 
 class GuestInvitationFinalizeForm(forms.ModelForm):
     visit_time = forms.DateTimeField(

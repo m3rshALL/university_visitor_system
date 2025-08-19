@@ -17,6 +17,7 @@ Including another URLconf
 # visitor_system/urls.py
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers  # type: ignore
 from django.conf import settings
 from django.conf.urls.static import static
 # from django.views.decorators.cache import cache_control
@@ -35,6 +36,7 @@ from visitors import views as visitors_views
 
 urlpatterns = [
     path('', include('django_prometheus.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
     #path('auth/', include('authentication.urls')), # URL для аутентификации
     path('accounts/', include('allauth.urls')), # URL для аутентификации через allauth

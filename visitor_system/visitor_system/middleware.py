@@ -4,15 +4,9 @@ from django.conf import settings
 
 class SecurityHeadersMiddleware(MiddlewareMixin):
 	def process_response(self, request, response):
-		# Permissions-Policy (минимальный набор)
 		response.setdefault('Permissions-Policy', "geolocation=(), microphone=(), camera=(), interest-cohort=()")
-		# Referrer-Policy из настроек (Django сам добавляет при SECURE_REFERRER_POLICY, но продублируем)
 		if getattr(settings, 'SECURE_REFERRER_POLICY', None):
 			response.setdefault('Referrer-Policy', settings.SECURE_REFERRER_POLICY)
 		return response
-# visitor_system/__init__.py
 
-# Этот код гарантирует, что @shared_task будет использовать это приложение Celery.
-from .celery import app as celery_app
 
-__all__ = ('celery_app',)

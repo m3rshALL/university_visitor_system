@@ -3,6 +3,9 @@ from django.urls import path
 from . import views
 from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
 from .views import qr_scan_view, qr_resolve_view, qr_code_view
+from rest_framework.views import APIView  # type: ignore
+from rest_framework.response import Response  # type: ignore
+from rest_framework.throttling import AnonRateThrottle  # type: ignore
 
 urlpatterns = [
     # --- единый URL для регистрации ---
@@ -62,4 +65,9 @@ urlpatterns = [
     path('qr/scan/', qr_scan_view, name='qr_scan'),
     path('qr/resolve/', qr_resolve_view, name='qr_resolve'),
     path('qr/code/<str:kind>/<int:pk>.png', qr_code_view, name='qr_code'),
+    # DRF API для QR (анонимная с throttling)
+    path('api/qr/resolve/', type('QRResolveAPI', (APIView,), {
+        'throttle_classes': [AnonRateThrottle],
+        'post': lambda self, request, *args, **kwargs: Response({'detail': 'use form endpoint'}, status=400)
+    }).as_view(), name='qr_resolve_api'),
 ]

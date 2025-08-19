@@ -53,22 +53,28 @@ INSTALLED_APPS = [
 	'notifications',
 	'classroom_book',
 	'django_prometheus',
+	'rest_framework',
+	'axes',
+	'csp',
 ]
 
 
 MIDDLEWARE = [
 	'django_prometheus.middleware.PrometheusBeforeMiddleware',
 	'django.middleware.security.SecurityMiddleware',
+	'csp.middleware.CSPMiddleware',
 	'whitenoise.middleware.WhiteNoiseMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'axes.middleware.AxesMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'allauth.account.middleware.AccountMiddleware',
 	'visitors.middleware.ProfileSetupMiddleware',
 	'django_prometheus.middleware.PrometheusAfterMiddleware',
+	'visitor_system.middleware.SecurityHeadersMiddleware',
 ]
 
 
@@ -141,6 +147,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
+	'axes.backends.AxesBackend',
 	'django.contrib.auth.backends.ModelBackend',
 	'allauth.account.auth_backends.AuthenticationBackend',
 )
@@ -175,6 +182,38 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# DRF throttling
+REST_FRAMEWORK = {
+	'DEFAULT_THROTTLE_CLASSES': [
+		'rest_framework.throttling.UserRateThrottle',
+		'rest_framework.throttling.AnonRateThrottle',
+	],
+	'DEFAULT_THROTTLE_RATES': {
+		'user': '120/minute',
+		'anon': '60/minute',
+	}
+}
+
+# Django-Axes (защита от брутфорса)
+AXES_ENABLED = True
+AXES_FAILURE_LIMIT = int(os.getenv('AXES_FAILURE_LIMIT', '5'))
+AXES_COOLOFF_TIME = int(os.getenv('AXES_COOLOFF_MINUTES', '60'))  # минут
+AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
+
+# CSP (пока в report-only, чтобы не ломать существующие инлайны)
+CSP_REPORT_ONLY = True
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+CSP_IMG_SRC = ("'self'", 'data:')
+CSP_FONT_SRC = ("'self'", 'data:')
+
+# Referrer Policy
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+# Ключ для шифрования ИИН (Fernet, base64 urlsafe-encoded 32 bytes)
+IIN_ENCRYPTION_KEY = os.getenv('IIN_ENCRYPTION_KEY', '')
 USE_X_FORWARDED_HOST = True
 
 CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'False').lower() == 'true'
