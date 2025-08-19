@@ -47,6 +47,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')), # URL для аутентификации через allauth
     path('visitors/', include('visitors.urls')), # URL для гостей и визитов
     path('classroom-book/', include('classroom_book.urls', namespace='classroom_book')), # URL для бронирования аудиторий
+    path('egov/', include('egov_integration.urls')), # URL для интеграции с egov.kz
     # Главная страница - перенаправляем на панель сотрудника
     path('', visitor_views.employee_dashboard_view, name='home'),
     path("select2/", include("django_select2.urls")),

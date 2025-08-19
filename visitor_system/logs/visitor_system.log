@@ -12093,3 +12093,43 @@ WARNING 2025-08-19 11:43:58,000 log 29 140152433276672 Not Found: /.well-known/a
 WARNING 2025-08-19 11:43:59,991 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-08-19 11:44:02,220 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-08-19 11:44:06,560 log 30 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-19 12:28:45,114 apps 10124 27596 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 12:34:34,015 apps 25416 25016 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:10:53,251 apps 39496 37584 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:12:03,526 apps 41100 43376 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:12:17,735 apps 42828 44084 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:12:30,062 apps 35784 38708 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:13:32,187 apps 44996 41156 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:13:43,622 apps 38944 40028 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:14:14,252 apps 42320 41264 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:14:28,134 apps 42468 41824 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:14:47,401 apps 9552 40580 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:17:51,419 apps 43064 41036 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:20:44,372 apps 37404 19404 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 13:20:44,544 services 37404 19404 Request to egov.kz failed: HTTPSConnectionPool(host='api.egov.kz', port=443): Max retries exceeded with url: /api/v1/health (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002A4D90B9E80>: Failed to resolve 'api.egov.kz' ([Errno 11001] getaddrinfo failed)"))
+ERROR 2025-08-19 13:20:44,549 services 37404 19404 Failed to encrypt document number: Fernet key must be 32 url-safe base64-encoded bytes.
+ERROR 2025-08-19 13:20:44,553 services 37404 19404 Request to egov.kz failed: HTTPSConnectionPool(host='api.egov.kz', port=443): Max retries exceeded with url: /api/v1/verify/iin (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002A4D803B390>: Failed to resolve 'api.egov.kz' ([Errno 11001] getaddrinfo failed)"))
+ERROR 2025-08-19 13:20:44,555 services 37404 19404 IIN verification failed: Request failed: HTTPSConnectionPool(host='api.egov.kz', port=443): Max retries exceeded with url: /api/v1/verify/iin (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000002A4D803B390>: Failed to resolve 'api.egov.kz' ([Errno 11001] getaddrinfo failed)"))
+INFO 2025-08-19 13:22:14,758 apps 41112 41364 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 13:22:16,013 services 41112 41364 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-19 13:22:16,017 services 41112 41364 Failed to encrypt document number: Fernet key must be 32 url-safe base64-encoded bytes.
+ERROR 2025-08-19 13:22:16,070 services 41112 41364 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-19 13:22:16,074 services 41112 41364 IIN verification failed: Request failed: Expecting value: line 1 column 1 (char 0)
+INFO 2025-08-19 13:23:07,749 apps 37572 44968 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:23:26,681 apps 28004 43224 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 13:23:26,798 services 28004 43224 Request to egov.kz failed: HTTPSConnectionPool(host='api.egov.kz', port=443): Max retries exceeded with url: /api/v1/health (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001C819A49E80>: Failed to resolve 'api.egov.kz' ([Errno 11001] getaddrinfo failed)"))
+ERROR 2025-08-19 13:23:26,804 services 28004 43224 Failed to encrypt document number: Fernet key must be 32 url-safe base64-encoded bytes.
+ERROR 2025-08-19 13:23:26,808 services 28004 43224 Request to egov.kz failed: HTTPSConnectionPool(host='api.egov.kz', port=443): Max retries exceeded with url: /api/v1/verify/iin (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001C8189CAD50>: Failed to resolve 'api.egov.kz' ([Errno 11001] getaddrinfo failed)"))
+ERROR 2025-08-19 13:23:26,812 services 28004 43224 IIN verification failed: Request failed: HTTPSConnectionPool(host='api.egov.kz', port=443): Max retries exceeded with url: /api/v1/verify/iin (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001C8189CAD50>: Failed to resolve 'api.egov.kz' ([Errno 11001] getaddrinfo failed)"))
+INFO 2025-08-19 13:24:45,708 apps 43160 42468 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:39:41,399 apps 40020 31448 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:40:13,129 apps 18748 6640 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:40:42,800 apps 42304 27664 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 13:40:42,914 services 42304 27664 API egov.kz error: 404 - {"error":"IndexMissingException[[health] missing]","status":404}
+ERROR 2025-08-19 13:40:42,955 services 42304 27664 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-19 13:40:42,958 services 42304 27664 IIN verification failed: Request failed: Expecting value: line 1 column 1 (char 0)
+INFO 2025-08-19 13:52:55,729 apps 39564 42356 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 13:53:08,004 apps 40956 42252 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 13:53:09,107 services 40956 42252 API egov.kz error: 404 - {"error":"IndexMissingException[[health] missing]","status":404}
+ERROR 2025-08-19 13:53:09,152 services 40956 42252 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-19 13:53:09,166 services 40956 42252 IIN verification failed: Request failed: Expecting value: line 1 column 1 (char 0)

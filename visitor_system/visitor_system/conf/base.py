@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 	'departments',
 	'notifications',
 	'classroom_book',
+	'egov_integration',  # Интеграция с egov.kz
 	'django_prometheus',
 	'rest_framework',
 	'axes',
