@@ -24,11 +24,14 @@ VISIT_STATUS_CHOICES = [
 # -----------------------
 
 def get_fernet():
-    key = getattr(settings, 'IIN_ENCRYPTION_KEY', '').encode()
-    if not key:
+    key_str = getattr(settings, 'IIN_ENCRYPTION_KEY', '')
+    if not key_str:
         # Генерируем временный ключ для дев-окружения, но не сохраняем
         # В проде ключ обязателен в окружении
         key = base64.urlsafe_b64encode(b'0'*32)
+    else:
+        # Ключ Fernet уже в base64 формате, просто кодируем в байты
+        key = key_str.encode()
     return Fernet(key)
 
 
@@ -51,7 +54,11 @@ class Guest(models.Model):
             return None
         f = get_fernet()
         try:
-            decrypted = f.decrypt(self.iin_encrypted)
+            # Django BinaryField может возвращать memoryview, конвертируем в bytes
+            encrypted_data = self.iin_encrypted
+            if isinstance(encrypted_data, memoryview):
+                encrypted_data = bytes(encrypted_data)
+            decrypted = f.decrypt(encrypted_data)
             return decrypted.decode()
         except (InvalidToken, Exception):
             return None

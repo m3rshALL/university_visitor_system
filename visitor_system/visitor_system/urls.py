@@ -34,6 +34,11 @@ from django.core.cache import caches
 from visitor_system.celery import app as celery_app
 from visitors import views as visitors_views
 
+# Временный импорт для тестирования (удален после проверки)
+# import sys
+# sys.path.append('/app/visitor_system')
+# from test_iin_view import test_iin_view
+
 urlpatterns = [
     path('', include('django_prometheus.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -65,6 +70,8 @@ urlpatterns = [
     path('healthz/celery', lambda request: (
         JsonResponse({'status': 'ok', 'workers': len(celery_app.control.ping(timeout=1.0))})
     ), name='healthz_celery'),
+    # Временный маршрут для тестирования ИИН (удален после проверки)
+    # path('test-iin/', test_iin_view, name='test_iin'),
 
     # Можно добавить другие корневые URL, если нужно
 ]

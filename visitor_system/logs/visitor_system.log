@@ -11805,3 +11805,291 @@ INFO 2025-08-19 10:56:40,819 apps 469 140508825900864 AXES: BEGIN version 6.5.2,
 INFO 2025-08-19 10:57:55,305 attempts 39 140388312540928 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 17:57:55.304493+00:00
 INFO 2025-08-19 10:57:55,305 database 39 140388312540928 AXES: Successful logout by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/logout/"}.
 WARNING 2025-08-19 10:57:55,489 log 39 140388548876032 Not Found: /favicon.ico
+INFO 2025-08-19 11:00:54,671 attempts 40 140387784062720 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-16 18:00:54.668496+00:00
+INFO 2025-08-19 11:00:54,671 database 40 140387784062720 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/microsoft/login/callback/"}.
+ERROR 2025-08-19 11:01:14,157 log 39 140388548876032 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+INFO 2025-08-19 11:01:50,491 forms 39 140388287362816 Using guest object: Акимбаев Сагат (ID: 1), Created: True
+INFO 2025-08-19 11:01:50,491 forms 39 140388287362816 Visit None created with status CHECKED_IN.
+INFO 2025-08-19 11:01:50,569 forms 39 140388287362816 Saved Visit ID 1, Status: CHECKED_IN, Consent Ack: True
+ERROR 2025-08-19 11:01:50,569 utils 39 140388287362816 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+ERROR 2025-08-19 11:04:41,181 log 40 140388548876032 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+INFO 2025-08-19 11:04:46,194 forms 40 140388304148224 Using guest object: Акимбаев Сагат (ID: 1), Created: False
+INFO 2025-08-19 11:04:46,194 forms 40 140388304148224 Visit None created with status CHECKED_IN.
+INFO 2025-08-19 11:04:46,262 forms 40 140388304148224 Saved Visit ID 2, Status: CHECKED_IN, Consent Ack: True
+ERROR 2025-08-19 11:04:46,263 utils 40 140388304148224 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+INFO 2025-08-19 11:06:29,925 apps 13 140031616890688 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:06:32,301 apps 14 140539244685120 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:06:39,241 apps 29 139841181927232 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:07:07,954 apps 53 140042414892864 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:07:08,016 apps 54 140042414892864 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:07:38,219 apps 71 139667347330880 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:07:53,085 apps 77 140595233756992 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:08:31,818 apps 83 140428874499904 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:09:01,822 apps 89 140694138672960 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:09:11,762 apps 97 139728175163200 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:09:40,568 apps 103 140197190440768 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:09:52,942 apps 109 140683194136384 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:10:01,604 apps 115 140621927012160 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:10:26,297 apps 121 140364529215296 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 11:19:32,086 log 53 140042240521984 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+INFO 2025-08-19 11:19:36,945 forms 54 140042219714304 Using guest object: Акимбаев Сагат (ID: 1), Created: False
+INFO 2025-08-19 11:19:36,945 forms 54 140042219714304 Visit None created with status CHECKED_IN.
+INFO 2025-08-19 11:19:37,032 forms 54 140042219714304 Saved Visit ID 4, Status: CHECKED_IN, Consent Ack: True
+ERROR 2025-08-19 11:19:37,033 utils 54 140042219714304 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+INFO 2025-08-19 11:20:53,858 apps 247 140325034407744 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:21:07,054 apps 253 140472611305280 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:21:18,748 apps 259 140575107290944 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:21:36,047 apps 265 139826112689984 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+ERROR 2025-08-19 11:23:33,657 log 53 140042240521984 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+INFO 2025-08-19 11:23:38,131 forms 53 140042215343872 Using guest object: Акимбаев Сагат (ID: 1), Created: False
+INFO 2025-08-19 11:23:38,131 forms 53 140042215343872 Visit None created with status CHECKED_IN.
+INFO 2025-08-19 11:23:38,218 forms 53 140042215343872 Saved Visit ID 5, Status: CHECKED_IN, Consent Ack: True
+ERROR 2025-08-19 11:23:38,219 utils 53 140042215343872 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+INFO 2025-08-19 11:24:46,251 apps 393 140022615693120 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:25:22,965 apps 405 139896780162880 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:25:39,560 apps 13 139875764135744 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:25:42,120 apps 14 140681387362112 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:26:20,509 apps 29 140152608130880 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-19 11:26:20,533 apps 30 140152608130880 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-19 11:42:55,019 log 30 140152433276672 Not Found: /favicon.ico
+WARNING 2025-08-19 11:43:19,722 log 30 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:43:22,030 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:43:26,226 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:43:28,736 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:43:34,671 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:43:58,000 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:43:59,991 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:44:02,220 log 29 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-19 11:44:06,560 log 30 140152433276672 Not Found: /.well-known/appspecific/com.chrome.devtools.json
