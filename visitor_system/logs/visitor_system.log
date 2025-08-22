@@ -12673,3 +12673,50 @@ WARNING 2025-08-22 14:22:56,882 log 29 140578397357824 Not Found: /ws/dashboard/
 WARNING 2025-08-22 14:23:03,643 log 29 140578397357824 Not Found: /ws/dashboard/
 WARNING 2025-08-22 14:23:14,059 log 29 140578397357824 Not Found: /ws/dashboard/
 WARNING 2025-08-22 14:23:19,639 log 29 140578037692160 Forbidden (CSRF token missing.): /dashboard/api/presets/
+WARNING 2025-08-22 14:30:22,903 log 30 140578405766912 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:34:11,792 log 30 140578405766912 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:34:47,121 log 30 140578405766912 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:35:50,244 log 29 140578037692160 Forbidden (CSRF token missing.): /dashboard/api/presets/
+WARNING 2025-08-22 14:35:54,269 log 30 140578405766912 Not Found: /ws/dashboard/
+INFO 2025-08-22 14:36:11,331 apps 13 140357428582208 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:36:13,179 apps 14 139872731031360 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:36:53,228 apps 29 140100558411584 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:36:53,237 apps 30 140100558411584 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 14:37:39,017 log 29 140100222580480 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:37:46,608 log 30 140100214187776 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:40:07,261 log 29 140100222580480 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:57:44,846 log 30 140100214187776 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:57:49,818 log 30 140100214187776 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:58:08,746 log 29 140100222580480 Not Found: /ws/dashboard/
+INFO 2025-08-22 14:58:11,446 apps 317 140100558411584 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 14:58:25,383 log 317 140100472616704 Forbidden (Permission denied): /visitors/register/student/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 56, in _view_wrapper
+    test_pass = test_func(request.user)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 129, in check_perms
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-08-22 14:58:25,551 log 317 140100472616704 Not Found: /favicon.ico

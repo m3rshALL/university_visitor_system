@@ -264,38 +264,15 @@ Astana IT University`);
 }
 
 function showToast(message, type = 'info') {
-    // Создаем Toast уведомление
-    const toastContainer = document.querySelector('.toast-container') || createToastContainer();
-    
-    const toastElement = document.createElement('div');
-    toastElement.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} border-0`;
-    toastElement.setAttribute('role', 'alert');
-    toastElement.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">
-                ${message}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-    `;
-    
-    toastContainer.appendChild(toastElement);
-    
-    // Инициализируем Toast
-    const toast = new bootstrap.Toast(toastElement);
-    toast.show();
-    
-    // Удаляем элемент после скрытия
-    toastElement.addEventListener('hidden.bs.toast', () => {
-        toastElement.remove();
-    });
+    if (window.toast) { window.toast(message, type); return; }
+    if (window.showToast && window.showToast !== showToast) { window.showToast(message, type); return; }
+    try { alert(message); } catch (_) {}
 }
 
 function createToastContainer() {
-    const container = document.createElement('div');
-    container.className = 'toast-container position-fixed top-0 end-0 p-3';
-    container.style.zIndex = '1055';
-    document.body.appendChild(container);
+    // Not used anymore; kept for backward compat
+    const container = document.querySelector('.toast-container') || document.createElement('div');
+    if (!container.parentElement) document.body.appendChild(container);
     return container;
 }
 

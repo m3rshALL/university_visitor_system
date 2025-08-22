@@ -276,10 +276,11 @@
             </div>
             
             <div class="widget-content" id="widget-content-{{ widget.id }}">
-                <div class="text-center py-3">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Загрузка...</span>
-                    </div>
+                <div class="py-3" aria-hidden="true">
+                    <div class="skeleton skel-rect"></div>
+                    <div class="skel-line lg"></div>
+                    <div class="skel-line"></div>
+                    <div class="skel-line sm"></div>
                 </div>
             </div>
         </div>
@@ -431,15 +432,52 @@ document.addEventListener('DOMContentLoaded', function() {
     // Экспорт CSV активных визитов
     const exportBtn = document.getElementById('btn-export-csv');
     if (exportBtn) {
-        exportBtn.addEventListener('click', function(e){
+        exportBtn.addEventListener('click', async function(e){
             e.preventDefault();
-            const dep = document.body.dataset.filterDepartment || '';
-            const period = document.body.dataset.filterPeriod || '';
-            const qs = new URLSearchParams();
-            if (dep) qs.set('department_id', dep);
-            if (period) qs.set('period', period);
-            const url = `/dashboard/api/active_visits.csv${qs.toString()?`?${qs.toString()}`:''}`;
-            window.location.href = url;
+            try {
+                const dep = document.body.dataset.filterDepartment || '';
+                const period = document.body.dataset.filterPeriod || '';
+                const qs = new URLSearchParams();
+                if (dep) qs.set('department_id', dep);
+                if (period) qs.set('period', period);
+                // Кодировка по умолчанию: windows-1251. Параметр encoding не передаем
+                const url = `/dashboard/api/active_visits.csv${qs.toString()?`?${qs.toString()}`:''}`;
+
+                exportBtn.disabled = true;
+                const originalHtml = exportBtn.innerHTML;
+                exportBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Экспорт...';
+
+                const resp = await fetch(url, { credentials: 'same-origin', cache: 'no-store' });
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
+                const blob = await resp.blob();
+                // Пытаемся извлечь имя файла из заголовка
+                let filename = 'active_visits.csv';
+                const cd = resp.headers.get('Content-Disposition') || '';
+                const match = cd.match(/filename="?([^";]+)"?/i);
+                if (match && match[1]) filename = match[1];
+
+                const urlObj = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = urlObj;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(urlObj);
+
+                if (typeof showToast === 'function') {
+                    showToast('Экспорт', 'Файл CSV сформирован', 'success');
+                }
+                exportBtn.innerHTML = originalHtml;
+                exportBtn.disabled = false;
+            } catch (err) {
+                console.error('Export failed', err);
+                if (typeof showToast === 'function') {
+                    showToast('Экспорт', 'Ошибка при экспорте CSV', 'danger');
+                }
+                exportBtn.disabled = false;
+            }
         });
     }
 
@@ -869,13 +907,13 @@ function renderTableWidget(content, data) {
     
     let html = `
         <div class="table-widget">
-            <table>
+            <table class="table table-striped" aria-live="polite">
                 <thead>
                     <tr>
-                        <th>Гость</th>
-                        <th>Департамент</th>
-                        <th>Время входа</th>
-                        <th>Длительность</th>
+                        <th scope="col">Гость</th>
+                        <th scope="col">Департамент</th>
+                        <th scope="col">Время входа</th>
+                        <th scope="col">Длительность</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -888,7 +926,7 @@ function renderTableWidget(content, data) {
         html += `
             <tr>
                 <td>
-                    <span class="status-indicator status-active"></span>
+                    <span class="status-indicator status-active" aria-hidden="true"></span>
                     ${visit.guest_name}
                 </td>
                 <td>${visit.department}</td>
@@ -911,18 +949,7 @@ function showWidgetError(content, message) {
     `;
 }
 
-function showToast(title, msg, kind='info', ttl=3500) {
-    const root = document.getElementById('toast-root');
-    if (!root) return;
-    const div = document.createElement('div');
-    div.className = `toast ${kind}`;
-    div.innerHTML = `<div class="title">${title}</div><div class="msg">${msg}</div>`;
-    root.appendChild(div);
-    setTimeout(() => {
-        div.style.opacity = '0';
-        setTimeout(() => root.removeChild(div), 300);
-    }, ttl);
-}
+// showToast переопределяется глобальной реализацией из ui.js
 
 // Функция refreshAllWidgets уже объявлена выше
 
