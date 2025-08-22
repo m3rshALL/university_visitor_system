@@ -18,6 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers  # type: ignore
+try:
+    from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView  # type: ignore
+    _spectacular_available = True
+except Exception:
+    _spectacular_available = False
 from django.conf import settings
 from django.conf.urls.static import static
 # from django.views.decorators.cache import cache_control
@@ -49,6 +54,13 @@ urlpatterns = [
     path('classroom-book/', include('classroom_book.urls', namespace='classroom_book')), # URL для бронирования аудиторий
     path('egov/', include('egov_integration.urls')), # URL для интеграции с egov.kz
     path('dashboard/', include('realtime_dashboard.urls')), # URL для дашборда в реальном времени
+    # API schema & Swagger UI (если доступен drf-spectacular)
+    *([
+        path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+        path('api/schema', SpectacularAPIView.as_view(), name='schema_noslash'),
+        path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+        path('api/docs', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui_noslash'),
+    ] if _spectacular_available else []),
     # Главная страница - перенаправляем на панель сотрудника
     path('', visitor_views.employee_dashboard_view, name='home'),
     path("select2/", include("django_select2.urls")),

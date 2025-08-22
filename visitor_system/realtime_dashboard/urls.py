@@ -13,6 +13,10 @@ urlpatterns = [
     path('api/events/', views.dashboard_events_api, name='events_api'),
     path('api/events/<int:event_id>/read/', views.mark_event_read, name='mark_event_read'),
     path('api/widgets/<int:widget_id>/data/', views.widget_data_api, name='widget_data_api'),
+    # Экспорт CSV активных визитов
+    path('api/active_visits.csv', views.active_visits_csv, name='active_visits_csv'),
+    path('api/active_visits/', views.active_visits_csv, name='active_visits_csv_alt'),
+    path('api/active_visits', views.active_visits_csv, name='active_visits_csv_alt2'),
 ]
 
 # Добавляем REST API только если доступен REST Framework

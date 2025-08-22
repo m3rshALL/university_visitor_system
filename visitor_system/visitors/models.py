@@ -227,6 +227,10 @@ class Visit(models.Model):
             Index(fields=['guest'], name='visit_guest_idx'),
             Index(name='visit_active_idx', fields=['status'], condition=Q(exit_time__isnull=True)),
             Index(name='visit_awaiting_idx', fields=['status'], condition=Q(status=STATUS_AWAITING_ARRIVAL)),
+            # P1: составные индексы для частых фильтров/сортировок
+            Index(fields=['status', 'entry_time'], name='visit_status_entry_idx'),
+            Index(fields=['department', 'entry_time'], name='visit_dept_entry_idx'),
+            Index(name='visit_active_dept_idx', fields=['department', 'status'], condition=Q(exit_time__isnull=True)),
         ]
         # -------------------------------------
 
@@ -299,6 +303,9 @@ class StudentVisit(models.Model):
             Index(fields=['department'], name='student_visit_department_idx'),
             Index(fields=['registered_by'], name='stud_visit_reg_by_idx'),
             Index(name='student_visit_active_idx', fields=['status'], condition=Q(exit_time__isnull=True)),
+            # P1: составные индексы
+            Index(fields=['status', 'entry_time'], name='stud_visit_status_entry_idx'),
+            Index(fields=['department', 'entry_time'], name='stud_visit_dept_entry_idx'),
         ]
 # ---------------------------------------------------
 

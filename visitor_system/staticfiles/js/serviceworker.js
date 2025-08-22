@@ -9,9 +9,9 @@ const PAGES_TO_CACHE = [
 const STATIC_ASSETS = [
     '/',
     OFFLINE_URL,
-    // Используем только имеющиеся файлы
-    '/static/js/offline-handler.js',
-    '/static/js/offline-sync.js',
+    // Используем только существующие файлы
+    '/static/js/optimized-offline-handler.js',
+    '/static/js/optimized-offline-sync.js',
     '/static/css/style.css',
     // Иконки PWA
     '/static/img/icons/icon-72x72.png',
@@ -99,6 +99,11 @@ self.addEventListener('fetch', event => {
     // Пропускаем cross-origin запросы
     if (!event.request.url.startsWith(self.location.origin)) return;
     
+    // Явно исключаем дашборд API из любой обработки SW
+    if (event.request.url.includes('/dashboard/api/')) {
+        return;
+    }
+    
     // Особая обработка для манифеста - всегда пробуем из сети
     if (event.request.url.includes('/manifest.json')) {
         event.respondWith(
@@ -113,7 +118,7 @@ self.addEventListener('fetch', event => {
     
     // Отдельная обработка API запросов
     if (event.request.url.includes('/api/')) {
-        // Для API всегда сначала пробуем сеть
+        // Для API — выходим, не перехватываем
         return;
     }
     

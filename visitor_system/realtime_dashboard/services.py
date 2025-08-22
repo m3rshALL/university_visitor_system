@@ -2,6 +2,7 @@
 from django.db.models import Count, Q, Avg, Sum
 from django.utils import timezone
 from datetime import timedelta, datetime
+from django.core.cache import cache
 from visitors.models import Visit, StudentVisit, Guest
 from departments.models import Department
 from .models import DashboardMetric, RealtimeEvent
@@ -21,6 +22,11 @@ class DashboardMetricsService:
     def get_current_metrics(self, department_id: int | None = None, period: str | None = None):
         """Получение текущих метрик с учётом фильтров"""
         now = timezone.now()
+        # P1: короткий кеш на 5-10 секунд, ключ учитывает фильтры
+        cache_key = f"dash:metrics:dep={department_id or 'all'}:period={(period or '24h').lower()}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
         period = (period or '24h').lower()
 
         # Определяем временную границу
@@ -47,6 +53,8 @@ class DashboardMetricsService:
             'timestamp': now.isoformat()
         }
 
+        # Короткое кеширование
+        cache.set(cache_key, metrics, timeout=10)
         return metrics
     
     def get_visitors_count(self, start_dt: datetime | None = None):
@@ -264,11 +272,16 @@ class DashboardMetricsService:
     
     def get_recent_events(self, limit=10):
         """Последние события"""
+        cache_key = f"dash:events:limit={limit}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+
         events = RealtimeEvent.objects.filter(
             created_at__gte=timezone.now() - timedelta(hours=24)
         ).order_by('-created_at')[:limit]
         
-        return [
+        data = [
             {
                 'id': event.id,
                 'type': event.event_type,
@@ -280,6 +293,8 @@ class DashboardMetricsService:
             }
             for event in events
         ]
+        cache.set(cache_key, data, timeout=5)
+        return data
     
     def get_security_alerts(self):
         """Предупреждения безопасности"""

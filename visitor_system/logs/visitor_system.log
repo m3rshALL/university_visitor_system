@@ -12546,3 +12546,130 @@ INFO 2025-08-19 17:40:34,983 apps 30 140230947788608 AXES: BEGIN version 6.5.2, 
 WARNING 2025-08-19 17:40:48,372 log 30 140230826157824 Not Found: /ws/dashboard/
 WARNING 2025-08-19 17:40:49,057 log 30 140230826157824 Not Found: /static/js/offline-sync.js
 WARNING 2025-08-19 17:40:49,068 log 29 140230826141440 Not Found: /static/js/offline-handler.js
+INFO 2025-08-22 12:31:54,620 apps 13 140601996236608 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 12:31:57,105 apps 14 140262282585920 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 12:32:31,994 apps 29 139807127037760 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 12:32:32,043 apps 30 139807127037760 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 12:32:41,300 log 30 139806929569536 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-22 12:32:41,301 log 30 139806921176832 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-22 12:32:44,824 log 30 139806921176832 Not Found: /ws/dashboard/
+WARNING 2025-08-22 12:33:03,554 log 30 139806921176832 Not Found: /ws/dashboard/
+WARNING 2025-08-22 12:33:03,622 log 30 139806921176832 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-22 12:33:03,626 log 29 139807041242880 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-22 12:33:06,933 log 29 139806913091328 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-22 12:33:06,933 log 29 139807041242880 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-22 12:33:10,601 log 29 139807041242880 Not Found: /ws/dashboard/
+WARNING 2025-08-22 12:33:51,870 log 29 139807041242880 Not Found: /static/js/offline-sync.js
+WARNING 2025-08-22 12:33:51,875 log 30 139806921176832 Not Found: /static/js/offline-handler.js
+WARNING 2025-08-22 12:34:27,123 log 30 139806921176832 Not Found: /favicon.ico
+WARNING 2025-08-22 12:59:20,850 log 29 139807041242880 Not Found: /ws/dashboard/
+WARNING 2025-08-22 12:59:46,700 log 29 139807041242880 Not Found: /ws/dashboard/
+INFO 2025-08-22 13:00:49,777 apps 471 140656742356800 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:00:52,511 apps 463 140414727706432 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:01:32,434 apps 13 140350979254080 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:01:34,981 apps 14 139966630758208 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:02:15,257 apps 29 140310840760128 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:02:15,395 apps 30 140310840760128 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:02:16,892 log 30 140310669838080 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:12:35,659 log 30 140310669838080 Not Found: /ws/dashboard/
+ERROR 2025-08-22 13:14:15,463 services 29 140310668789504 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-22 13:14:15,469 services 29 140310668789504 Passport verification failed: Request failed: Expecting value: line 1 column 1 (char 0)
+INFO 2025-08-22 13:32:28,505 apps 13 140591553214272 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:32:31,106 apps 14 140601197594432 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:33:09,719 apps 29 140671042983744 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:33:09,791 apps 30 140671042983744 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:33:13,294 log 30 140670706640640 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:33:33,208 log 30 140670706640640 Not Found: /api
+WARNING 2025-08-22 13:33:37,204 log 30 140670706640640 Not Found: /api/docs
+WARNING 2025-08-22 13:33:39,673 log 30 140670706640640 Not Found: /api/docs/
+WARNING 2025-08-22 13:33:46,909 log 29 140670715033344 Not Found: /api/schema/
+WARNING 2025-08-22 13:34:04,715 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:34:48,505 log 29 140670715033344 Not Found: /api/schema/
+INFO 2025-08-22 13:35:36,436 apps 104 140601184642880 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:35:50,423 log 30 140670706640640 Not Found: /api/schema/
+INFO 2025-08-22 13:35:54,187 apps 118 140223080376128 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:36:28,026 log 29 140670715033344 Not Found: /api/schema/
+WARNING 2025-08-22 13:36:59,720 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:00,676 log 30 140670706640640 Not Found: /api/schema/
+INFO 2025-08-22 13:37:14,288 apps 176 139719604115264 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:37:37,557 log 29 140670715033344 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:37,688 log 29 140670715033344 Not Found: /favicon.ico
+WARNING 2025-08-22 13:37:41,258 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:41,357 log 30 140670706640640 Not Found: /favicon.ico
+WARNING 2025-08-22 13:37:41,910 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:42,007 log 30 140670706640640 Not Found: /favicon.ico
+WARNING 2025-08-22 13:37:42,271 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:42,373 log 30 140670706640640 Not Found: /favicon.ico
+WARNING 2025-08-22 13:37:44,162 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:44,260 log 30 140670706640640 Not Found: /favicon.ico
+WARNING 2025-08-22 13:37:44,947 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:45,675 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:45,771 log 30 140670706640640 Not Found: /favicon.ico
+WARNING 2025-08-22 13:37:46,262 log 30 140670706640640 Not Found: /api/schema/
+WARNING 2025-08-22 13:37:46,357 log 30 140670706640640 Not Found: /favicon.ico
+WARNING 2025-08-22 13:38:04,705 log 29 140670715033344 Not Found: /api/docs.
+WARNING 2025-08-22 13:38:08,534 log 30 140670706640640 Not Found: /api/docs/
+WARNING 2025-08-22 13:39:41,088 log 30 140670706640640 Not Found: /api/docs
+WARNING 2025-08-22 13:39:43,501 log 30 140670706640640 Not Found: /api
+WARNING 2025-08-22 13:39:48,488 log 30 140670706640640 Not Found: /ws/dashboard/
+INFO 2025-08-22 13:40:07,206 apps 13 140648287745856 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:40:09,865 apps 14 139867155138368 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:40:45,289 apps 29 139695333164864 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:40:45,296 apps 30 139695333164864 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:47:48,466 apps 75 139710822381376 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:47:51,189 apps 67 139958958847808 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:49:13,268 log 30 139695247369984 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:49:13,271 log 29 139695111513856 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:49:21,846 log 30 139695247369984 Not Found: /dashboard/api/active_visits.csv
+WARNING 2025-08-22 13:49:53,326 log 29 139695111513856 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:49:53,330 log 30 139695247369984 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:50:00,221 log 30 139695247369984 Not Found: /dashboard/api/active_visits.csv
+INFO 2025-08-22 13:50:20,193 apps 153 139860891621184 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:50:38,850 log 29 139695111513856 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:50:38,851 log 30 139695247369984 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:50:41,098 log 29 139695111513856 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:50:41,101 log 30 139695247369984 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:50:43,107 log 30 139695247369984 Not Found: /dashboard/api/active_visits.csv
+WARNING 2025-08-22 13:50:43,209 log 30 139695247369984 Not Found: /favicon.ico
+WARNING 2025-08-22 13:50:44,656 log 30 139695247369984 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:50:44,660 log 29 139695111513856 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:50:47,753 log 30 139695247369984 Not Found: /dashboard/api/active_visits.csv
+WARNING 2025-08-22 13:50:52,178 log 30 139695247369984 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:50:52,188 log 29 139695111513856 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:50:54,359 log 29 139695111513856 Not Found: /dashboard/api/active_visits.csv
+WARNING 2025-08-22 13:51:55,309 log 29 139695111513856 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:51:55,313 log 30 139695247369984 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:52:43,047 log 29 139694725646080 Not Found: /dashboard/api/presets/
+WARNING 2025-08-22 13:52:43,047 log 29 139695111513856 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:52:44,677 log 29 139695111513856 Not Found: /dashboard/api/active_visits.csv
+WARNING 2025-08-22 13:52:48,096 log 29 139695111513856 Not Found: /dashboard/api/active_visits.csv
+WARNING 2025-08-22 13:53:38,346 log 30 139695247369984 Not Found: /dashboard/api/active_visits.csv
+INFO 2025-08-22 13:53:48,798 apps 352 140125408765760 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:54:05,789 apps 363 139706141460288 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:55:17,126 apps 13 139758464399168 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:55:19,847 apps 23 140612246452032 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:55:55,807 apps 38 140433359157056 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:55:55,828 apps 39 140433359157056 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:55:58,860 log 39 140433234859776 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:57:49,174 log 39 140433234859776 Not Found: /ws/dashboard/
+WARNING 2025-08-22 13:57:53,201 log 38 140432881219328 Not Found: /ws/dashboard/
+INFO 2025-08-22 13:58:26,201 apps 13 140686046209856 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:58:28,751 apps 14 140277219637056 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:59:03,099 apps 29 140130534192960 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 13:59:03,154 apps 30 140130534192960 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 13:59:08,266 log 30 140130352363264 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:16:27,495 log 29 140130312496896 Not Found: /ws/dashboard/
+INFO 2025-08-22 14:18:36,481 apps 13 140535068952384 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:18:39,457 apps 14 140522947880768 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:19:14,923 apps 30 139868393506624 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:19:14,925 apps 29 139868393506624 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 14:19:17,128 log 30 139868227237632 Not Found: /ws/dashboard/
+INFO 2025-08-22 14:21:00,701 apps 13 140533255030592 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:21:03,429 apps 14 139764460488512 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:21:36,717 apps 30 140578597168960 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 14:21:36,721 apps 29 140578597168960 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 14:22:32,762 log 30 140578405766912 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:22:56,882 log 29 140578397357824 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:23:03,643 log 29 140578397357824 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:23:14,059 log 29 140578397357824 Not Found: /ws/dashboard/
+WARNING 2025-08-22 14:23:19,639 log 29 140578037692160 Forbidden (CSRF token missing.): /dashboard/api/presets/

@@ -1,4 +1,5 @@
 import os
+import importlib.util as _importlib_util
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -60,6 +61,11 @@ INSTALLED_APPS = [
 	'egov_integration',  # Интеграция с egov.kz
 	'realtime_dashboard',
 ]
+
+# Подключаем drf_spectacular, только если пакет доступен
+_has_spectacular = _importlib_util.find_spec('drf_spectacular') is not None
+if _has_spectacular and 'drf_spectacular' not in INSTALLED_APPS:
+	INSTALLED_APPS.append('drf_spectacular')
 
 
 MIDDLEWARE = [
@@ -203,8 +209,19 @@ REST_FRAMEWORK = {
 	'DEFAULT_THROTTLE_RATES': {
 		'user': '120/minute',
 		'anon': '60/minute',
-	}
+	},
+	'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema' if _has_spectacular else 'rest_framework.schemas.openapi.AutoSchema',
+	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+	'PAGE_SIZE': int(os.getenv('API_PAGE_SIZE', '20')),
 }
+
+if _has_spectacular:
+	SPECTACULAR_SETTINGS = {
+		'TITLE': 'AITU Visitor System API',
+		'DESCRIPTION': 'Документация API для дашборда и сервисов системы пропусков',
+		'VERSION': '1.0.0',
+		'COMPONENT_SPLIT_REQUEST': True,
+	}
 
 # Django-Axes (защита от брутфорса)
 AXES_ENABLED = True
@@ -219,7 +236,7 @@ CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net', 'http
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net')
 CSP_IMG_SRC = ("'self'", 'data:', 'https:')
 CSP_FONT_SRC = ("'self'", 'data:', 'https://fonts.gstatic.com')
-CSP_CONNECT_SRC = ("'self'", 'ws:', 'wss:')
+CSP_CONNECT_SRC = ("'self'", 'ws:', 'wss:', 'https:')
 
 # Referrer Policy
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
@@ -348,12 +365,14 @@ SENTRY_DSN = os.getenv('SENTRY_DSN', '')
 if SENTRY_DSN:
 	import sentry_sdk  # type: ignore
 	from sentry_sdk.integrations.django import DjangoIntegration  # type: ignore
+	from sentry_sdk.integrations.celery import CeleryIntegration  # type: ignore
 
+	traces_rate = os.getenv('SENTRY_TRACES') or os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')
 	sentry_sdk.init(
 		dsn=SENTRY_DSN,
-		integrations=[DjangoIntegration()],
-		traces_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')),
-		send_default_pii=True,
+		integrations=[DjangoIntegration(), CeleryIntegration()],
+		traces_sample_rate=float(traces_rate),
+		send_default_pii=False,
 		release=os.getenv('SENTRY_RELEASE', ''),
 		environment=os.getenv('SENTRY_ENV', 'dev'),
 	)

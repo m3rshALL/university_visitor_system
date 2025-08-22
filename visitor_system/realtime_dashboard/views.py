@@ -1,10 +1,8 @@
 # realtime_dashboard/views.py
 from django.shortcuts import render
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required, permission_required
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from django.utils.decorators import method_decorator
-from django.views import View
 try:
     from rest_framework.views import APIView
     from rest_framework.response import Response
@@ -14,13 +12,24 @@ try:
     REST_FRAMEWORK_AVAILABLE = True
 except ImportError:
     REST_FRAMEWORK_AVAILABLE = False
-import json
 import logging
 
 from .services import dashboard_service, event_service
-from .models import RealtimeEvent, DashboardWidget, DashboardMetric
+from .models import RealtimeEvent, DashboardWidget
 
 logger = logging.getLogger(__name__)
+
+
+def _apply_no_store_headers(response):
+    """Добавляет заголовки no-store для исключения кеширования ответов API."""
+    try:
+        response["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+    except Exception:
+        # На случай нестандартного объекта ответа просто игнорируем
+        pass
+    return response
 
 
 @login_required
@@ -55,17 +64,19 @@ def dashboard_metrics_api(request):
         except ValueError:
             dep_id_int = None
         metrics = dashboard_service.get_current_metrics(department_id=dep_id_int, period=period)
-        return JsonResponse({
+        resp = JsonResponse({
             'success': True,
             'data': metrics,
             'timestamp': metrics['timestamp']
         })
+        return _apply_no_store_headers(resp)
     except Exception as e:
-        logger.error(f"Error getting dashboard metrics: {e}")
-        return JsonResponse({
+        logger.error("Error getting dashboard metrics: %s", e)
+        resp = JsonResponse({
             'success': False,
             'error': 'Ошибка получения метрик'
         }, status=500)
+        return _apply_no_store_headers(resp)
 
 
 @login_required
@@ -73,19 +84,55 @@ def dashboard_metrics_api(request):
 def dashboard_events_api(request):
     """API для получения событий в реальном времени"""
     try:
+        # Параметры фильтрации/пагинации
         limit = int(request.GET.get('limit', 20))
-        events = dashboard_service.get_recent_events(limit=limit)
+        page = int(request.GET.get('page', 1))
+        event_type = request.GET.get('event_type')
+        priority = request.GET.get('priority')
+        since = request.GET.get('since')  # ISO-8601 timestamp
+
+        # Базовые события
+        events = dashboard_service.get_recent_events(limit=1000)
+
+        # Фильтрация в памяти (упрощённо). Для больших объёмов — перенести в ORM.
+        if event_type:
+            events = [e for e in events if e.get('type') == event_type]
+        if priority:
+            events = [e for e in events if e.get('priority') == priority]
+        if since:
+            try:
+                from datetime import datetime
+                from django.utils.dateparse import parse_datetime
+                since_dt = parse_datetime(since) or datetime.fromisoformat(since)
+                events = [e for e in events if e.get('timestamp') and (parse_datetime(e['timestamp']) or datetime.fromisoformat(e['timestamp'])) >= since_dt]
+            except Exception:
+                pass
+
+        # Пагинация
+        total = len(events)
+        page_size = max(1, min(100, limit))
+        start = (page - 1) * page_size
+        end = start + page_size
+        page_items = events[start:end]
         
-        return JsonResponse({
+        resp = JsonResponse({
             'success': True,
-            'events': events
+            'events': page_items,
+            'pagination': {
+                'page': page,
+                'page_size': page_size,
+                'total': total,
+                'pages': (total + page_size - 1) // page_size,
+            }
         })
+        return _apply_no_store_headers(resp)
     except Exception as e:
-        logger.error(f"Error getting dashboard events: {e}")
-        return JsonResponse({
+        logger.error("Error getting dashboard events: %s", e)
+        resp = JsonResponse({
             'success': False,
             'error': 'Ошибка получения событий'
         }, status=500)
+        return _apply_no_store_headers(resp)
 
 
 @login_required
@@ -129,23 +176,78 @@ def widget_data_api(request, widget_id):
             dep_id_int = None
         data = _get_widget_data(widget, department_id=dep_id_int, period=period)
         
-        return JsonResponse({
+        resp = JsonResponse({
             'success': True,
             'widget_id': widget_id,
             'data': data,
             'last_updated': data.get('timestamp')
         })
+        return _apply_no_store_headers(resp)
     except DashboardWidget.DoesNotExist:
-        return JsonResponse({
+        resp = JsonResponse({
             'success': False,
             'error': 'Виджет не найден'
         }, status=404)
+        return _apply_no_store_headers(resp)
     except Exception as e:
-        logger.error(f"Error getting widget data: {e}")
-        return JsonResponse({
+        logger.error("Error getting widget data: %s", e)
+        resp = JsonResponse({
             'success': False,
             'error': 'Ошибка получения данных виджета'
         }, status=500)
+        return _apply_no_store_headers(resp)
+
+
+@login_required
+@require_http_methods(["GET"])
+def active_visits_csv(request):
+    """Экспорт CSV активных визитов с учетом фильтров department_id/period"""
+    try:
+        dep_id = request.GET.get('department_id')
+        period = request.GET.get('period')
+        try:
+            dep_id_int = int(dep_id) if dep_id else None
+        except ValueError:
+            dep_id_int = None
+
+        metrics = dashboard_service.get_current_metrics(department_id=dep_id_int, period=period)
+        active = metrics.get('active_visits', {})
+        visits = active.get('visits', [])
+
+        # Формируем CSV (UTF-8 с BOM, разделитель ';', кавычки для безопасного импорта в Excel)
+        import io, csv, datetime as _dt
+        buf = io.StringIO()
+        # Строка для Excel, указываем разделитель
+        buf.write('sep=;\n')
+        writer = csv.writer(buf, delimiter=';', quoting=csv.QUOTE_ALL, lineterminator='\n')
+        headers = ['id', 'type', 'guest_name', 'department', 'employee', 'entry_time', 'duration_minutes']
+        writer.writerow(headers)
+        for v in visits:
+            writer.writerow([
+                v.get('id', ''),
+                v.get('type', ''),
+                v.get('guest_name', ''),
+                v.get('department', ''),
+                v.get('employee', ''),
+                v.get('entry_time', ''),
+                v.get('duration_minutes', 0),
+            ])
+
+        # Выбор кодировки (по умолчанию cp1251 для совместимости с Excel на Windows)
+        enc = (request.GET.get('encoding') or 'cp1251').lower()
+        if enc in ('utf8', 'utf-8', 'utf-8-sig'):
+            content = buf.getvalue().encode('utf-8-sig')
+            resp_ct = 'text/csv; charset=utf-8'
+        else:
+            content = buf.getvalue().encode('cp1251', errors='replace')
+            resp_ct = 'text/csv; charset=windows-1251'
+        filename = f"active_visits_{_dt.datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv"
+        resp = HttpResponse(content, content_type=resp_ct)
+        resp['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return _apply_no_store_headers(resp)
+    except Exception as e:
+        logger.error("Error exporting CSV: %s", e)
+        return _apply_no_store_headers(HttpResponse('Export error', status=500))
 
 
 # REST API Views (только если доступен REST Framework)
@@ -154,6 +256,7 @@ if REST_FRAMEWORK_AVAILABLE:
         """REST API для метрик дашборда"""
         permission_classes = [IsAuthenticated]
         throttle_classes = [UserRateThrottle]
+        schema = None  # Автосхема от drf-spectacular через DEFAULT_SCHEMA_CLASS
         
         def get(self, request):
             """Получение всех метрик"""
@@ -164,7 +267,7 @@ if REST_FRAMEWORK_AVAILABLE:
                     'data': metrics
                 }, status=status.HTTP_200_OK)
             except Exception as e:
-                logger.error(f"API error getting metrics: {e}")
+                logger.error("API error getting metrics: %s", e)
                 return Response({
                     'success': False,
                     'error': 'Ошибка получения метрик'
@@ -175,19 +278,49 @@ if REST_FRAMEWORK_AVAILABLE:
         """REST API для событий в реальном времени"""
         permission_classes = [IsAuthenticated]
         throttle_classes = [UserRateThrottle]
+        schema = None
         
         def get(self, request):
             """Получение событий"""
             try:
                 limit = int(request.query_params.get('limit', 20))
-                events = dashboard_service.get_recent_events(limit=limit)
+                page = int(request.query_params.get('page', 1))
+                event_type = request.query_params.get('event_type')
+                priority = request.query_params.get('priority')
+                since = request.query_params.get('since')
+
+                events = dashboard_service.get_recent_events(limit=1000)
+                if event_type:
+                    events = [e for e in events if e.get('type') == event_type]
+                if priority:
+                    events = [e for e in events if e.get('priority') == priority]
+                if since:
+                    from datetime import datetime
+                    from django.utils.dateparse import parse_datetime
+                    try:
+                        since_dt = parse_datetime(since) or datetime.fromisoformat(since)
+                        events = [e for e in events if e.get('timestamp') and (parse_datetime(e['timestamp']) or datetime.fromisoformat(e['timestamp'])) >= since_dt]
+                    except Exception:
+                        pass
+
+                total = len(events)
+                page_size = max(1, min(100, limit))
+                start = (page - 1) * page_size
+                end = start + page_size
+                page_items = events[start:end]
                 
                 return Response({
                     'success': True,
-                    'events': events
+                    'events': page_items,
+                    'pagination': {
+                        'page': page,
+                        'page_size': page_size,
+                        'total': total,
+                        'pages': (total + page_size - 1) // page_size,
+                    }
                 }, status=status.HTTP_200_OK)
             except Exception as e:
-                logger.error(f"API error getting events: {e}")
+                logger.error("API error getting events: %s", e)
                 return Response({
                     'success': False,
                     'error': 'Ошибка получения событий'
@@ -220,7 +353,7 @@ if REST_FRAMEWORK_AVAILABLE:
                     }, status=status.HTTP_400_BAD_REQUEST)
                     
             except Exception as e:
-                logger.error(f"API error creating event: {e}")
+                logger.error("API error creating event: %s", e)
                 return Response({
                     'success': False,
                     'error': 'Ошибка создания события'

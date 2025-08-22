@@ -248,3 +248,6 @@ class DashboardWidget(models.Model):
     
     def __str__(self):
         return f"{self.title} ({self.get_widget_type_display()})"
+
+
+## Пресеты удалены по требованию

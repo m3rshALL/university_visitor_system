@@ -243,6 +243,10 @@
                         <option value="7d">7 дней</option>
                         <option value="30d">30 дней</option>
                     </select>
+                    <button class="btn btn-outline-secondary btn-sm" id="btn-export-csv">
+                        <i class="fas fa-file-csv me-1"></i>
+                        Экспорт CSV
+                    </button>
                     <span class="badge bg-success me-2" id="connection-status">
                         <i class="fas fa-wifi me-1"></i>
                         Подключено
@@ -292,6 +296,9 @@ let charts = {};
 let refreshIntervals = {};
 let isRefreshing = false;
 let chartReady = typeof Chart !== 'undefined';
+// Храним предыдущее состояние метрик на уровне виджета, чтобы
+// одинаковые метрики в разных виджетах не блокировали рендер
+window.__lastMetricStateByWidget = window.__lastMetricStateByWidget || {};
 
 // Объявляем функцию refreshAllWidgets в глобальной области
 function refreshAllWidgets() {
@@ -421,8 +428,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Экспорт CSV активных визитов
+    const exportBtn = document.getElementById('btn-export-csv');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            const dep = document.body.dataset.filterDepartment || '';
+            const period = document.body.dataset.filterPeriod || '';
+            const qs = new URLSearchParams();
+            if (dep) qs.set('department_id', dep);
+            if (period) qs.set('period', period);
+            const url = `/dashboard/api/active_visits.csv${qs.toString()?`?${qs.toString()}`:''}`;
+            window.location.href = url;
+        });
+    }
+
     // Инициализация фильтров
     initFilters();
+    // Пресеты отключены
 
     // Навешиваем обработчики на иконки обновления в заголовках виджетов
     document.querySelectorAll('.widget-refresh').forEach(el => {
@@ -484,21 +507,36 @@ function refreshAllWidgetsWithMeta(dep, period) {
     if (dep) qs.set('department_id', dep);
     if (period) qs.set('period', period);
     fetch(`/dashboard/api/metrics/${qs.toString() ? `?${qs.toString()}` : ''}`, {
-        credentials: 'same-origin', cache: 'no-store'
+        credentials: 'same-origin',
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' }
     })
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(meta => {
-        if (!meta.success || !meta.data) return;
-        const ts = meta.data.timestamp;
-        if (!window.__lastMetricState) window.__lastMetricState = {};
+        if (!meta || !meta.success || !meta.data) {
+            // Если мета не пришла — делаем per-widget фолбэк
+            document.querySelectorAll('.widget').forEach(w => refreshWidget(w.dataset.widgetId));
+            return;
+        }
+        const ts = meta.data.timestamp || meta.timestamp || new Date().toISOString();
         document.querySelectorAll('.widget').forEach(widget => {
             const widgetId = widget.dataset.widgetId;
             const metric = widget.dataset.metric;
             const newData = metric ? meta.data[metric] : null;
+
+            // Если нужной метрики нет в ответе, делаем фолбэк на per-widget API
+            if (metric && typeof newData === 'undefined') {
+                refreshWidget(widgetId);
+                return;
+            }
+
+            const key = `${widgetId}::${metric || 'nometric'}`;
             const newStr = JSON.stringify(newData);
-            const prevStr = window.__lastMetricState[metric];
-            if (prevStr !== newStr) {
-                window.__lastMetricState[metric] = newStr;
+            const prevStr = window.__lastMetricStateByWidget[key];
+
+            const isInitialized = widget.getAttribute('data-initialized') === '1';
+            if (!isInitialized || prevStr !== newStr) {
+                window.__lastMetricStateByWidget[key] = newStr;
                 const payload = {
                     widget_type: widget.dataset.widgetType,
                     data: newData,
@@ -506,10 +544,15 @@ function refreshAllWidgetsWithMeta(dep, period) {
                     timestamp: ts
                 };
                 renderWidget(widgetId, payload);
+                widget.setAttribute('data-initialized', '1');
             }
         });
     })
-    .catch(err => console.error('refreshAllWidgetsWithMeta failed', err));
+    .catch(err => {
+        console.error('refreshAllWidgetsWithMeta failed', err);
+        // Сеть/ошибка — фолбэк: перерисовать из per-widget API
+        document.querySelectorAll('.widget').forEach(w => refreshWidget(w.dataset.widgetId));
+    });
 }
 
 function initializeDashboard() {
@@ -535,6 +578,7 @@ function setupAutoRefresh() {
         }
     }, refreshInterval);
 }
+
 
 function refreshWidget(widgetId) {
     const widget = document.querySelector(`[data-widget-id="${widgetId}"]`);
