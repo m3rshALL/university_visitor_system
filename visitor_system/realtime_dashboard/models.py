@@ -28,6 +28,7 @@ class DashboardMetric(models.Model):
     )
     
     value = models.JSONField(
+        default=dict,
         verbose_name="Значение метрики",
         help_text="JSON данные с метрикой"
     )

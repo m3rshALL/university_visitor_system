@@ -17,7 +17,7 @@ Including another URLconf
 # visitor_system/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers  # type: ignore
+from rest_framework.routers import DefaultRouter  # type: ignore
 try:
     from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView  # type: ignore
     _spectacular_available = True
@@ -89,6 +89,19 @@ urlpatterns = [
 
     # Можно добавить другие корневые URL, если нужно
 ]
+
+# DRF routers (API v1)
+try:
+    from visitors.api import VisitViewSet, StudentVisitViewSet
+    _api_import_ok = True
+except Exception:
+    _api_import_ok = False
+
+if _api_import_ok:
+    drf_router = DefaultRouter()
+    drf_router.register(r'visits', VisitViewSet, basename='api-visits')
+    drf_router.register(r'student_visits', StudentVisitViewSet, basename='api-student-visits')
+    urlpatterns += [path('api/v1/', include((drf_router.urls, 'api'), namespace='api_v1'))]
 
 
 # Добавляем маршруты для статических и медиа файлов в режиме DEBUG

@@ -462,4 +462,33 @@ document.addEventListener('DOMContentLoaded', function() {
         clearTimeout(periodicCheckId);
         clearTimeout(networkStatusTimeout);
     });
+
+    // Единая кнопка "Назад": обработчик для элементов с data-go-back
+    document.addEventListener('click', function(e) {
+        const backEl = e.target && e.target.closest && e.target.closest('[data-go-back]');
+        if (!backEl) return;
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            // Не показывать прелоадер при возврате назад
+            if (typeof window.navigationTriggered !== 'undefined') {
+                window.navigationTriggered = false;
+            }
+            // Если есть история, используем history.back()
+            if (window.history && window.history.length > 1) {
+                window.history.back();
+                return;
+            }
+            // Иначе уходим на запасной URL, если задан, либо на главную
+            const fallbackUrl = backEl.getAttribute('data-back-url') || '/';
+            // Навигация без показа прелоадера
+            if (typeof window.navigationTriggered !== 'undefined') {
+                window.navigationTriggered = false;
+            }
+            window.location.assign(fallbackUrl);
+        } catch (_) {
+            // На всякий случай, если что-то пошло не так
+            try { window.history.back(); } catch {}
+        }
+    }, true);
 });

@@ -6,8 +6,9 @@
 <!-- Мета-тег для корректного отображения на мобильных устройствах -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <!-- Добавляем библиотеку IMask для создания масок ввода -->
-<script src="https://unpkg.com/imask@6.4.3/dist/imask.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+<script src="https://unpkg.com/imask@6.4.3/dist/imask.js" defer></script>
+<script>window.IMask||document.write('<script src="{% static 'js/vendor/imask.6.4.3.min.js' %}">\x3C/script>')</script>
+{# Tabler CSS подключён в base.html #}
 <!-- Стили для мобильной адаптации -->
 <style>
     @media (max-width: 768px) {

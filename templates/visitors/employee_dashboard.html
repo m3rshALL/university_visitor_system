@@ -960,7 +960,9 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts" defer></script>
+{% load static %}
+<script>window.ApexCharts||document.write('<script src="{% static "js/vendor/apexcharts.min.js" %}">\x3C/script>')</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Данные для графика активности (замените фиктивными данными)

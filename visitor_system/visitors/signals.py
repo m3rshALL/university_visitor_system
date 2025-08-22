@@ -1,3 +1,38 @@
+from __future__ import annotations
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+
+from .models import Visit, StudentVisit, AuditLog
+
+
+def _safe_write_audit(action: str, model: str, obj_id: str, actor, extra=None):
+    try:
+        AuditLog.objects.create(
+            action=action,
+            model=model,
+            object_id=obj_id,
+            actor=actor,
+            extra=extra or {},
+        )
+    except Exception:
+        # Не бросаем исключения из сигналов
+        pass
+
+
+@receiver(post_save, sender=Visit)
+def audit_visit_create_update(sender, instance: Visit, created: bool, **kwargs):
+    action = AuditLog.ACTION_CREATE if created else AuditLog.ACTION_UPDATE
+    _safe_write_audit(action, 'Visit', str(instance.pk), getattr(instance, 'registered_by', None))
+
+
+@receiver(post_save, sender=StudentVisit)
+def audit_student_visit_create_update(sender, instance: StudentVisit, created: bool, **kwargs):
+    action = AuditLog.ACTION_CREATE if created else AuditLog.ACTION_UPDATE
+    _safe_write_audit(action, 'StudentVisit', str(instance.pk), getattr(instance, 'registered_by', None))
+
 # visitors/signals.py
 
 from django.conf import settings # Для ссылки на модель User

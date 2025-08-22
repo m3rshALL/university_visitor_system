@@ -12720,3 +12720,1733 @@ Traceback (most recent call last):
     raise PermissionDenied
 django.core.exceptions.PermissionDenied
 WARNING 2025-08-22 14:58:25,551 log 317 140100472616704 Not Found: /favicon.ico
+WARNING 2025-08-22 15:09:21,199 log 29 140100222580480 Not Found: /ws/dashboard/
+WARNING 2025-08-22 15:14:15,997 log 317 140100472616704 Not Found: //visitors/api/v1/visits/
+WARNING 2025-08-22 15:14:19,194 log 317 140100472616704 Not Found: /visitors/api/v1/visits/
+WARNING 2025-08-22 15:14:23,951 log 29 140100222580480 Not Found: /visitors/api/v1/visits/
+WARNING 2025-08-22 15:14:26,378 log 29 140100222580480 Not Found: /visitors/api/v1/visits
+WARNING 2025-08-22 15:14:28,487 log 29 140100222580480 Not Found: /visitors/api/v1
+WARNING 2025-08-22 15:14:31,493 log 29 140100222580480 Not Found: /visitors
+INFO 2025-08-22 15:32:51,445 apps 13 139815656175424 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:33:28,798 apps 13 140057798608704 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:33:31,375 apps 14 140506702382912 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:34:25,815 apps 13 140180793202496 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:34:28,517 apps 14 140523956180800 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:34:59,280 apps 13 140271829628736 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:35:04,149 apps 14 140129619679040 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:35:41,986 apps 1 140005793625920 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:35:42,932 apps 13 139677647517504 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:35:45,927 apps 14 140117891942208 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 15:36:15,651 log 29 140100222580480 Not Found: /api/v1/visits/
+WARNING 2025-08-22 15:36:26,020 log 317 140100472616704 Not Found: /api/v1/student_visits/
+WARNING 2025-08-22 15:36:34,906 log 317 140100472616704 Not Found: /api/v1/docs/
+INFO 2025-08-22 15:39:56,816 apps 17024 46480 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:39:57,602 apps 43904 43000 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:39:57,612 autoreload 43904 43000 Watching for file changes with StatReloader
+INFO 2025-08-22 15:40:11,276 basehttp 43904 30436 "GET / HTTP/1.1" 302 0
+INFO 2025-08-22 15:40:11,428 basehttp 43904 30436 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-08-22 15:40:11,528 basehttp 43904 41436 "GET /accounts/login/?next=/ HTTP/1.1" 200 6694
+INFO 2025-08-22 15:40:11,555 basehttp 43904 41436 "GET /static/tabler/css/tabler.css HTTP/1.1" 200 620902
+INFO 2025-08-22 15:40:11,556 basehttp 43904 39672 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 200 19240
+INFO 2025-08-22 15:40:11,557 basehttp 43904 45868 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 200 5245
+INFO 2025-08-22 15:40:11,558 basehttp 43904 46228 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 200 10885
+INFO 2025-08-22 15:40:11,559 basehttp 43904 13720 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 200 20742
+INFO 2025-08-22 15:40:11,559 basehttp 43904 45868 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+INFO 2025-08-22 15:40:11,559 basehttp 43904 39672 "GET /static/css/style.css HTTP/1.1" 200 4900
+INFO 2025-08-22 15:40:11,560 basehttp 43904 33176 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 200 83485
+INFO 2025-08-22 15:40:11,572 basehttp 43904 44652 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 200 1459
+WARNING 2025-08-22 15:40:12,594 log 43904 39672 Not Found: /favicon.ico
+WARNING 2025-08-22 15:40:12,595 basehttp 43904 39672 "GET /favicon.ico HTTP/1.1" 404 6393
+INFO 2025-08-22 15:40:25,540 apps 45324 23132 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:40:26,142 apps 45776 22700 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:40:26,152 autoreload 45776 22700 Watching for file changes with StatReloader
+INFO 2025-08-22 15:40:33,491 basehttp 45776 22296 "GET /accounts/login/?next=/ HTTP/1.1" 200 6694
+INFO 2025-08-22 15:40:33,508 basehttp 45776 22296 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:33,508 basehttp 45776 23260 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:33,509 basehttp 45776 22296 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:33,510 basehttp 45776 23260 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:33,511 basehttp 45776 22296 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:33,511 basehttp 45776 23260 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:33,513 basehttp 45776 23260 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:33,513 basehttp 45776 22296 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:35,024 basehttp 45776 22296 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-08-22 15:40:35,325 basehttp 45776 22296 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 15:40:48,815 attempts 45776 22296 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-19 22:40:48.793214+00:00
+INFO 2025-08-22 15:40:48,816 database 45776 22296 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/microsoft/login/callback/"}.
+INFO 2025-08-22 15:40:48,832 basehttp 45776 22296 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAR88AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P9dcSCBGlCE5AeZ3YqQoP-pwLtWSe3qk_025qXH9SL5WuFIa41gKWy9ciqTJUt5EYXvhJLG3kBNFR1JxP_R9eWjSZxbA0bnUYPjmhqmjGfMAUq5ZRDuGIHw1e-C1jMli5FJ6RH3ybKm0u4yL1Rr2alwmz2sff9dWia-5_KwldS4SIByslZqOGSG6nhD7fp246ygX3-vHFDsB_APTbZAIuo8SmZuCwdz9pBsWpmDAoCjiOVzBettBQ3cRf2jlJ2Z1c_MlOoHxHTIV7Sy4dt4W19hS8PPw9C1zRYJeB9CttFYRwcO7gSHsrJg3IuiW7eECQTtUpJiaqdP4UbBi5TnOPWbFtLvX45NXIpA_XYhnmyVVQtYR6Vyk8zjmCFrlzSwUuRiKQvwscCPAMD_Btx65xSZguiKyNowM_Vq8X06YpRAAendC1Z6VctIseAgdaeJ2QSDvWsqkJpipCKWBEOXLRqMUOX4ftY4d_H-yIbD1-aBe9EHc5uBLcQAJYja2jo_oi25TYE9LyOh_MkcB1TchX9jgBZzqkVoCUgGBP3Xo3FX2vQoXyZdCuInSX56fY_aZOMhz5qPprqaklbSOmKQtbbseaLe_sH7bnj_3TmJMxfs9yir3lo5CPOZKUVM94sKNqG9wlziyFKQKLwj9TvUt4VKzQj4sBh7UJh_6mebc9FhFqPE-j38k_UHDU3kGZgYBEHcHoBQ3LBOsWpMdLi1zdrMUSyMmNy33zbcuiSyCwllUF3_ZQZ6uhI1-4T_2eOb&state=jslviz9qYZimNDBk&session_state=004d8ba9-262a-29ff-2a96-9b8d07982867 HTTP/1.1" 302 0
+INFO 2025-08-22 15:40:48,979 basehttp 45776 22296 "GET / HTTP/1.1" 200 96551
+INFO 2025-08-22 15:40:49,016 basehttp 45776 22296 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,016 basehttp 45776 23260 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,017 basehttp 45776 16368 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,017 basehttp 45776 22824 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,017 basehttp 45776 23024 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,017 basehttp 45776 6876 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,017 basehttp 45776 22296 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,018 basehttp 45776 23260 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,019 basehttp 45776 16368 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,158 basehttp 45776 16368 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,160 basehttp 45776 16368 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,160 basehttp 45776 22296 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,160 basehttp 45776 6876 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,160 basehttp 45776 23260 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,223 basehttp 45776 22296 "GET /media/guest_photos/72x72_7ubsthY.png HTTP/1.1" 200 9337
+INFO 2025-08-22 15:40:49,229 basehttp 45776 23260 "GET /media/guest_photos/IMG_2095.jpeg HTTP/1.1" 200 721083
+INFO 2025-08-22 15:40:49,259 basehttp 45776 23260 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:49,689 basehttp 45776 46888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 15:40:49,692 basehttp 45776 23260 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:40:51,221 basehttp 45776 23260 "GET /serviceworker.js HTTP/1.1" 200 14645
+ERROR 2025-08-22 15:41:01,279 log 45776 23260 Internal Server Error: /api/docs/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 99, in _get
+    return self.client.get(key, default=default, version=version, client=client)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\client\default.py", line 260, in get
+    raise ConnectionInterrupted(connection=client) from e
+django_redis.exceptions.ConnectionInterrupted: Redis ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 503, in dispatch
+    self.initial(request, *args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 422, in initial
+    self.check_throttles(request)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 365, in check_throttles
+    if not throttle.allow_request(request, self):
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\throttling.py", line 123, in allow_request
+    self.history = self.cache.get(self.key, [])
+                   ~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 92, in get
+    value = self._get(key, default, version, client)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 36, in _decorator
+    raise e.__cause__
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\client\default.py", line 258, in get
+    value = client.get(key)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\commands\core.py", line 1822, in get
+    return self.execute_command("GET", name, keys=[name])
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\client.py", line 605, in execute_command
+    return self._execute_command(*args, **options)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\client.py", line 611, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ~~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\utils.py", line 183, in wrapper
+    return func(*args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\connection.py", line 1483, in get_connection
+    connection.connect()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\connection.py", line 384, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 15:41:01,287 basehttp 45776 23260 "GET /api/docs/ HTTP/1.1" 500 185290
+INFO 2025-08-22 15:41:02,329 basehttp 45776 23260 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 15:41:39,445 basehttp 45776 23260 "GET / HTTP/1.1" 200 96147
+INFO 2025-08-22 15:41:39,468 basehttp 45776 22296 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:39,469 basehttp 45776 6876 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:39,469 basehttp 45776 23024 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:39,469 basehttp 45776 16368 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:39,469 basehttp 45776 22824 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,384 basehttp 45776 22296 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,384 basehttp 45776 23260 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,385 basehttp 45776 6876 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,385 basehttp 45776 23024 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,385 basehttp 45776 16368 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,386 basehttp 45776 22296 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,386 basehttp 45776 22824 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,387 basehttp 45776 23260 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,387 basehttp 45776 6876 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,458 basehttp 45776 6876 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,549 basehttp 45776 6876 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:49,556 basehttp 45776 46888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 15:41:49,565 basehttp 45776 6876 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:41:51,413 basehttp 45776 6876 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 15:42:19,472 basehttp 45776 6876 "GET / HTTP/1.1" 200 96147
+INFO 2025-08-22 15:42:19,499 basehttp 45776 22824 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,499 basehttp 45776 22296 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,499 basehttp 45776 16368 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,500 basehttp 45776 23260 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,500 basehttp 45776 6876 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,500 basehttp 45776 23024 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,508 basehttp 45776 23024 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,508 basehttp 45776 6876 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,509 basehttp 45776 23260 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,688 basehttp 45776 6876 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,699 basehttp 45776 23024 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,699 basehttp 45776 23260 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,699 basehttp 45776 6876 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,699 basehttp 45776 16368 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,817 basehttp 45776 16368 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:19,946 basehttp 45776 46888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 15:42:19,958 basehttp 45776 16368 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:22,213 basehttp 45776 16368 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 15:42:23,367 apps 13 140634849867584 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:42:25,826 apps 14 140538111809344 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:42:30,131 basehttp 45776 16368 "GET / HTTP/1.1" 200 96147
+INFO 2025-08-22 15:42:30,148 basehttp 45776 16368 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,149 basehttp 45776 6876 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,150 basehttp 45776 23260 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,150 basehttp 45776 6876 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,150 basehttp 45776 23024 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,151 basehttp 45776 16368 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,151 basehttp 45776 22824 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,151 basehttp 45776 22296 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,151 basehttp 45776 23260 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,207 basehttp 45776 23260 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,207 basehttp 45776 16368 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,207 basehttp 45776 22296 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,207 basehttp 45776 22824 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,208 basehttp 45776 6876 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,269 basehttp 45776 6876 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,326 basehttp 45776 6876 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:30,326 basehttp 45776 46888 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 15:42:30,335 basehttp 45776 6876 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 15:42:32,452 basehttp 45776 6876 "GET /serviceworker.js HTTP/1.1" 200 14645
+ERROR 2025-08-22 15:42:36,120 log 45776 6876 Internal Server Error: /api/docs/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 99, in _get
+    return self.client.get(key, default=default, version=version, client=client)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\client\default.py", line 260, in get
+    raise ConnectionInterrupted(connection=client) from e
+django_redis.exceptions.ConnectionInterrupted: Redis ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 503, in dispatch
+    self.initial(request, *args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 422, in initial
+    self.check_throttles(request)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\views.py", line 365, in check_throttles
+    if not throttle.allow_request(request, self):
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\rest_framework\throttling.py", line 123, in allow_request
+    self.history = self.cache.get(self.key, [])
+                   ~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 92, in get
+    value = self._get(key, default, version, client)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 36, in _decorator
+    raise e.__cause__
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\client\default.py", line 258, in get
+    value = client.get(key)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\commands\core.py", line 1822, in get
+    return self.execute_command("GET", name, keys=[name])
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\client.py", line 605, in execute_command
+    return self._execute_command(*args, **options)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\client.py", line 611, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ~~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\utils.py", line 183, in wrapper
+    return func(*args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\connection.py", line 1483, in get_connection
+    connection.connect()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\connection.py", line 384, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 15:42:36,128 basehttp 45776 6876 "GET /api/docs/ HTTP/1.1" 500 185290
+INFO 2025-08-22 15:42:37,269 basehttp 45776 6876 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 15:42:53,412 apps 29 140240620312384 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 15:42:53,500 apps 30 140240620312384 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:04:45,261 attempts 29 140240504424192 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-19 23:04:45.253278+00:00
+INFO 2025-08-22 16:04:45,261 database 29 140240504424192 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/microsoft/login/callback/"}.
+WARNING 2025-08-22 16:19:21,680 log 29 140240513865472 Not Found: /ws/dashboard/
+ERROR 2025-08-22 16:28:22,320 log 29 140240513865472 Internal Server Error: /visitors/ajax/department-details/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type JsonResponse is not JSON serializable
+WARNING 2025-08-22 16:31:21,461 log 29 140240513865472 Not Found: /ws/dashboard/
+INFO 2025-08-22 16:37:39,678 database 29 140240261994240 AXES: User login failed, running database handler for failure.
+INFO 2025-08-22 16:37:39,679 attempts 29 140240261994240 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-19 23:37:39.389370+00:00
+WARNING 2025-08-22 16:37:39,683 database 29 140240261994240 AXES: New login failure by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/admin/login/"}. Created new record in the database.
+WARNING 2025-08-22 16:38:40,880 log 30 140240270386944 Not Found: /ws/dashboard/
+INFO 2025-08-22 16:47:24,711 apps 22584 47504 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:47:59,548 apps 24332 44192 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:48:06,882 apps 26228 34556 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:48:15,893 apps 46360 31040 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:48:46,351 apps 40668 37152 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:48:47,060 apps 40820 44528 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:48:47,070 autoreload 40820 44528 Watching for file changes with StatReloader
+INFO 2025-08-22 16:48:50,168 basehttp 40820 22620 "GET / HTTP/1.1" 302 0
+INFO 2025-08-22 16:48:50,176 basehttp 40820 22620 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-08-22 16:48:50,217 basehttp 40820 23132 "GET /accounts/login/?next=/ HTTP/1.1" 200 6393
+INFO 2025-08-22 16:48:50,242 basehttp 40820 23132 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:50,247 basehttp 40820 23132 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:50,248 basehttp 40820 23132 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:50,249 basehttp 40820 23132 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:50,251 basehttp 40820 23132 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:50,252 basehttp 40820 23132 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:50,253 basehttp 40820 23132 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:50,255 basehttp 40820 23132 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:48:51,997 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:48:54,849 basehttp 40820 23132 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-08-22 16:48:59,479 basehttp 40820 23132 "GET /accounts/login/?next=/ HTTP/1.1" 200 6393
+INFO 2025-08-22 16:49:01,295 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:02,466 basehttp 40820 23132 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-08-22 16:49:02,567 basehttp 40820 23132 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4375
+INFO 2025-08-22 16:49:02,578 basehttp 40820 23476 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:02,578 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:02,578 basehttp 40820 7424 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:02,760 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:02,761 basehttp 40820 23476 "GET /static/admin/css/login.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:02,761 basehttp 40820 23132 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:02,766 basehttp 40820 23132 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:04,467 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:11,425 attempts 40820 23132 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-19 23:49:11.159352+00:00
+INFO 2025-08-22 16:49:11,425 database 40820 23132 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/admin/login/"}.
+INFO 2025-08-22 16:49:11,427 basehttp 40820 23132 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-08-22 16:49:11,489 basehttp 40820 23132 "GET /admin/ HTTP/1.1" 200 28447
+INFO 2025-08-22 16:49:11,505 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:11,509 basehttp 40820 23476 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:11,511 basehttp 40820 43968 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:11,511 basehttp 40820 23132 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-08-22 16:49:11,511 basehttp 40820 7424 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:11,511 basehttp 40820 39556 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:11,647 basehttp 40820 39556 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:11,659 basehttp 40820 39556 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-08-22 16:49:11,659 basehttp 40820 23132 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-08-22 16:49:13,240 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:19,349 basehttp 40820 23132 "GET /admin/visitors/auditlog/ HTTP/1.1" 200 27092
+INFO 2025-08-22 16:49:19,370 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:19,370 basehttp 40820 7424 "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+INFO 2025-08-22 16:49:19,371 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:19,371 basehttp 40820 43968 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:19,371 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:19,373 basehttp 40820 43428 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-08-22 16:49:19,375 basehttp 40820 7424 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-08-22 16:49:19,375 basehttp 40820 39556 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-08-22 16:49:19,378 basehttp 40820 43968 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:19,386 basehttp 40820 23132 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-08-22 16:49:19,387 basehttp 40820 43428 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-08-22 16:49:19,391 basehttp 40820 7424 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-08-22 16:49:19,394 basehttp 40820 39556 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-08-22 16:49:19,398 basehttp 40820 43968 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-08-22 16:49:19,401 basehttp 40820 23132 "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2025-08-22 16:49:19,430 basehttp 40820 23132 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:19,436 basehttp 40820 23132 "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO 2025-08-22 16:49:19,448 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:19,463 basehttp 40820 23476 "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2025-08-22 16:49:19,463 basehttp 40820 23132 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-08-22 16:49:21,044 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:22,008 basehttp 40820 23132 "GET /admin/visitors/auditlog/add/ HTTP/1.1" 200 35006
+INFO 2025-08-22 16:49:22,021 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:22,033 basehttp 40820 23476 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:22,033 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:22,033 basehttp 40820 23132 "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+INFO 2025-08-22 16:49:22,034 basehttp 40820 43968 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:22,034 basehttp 40820 43428 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:22,040 basehttp 40820 23132 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-08-22 16:49:22,075 basehttp 40820 23132 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:22,075 basehttp 40820 43428 "GET /static/admin/css/widgets.css HTTP/1.1" 200 11991
+INFO 2025-08-22 16:49:22,082 basehttp 40820 43428 "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-08-22 16:49:22,086 basehttp 40820 43428 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-08-22 16:49:22,094 basehttp 40820 39556 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:23,690 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:24,844 basehttp 40820 39556 "GET /admin/visitors/auditlog/ HTTP/1.1" 200 27092
+INFO 2025-08-22 16:49:26,499 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:27,964 basehttp 40820 39556 "GET /admin/visitors/guestinvitation/ HTTP/1.1" 200 86571
+INFO 2025-08-22 16:49:27,977 basehttp 40820 39556 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:27,978 basehttp 40820 43428 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:27,980 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:27,980 basehttp 40820 7424 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:27,981 basehttp 40820 39556 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:28,018 basehttp 40820 43968 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:28,034 basehttp 40820 39556 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:28,035 basehttp 40820 43968 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-08-22 16:49:29,686 basehttp 40820 43968 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:34,730 basehttp 40820 43968 "GET /admin/sites/site/ HTTP/1.1" 200 27175
+INFO 2025-08-22 16:49:34,745 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:34,745 basehttp 40820 7424 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:34,745 basehttp 40820 23476 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:34,745 basehttp 40820 43968 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:34,745 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:34,784 basehttp 40820 43428 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:34,795 basehttp 40820 43428 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:34,803 basehttp 40820 43428 "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+INFO 2025-08-22 16:49:36,371 basehttp 40820 43428 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:37,085 basehttp 40820 43428 "GET /admin/egov_integration/egovsettings/ HTTP/1.1" 200 32953
+INFO 2025-08-22 16:49:37,098 basehttp 40820 43428 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:37,101 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:37,101 basehttp 40820 23132 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:37,101 basehttp 40820 23476 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:37,102 basehttp 40820 39556 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:37,138 basehttp 40820 43428 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:37,148 basehttp 40820 43428 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:38,765 basehttp 40820 43428 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:39,781 basehttp 40820 43428 "GET /admin/egov_integration/egovsettings/6/change/ HTTP/1.1" 200 32777
+INFO 2025-08-22 16:49:39,795 basehttp 40820 43428 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:39,797 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:39,798 basehttp 40820 23476 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:39,798 basehttp 40820 7424 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:39,798 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:39,832 basehttp 40820 43428 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:39,854 basehttp 40820 43428 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:41,437 basehttp 40820 43428 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:41,675 basehttp 40820 43428 "GET /admin/egov_integration/egovsettings/ HTTP/1.1" 200 32953
+INFO 2025-08-22 16:49:43,073 basehttp 40820 43428 "GET /admin/socialaccount/socialaccount/ HTTP/1.1" 200 30392
+INFO 2025-08-22 16:49:43,088 basehttp 40820 43428 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:43,091 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:43,091 basehttp 40820 23132 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:43,091 basehttp 40820 43428 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:43,091 basehttp 40820 39556 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:43,138 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:43,144 basehttp 40820 23476 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:43,341 basehttp 40820 23476 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:44,736 basehttp 40820 23476 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:48,419 basehttp 40820 23476 "GET /admin/account/emailaddress/ HTTP/1.1" 200 31852
+INFO 2025-08-22 16:49:48,433 basehttp 40820 23476 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:48,435 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:48,436 basehttp 40820 23132 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:48,436 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:48,436 basehttp 40820 43428 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:48,470 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:48,478 basehttp 40820 23476 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:50,077 basehttp 40820 23476 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:50,574 basehttp 40820 23476 "GET /admin/departments/department/ HTTP/1.1" 200 45602
+INFO 2025-08-22 16:49:50,588 basehttp 40820 23476 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:50,588 basehttp 40820 43428 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:50,589 basehttp 40820 23132 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:50,592 basehttp 40820 23476 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:50,594 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:50,628 basehttp 40820 43428 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:50,640 basehttp 40820 43428 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:52,231 basehttp 40820 43428 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:54,224 basehttp 40820 43428 "GET /admin/classroom_book/classroomkey/ HTTP/1.1" 200 61273
+INFO 2025-08-22 16:49:54,239 basehttp 40820 43428 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:54,242 basehttp 40820 23476 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:54,242 basehttp 40820 23132 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:54,242 basehttp 40820 43428 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:54,242 basehttp 40820 39556 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:54,277 basehttp 40820 7424 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:54,284 basehttp 40820 7424 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:55,888 basehttp 40820 7424 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:56,627 basehttp 40820 7424 "GET /admin/axes/accessattempt/ HTTP/1.1" 200 26647
+INFO 2025-08-22 16:49:56,640 basehttp 40820 7424 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:56,642 basehttp 40820 7424 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:56,643 basehttp 40820 39556 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:56,646 basehttp 40820 43428 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:56,648 basehttp 40820 39556 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:56,682 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:56,693 basehttp 40820 23476 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:58,220 basehttp 40820 23476 "GET /admin/axes/accessfailurelog/ HTTP/1.1" 200 26949
+INFO 2025-08-22 16:49:58,233 basehttp 40820 23476 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:58,235 basehttp 40820 23132 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:58,235 basehttp 40820 43428 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:58,235 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:58,237 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:58,278 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:58,289 basehttp 40820 7424 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:49:58,322 basehttp 40820 7424 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:59,282 basehttp 40820 7424 "GET /admin/axes/accesslog/ HTTP/1.1" 200 34242
+INFO 2025-08-22 16:49:59,297 basehttp 40820 7424 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:59,299 basehttp 40820 23476 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:59,299 basehttp 40820 43428 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:59,299 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:59,299 basehttp 40820 23132 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:59,335 basehttp 40820 39556 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:49:59,341 basehttp 40820 39556 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:49:59,991 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:00,976 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:05,956 basehttp 40820 39556 "GET /admin/socialaccount/socialtoken/ HTTP/1.1" 200 26726
+INFO 2025-08-22 16:50:05,984 basehttp 40820 39556 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:05,987 basehttp 40820 7424 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:05,987 basehttp 40820 23132 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:05,988 basehttp 40820 23476 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:05,988 basehttp 40820 39556 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:06,022 basehttp 40820 43428 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:06,038 basehttp 40820 43428 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:07,635 basehttp 40820 43428 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:08,049 basehttp 40820 43428 "GET /admin/socialaccount/socialapp/ HTTP/1.1" 200 25034
+INFO 2025-08-22 16:50:08,064 basehttp 40820 23476 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:08,064 basehttp 40820 43428 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:08,065 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:08,065 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:08,065 basehttp 40820 43968 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:08,100 basehttp 40820 7424 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:08,115 basehttp 40820 7424 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:09,053 basehttp 40820 7424 "GET /admin/socialaccount/socialaccount/ HTTP/1.1" 200 30392
+INFO 2025-08-22 16:50:09,066 basehttp 40820 7424 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:09,069 basehttp 40820 7424 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:09,070 basehttp 40820 23476 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:09,070 basehttp 40820 43968 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:09,070 basehttp 40820 39556 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:09,107 basehttp 40820 23132 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:09,116 basehttp 40820 23132 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:09,797 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:10,699 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:11,394 basehttp 40820 23132 "GET /admin/socialaccount/socialapp/ HTTP/1.1" 200 25034
+INFO 2025-08-22 16:50:11,408 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:11,411 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:11,411 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:11,411 basehttp 40820 7424 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:11,412 basehttp 40820 43968 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:11,449 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:11,467 basehttp 40820 23476 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:12,699 basehttp 40820 23476 "GET /admin/socialaccount/socialaccount/ HTTP/1.1" 200 30392
+INFO 2025-08-22 16:50:12,810 basehttp 40820 23476 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:12,813 basehttp 40820 7424 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:12,813 basehttp 40820 23132 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:12,813 basehttp 40820 43968 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:12,813 basehttp 40820 39556 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:12,857 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:12,865 basehttp 40820 23476 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:13,053 basehttp 40820 23476 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:13,251 basehttp 40820 23476 "GET /admin/socialaccount/socialaccount/add/ HTTP/1.1" 200 28042
+INFO 2025-08-22 16:50:13,266 basehttp 40820 23476 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:13,267 basehttp 40820 23132 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:13,268 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:13,268 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:13,268 basehttp 40820 43428 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:13,301 basehttp 40820 43968 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:13,319 basehttp 40820 43968 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:14,909 basehttp 40820 43968 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:17,359 basehttp 40820 43968 "GET /admin/socialaccount/socialaccount/ HTTP/1.1" 200 30392
+INFO 2025-08-22 16:50:17,374 basehttp 40820 43968 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:17,377 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:17,378 basehttp 40820 43968 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:17,378 basehttp 40820 43428 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:17,378 basehttp 40820 39556 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:17,421 basehttp 40820 23132 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:17,430 basehttp 40820 23132 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:18,299 basehttp 40820 23132 "GET /admin/socialaccount/socialaccount/13/change/ HTTP/1.1" 200 30056
+INFO 2025-08-22 16:50:18,316 basehttp 40820 43428 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:18,316 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:18,316 basehttp 40820 43968 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:18,316 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:18,316 basehttp 40820 23476 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:18,357 basehttp 40820 7424 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:18,361 basehttp 40820 7424 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:19,947 basehttp 40820 7424 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:28,565 basehttp 40820 7424 "GET /admin/egov_integration/documentverification/ HTTP/1.1" 200 34238
+INFO 2025-08-22 16:50:28,578 basehttp 40820 7424 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:28,578 basehttp 40820 23476 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:28,582 basehttp 40820 23476 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:28,582 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:28,582 basehttp 40820 43968 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:28,624 basehttp 40820 39556 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:28,632 basehttp 40820 39556 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:30,232 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:30,348 basehttp 40820 39556 "GET /admin/egov_integration/documentverification/f522e331-e579-4844-a956-fb2c2c973edb/change/ HTTP/1.1" 200 51958
+INFO 2025-08-22 16:50:30,363 basehttp 40820 39556 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:30,366 basehttp 40820 7424 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:30,366 basehttp 40820 23132 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:30,366 basehttp 40820 23476 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:30,366 basehttp 40820 43968 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:30,403 basehttp 40820 39556 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:30,414 basehttp 40820 39556 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:32,004 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:32,787 basehttp 40820 39556 "GET /admin/egov_integration/documentverification/ HTTP/1.1" 200 34238
+INFO 2025-08-22 16:50:34,609 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:39,374 basehttp 40820 39556 "GET /admin/realtime_dashboard/dashboardwidget/ HTTP/1.1" 200 35859
+INFO 2025-08-22 16:50:39,389 basehttp 40820 39556 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:39,392 basehttp 40820 39556 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:39,392 basehttp 40820 23476 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:39,392 basehttp 40820 7424 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:39,392 basehttp 40820 43968 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:39,430 basehttp 40820 23132 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:39,445 basehttp 40820 23132 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:41,038 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:42,816 basehttp 40820 23132 "GET /admin/realtime_dashboard/dashboardwidget/4/change/ HTTP/1.1" 200 38931
+INFO 2025-08-22 16:50:42,829 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:42,831 basehttp 40820 23132 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:42,833 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:42,833 basehttp 40820 23476 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:42,834 basehttp 40820 43968 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:42,870 basehttp 40820 23132 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:42,878 basehttp 40820 23132 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:44,466 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:51,081 basehttp 40820 23132 "GET /admin/realtime_dashboard/dashboardwidget/ HTTP/1.1" 200 35859
+INFO 2025-08-22 16:50:52,803 basehttp 40820 23132 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:53,969 basehttp 40820 23132 "GET /admin/realtime_dashboard/dashboardmetric/ HTTP/1.1" 200 27956
+INFO 2025-08-22 16:50:53,985 basehttp 40820 23132 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:53,987 basehttp 40820 23476 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:53,987 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:53,987 basehttp 40820 43968 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:53,987 basehttp 40820 43428 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:54,022 basehttp 40820 39556 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:54,035 basehttp 40820 39556 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:55,722 basehttp 40820 39556 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:50:56,032 basehttp 40820 39556 "GET /admin/realtime_dashboard/dashboardmetric/add/ HTTP/1.1" 200 28675
+INFO 2025-08-22 16:50:56,046 basehttp 40820 39556 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:56,048 basehttp 40820 7424 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:56,048 basehttp 40820 43428 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:56,049 basehttp 40820 39556 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:56,049 basehttp 40820 43968 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:56,087 basehttp 40820 23476 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:50:56,105 basehttp 40820 23476 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:50:57,793 basehttp 40820 23476 "GET /serviceworker.js HTTP/1.1" 200 14645
+ERROR 2025-08-22 16:51:01,687 log 40820 23476 Internal Server Error: /admin/realtime_dashboard/dashboardmetric/add/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.NotNullViolation: null value in column "value" of relation "realtime_dashboard_dashboardmetric" violates not-null constraint
+DETAIL:  Failing row contains (1, department_stats, null, 2025-08-22 11:51:01.663048+00, t).
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\admin\options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\views\decorators\cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\admin\sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1984, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1843, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1894, in _changeform_view
+    self.save_model(request, new_object, form, not add)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\admin\options.py", line 1314, in save_model
+    obj.save()
+    ~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.IntegrityError: null value in column "value" of relation "realtime_dashboard_dashboardmetric" violates not-null constraint
+DETAIL:  Failing row contains (1, department_stats, null, 2025-08-22 11:51:01.663048+00, t).
+
+ERROR 2025-08-22 16:51:01,694 basehttp 40820 23476 "POST /admin/realtime_dashboard/dashboardmetric/add/ HTTP/1.1" 500 230093
+INFO 2025-08-22 16:51:03,397 basehttp 40820 23476 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:52:30,080 autoreload 40820 44528 D:\university_visitor_system\visitor_system\realtime_dashboard\models.py changed, reloading.
+INFO 2025-08-22 16:52:31,207 apps 35508 24448 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:52:31,222 autoreload 35508 24448 Watching for file changes with StatReloader
+INFO 2025-08-22 16:52:52,122 basehttp 35508 24540 "GET /admin/realtime_dashboard/dashboardmetric/add/ HTTP/1.1" 200 28675
+INFO 2025-08-22 16:52:53,816 basehttp 35508 24540 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:52:57,035 basehttp 35508 24540 "GET /admin/realtime_dashboard/realtimeevent/ HTTP/1.1" 200 28329
+INFO 2025-08-22 16:52:57,053 basehttp 35508 24540 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:57,053 basehttp 35508 12604 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:57,053 basehttp 35508 45324 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:57,060 basehttp 35508 24540 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:57,063 basehttp 35508 12604 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:57,110 basehttp 35508 45324 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:52:57,110 basehttp 35508 12604 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:58,747 basehttp 35508 12604 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:52:58,790 basehttp 35508 45324 "GET /admin/realtime_dashboard/realtimeevent/add/ HTTP/1.1" 200 49814
+INFO 2025-08-22 16:52:58,807 basehttp 35508 45324 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:58,809 basehttp 35508 12604 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:58,810 basehttp 35508 45324 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:58,810 basehttp 35508 24540 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:58,810 basehttp 35508 31888 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:52:58,856 basehttp 35508 21848 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:52:58,868 basehttp 35508 21848 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:00,479 basehttp 35508 21848 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:12,952 basehttp 35508 21848 "GET /admin/realtime_dashboard/dashboardwidget/ HTTP/1.1" 200 35859
+INFO 2025-08-22 16:53:12,967 basehttp 35508 21848 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:12,970 basehttp 35508 24540 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:12,970 basehttp 35508 31888 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:12,972 basehttp 35508 21848 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:12,972 basehttp 35508 12604 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:13,010 basehttp 35508 45324 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:13,023 basehttp 35508 45324 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:14,670 basehttp 35508 45324 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:14,916 basehttp 35508 45324 "GET /admin/realtime_dashboard/dashboardwidget/add/ HTTP/1.1" 200 38363
+INFO 2025-08-22 16:53:14,930 basehttp 35508 45324 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:14,935 basehttp 35508 45324 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:14,935 basehttp 35508 21848 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:14,935 basehttp 35508 12604 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:14,935 basehttp 35508 24540 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:14,978 basehttp 35508 31888 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:14,989 basehttp 35508 31888 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:16,649 basehttp 35508 31888 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:33,054 basehttp 35508 31888 "GET /admin/visitors/auditlog/ HTTP/1.1" 200 27092
+INFO 2025-08-22 16:53:33,069 basehttp 35508 31888 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:33,073 basehttp 35508 31888 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:33,073 basehttp 35508 12604 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:33,074 basehttp 35508 45324 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:33,074 basehttp 35508 24540 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:33,114 basehttp 35508 21848 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:33,130 basehttp 35508 21848 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:34,826 basehttp 35508 21848 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:34,871 basehttp 35508 24540 "GET /admin/visitors/auditlog/add/ HTTP/1.1" 200 35006
+INFO 2025-08-22 16:53:34,886 basehttp 35508 24540 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:34,888 basehttp 35508 21848 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:34,889 basehttp 35508 45324 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:34,889 basehttp 35508 24540 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:34,889 basehttp 35508 31888 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:34,925 basehttp 35508 12604 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:34,940 basehttp 35508 12604 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:36,545 basehttp 35508 12604 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:43,235 basehttp 35508 12604 "GET /admin/visitors/auditlog/ HTTP/1.1" 200 27092
+INFO 2025-08-22 16:53:44,885 basehttp 35508 12604 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:45,829 basehttp 35508 12604 "GET /admin/account/emailaddress/ HTTP/1.1" 200 31852
+INFO 2025-08-22 16:53:45,847 basehttp 35508 12604 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:45,849 basehttp 35508 45324 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:45,849 basehttp 35508 24540 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:45,849 basehttp 35508 12604 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:45,849 basehttp 35508 31888 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:45,889 basehttp 35508 21848 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:45,900 basehttp 35508 21848 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:47,494 basehttp 35508 21848 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:47,562 autoreload 35508 24448 D:\university_visitor_system\visitor_system\realtime_dashboard\admin.py changed, reloading.
+INFO 2025-08-22 16:53:48,690 apps 17152 47672 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:53:48,702 autoreload 17152 47672 Watching for file changes with StatReloader
+INFO 2025-08-22 16:53:49,247 basehttp 17152 42564 "GET /admin/realtime_dashboard/dashboardwidget/ HTTP/1.1" 200 35859
+INFO 2025-08-22 16:53:49,263 basehttp 17152 42564 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:49,265 basehttp 17152 42564 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:49,265 basehttp 17152 42148 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:49,266 basehttp 17152 42564 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:49,266 basehttp 17152 42148 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:49,308 basehttp 17152 42564 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:49,324 basehttp 17152 42564 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:50,697 basehttp 17152 42564 "GET /admin/realtime_dashboard/dashboardmetric/ HTTP/1.1" 200 27956
+INFO 2025-08-22 16:53:50,712 basehttp 17152 42564 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:50,714 basehttp 17152 42564 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:50,716 basehttp 17152 42148 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:50,716 basehttp 17152 46284 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:50,716 basehttp 17152 44928 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:50,761 basehttp 17152 47272 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:50,772 basehttp 17152 47272 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:51,038 basehttp 17152 47272 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:52,380 basehttp 17152 47272 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:53:54,605 autoreload 17152 47672 D:\university_visitor_system\visitor_system\realtime_dashboard\models.py changed, reloading.
+INFO 2025-08-22 16:53:56,005 apps 26136 15208 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:53:56,018 autoreload 26136 15208 Watching for file changes with StatReloader
+INFO 2025-08-22 16:53:58,099 basehttp 26136 16704 "GET /admin/realtime_dashboard/dashboardmetric/add/ HTTP/1.1" 200 29658
+INFO 2025-08-22 16:53:58,115 basehttp 26136 16704 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:58,115 basehttp 26136 48056 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:58,116 basehttp 26136 16704 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:58,117 basehttp 26136 48056 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:58,118 basehttp 26136 16704 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:58,158 basehttp 26136 48056 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:53:58,163 basehttp 26136 48056 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:53:59,754 basehttp 26136 48056 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:54:01,832 basehttp 26136 48056 "POST /admin/realtime_dashboard/dashboardmetric/add/ HTTP/1.1" 200 29883
+INFO 2025-08-22 16:54:01,845 basehttp 26136 48056 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:01,848 basehttp 26136 25684 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:01,848 basehttp 26136 16704 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:01,848 basehttp 26136 47572 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:01,848 basehttp 26136 46952 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:01,891 basehttp 26136 15552 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:01,903 basehttp 26136 15552 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:03,482 basehttp 26136 15552 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:54:07,334 basehttp 26136 15552 "POST /admin/realtime_dashboard/dashboardmetric/add/ HTTP/1.1" 200 29883
+INFO 2025-08-22 16:54:07,346 basehttp 26136 15552 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:07,348 basehttp 26136 15552 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:07,351 basehttp 26136 25684 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:07,352 basehttp 26136 15552 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:07,352 basehttp 26136 46952 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:07,389 basehttp 26136 47572 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:07,404 basehttp 26136 47572 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:09,001 basehttp 26136 47572 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:54:23,488 basehttp 26136 47572 "GET /admin/departments/department/ HTTP/1.1" 200 45602
+INFO 2025-08-22 16:54:23,503 basehttp 26136 47572 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:23,505 basehttp 26136 46952 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:23,506 basehttp 26136 15552 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:23,506 basehttp 26136 25684 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:23,506 basehttp 26136 48056 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:23,545 basehttp 26136 16704 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:23,558 basehttp 26136 16704 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:25,198 basehttp 26136 16704 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:54:26,377 basehttp 26136 16704 "GET /admin/classroom_book/classroom/ HTTP/1.1" 200 42324
+INFO 2025-08-22 16:54:26,391 basehttp 26136 16704 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:26,394 basehttp 26136 15552 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:26,394 basehttp 26136 48056 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:26,394 basehttp 26136 25684 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:26,394 basehttp 26136 47572 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:26,443 basehttp 26136 46952 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:26,447 basehttp 26136 46952 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:27,875 basehttp 26136 46952 "GET /admin/classroom_book/keybooking/ HTTP/1.1" 200 32603
+INFO 2025-08-22 16:54:27,891 basehttp 26136 46952 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:27,892 basehttp 26136 48056 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:27,892 basehttp 26136 47572 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:27,895 basehttp 26136 46952 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:27,897 basehttp 26136 47572 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:27,935 basehttp 26136 48056 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:27,948 basehttp 26136 48056 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:28,168 basehttp 26136 48056 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:54:28,595 basehttp 26136 48056 "GET /admin/classroom_book/classroomkey/ HTTP/1.1" 200 61273
+INFO 2025-08-22 16:54:28,612 basehttp 26136 16704 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:28,612 basehttp 26136 47572 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:28,612 basehttp 26136 48056 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:28,612 basehttp 26136 46952 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:28,612 basehttp 26136 25684 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:28,648 basehttp 26136 15552 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:28,669 basehttp 26136 15552 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:29,951 basehttp 26136 15552 "GET /admin/axes/accessattempt/ HTTP/1.1" 200 26647
+INFO 2025-08-22 16:54:30,005 basehttp 26136 15552 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,005 basehttp 26136 25684 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,006 basehttp 26136 46952 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,006 basehttp 26136 48056 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,006 basehttp 26136 16704 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,051 basehttp 26136 47572 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:30,060 basehttp 26136 47572 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,265 basehttp 26136 47572 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:54:30,728 basehttp 26136 47572 "GET /admin/axes/accessfailurelog/ HTTP/1.1" 200 26949
+INFO 2025-08-22 16:54:30,741 basehttp 26136 47572 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,746 basehttp 26136 16704 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,746 basehttp 26136 25684 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,746 basehttp 26136 48056 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,746 basehttp 26136 47572 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:30,786 basehttp 26136 46952 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:30,797 basehttp 26136 46952 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:31,387 basehttp 26136 46952 "GET /admin/axes/accesslog/ HTTP/1.1" 200 34242
+INFO 2025-08-22 16:54:31,406 basehttp 26136 48056 "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:31,406 basehttp 26136 46952 "GET /static/admin/css/base.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:31,406 basehttp 26136 25684 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:31,406 basehttp 26136 47572 "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:31,406 basehttp 26136 15552 "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:31,454 basehttp 26136 16704 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-08-22 16:54:31,455 basehttp 26136 15552 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:54:31,675 basehttp 26136 15552 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:54:33,169 basehttp 26136 15552 "GET /serviceworker.js HTTP/1.1" 200 14645
+ERROR 2025-08-22 16:54:38,203 log 26136 15552 Internal Server Error: /
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\visitor_system\visitors\views.py", line 1067, in employee_dashboard_view
+    return render(request, 'visitors/employee_dashboard.html', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+    ...<8 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 964: 'static', expected 'endblock'. Did you forget to register or load this tag?
+ERROR 2025-08-22 16:54:38,209 basehttp 26136 15552 "GET / HTTP/1.1" 500 251700
+INFO 2025-08-22 16:54:39,901 basehttp 26136 15552 "GET /serviceworker.js HTTP/1.1" 200 14645
+ERROR 2025-08-22 16:55:59,779 log 26136 15552 Internal Server Error: /
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\visitor_system\visitors\views.py", line 1067, in employee_dashboard_view
+    return render(request, 'visitors/employee_dashboard.html', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+        contents,
+    ...<2 lines>...
+        self.engine,
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+    ...<8 lines>...
+    )
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 964: 'static', expected 'endblock'. Did you forget to register or load this tag?
+ERROR 2025-08-22 16:55:59,783 basehttp 26136 15552 "GET / HTTP/1.1" 500 251837
+INFO 2025-08-22 16:56:01,583 basehttp 26136 15552 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:56:30,141 basehttp 26136 15552 "GET / HTTP/1.1" 200 50627
+INFO 2025-08-22 16:56:30,161 basehttp 26136 15552 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,162 basehttp 26136 15552 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,163 basehttp 26136 16704 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,163 basehttp 26136 25684 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,163 basehttp 26136 15552 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,164 basehttp 26136 47572 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,165 basehttp 26136 46952 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,166 basehttp 26136 48056 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,166 basehttp 26136 16704 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,232 basehttp 26136 16704 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,233 basehttp 26136 48056 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,233 basehttp 26136 15552 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,233 basehttp 26136 46952 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,233 basehttp 26136 47572 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,234 basehttp 26136 25684 "GET /static/js/vendor/apexcharts.min.js HTTP/1.1" 200 892
+INFO 2025-08-22 16:56:30,298 basehttp 26136 25684 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:30,662 basehttp 26136 46476 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 16:56:30,667 basehttp 26136 25684 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:32,284 basehttp 26136 25684 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:56:33,377 basehttp 26136 25684 "GET /visitors/register/student/ HTTP/1.1" 200 51588
+INFO 2025-08-22 16:56:33,395 basehttp 26136 25684 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,396 basehttp 26136 15552 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,396 basehttp 26136 47572 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,398 basehttp 26136 46952 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,398 basehttp 26136 25684 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,400 basehttp 26136 47572 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,400 basehttp 26136 15552 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,401 basehttp 26136 48056 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,401 basehttp 26136 16704 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,447 basehttp 26136 16704 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,447 basehttp 26136 48056 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,448 basehttp 26136 48056 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,448 basehttp 26136 15552 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,450 basehttp 26136 16704 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,470 basehttp 26136 16704 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:33,508 basehttp 26136 46476 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 16:56:33,512 basehttp 26136 16704 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:35,068 basehttp 26136 16704 "GET /serviceworker.js HTTP/1.1" 200 14645
+ERROR 2025-08-22 16:56:39,790 log 26136 16704 Internal Server Error: /visitors/statistics/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 99, in _get
+    return self.client.get(key, default=default, version=version, client=client)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\client\default.py", line 260, in get
+    raise ConnectionInterrupted(connection=client) from e
+django_redis.exceptions.ConnectionInterrupted: Redis ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\decorators.py", line 185, in _view_wrapper
+    result = _pre_process_request(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\decorators.py", line 131, in _pre_process_request
+    result = middleware.process_request(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\middleware\cache.py", line 161, in process_request
+    cache_key = get_cache_key(request, self.key_prefix, "GET", cache=self.cache)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\utils\cache.py", line 392, in get_cache_key
+    headerlist = cache.get(cache_key)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 92, in get
+    value = self._get(key, default, version, client)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\cache.py", line 36, in _decorator
+    raise e.__cause__
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django_redis\client\default.py", line 258, in get
+    value = client.get(key)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\commands\core.py", line 1822, in get
+    return self.execute_command("GET", name, keys=[name])
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\client.py", line 605, in execute_command
+    return self._execute_command(*args, **options)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\client.py", line 611, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ~~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\utils.py", line 183, in wrapper
+    return func(*args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\connection.py", line 1483, in get_connection
+    connection.connect()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\redis\connection.py", line 384, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:56:39,794 basehttp 26136 16704 "GET /visitors/statistics/ HTTP/1.1" 500 167406
+INFO 2025-08-22 16:56:41,633 basehttp 26136 16704 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:56:47,062 basehttp 26136 16704 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,004 basehttp 26136 16704 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 50633
+INFO 2025-08-22 16:56:49,022 basehttp 26136 16704 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,023 basehttp 26136 48056 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,024 basehttp 26136 16704 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,025 basehttp 26136 46952 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,026 basehttp 26136 15552 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,026 basehttp 26136 25684 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,026 basehttp 26136 48056 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,027 basehttp 26136 47572 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,027 basehttp 26136 16704 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,097 basehttp 26136 47572 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,104 basehttp 26136 47572 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,104 basehttp 26136 16704 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,104 basehttp 26136 48056 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,104 basehttp 26136 15552 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,151 basehttp 26136 15552 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:49,206 basehttp 26136 46476 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 16:56:49,212 basehttp 26136 15552 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:56:51,157 basehttp 26136 15552 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:57:03,070 apps 23712 22260 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:57:18,457 apps 18040 42940 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:57:29,996 apps 40088 28612 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:57:36,233 apps 9140 37728 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:57:43,140 apps 34512 15632 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:57:43,912 apps 23452 28844 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 16:57:43,924 autoreload 23452 28844 Watching for file changes with StatReloader
+INFO 2025-08-22 16:57:49,631 basehttp 23452 46812 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 50633
+INFO 2025-08-22 16:57:49,653 basehttp 23452 46812 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,661 basehttp 23452 45896 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,661 basehttp 23452 46812 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,663 basehttp 23452 45896 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,665 basehttp 23452 46812 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,666 basehttp 23452 45896 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,667 basehttp 23452 46812 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,667 basehttp 23452 45896 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,668 basehttp 23452 46812 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,729 basehttp 23452 46812 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,729 basehttp 23452 45896 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,729 basehttp 23452 45160 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,730 basehttp 23452 45896 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,730 basehttp 23452 46812 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,778 basehttp 23452 46812 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:49,836 basehttp 23452 46812 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:50,141 basehttp 23452 46964 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 16:57:50,145 basehttp 23452 46812 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:57:51,735 basehttp 23452 46812 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-22 16:58:25,888 basehttp 23452 46812 "GET /dashboard/ HTTP/1.1" 200 55403
+INFO 2025-08-22 16:58:25,914 basehttp 23452 46812 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,915 basehttp 23452 45896 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,918 basehttp 23452 45160 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,919 basehttp 23452 20568 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,919 basehttp 23452 23268 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,919 basehttp 23452 46812 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,919 basehttp 23452 41616 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,919 basehttp 23452 45896 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,923 basehttp 23452 45160 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,984 basehttp 23452 45160 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,988 basehttp 23452 45160 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,992 basehttp 23452 45160 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:25,995 basehttp 23452 45160 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:26,001 basehttp 23452 45160 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:26,122 basehttp 23452 41616 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:26,160 basehttp 23452 46964 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 16:58:26,165 basehttp 23452 41616 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+WARNING 2025-08-22 16:58:26,480 log 23452 22564 Not Found: /ws/dashboard/
+WARNING 2025-08-22 16:58:26,480 basehttp 23452 22564 "GET /ws/dashboard/ HTTP/1.1" 404 6399
+ERROR 2025-08-22 16:58:28,210 views 23452 45160 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:28,210 views 23452 45896 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:28,211 log 23452 45160 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:28,211 log 23452 45896 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:28,211 basehttp 23452 45160 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:28,211 basehttp 23452 45896 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:30,319 views 23452 41616 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:30,319 views 23452 45896 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:30,319 views 23452 45160 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:30,320 log 23452 41616 Internal Server Error: /dashboard/api/widgets/3/data/
+ERROR 2025-08-22 16:58:30,320 log 23452 45896 Internal Server Error: /dashboard/api/widgets/2/data/
+ERROR 2025-08-22 16:58:30,320 log 23452 45160 Internal Server Error: /dashboard/api/widgets/1/data/
+ERROR 2025-08-22 16:58:30,321 basehttp 23452 45896 "GET /dashboard/api/widgets/2/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:30,321 basehttp 23452 41616 "GET /dashboard/api/widgets/3/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:30,321 basehttp 23452 45160 "GET /dashboard/api/widgets/1/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:30,335 views 23452 23268 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:30,336 log 23452 23268 Internal Server Error: /dashboard/api/widgets/5/data/
+ERROR 2025-08-22 16:58:30,336 basehttp 23452 23268 "GET /dashboard/api/widgets/5/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:30,336 views 23452 20568 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:30,337 views 23452 46812 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:30,340 log 23452 20568 Internal Server Error: /dashboard/api/widgets/6/data/
+ERROR 2025-08-22 16:58:30,341 log 23452 46812 Internal Server Error: /dashboard/api/widgets/4/data/
+ERROR 2025-08-22 16:58:30,342 basehttp 23452 20568 "GET /dashboard/api/widgets/6/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:30,342 basehttp 23452 46812 "GET /dashboard/api/widgets/4/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:32,416 views 23452 45160 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:32,416 views 23452 41616 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:32,416 log 23452 45160 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:32,417 log 23452 41616 Internal Server Error: /dashboard/api/widgets/7/data/
+ERROR 2025-08-22 16:58:32,417 basehttp 23452 45160 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:32,417 basehttp 23452 41616 "GET /dashboard/api/widgets/7/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:32,432 views 23452 46812 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:32,432 views 23452 20568 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:32,432 views 23452 45896 Error getting widget data: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:32,432 views 23452 23268 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:32,433 log 23452 46812 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:32,433 log 23452 20568 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:32,433 log 23452 45896 Internal Server Error: /dashboard/api/widgets/8/data/
+ERROR 2025-08-22 16:58:32,433 log 23452 23268 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:32,434 basehttp 23452 46812 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:32,434 basehttp 23452 20568 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:32,434 basehttp 23452 23268 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:32,434 basehttp 23452 45896 "GET /dashboard/api/widgets/8/data/?period=30d HTTP/1.1" 500 202
+ERROR 2025-08-22 16:58:34,496 views 23452 45160 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:34,497 views 23452 41616 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:34,497 views 23452 46812 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:34,497 log 23452 45160 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:34,497 log 23452 41616 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:34,497 log 23452 46812 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:34,498 basehttp 23452 45160 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:34,498 basehttp 23452 41616 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:34,498 basehttp 23452 46812 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+ERROR 2025-08-22 16:58:34,512 views 23452 45896 Error getting dashboard metrics: Error 10061 connecting to 127.0.0.1:6379. Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ERROR 2025-08-22 16:58:34,513 log 23452 45896 Internal Server Error: /dashboard/api/metrics/
+ERROR 2025-08-22 16:58:34,513 basehttp 23452 45896 "GET /dashboard/api/metrics/ HTTP/1.1" 500 159
+INFO 2025-08-22 16:58:35,793 basehttp 23452 45896 "GET /visitors/dashboard/employee/ HTTP/1.1" 200 50633
+INFO 2025-08-22 16:58:35,812 basehttp 23452 45896 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,814 basehttp 23452 46812 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,814 basehttp 23452 45896 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,814 basehttp 23452 20568 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,814 basehttp 23452 45160 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,814 basehttp 23452 23268 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,814 basehttp 23452 41616 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,816 basehttp 23452 45896 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,816 basehttp 23452 46812 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,905 basehttp 23452 46812 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,906 basehttp 23452 45896 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,906 basehttp 23452 41616 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,906 basehttp 23452 45160 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,906 basehttp 23452 23268 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:35,973 basehttp 23452 45160 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-22 16:58:36,018 basehttp 23452 46964 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-22 16:58:36,023 basehttp 23452 45160 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-22 17:05:52,432 apps 13 140177440831296 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:05:55,616 apps 14 140385428096832 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:06:32,870 apps 29 140016204003136 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:06:32,928 apps 30 140016204003136 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:07:15,357 attempts 30 140015866738432 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-20 00:07:15.353242+00:00
+INFO 2025-08-22 17:07:15,358 database 30 140015866738432 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/microsoft/login/callback/"}.
+WARNING 2025-08-22 17:07:20,084 log 29 140015866738432 Not Found: /ws/dashboard/
+INFO 2025-08-22 17:07:42,163 database 30 140016126600960 AXES: User login failed, running database handler for failure.
+INFO 2025-08-22 17:07:42,165 attempts 30 140016126600960 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-20 00:07:41.865739+00:00
+WARNING 2025-08-22 17:07:42,168 database 30 140016126600960 AXES: New login failure by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/admin/login/"}. Created new record in the database.
+INFO 2025-08-22 17:07:54,649 database 29 140016078657280 AXES: User login failed, running database handler for failure.
+INFO 2025-08-22 17:07:54,650 attempts 29 140016078657280 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-20 00:07:54.354203+00:00
+WARNING 2025-08-22 17:07:54,652 database 29 140016078657280 AXES: Repeated login failure by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/admin/login/"}. Updated existing record in the database.
+WARNING 2025-08-22 17:07:58,825 log 30 140016098604800 Not Found: /ws/dashboard/
+INFO 2025-08-22 17:13:04,763 apps 221 140490508298048 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:14:22,867 apps 232 140031571445568 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:14:25,431 apps 233 140208711726912 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:14:59,143 attempts 30 140015866738432 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-20 00:14:58.996553+00:00
+INFO 2025-08-22 17:14:59,143 database 30 140015866738432 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/admin/login/"}.
+INFO 2025-08-22 17:17:24,955 views 29 140015849953024 Statistics data prepared for user 'admin'.
+ERROR 2025-08-22 17:17:24,987 log 29 140015866738432 Internal Server Error: /visitors/statistics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitors/views.py", line 1239, in visit_statistics_view
+    return render(request, 'visitors/visit_statistics.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/backends/django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loaders/cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loaders/base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 126: 'static', expected 'endblock'. Did you forget to register or load this tag?
+INFO 2025-08-22 17:19:02,458 views 30 140016126600960 Statistics data prepared for user 'admin'.
+ERROR 2025-08-22 17:19:02,518 log 30 140016098604800 Internal Server Error: /visitors/statistics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type HttpResponse is not JSON serializable
+INFO 2025-08-22 17:22:05,411 views 30 140016126600960 Statistics data prepared for user 'admin'.
+ERROR 2025-08-22 17:22:05,426 log 30 140016098604800 Internal Server Error: /visitors/statistics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type HttpResponse is not JSON serializable
+INFO 2025-08-22 17:27:38,584 views 30 140016126600960 Statistics data prepared for user 'admin'.
+ERROR 2025-08-22 17:27:38,600 log 30 140016098604800 Internal Server Error: /visitors/statistics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type HttpResponse is not JSON serializable
+INFO 2025-08-22 17:27:57,711 views 29 140015849953024 Statistics data prepared for user 'admin'.
+ERROR 2025-08-22 17:27:57,777 log 29 140015866738432 Internal Server Error: /visitors/statistics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type HttpResponse is not JSON serializable
+INFO 2025-08-22 17:28:35,897 views 29 140015849953024 Statistics data prepared for user 'admin'.
+ERROR 2025-08-22 17:28:35,915 log 29 140015866738432 Internal Server Error: /visitors/statistics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 196, in _view_wrapper
+    return _post_process_request(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/decorators.py", line 163, in _post_process_request
+    return middleware.process_response(request, response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/middleware/cache.py", line 129, in process_response
+    self.cache.set(cache_key, response, timeout)
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/cache.py", line 81, in set
+    return self.client.set(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 143, in set
+    nvalue = self.encode(value)
+             ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/client/default.py", line 461, in encode
+    value = self._serializer.dumps(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django_redis/serializers/json.py", line 13, in dumps
+    return json.dumps(value, cls=self.encoder_class).encode()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/serializers/json.py", line 114, in default
+    return super().default(o)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type HttpResponse is not JSON serializable
+INFO 2025-08-22 17:29:02,022 apps 13 139910148675392 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:29:06,138 apps 14 140496084850496 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:29:41,809 apps 29 139904699725632 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:29:41,874 apps 30 139904699725632 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:29:43,605 views 29 139904622323456 Statistics data prepared for user 'admin'.
+WARNING 2025-08-22 17:30:42,484 log 30 139904613930752 Not Found: /ws/dashboard/
+WARNING 2025-08-22 17:33:39,275 log 29 139904500967168 Not Found: /ws/dashboard/
+WARNING 2025-08-22 17:34:22,746 log 30 139904613930752 Not Found: /ws/dashboard/

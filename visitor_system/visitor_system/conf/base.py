@@ -389,6 +389,16 @@ CACHES = {
 			'TIMEOUT': int(os.getenv('DJANGO_CACHE_TIMEOUT', str(60 * 15))),
 		},
 		'KEY_PREFIX': os.getenv('DJANGO_CACHE_KEY_PREFIX', 'visitor_system_cache'),
+	},
+	'pages': {
+		'BACKEND': 'django_redis.cache.RedisCache',
+		'LOCATION': os.getenv('REDIS_CACHE_URL', 'redis://127.0.0.1:6379/1'),
+		'OPTIONS': {
+			'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+			'SERIALIZER': 'django_redis.serializers.pickle.PickleSerializer',
+			'PICKLE_VERSION': -1,
+		},
+		'KEY_PREFIX': os.getenv('DJANGO_CACHE_PAGE_KEY_PREFIX', 'visitor_system_page_cache'),
 	}
 }
 

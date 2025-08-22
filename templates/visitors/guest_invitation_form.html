@@ -5,10 +5,10 @@
     <title>Заполнение приглашения</title>
     <!-- Мета-тег для корректного отображения на мобильных устройствах -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Подключаем Tabler CSS - это более легкая альтернатива Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+    {# Tabler CSS подключён в base.html #}
     <!-- Добавляем библиотеку IMask для создания масок ввода -->
-    <script src="https://unpkg.com/imask@6.4.3/dist/imask.js"></script>
+    <script src="https://unpkg.com/imask@6.4.3/dist/imask.js" defer></script>
+    <script>window.IMask||document.write('<script src="{% static 'js/vendor/imask.6.4.3.min.js' %}">\x3C/script>')</script>
     <!-- Стили для мобильной адаптации -->
     <style>
         body {

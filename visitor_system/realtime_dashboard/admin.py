@@ -21,7 +21,7 @@ class DashboardMetricAdmin(admin.ModelAdmin):
             'fields': ('metric_type', 'is_active', 'timestamp')
         }),
         ('Данные', {
-            'fields': ('value_formatted',),
+            'fields': ('value', 'value_formatted',),
             'classes': ('collapse',)
         }),
     )

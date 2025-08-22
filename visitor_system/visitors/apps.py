@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from .signals import * # Импортируем сигналы, если они есть
 
 
 class VisitorsConfig(AppConfig):

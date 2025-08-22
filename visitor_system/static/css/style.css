@@ -1,8 +1,8 @@
 /* static/css/style.css */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+/* Шрифты подключаются в шаблоне через <link rel="preconnect"> и <link href=...> */
 
 body {
-    font-family: 'Noto Sans', sans-serif; /* <-- ИЗМЕНЕНО ЗДЕСЬ */
+    font-family: 'Noto Sans', sans-serif; /* основной шрифт */
     /* Остальные настройки для body (font-size, line-height...) */
     font-size: 16px;
     line-height: 1.6;
@@ -141,6 +141,11 @@ body {
 .toast-item.toast-danger, .toast-item.toast-error { border-color: #ffd1d1; background: #fff1f2; }
 .toast-item.toast-warning { border-color: #ffe8b3; background: #fffbeb; }
 .toast-item.toast-info { border-color: #c7d2fe; background: #eef2ff; }
+
+/* Accessibility: focus-visible & skip-link */
+:focus-visible { outline: 2px solid #206bc4; outline-offset: 2px; }
+.skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.skip-link:focus { position: fixed; left: 16px; top: 16px; width: auto; height: auto; padding: 8px 12px; background: #206bc4; color: #fff; border-radius: 6px; z-index: 1100; }
 
 /* Skeletons */
 .skeleton { position: relative; overflow: hidden; background: #f4f6f8; border-radius: 6px; }

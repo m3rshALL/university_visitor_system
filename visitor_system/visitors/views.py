@@ -12,6 +12,7 @@ from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
 from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryFilterForm, ProfileSetupForm, \
     GuestInvitationFillForm, GuestInvitationFinalizeForm, GroupVisitRegistrationForm
 from .models import GuestInvitation
+from .models import AuditLog
 from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
 from django.contrib.auth.models import User
@@ -160,6 +161,21 @@ def register_guest_view(request):
             else:
                 try:
                     visit = form.save(request.user, registration_type=registration_type)
+                    # Audit: create
+                    try:
+                        AuditLog.objects.create(
+                            action=AuditLog.ACTION_CREATE,
+                            model='Visit',
+                            object_id=str(visit.pk),
+                            actor=request.user,
+                            ip_address=request.META.get('REMOTE_ADDR'),
+                            user_agent=request.META.get('HTTP_USER_AGENT', '')[:1024],
+                            path=request.path,
+                            method=request.method,
+                            extra={'registration_type': registration_type}
+                        )
+                    except Exception:
+                        logger.exception('Failed to write AuditLog for Visit create')
                     try:
                         send_new_visit_notification_to_security(visit, 'official')
                     except Exception as e:
@@ -552,6 +568,21 @@ def visit_detail_view(request, visit_id):
     # Можно добавить проверку прав доступа, если нужно
     # Например, чтобы только админ или участники визита могли его смотреть
 
+    # Audit: view
+    try:
+        AuditLog.objects.create(
+            action=AuditLog.ACTION_VIEW,
+            model='Visit',
+            object_id=str(visit.pk),
+            actor=request.user if request.user.is_authenticated else None,
+            ip_address=request.META.get('REMOTE_ADDR'),
+            user_agent=request.META.get('HTTP_USER_AGENT', '')[:1024],
+            path=request.path,
+            method=request.method,
+        )
+    except Exception:
+        logger.exception('Failed to write AuditLog for Visit view')
+
     context = {
         'visit': visit
     }
@@ -567,6 +598,21 @@ def student_visit_detail_view(request, visit_id):
         pk=visit_id
     )
     # TODO: Проверка прав доступа, если нужна
+
+    # Audit: view student visit
+    try:
+        AuditLog.objects.create(
+            action=AuditLog.ACTION_VIEW,
+            model='StudentVisit',
+            object_id=str(student_visit.pk),
+            actor=request.user if request.user.is_authenticated else None,
+            ip_address=request.META.get('REMOTE_ADDR'),
+            user_agent=request.META.get('HTTP_USER_AGENT', '')[:1024],
+            path=request.path,
+            method=request.method,
+        )
+    except Exception:
+        logger.exception('Failed to write AuditLog for StudentVisit view')
 
     context = {
         'student_visit': student_visit # Передаем объект в контекст
@@ -589,9 +635,28 @@ def mark_guest_exit_view(request, visit_id):
                                     f"Текущий статус: {visit.get_status_display()}. Возможно, выход уже был отмечен ранее.")
         # Возвращаем пользователя туда, откуда он пришел (или на страницу текущих гостей)
         return redirect(request.META.get('HTTP_REFERER', 'visit_history'))        # Если все в порядке, отмечаем время выхода и меняем статус
+    before = {'status': visit.status, 'exit_time': visit.exit_time.isoformat() if visit.exit_time else None}
     visit.exit_time = timezone.now()
     visit.status = STATUS_CHECKED_OUT
     visit.save(update_fields=['exit_time', 'status']) # Обновляем только нужные поля
+    # Audit: update
+    try:
+        AuditLog.objects.create(
+            action=AuditLog.ACTION_UPDATE,
+            model='Visit',
+            object_id=str(visit.pk),
+            actor=request.user,
+            ip_address=request.META.get('REMOTE_ADDR'),
+            user_agent=request.META.get('HTTP_USER_AGENT', '')[:1024],
+            path=request.path,
+            method=request.method,
+            changes={
+                'before': before,
+                'after': {'status': visit.status, 'exit_time': visit.exit_time.isoformat() if visit.exit_time else None}
+            }
+        )
+    except Exception:
+        logger.exception('Failed to write AuditLog for guest exit')
 
     # Асинхронно отправляем уведомление о выходе, если у визита есть назначенный сотрудник с email
     if hasattr(visit, 'host_employee') and visit.host_employee and visit.host_employee.email:
@@ -640,9 +705,25 @@ def mark_student_exit_view(request, visit_id):
             return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
 
         # Отмечаем выход
+        before = {'status': visit.status, 'exit_time': visit.exit_time.isoformat() if visit.exit_time else None}
         visit.exit_time = timezone.now()
         visit.status = STATUS_CHECKED_OUT
         visit.save(update_fields=['exit_time', 'status'])
+        # Audit: update
+        try:
+            AuditLog.objects.create(
+                action=AuditLog.ACTION_UPDATE,
+                model='StudentVisit',
+                object_id=str(visit.pk),
+                actor=request.user,
+                ip_address=request.META.get('REMOTE_ADDR'),
+                user_agent=request.META.get('HTTP_USER_AGENT', '')[:1024],
+                path=request.path,
+                method=request.method,
+                changes={'before': before, 'after': {'status': visit.status, 'exit_time': visit.exit_time.isoformat() if visit.exit_time else None}}
+            )
+        except Exception:
+            logger.exception('Failed to write AuditLog for student exit')
 
         messages.success(request, f"Выход посетителя '{visit.guest.full_name}' успешно зарегистрирован.")
         return redirect('visit_history')
@@ -1043,120 +1124,7 @@ def admin_dashboard_view(request):
     return render(request, 'visitors/admin_dashboard.html', context)
 # ---------------------------------
 
-# --- Представление для статистики ---
-# Кэшируем результат на 15 минут (900 секунд)
-@cache_page(60 * 15) # <--- Добавляем декоратор кэширования
-@login_required
-def visit_statistics_view(request):
-    # Проверка прав доступа
-    if not (request.user.is_staff or request.user.has_perm('visitors.can_view_visit_statistics')):
-        raise PermissionDenied
-
-    today = timezone.now().date()
-    start_date_30_days = today - timedelta(days=30)
-
-    logger.debug("Attempting to fetch statistics data...")
-
-    # 1. Посещения за последние 30 дней (ОБЪЕДИНЕННЫЕ)
-    visits_daily_official = Visit.objects.filter(
-        entry_time__date__gte=start_date_30_days
-    ).annotate(date=TruncDate('entry_time')).values('date').annotate(count=Count('id')).order_by('date')
-
-    visits_daily_student = StudentVisit.objects.filter(
-        entry_time__date__gte=start_date_30_days
-    ).annotate(date=TruncDate('entry_time')).values('date').annotate(count=Count('id')).order_by('date')
-
-    # Объединяем в Python
-    daily_counts = defaultdict(int)
-    # Предзаполняем нули для всех дней в диапазоне
-    current_date = start_date_30_days
-    while current_date <= today:
-        daily_counts[current_date] = 0
-        current_date += timedelta(days=1)
-
-    # Добавляем реальные данные
-    for v in visits_daily_official:
-        if v['date'] in daily_counts: daily_counts[v['date']] += v['count']
-    for v in visits_daily_student:
-        if v['date'] in daily_counts: daily_counts[v['date']] += v['count']
-
-    # Сортируем по дате и формируем списки для графика
-    sorted_daily_counts = sorted(daily_counts.items())
-    visits_daily_labels_final = [d.strftime('%Y-%m-%d') for d, count in sorted_daily_counts]
-    visits_daily_data_final = [count for d, count in sorted_daily_counts]
-
-
-    # 2. Посещения по департаментам (ОБЪЕДИНЕННЫЕ)
-    # Используем values_list для эффективности
-    visits_dept_official = Visit.objects.filter(department__isnull=False).values_list(
-        'department__name').annotate(count=Count('id'))
-    visits_dept_student = StudentVisit.objects.values_list( # У StudentVisit департамент обязателен
-        'department__name').annotate(count=Count('id'))
-
-    dept_counts = defaultdict(int)
-    for name, count in visits_dept_official: dept_counts[name] += count
-    for name, count in visits_dept_student: dept_counts[name] += count
-
-    # Сортируем и берем топ 10
-    sorted_dept_counts = sorted(dept_counts.items(), key=lambda item: item[1], reverse=True)[:10]
-    visits_dept_labels = [item[0] for item in sorted_dept_counts]
-    visits_dept_data = [item[1] for item in sorted_dept_counts]
-
-
-    # 3. Посещения по сотрудникам (только для Visit) - остается без изменений
-    visits_by_employee = Visit.objects.values(
-        'employee__first_name', 'employee__last_name', 'employee__username' # Убрали email, т.к. не используется в метке
-    ).annotate(count=Count('id')).order_by('-count')[:10]
-
-    visits_employee_labels = []
-    for ve in visits_by_employee:
-        # Используем get_full_name() для корректного отображения
-        try:
-            # Попробуем получить пользователя для get_full_name (может быть неэффективно)
-            # Лучше передавать ID и получать имя в шаблоне или JS, если нужно больше деталей
-            # Здесь оставляем простой вариант для примера
-            user = User.objects.get(username=ve['employee__username']) # Не очень эффективно
-            label = user.get_full_name() or user.username
-        except User.DoesNotExist:
-            label = ve['employee__username'] # Фоллбэк на username
-        visits_employee_labels.append(label)
-    visits_employee_data = [ve['count'] for ve in visits_by_employee]
-
-
-    # 4. Средняя продолжительность визита (ОБЪЕДИНЕННАЯ) - Оптимизированный расчет
-    # Используем aggregate для расчета среднего в базе данных
-    avg_duration_official = Visit.objects.filter(exit_time__isnull=False).aggregate(
-        avg_dur=Avg(F('exit_time') - F('entry_time'))
-    )['avg_dur'] or timedelta(0)
-
-    avg_duration_student = StudentVisit.objects.filter(exit_time__isnull=False).aggregate(
-        avg_dur=Avg(F('exit_time') - F('entry_time'))
-    )['avg_dur'] or timedelta(0)
-
-    # Взвешенное среднее (если нужно точное) или простое среднее (если распределение похоже)
-    # Простой вариант: среднее арифметическое средних длительностей
-    # Более точный: (total_duration_official + total_duration_student) / (count_official + count_student)
-    # Оставим простой вариант для примера:
-    total_avg_seconds = (avg_duration_official.total_seconds() + avg_duration_student.total_seconds()) / 2 if (avg_duration_official or avg_duration_student) else 0
-    avg_duration_minutes = round(total_avg_seconds / 60) if total_avg_seconds > 0 else 0
-
-
-    # 5. Общее количество визитов
-    total_visits_count = Visit.objects.count() + StudentVisit.objects.count()
-
-    context = {
-        'visits_daily_labels': json.dumps(visits_daily_labels_final),
-        'visits_daily_data': json.dumps(visits_daily_data_final),
-        'visits_dept_labels': json.dumps(visits_dept_labels),
-        'visits_dept_data': json.dumps(visits_dept_data),
-        'visits_employee_labels': json.dumps(visits_employee_labels),
-        'visits_employee_data': json.dumps(visits_employee_data),
-        'average_duration_minutes': avg_duration_minutes,
-        'total_visits_count': total_visits_count,
-    }
-    logger.info(f"Statistics data prepared for user '{request.user.username}'.")
-    return render(request, 'visitors/visit_statistics.html', context)
-# ---------------------------------
+"""Удалено: visit_statistics_view"""
 
 # --- Представление для регистрации визита студента ---
 @login_required
@@ -1482,7 +1450,7 @@ def employee_autocomplete_view(request):
 
 # Кэшируем ответ на 2 часа (60 * 60 * 2)
 # Важно: cache_page должен быть ВНЕШНИМ декоратором (применяется последним)
-@cache_page(3600 * 2)
+@cache_page(3600 * 2, cache='pages')
 @login_required
 def get_department_details_view(request):
     """Возвращает детали департамента (имя директора) по ID."""
@@ -1579,9 +1547,28 @@ def check_in_visit(request, visit_kind, visit_id):
     visit = get_object_or_404(model, pk=visit_id, status=STATUS_AWAITING_ARRIVAL)
 
     try:
+        before = {'status': visit.status, 'entry_time': visit.entry_time.isoformat() if visit.entry_time else None}
         visit.status = STATUS_CHECKED_IN
         visit.entry_time = timezone.now() # Устанавливаем фактическое время входа
         visit.save()
+        # Audit: update
+        try:
+            AuditLog.objects.create(
+                action=AuditLog.ACTION_UPDATE,
+                model=('Visit' if visit_kind=='official' else 'StudentVisit'),
+                object_id=str(visit.pk),
+                actor=request.user,
+                ip_address=request.META.get('REMOTE_ADDR'),
+                user_agent=request.META.get('HTTP_USER_AGENT', '')[:1024],
+                path=request.path,
+                method=request.method,
+                changes={
+                    'before': before,
+                    'after': {'status': visit.status, 'entry_time': visit.entry_time.isoformat() if visit.entry_time else None}
+                }
+            )
+        except Exception:
+            logger.exception('Failed to write AuditLog for check-in')
         messages.success(request, f"Вход для '{visit.guest.full_name}' успешно зарегистрирован.")
     except Exception as e:
         messages.error(request, f"Ошибка при регистрации входа: {e}")
@@ -1612,10 +1599,26 @@ def cancel_visit(request, visit_kind, visit_id):
             messages.error(request, "У вас нет прав для отмены этого визита.")
             return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
 
+        before_status = visit.status
         visit.status = STATUS_CANCELLED # Устанавливаем статус "Отменен"
         # Можно добавить поле 'cancellation_reason' или 'cancelled_by', если нужно
         # visit.cancelled_by = request.user
         visit.save(update_fields=['status']) # Обновляем только статус
+        # Audit: update
+        try:
+            AuditLog.objects.create(
+                action=AuditLog.ACTION_UPDATE,
+                model=('Visit' if visit_kind=='official' else 'StudentVisit'),
+                object_id=str(visit.pk),
+                actor=request.user,
+                ip_address=request.META.get('REMOTE_ADDR'),
+                user_agent=request.META.get('HTTP_USER_AGENT', '')[:1024],
+                path=request.path,
+                method=request.method,
+                changes={'before': {'status': before_status}, 'after': {'status': visit.status}}
+            )
+        except Exception:
+            logger.exception('Failed to write AuditLog for cancel')
         messages.success(request, f"Визит для '{visit.guest.full_name}' успешно отменен.")
         logger.info(f"User '{request.user.username}' cancelled {visit_kind} visit ID {visit_id}.")
     except Http404:

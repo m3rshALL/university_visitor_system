@@ -1,5 +1,22 @@
 // Unified UI helpers: toast notifications and small utilities
 (function(){
+  // Progressive enhancement: add lazy loading to images
+  try {
+    if ('loading' in HTMLImageElement.prototype) {
+      var images = document.querySelectorAll('img:not([loading])');
+      images.forEach(function(img){
+        img.setAttribute('loading', 'lazy');
+        if (!img.getAttribute('decoding')) img.setAttribute('decoding', 'async');
+      });
+    } else {
+      // For older browsers, at least set decoding
+      var allImgs = document.querySelectorAll('img');
+      allImgs.forEach(function(img){
+        if (!img.getAttribute('decoding')) img.setAttribute('decoding', 'async');
+      });
+    }
+  } catch(_) {}
+
   function ensureToastRoot(){
     var root = document.getElementById('toast-root');
     if (!root){

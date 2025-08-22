@@ -63,6 +63,12 @@
     }
 }
 
+/* Reduce motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .preloader { transition: none; }
+    .spinner:before, .spinner:after { animation: none; }
+}
+
 .preloader-text {
     font-size: 16px;
     color: #206bc4;

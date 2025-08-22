@@ -9,6 +9,7 @@ from cryptography.fernet import Fernet, InvalidToken  # type: ignore
 import base64
 from django.conf import settings
 import uuid
+from django.contrib.auth import get_user_model
 
 # --- Статусы визитов ---
 STATUS_AWAITING_ARRIVAL = 'AWAITING'
@@ -448,3 +449,37 @@ class GroupGuest(models.Model):
             self.iin_last4 = None
         super().save(*args, **kwargs)
 
+
+# --- Журнал аудита действий над визитами и просмотров ---
+class AuditLog(models.Model):
+    ACTION_CREATE = 'create'
+    ACTION_UPDATE = 'update'
+    ACTION_VIEW = 'view'
+    ACTION_CHOICES = [
+        (ACTION_CREATE, 'create'),
+        (ACTION_UPDATE, 'update'),
+        (ACTION_VIEW, 'view'),
+    ]
+
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Время события')
+    action = models.CharField(max_length=16, choices=ACTION_CHOICES, verbose_name='Действие')
+    model = models.CharField(max_length=100, verbose_name='Модель')
+    object_id = models.CharField(max_length=64, verbose_name='ID объекта')
+    actor = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name='audit_events', verbose_name='Пользователь')
+    ip_address = models.GenericIPAddressField(null=True, blank=True, verbose_name='IP')
+    user_agent = models.TextField(null=True, blank=True, verbose_name='User-Agent')
+    path = models.CharField(max_length=512, null=True, blank=True, verbose_name='Путь запроса')
+    method = models.CharField(max_length=10, null=True, blank=True, verbose_name='HTTP метод')
+    changes = models.JSONField(null=True, blank=True, verbose_name='Изменения')
+    extra = models.JSONField(null=True, blank=True, verbose_name='Доп. данные')
+
+    class Meta:
+        verbose_name = 'Аудит событие'
+        verbose_name_plural = 'Аудит события'
+        indexes = [
+            Index(fields=['action'], name='audit_action_idx'),
+            Index(fields=['model', 'object_id'], name='audit_model_obj_idx'),
+        ]
+
+    def __str__(self) -> str:  # type: ignore[override]
+        return f"{self.created_at.isoformat()} {self.action} {self.model}:{self.object_id} by {getattr(self.actor, 'username', '-') }"

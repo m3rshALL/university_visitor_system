@@ -1,5 +1,5 @@
 # visitors/urls.py
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
 from .views import qr_scan_view, qr_resolve_view, qr_code_view
@@ -39,8 +39,7 @@ urlpatterns = [
     path('dashboard/employee/', views.employee_dashboard_view, name='employee_dashboard'),
     path('dashboard/admin/', views.admin_dashboard_view, name='admin_dashboard'),
     path('ajax/employee-autocomplete/', views.employee_autocomplete_view, name='employee_autocomplete'),
-    # --- путь для статистики ---
-    path('statistics/', views.visit_statistics_view, name='visit_statistics'),
+    # --- путь для статистики --- (удалён)
     
     # --- путь для экспорта в Excel ---
     path('history/export/xlsx/', views.export_visits_xlsx, name='export_visits_xlsx'),
@@ -71,3 +70,5 @@ urlpatterns = [
         'post': lambda self, request, *args, **kwargs: Response({'detail': 'use form endpoint'}, status=400)
     }).as_view(), name='qr_resolve_api'),
 ]
+
+# DRF API маршруты регистрируются на уровне корневого urls.py (prefix /api/v1/)
