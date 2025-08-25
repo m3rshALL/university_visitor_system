@@ -2056,23 +2056,33 @@ def mark_group_exit_view(request, visit_id):
         group_visit.is_completed = True
         group_visit.save(update_fields=['exit_time', 'is_completed'])
 
-        messages.success(request, f"Выход для группового визита успешно зарегистрирован.")
+        messages.success(
+            request,
+            "Выход для группового визита успешно зарегистрирован."
+        )
         return redirect('visit_history')
 
     except Http404:
         logger.warning(
-            f"Attempted to mark exit for non-existent GroupInvitation ID: "
-            f"{visit_id} by user {request.user.username}"
+            "Attempted to mark exit for non-existent GroupInvitation ID: %s "
+            "by user %s",
+            visit_id,
+            request.user.username,
         )
         messages.error(
             request,
-            f"Ошибка: Групповой визит с ID {visit_id} не найден. Возможно, он был удален."
+            (
+                f"Ошибка: Групповой визит с ID {visit_id} не найден. "
+                "Возможно, он был удален."
+            )
         )
         return redirect('visit_history')
 
     except Exception as e:
         logger.error(
-            f"Unexpected error marking group exit for visit ID {visit_id}: {e}",
+            "Unexpected error marking group exit for visit ID %s: %s",
+            visit_id,
+            e,
             exc_info=True,
         )
         messages.error(
