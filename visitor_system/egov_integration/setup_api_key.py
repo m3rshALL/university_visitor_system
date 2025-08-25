@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Скрипт для быстрого добавления API ключа egov.kz
 Использование: python setup_api_key.py
