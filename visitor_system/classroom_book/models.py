@@ -1,7 +1,4 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
@@ -16,19 +13,15 @@ class Classroom(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Активна')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
     class Meta:
         verbose_name = 'Аудитория'
         verbose_name_plural = 'Аудитории'
         ordering = ['building', 'floor', 'number']
-    
     def __str__(self):
         return f"{self.number} ({self.building})"
-    
     def get_available_key(self):
         """Возвращает доступный ключ для этой аудитории"""
         return self.keys.filter(is_available=True).first()
-    
     def is_available(self, start_time, end_time):
         """Проверяет, свободна ли аудитория в указанное время"""
         # Исключаем завершенные бронирования
@@ -45,7 +38,7 @@ class ClassroomKey(models.Model):
     key_number = models.CharField(max_length=20, unique=True, verbose_name='Номер ключа')
     classroom = models.ForeignKey(
         Classroom, 
-        on_delete=models.CASCADE, 
+        on_delete=models.CASCADE,
         related_name='keys',
         verbose_name='Аудитория'
     )
@@ -53,11 +46,9 @@ class ClassroomKey(models.Model):
     notes = models.TextField(blank=True, verbose_name='Примечания')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
     class Meta:
         verbose_name = 'Ключ'
         verbose_name_plural = 'Ключи'
-    
     def __str__(self):
         return f"Ключ #{self.key_number} ({self.classroom.number})"
 
@@ -70,17 +61,16 @@ class KeyBooking(models.Model):
         ('expired', 'Просрочен'),
         ('cancelled', 'Отменен'),
     )
-    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     classroom = models.ForeignKey(
-        Classroom, 
-        on_delete=models.CASCADE, 
+        Classroom,
+        on_delete=models.CASCADE,
         related_name='bookings',
         verbose_name='Аудитория'
     )
     key = models.ForeignKey(
-        ClassroomKey, 
-        on_delete=models.SET_NULL, 
+        ClassroomKey,
+        on_delete=models.SET_NULL,
         null=True,
         related_name='bookings',
         verbose_name='Ключ'
@@ -107,37 +97,29 @@ class KeyBooking(models.Model):
     notes = models.TextField(blank=True, verbose_name='Примечания')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
     class Meta:
         verbose_name = 'Бронирование ключа'
         verbose_name_plural = 'Бронирования ключей'
         ordering = ['-start_time']
-    
     def __str__(self):
         return f"{self.classroom} ({self.start_time.strftime('%d.%m.%Y %H:%M')})"
-    
     def save(self, *args, **kwargs):
         # Генерируем уникальный токен для QR-кода при создании
         if not self.qr_code_token:
             self.qr_code_token = uuid.uuid4().hex
-            
         # Обновляем статус при возврате
         if self.is_returned and not self.returned_at:
             self.returned_at = timezone.now()
             self.status = 'returned'
-            
             # Делаем ключ доступным снова
             if self.key:
                 self.key.is_available = True
                 self.key.save()
-                
         # Обновляем статус при отмене
         if self.is_cancelled and self.status != 'cancelled':
             self.status = 'cancelled'
-            
             # Делаем ключ доступным снова
             if self.key and not self.key.is_available:
                 self.key.is_available = True
                 self.key.save()
-        
         super().save(*args, **kwargs)

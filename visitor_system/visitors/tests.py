@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User, Group
 from .models import Visit, StudentVisit, Guest, Department, EmployeeProfile
-from .views import get_scoped_visits_qs, RECEPTION_GROUP_NAME
+from .views import get_scoped_visits_qs, RECEPTION_GROUP
 from django.utils import timezone
 
 # Create your tests here.
@@ -10,7 +10,7 @@ class GetScopedVisitsQsTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Create Groups
-        cls.reception_group = Group.objects.create(name=RECEPTION_GROUP_NAME)
+        cls.reception_group = Group.objects.create(name=RECEPTION_GROUP)
 
         # Create Departments
         cls.dept1 = Department.objects.create(name="Department 1")

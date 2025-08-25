@@ -1,4 +1,3 @@
-# notifications/utils.py
 import logging
 from django.conf import settings
 from django.template.loader import render_to_string  # Для HTML писем (опционально)
@@ -8,7 +7,7 @@ from django.contrib.auth.models import User, Group  # Добавляем Group
 from django.db import DatabaseError
 from smtplib import SMTPException
 try:
-    from prometheus_client import Counter  # type: ignore
+    from prometheus_client import Counter 
     EMAIL_SEND_TOTAL = Counter('email_send_total', 'Total email send attempts', ['kind'])
     EMAIL_SEND_FAILURES = Counter('email_send_failures_total', 'Total email send failures', ['kind'])
 except Exception:

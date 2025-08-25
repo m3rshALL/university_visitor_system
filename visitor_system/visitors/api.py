@@ -1,10 +1,8 @@
 from django.utils import timezone
-from django.db.models import Q
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.decorators import action
 try:
     from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 except Exception:  # drf-spectacular optional

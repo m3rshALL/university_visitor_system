@@ -24,8 +24,7 @@ dev_hosts = {'127.0.0.1', 'localhost', 'testserver', '0.0.0.0'}
 if DEBUG:
 	ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | dev_hosts)
 else:
-	# В проде добавим только testserver для тестов/CI
-	ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | {'testserver'})
+	ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | {'testserver'}) # В проде добавим только testserver для тестов/CI
 
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -59,7 +58,7 @@ INSTALLED_APPS = [
 	'departments',
 	'notifications',
 	'classroom_book',
-	'egov_integration',  # Интеграция с egov.kz
+	'egov_integration',
 	'realtime_dashboard',
 ]
 
@@ -375,7 +374,7 @@ if SENTRY_DSN:
 	from sentry_sdk.integrations.django import DjangoIntegration  # type: ignore
 	from sentry_sdk.integrations.celery import CeleryIntegration  # type: ignore
 
-	def _before_send(event, hint):
+	def _before_send(event):
 		try:
 			import re
 			def _scrub(val):

@@ -1,16 +1,14 @@
-# visitors/models.py
 from django.db import models
 from django.db.models import Index, Q
 from django.contrib.auth.models import User # Стандартная модель пользователя Django
 from departments.models import Department
 from django.utils import timezone
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
-from cryptography.fernet import Fernet, InvalidToken  # type: ignore
+from cryptography.fernet import Fernet, InvalidToken  
 import base64
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 import uuid
-from django.contrib.auth import get_user_model
 import hashlib
 
 # --- Статусы визитов ---
@@ -77,7 +75,6 @@ class Guest(models.Model):
             f = get_fernet()
             self.iin_encrypted = f.encrypt(value.encode())
             # Хэш для поиска (безопаснее через односторонний SHA-256)
-            import hashlib
             self.iin_hash = hashlib.sha256(value.encode()).hexdigest()
         else:
             self.iin_encrypted = None

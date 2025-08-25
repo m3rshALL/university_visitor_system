@@ -1,6 +1,5 @@
-# visitors/forms.py
 from django import forms
-from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile, GuestInvitation, VisitPurpose, VisitGroup, GroupInvitation, GroupGuest
+from .models import Visit, Guest, StudentVisit, Department, EmployeeProfile, GuestInvitation, GroupInvitation
 from departments.models import Department
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
@@ -10,7 +9,6 @@ from django.urls import reverse_lazy
 import logging
 from django.utils import timezone
 from notifications.tasks import send_visit_notification_task # Импортируем задачу Celery
-import json
 
 # from django.forms import formset_factory # Импортируем formset_factory для создания форм с несколькими экземплярами
 

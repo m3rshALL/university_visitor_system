@@ -1,10 +1,6 @@
-# realtime_dashboard/models.py
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.db.models import Count, Q, Avg
-from datetime import timedelta, datetime
-import json
 
 
 class DashboardMetric(models.Model):
@@ -249,6 +245,3 @@ class DashboardWidget(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.get_widget_type_display()})"
-
-
-# Пресеты удалены по требованию

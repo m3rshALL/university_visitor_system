@@ -1,4 +1,3 @@
-# realtime_dashboard/signals.py
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from visitors.models import Visit, StudentVisit
@@ -9,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=Visit)
-def handle_visit_events(sender, instance, created, **kwargs):
+def handle_visit_events(instance, created, **kwargs):
     """Обработка событий визитов"""
     try:
         if created:
@@ -26,7 +25,7 @@ def handle_visit_events(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=StudentVisit)
-def handle_student_visit_events(sender, instance, created, **kwargs):
+def handle_student_visit_events(instance, created, **kwargs):
     """Обработка событий студенческих визитов"""
     try:
         if created:

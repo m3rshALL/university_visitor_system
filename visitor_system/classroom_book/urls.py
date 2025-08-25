@@ -1,4 +1,3 @@
-# filepath: d:\university_visitor_system\visitor_system\classroom_book\urls.py
 from django.urls import path
 from . import views
 

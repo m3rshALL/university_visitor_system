@@ -1,11 +1,10 @@
-# visitors/urls.py
-from django.urls import path, include
+from django.urls import path
 from . import views
-from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
+#from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
 from .views import qr_scan_view, qr_resolve_view, qr_code_view
-from rest_framework.views import APIView  # type: ignore
-from rest_framework.response import Response  # type: ignore
-from rest_framework.throttling import AnonRateThrottle  # type: ignore
+from rest_framework.views import APIView  
+from rest_framework.response import Response  
+from rest_framework.throttling import AnonRateThrottle 
 
 urlpatterns = [
     # --- единый URL для регистрации ---

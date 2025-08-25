@@ -3,7 +3,7 @@ from django.conf import settings
 
 
 class SecurityHeadersMiddleware(MiddlewareMixin):
-    def process_response(self, request, response):
+    def process_response(self, response):
         response.setdefault('Permissions-Policy',
                             "geolocation=(), microphone=(), camera=(), "
                             "interest-cohort=()")

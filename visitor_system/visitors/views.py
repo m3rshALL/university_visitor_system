@@ -1,4 +1,4 @@
-# visitors/views.py
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.exceptions import PermissionDenied
@@ -13,7 +13,6 @@ from .forms import GuestRegistrationForm, StudentVisitRegistrationForm, HistoryF
     GuestInvitationFillForm, GuestInvitationFinalizeForm, GroupVisitRegistrationForm
 from .models import GuestInvitation
 from .models import AuditLog
-from notifications.utils import send_guest_arrival_email # Импорт функции уведомления
 from django.db.models import Q # Для сложных запросов
 from django.contrib.auth.models import User
 import datetime
@@ -22,37 +21,27 @@ import json
 import logging
 import uuid
 from django.urls import reverse
-from django.core import signing
 from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from qrcode import QRCode
 from io import BytesIO
-from django.core.mail import send_mail
-import os # Add this import
 from django.conf import settings
 
 from django.contrib.auth.models import Group # Импорт модели группы пользователей
-from django.db.models import Count, Avg, F, DurationField
-from django.db.models.functions import TruncDate, TruncMonth
-from .filters import VisitFilter # Импорт фильтров для поиска
+from django.db.models import Count
 from itertools import chain
 from operator import attrgetter
-from collections import defaultdict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
 
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Font
-from openpyxl.utils import get_column_letter
 
 from django.views.decorators.http import require_POST # Для ограничения методов
 from rest_framework.views import APIView  # type: ignore
 from rest_framework.response import Response  # type: ignore
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle  # type: ignore
-from django.utils.decorators import method_decorator
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
-from django.core.cache import cache
-from django.views.decorators.vary import vary_on_cookie
 
 from django.contrib.staticfiles.views import serve as serve_static
 
@@ -60,15 +49,14 @@ from notifications.utils import send_new_visit_notification_to_security
 
 from .models import GroupInvitation, GroupGuest
 from django.forms import modelformset_factory
-from django.utils.crypto import get_random_string
 from django.utils.dateparse import parse_datetime
 
 logger = logging.getLogger(__name__)
 
 # Имя группы для сотрудников ресепшн
-RECEPTION_GROUP_NAME = "Reception"
+RECEPTION_GROUP = "Reception"
 
-FUNCTIONAL_ACCESS_GROUP_NAME = "FunctionalManager" # Например, "FunctionalManager" или "РасширенныйДоступ"
+SECURITY_GROUP = "FunctionalManager" # Например, "FunctionalManager" или "РасширенныйДоступ"
 
 # --- Вспомогательная функция для получения визитов с учетом прав доступа ---
 def get_scoped_visits_qs(user):
@@ -331,7 +319,6 @@ def current_guests_view(request):
 # ---------------------------------
 
 from django.views.decorators.cache import never_cache
-
 @login_required
 @never_cache  # Отключаем кэширование для динамического представления с фильтрацией
 def visit_history_view(request):

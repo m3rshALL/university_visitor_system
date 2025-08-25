@@ -1,4 +1,3 @@
-# realtime_dashboard/views.py
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -258,7 +257,7 @@ if REST_FRAMEWORK_AVAILABLE:
         throttle_classes = [UserRateThrottle]
         schema = None  # Автосхема от drf-spectacular через DEFAULT_SCHEMA_CLASS
         
-        def get(self, request):
+        def get(self):
             """Получение всех метрик"""
             try:
                 metrics = dashboard_service.get_current_metrics()

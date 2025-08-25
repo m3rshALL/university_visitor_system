@@ -33,10 +33,10 @@ DEFAULT_DEPARTMENTS = [
 class Command(BaseCommand):
 	help = "Создаёт базовый набор департаментов, если их нет"
 
-	def handle(self, *args, **options):
+	def handle(self):
 		created_count = 0
 		for name in DEFAULT_DEPARTMENTS:
-			obj, created = Department.objects.get_or_create(name=name)
+			created = Department.objects.get_or_create(name=name)
 			if created:
 				created_count += 1
 		self.stdout.write(self.style.SUCCESS(f"Готово. Создано: {created_count}, всего: {Department.objects.count()}"))

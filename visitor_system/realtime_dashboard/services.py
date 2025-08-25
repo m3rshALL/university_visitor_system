@@ -1,4 +1,3 @@
-# realtime_dashboard/services.py
 from django.db.models import Count
 from django.utils import timezone
 from datetime import timedelta, datetime

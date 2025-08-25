@@ -1,4 +1,3 @@
-# egov_integration/services.py
 import requests
 import logging
 from typing import Dict, Any, Optional, Tuple
@@ -22,7 +21,6 @@ class EgovService:
     """
     Сервис для работы с API egov.kz
     """
-    
     def __init__(self):
         # Инициализация настроек будет выполнена при первом обращении
         self._base_url = None
@@ -30,7 +28,7 @@ class EgovService:
         self._timeout = None
         self._max_retries = None
         self._settings_loaded = False
-    
+        
     def _load_settings(self):
         """Загрузка настроек при первом обращении"""
         if not self._settings_loaded:

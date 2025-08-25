@@ -1,6 +1,5 @@
-# visitors/admin.py
 from django.contrib import admin
-from .models import Guest, Visit, StudentVisit, EmployeeProfile, Department, GuestInvitation, GroupInvitation, GroupGuest, AuditLog
+from .models import Guest, Visit, StudentVisit, EmployeeProfile, GuestInvitation, GroupInvitation, GroupGuest, AuditLog
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model

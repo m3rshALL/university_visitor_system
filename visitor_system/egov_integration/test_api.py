@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Скрипт для тестирования API egov.kz
 Использование: python test_api.py
@@ -25,13 +24,17 @@ def test_settings():
     print("🔧 Проверка настроек...")
     
     try:
-        print(f"   Base URL: {egov_service.base_url}")
-        print(f"   API Key: {'✓ Настроен' if egov_service.api_key else '✗ Не настроен'}")
-        print(f"   Timeout: {egov_service.timeout}s")
-        print(f"   Max Retries: {egov_service.max_retries}")
+        print(f"Base URL: 
+              {egov_service.base_url}")
+        print(f"API Key: 
+              {'✓ Настроен' if egov_service.api_key else '✗ Не настроен'}")
+        print(f"Timeout: 
+              {egov_service.timeout}s")
+        print(f"Max Retries: 
+              {egov_service.max_retries}")
         return True
     except Exception as e:
-        print(f"   ✗ Ошибка: {e}")
+        print(f"✗ Ошибка: {e}")
         return False
 
 
@@ -41,17 +44,19 @@ def test_api_health():
     
     try:
         health = egov_service.check_api_health()
-        print(f"   Статус: {health['status']}")
+        print(f"Статус: {health['status']}")
         
         if health['status'] == 'healthy':
-            print("   ✓ API доступен")
+            print("✓ API доступен")
             return True
         else:
-            print(f"   ✗ API недоступен: {health.get('error', 'Неизвестная ошибка')}")
+            print(f"✗ API недоступен: 
+                  {health.get('error', 'Неизвестная ошибка')}")
             return False
             
     except Exception as e:
-        print(f"   ✗ Ошибка подключения: {e}")
+        print(f"✗ Ошибка подключения: 
+              {e}")
         return False
 
 
@@ -66,35 +71,35 @@ def test_iin_verification():
         admin_user = User.objects.filter(is_superuser=True).first()
         result = egov_service.verify_iin(test_iin, user=admin_user)
         
-        print(f"   ИИН: {test_iin}")
-        print(f"   Статус: {result.status}")
-        print(f"   ID проверки: {result.id}")
+        print(f"ИИН: {test_iin}")
+        print(f"Статус: {result.status}")
+        print(f"ID проверки: {result.id}")
         
         if result.error_message:
-            print(f"   Ошибка: {result.error_message}")
+            print(f"Ошибка: {result.error_message}")
         
         if result.verified_data:
-            print(f"   Данные: {result.verified_data}")
+            print(f"Данные: {result.verified_data}")
         
         return result.status != 'failed'
         
     except Exception as e:
-        print(f"   ✗ Ошибка: {e}")
+        print(f"✗ Ошибка: {e}")
         return False
 
 
 def test_database_settings():
     """Тест настроек в базе данных"""
-    print("\n🗄️  Проверка настроек в БД...")
+    print("\n🗄️Проверка настроек в БД...")
     
     try:
         settings_count = EgovSettings.objects.count()
-        print(f"   Настроек в БД: {settings_count}")
+        print(f"Настроек в БД: {settings_count}")
         
         if settings_count > 0:
             for setting in EgovSettings.objects.all()[:5]:
                 value_preview = "***" if setting.is_encrypted else setting.value[:50]
-                print(f"   - {setting.name}: {value_preview}")
+                print(f"-{setting.name}: {value_preview}")
         
         return True
         
@@ -105,7 +110,7 @@ def test_database_settings():
 
 def setup_test_settings():
     """Настройка тестовых параметров"""
-    print("\n⚙️  Настройка тестовых параметров...")
+    print("\n⚙️Настройка тестовых параметров...")
     
     try:
         admin_user = User.objects.filter(is_superuser=True).first()
@@ -117,7 +122,7 @@ def setup_test_settings():
         ]
         
         for name, value, encrypted in test_settings:
-            setting, created = EgovSettings.objects.update_or_create(
+            created = EgovSettings.objects.update_or_create(
                 name=name,
                 defaults={
                     'value': value,
@@ -127,7 +132,7 @@ def setup_test_settings():
                 }
             )
             status = "создана" if created else "обновлена"
-            print(f"   ✓ {name}: {status}")
+            print(f"✓ {name}: {status}")
         
         return True
         
@@ -156,7 +161,7 @@ def main():
             success = test_func()
             results.append((test_name, success))
         except Exception as e:
-            print(f"   ✗ Критическая ошибка в {test_name}: {e}")
+            print(f"✗ Критическая ошибка в {test_name}: {e}")
             results.append((test_name, False))
     
     # Итоги
@@ -166,18 +171,18 @@ def main():
     passed = 0
     for test_name, success in results:
         status = "✓ ПРОЙДЕН" if success else "✗ ОШИБКА"
-        print(f"   {test_name}: {status}")
+        print(f"{test_name}: {status}")
         if success:
             passed += 1
     
     print(f"\nПройдено: {passed}/{len(results)} тестов")
     
     if passed == len(results):
-        print("🎉 Все тесты пройдены успешно!")
+        print("🎉Все тесты пройдены успешно!")
     elif passed > len(results) // 2:
-        print("⚠️  Большинство тестов пройдено, но есть проблемы")
+        print("⚠️Большинство тестов пройдено, но есть проблемы")
     else:
-        print("🚨 Критические проблемы с интеграцией")
+        print("🚨Критические проблемы с интеграцией")
     
     # Рекомендации
     print("\n📝 Следующие шаги:")

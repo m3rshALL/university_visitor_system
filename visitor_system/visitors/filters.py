@@ -1,8 +1,5 @@
-# visitors/filters.py
-
 import logging
 import django_filters
-from django import forms # Для виджетов
 from .models import Visit, Department, Guest
 from django.contrib.auth.models import User
 from django.db.models import Q # Для сложного поиска по сотруднику
@@ -61,7 +58,7 @@ class VisitFilter(django_filters.FilterSet):
         fields = [] # Или перечислить 'purpose', 'department' и т.д., если не определять их выше
 
     # Кастомный метод для поиска по сотруднику
-    def filter_by_employee_info(self, queryset, name, value):
+    def filter_by_employee_info(self, queryset, value):
         logger.debug("Filtering by employee_info: '%s'", value)
         if value:            
             # Ищем по совпадению в имени, фамилии или email
@@ -79,7 +76,7 @@ class VisitFilter(django_filters.FilterSet):
         return queryset
 
     # Кастомный метод для фильтрации по статусу
-    def filter_by_status(self, queryset, name, value):
+    def filter_by_status(self, queryset, value):
         logger.warning("VisitFilter.filter_by_status called, but history filtering logic is primarily in the view now.")
         if value == 'active':
             return queryset.filter(exit_time__isnull=True)

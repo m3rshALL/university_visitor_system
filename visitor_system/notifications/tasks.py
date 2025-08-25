@@ -1,4 +1,3 @@
-# notifications/tasks.py
 from celery import shared_task
 from .utils import send_visit_creation_notification
 from django.core.mail import send_mail
