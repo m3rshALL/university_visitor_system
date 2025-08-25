@@ -62,7 +62,7 @@ class VisitFilter(django_filters.FilterSet):
 
     # Кастомный метод для поиска по сотруднику
     def filter_by_employee_info(self, queryset, name, value):
-        logger.debug(f"Filtering by employee_info: '{value}'")
+        logger.debug("Filtering by employee_info: '%s'", value)
         if value:            
             # Ищем по совпадению в имени, фамилии или email
             qs = queryset.filter(
@@ -70,7 +70,11 @@ class VisitFilter(django_filters.FilterSet):
                 Q(employee__last_name__icontains=value) |
                 Q(employee__email__icontains=value)
             )
-            logger.debug(f"Employee filter reduced queryset from {queryset.count()} to {qs.count()}")
+            logger.debug(
+                "Employee filter reduced queryset from %s to %s",
+                queryset.count(),
+                qs.count(),
+            )
             return qs
         return queryset
 

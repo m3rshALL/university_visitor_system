@@ -275,10 +275,10 @@ class GuestRegistrationForm(forms.Form):
                      updated = True
             if updated:
                  guest.save()
-                 print(f"Обновлены данные для существующего гостя: {guest.full_name}")
+                 logger.info("Обновлены данные для существующего гостя: %s", guest.full_name)
 
         # Теперь переменная 'guest' гарантированно содержит ЭКЗЕМПЛЯР Guest
-        logger.info(f"Using guest object: {guest} (ID: {guest.id}), Created: {created}")
+        logger.info("Using guest object: %s (ID: %s), Created: %s", guest, guest.id, created)
         # --- КОНЕЦ: Логика поиска/создания гостя ---
 
         # --- Определяем цель визита ---
@@ -304,32 +304,46 @@ class GuestRegistrationForm(forms.Form):
         if registration_type == 'now':
             visit.status = STATUS_CHECKED_IN
             visit.entry_time = timezone.now()
-            logger.info(f"Visit {visit.id} created with status CHECKED_IN.")
+            logger.info("Visit %s created with status CHECKED_IN.", visit.id)
         elif registration_type == 'later':
             visit.status = STATUS_AWAITING_ARRIVAL
             visit.entry_time = None
-            logger.info(f"Visit {visit.id} created with status AWAITING_ARRIVAL.")
+            logger.info("Visit %s created with status AWAITING_ARRIVAL.", visit.id)
             # Отправляем уведомление только для запланированных
             if visit.expected_entry_time:
                  try:
                      visit.save() # Сохраняем ДО задачи
                      send_visit_notification_task.delay(visit.id, 'official')
-                     logger.info(f"Celery task queued for Visit ID {visit.id}")
+                     logger.info("Celery task queued for Visit ID %s", visit.id)
                  except Exception as e:
-                     logger.error(f"Ошибка постановки задачи Celery для Visit {visit.id}: {e}", exc_info=True)
+                     logger.error(
+                         "Ошибка постановки задачи Celery для Visit %s: %s",
+                         visit.id,
+                         e,
+                         exc_info=True,
+                     )
                      if not visit.pk: visit.save() # Пытаемся сохранить
             else:
-                 logger.warning(f"Visit {visit.id} is 'later' but has no expected_entry_time.")
+                 logger.warning("Visit %s is 'later' but has no expected_entry_time.", visit.id)
                  if not visit.pk: visit.save() # Сохраняем как ожидающий
         else:
              visit.status = STATUS_AWAITING_ARRIVAL # По умолчанию
              visit.entry_time = None
-             logger.warning(f"Visit {visit.id} created with unknown registration_type '{registration_type}', setting status to AWAITING_ARRIVAL.")
+             logger.warning(
+                 "Visit %s created with unknown registration_type '%s', setting status to AWAITING_ARRIVAL.",
+                 visit.id,
+                 registration_type,
+             )
 
         # Сохраняем объект в БД, если он не был сохранен ранее (в блоке try)
         if not visit.pk:
             visit.save()
-        logger.info(f"Saved Visit ID {visit.id}, Status: {visit.status}, Consent Ack: {visit.consent_acknowledged}")
+        logger.info(
+            "Saved Visit ID %s, Status: %s, Consent Ack: %s",
+            visit.id,
+            visit.status,
+            visit.consent_acknowledged,
+        )
         # ---------------------------------------------------------
 
         return visit

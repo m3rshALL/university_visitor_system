@@ -182,7 +182,10 @@ def register_guest_view(request):
                     try:
                         send_new_visit_notification_to_security(visit, 'official')
                     except Exception as e:
-                        logger.error(f"Ошибка при вызове send_new_visit_notification_to_security для гостя: {e}")
+                        logger.error(
+                            "Ошибка при вызове send_new_visit_notification_to_security для гостя: %s",
+                            e,
+                        )
                     # --------------------------------------------
                     messages.success(request, f"Визит гостя {visit.guest.full_name} успешно зарегистрирован ({'сейчас' if registration_type == 'now' else 'заранее'})!")
                     return redirect('employee_dashboard')
@@ -372,7 +375,7 @@ def visit_history_view(request):
     
     # Применяем фильтры, если форма была отправлена (есть GET параметры)
     if request.GET and filter_form.is_valid():
-        logger.debug(f"Applying filters: {filter_form.cleaned_data}")
+        logger.debug("Applying filters: %s", filter_form.cleaned_data)
         # Общие фильтры
         guest_name_query = filter_form.cleaned_data.get('guest_name') # Corrected: was 'guests', changed variable name
         guest_iin = filter_form.cleaned_data.get('guest_iin')
@@ -381,7 +384,7 @@ def visit_history_view(request):
         # Фильтрация по типу визита
         visit_type = filter_form.cleaned_data.get('visit_type')
         if visit_type:
-            logger.debug(f"Filtering by visit_type: '{visit_type}'")
+            logger.debug("Filtering by visit_type: '%s'", visit_type)
             if visit_type == 'official':
                 # Если выбран только официальный тип, отключаем другие типы визитов
                 student_visits_qs = student_visits_qs.none()
@@ -397,7 +400,7 @@ def visit_history_view(request):
                 # Применяем фильтр по статусу
         status = filter_form.cleaned_data.get('status')
         if status:
-            logger.debug(f"Filtering by status: '{status}'")
+            logger.debug("Filtering by status: '%s'", status)
             official_visits_qs = official_visits_qs.filter(status=status)
             student_visits_qs = student_visits_qs.filter(status=status)
             # Для групповых визитов используем логику сопоставления статусов:
@@ -679,14 +682,23 @@ def mark_guest_exit_view(request, visit_id):
 
     """except Http404:
         # Явно обрабатываем случай, когда визит не найден (ошибка 404)
-        logger.warning(f"Attempted to mark exit for non-existent Visit ID: {visit_id} by user {request.user.username}")
+        logger.warning(
+            "Attempted to mark exit for non-existent Visit ID: %s by user %s",
+            visit_id,
+            request.user.username,
+        )
         messages.error(request, f"Ошибка: Визит гостя с ID {visit_id} не найден. Возможно, он был удален или уже обработан.")
         # Перенаправляем на безопасную страницу, например, историю
         return redirect('visit_history')
 
     except Exception as e:
         # Ловим другие возможные ошибки
-        logger.error(f"Unexpected error marking guest exit for visit ID {visit_id}: {e}", exc_info=True)
+        logger.error(
+            "Unexpected error marking guest exit for visit ID %s: %s",
+            visit_id,
+            e,
+            exc_info=True,
+        )
         messages.error(request, "Произошла непредвиденная ошибка при отметке выхода гостя.")
         return redirect(request.META.get('HTTP_REFERER', 'current_guests'))"""
 
@@ -730,12 +742,21 @@ def mark_student_exit_view(request, visit_id):
         return redirect('visit_history')
 
     except Http404:
-        logger.warning(f"Attempted to mark exit for non-existent StudentVisit ID: {visit_id} by user {request.user.username}")
+        logger.warning(
+            "Attempted to mark exit for non-existent StudentVisit ID: %s by user %s",
+            visit_id,
+            request.user.username,
+        )
         messages.error(request, f"Ошибка: Визит студента/абитуриента с ID {visit_id} не найден. Возможно, он был удален или уже обработан.")
         return redirect('visit_history')
 
     except Exception as e:
-        logger.error(f"Unexpected error marking student exit for visit ID {visit_id}: {e}", exc_info=True)
+        logger.error(
+            "Unexpected error marking student exit for visit ID %s: %s",
+            visit_id,
+            e,
+            exc_info=True,
+        )
         messages.error(request, "Произошла непредвиденная ошибка при отметке выхода посетителя.")
         return redirect(request.META.get('HTTP_REFERER', 'current_guests'))
 
@@ -1038,12 +1059,20 @@ def employee_dashboard_view(request):
                     logger.warning(f"Приглашение {invite.pk} имеет некорректные данные (отсутствует token)")
                     has_invitation_data_issues = True
             except Exception as inner_e:
-                logger.warning(f"Не удалось получить количество гостей для приглашения {invite.pk}: {inner_e}")
+                logger.warning(
+                    "Не удалось получить количество гостей для приглашения %s: %s",
+                    invite.pk,
+                    inner_e,
+                )
                 invite.guest_count = 0
                 has_invitation_data_issues = True
             
     except Exception as e:
-        logger.error(f"Ошибка при получении групповых приглашений: {e}", exc_info=True)
+        logger.error(
+            "Ошибка при получении групповых приглашений: %s",
+            e,
+            exc_info=True,
+        )
         group_invitations = []
         has_invitation_data_issues = True
     
@@ -1082,8 +1111,11 @@ def has_functional_access(user):
     try:
         return user.groups.filter(name=FUNCTIONAL_ACCESS_GROUP_NAME).exists()
     except Group.DoesNotExist: # На случай, если группа была удалена или еще не создана
-        logger.warning(f"Группа '{FUNCTIONAL_ACCESS_GROUP_NAME}' не найдена в базе данных. "
-                       f"Функциональный доступ для пользователя {user.username} не предоставлен по группе.")
+        logger.warning(
+            "Группа '%s' не найдена в базе данных. Функциональный доступ для пользователя %s не предоставлен по группе.",
+            FUNCTIONAL_ACCESS_GROUP_NAME,
+            user.username,
+        )
         return False
 # -----------------------------------------
 
@@ -1454,7 +1486,7 @@ def employee_autocomplete_view(request):
 def get_department_details_view(request):
     """Возвращает детали департамента (имя директора) по ID."""
     department_id = request.GET.get('department_id')
-    logger.debug(f"Request for department details received for dept_id: {department_id}")
+    logger.debug("Request for department details received for dept_id: %s", department_id)
     data = {'director_name': 'Не назначен или не найден'} # По умолчанию
 
     if department_id and department_id.isdigit():
@@ -1468,14 +1500,14 @@ def get_department_details_view(request):
             else:
                 data['director_name'] = 'Не назначен'
         except Department.DoesNotExist:
-            logger.debug(f"Department ID {department_id} not found for detail request.")
-        except Exception as e:            
-            logger.exception(f"Error fetching department details for dept {department_id}.")
+            logger.debug("Department ID %s not found for detail request.", department_id)
+        except Exception:
+            logger.exception("Error fetching department details for dept %s.", department_id)
             data['director_name'] = 'Ошибка загрузки'
     else:
-        logger.warning(f"Invalid or missing department_id '{department_id}' for detail request.")
+        logger.warning("Invalid or missing department_id '%s' for detail request.", department_id)
         
-    logger.debug(f"Returning department details: {data}")
+    logger.debug("Returning department details: %s", data)
     return JsonResponse(data)
 
 # ---------------------------------
@@ -1621,11 +1653,22 @@ def cancel_visit(request, visit_kind, visit_id):
         except Exception:
             logger.exception('Failed to write AuditLog for cancel')
         messages.success(request, f"Визит для '{visit.guest.full_name}' успешно отменен.")
-        logger.info(f"User '{request.user.username}' cancelled {visit_kind} visit ID {visit_id}.")
+        logger.info(
+            "User '%s' cancelled %s visit ID %s.",
+            request.user.username,
+            visit_kind,
+            visit_id,
+        )
     except Http404:
         messages.warning(request, f"Визит с ID {visit_id} не найден или уже не ожидает прибытия.")
     except Exception as e:
-         logger.error(f"Ошибка при отмене {visit_kind} визита ID {visit_id}: {e}", exc_info=True)
+         logger.error(
+             "Ошибка при отмене %s визита ID %s: %s",
+             visit_kind,
+             visit_id,
+             e,
+             exc_info=True,
+         )
          messages.error(request, f"Ошибка при отмене визита: {e}")
 
     return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
@@ -1650,7 +1693,7 @@ def profile_setup_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Ваш профиль успешно настроен!")
-            logger.info(f"User '{request.user.username}' completed profile setup.")
+            logger.info("User '%s' completed profile setup.", request.user.username)
             # Проверяем параметр next для безопасного редиректа
             next_url = request.GET.get('next')
             # Используем is_safe_url для проверки
@@ -1659,7 +1702,11 @@ def profile_setup_view(request):
             else:
                 return redirect('employee_dashboard') # Редирект по умолчанию
         else:
-            logger.warning(f"Profile setup form invalid for user '{request.user.username}'. Errors: {form.errors.as_json()}")
+            logger.warning(
+                "Profile setup form invalid for user '%s'. Errors: %s",
+                request.user.username,
+                form.errors.as_json(),
+            )
     else: # GET запрос
         form = ProfileSetupForm(instance=profile) # Показываем форму с текущими данными профиля
 
@@ -1757,7 +1804,11 @@ def finalize_guest_invitation(request, pk):
                         try:
                             guest.iin = raw_iin  # setter зашифрует и проставит хэш
                         except Exception as e:
-                            logger.error(f"Некорректный ИИН в приглашении {invitation.pk}: {e}")
+                            logger.error(
+                                "Некорректный ИИН в приглашении %s: %s",
+                                invitation.pk,
+                                e,
+                            )
                             messages.error(request, "Некорректный ИИН гостя.")
                             return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
                     guest.save()
@@ -1806,7 +1857,11 @@ def finalize_guest_invitation(request, pk):
                                 fail_silently=False,
                             )
                         except Exception as e:
-                            logger.error(f"Ошибка при отправке уведомления гостю {invitation.guest_email}: {e}")
+                            logger.error(
+                                "Ошибка при отправке уведомления гостю %s: %s",
+                                invitation.guest_email,
+                                e,
+                            )
                     transaction.on_commit(_send)
 
                 messages.success(request, 'Визит успешно зарегистрирован.')

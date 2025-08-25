@@ -136,13 +136,17 @@ class EgovService:
             )
             
             if response.status_code >= 400:
-                logger.error(f"API egov.kz error: {response.status_code} - {response.text}")
+                logger.error(
+                    "API egov.kz error: %s - %s",
+                    response.status_code,
+                    response.text,
+                )
                 raise EgovAPIException(f"API error: {response.status_code}")
             
             return response.status_code, response.json()
             
         except requests.exceptions.RequestException as e:
-            logger.error(f"Request to egov.kz failed: {e}")
+            logger.error("Request to egov.kz failed: %s", e)
             # Логируем ошибку
             self._log_api_call(
                 method=method,
@@ -180,7 +184,7 @@ class EgovService:
                 verification=verification
             )
         except Exception as e:
-            logger.error(f"Failed to log API call: {e}")
+            logger.error("Failed to log API call: %s", e)
     
     def verify_iin(self, iin: str, user=None) -> DocumentVerification:
         """
@@ -227,14 +231,14 @@ class EgovService:
             verification.verified_at = timezone.now()
             verification.save()
             
-            logger.info(f"IIN verification completed: {iin} - {verification.status}")
+            logger.info("IIN verification completed: %s - %s", iin, verification.status)
             return verification
             
         except Exception as e:
             verification.status = 'failed'
             verification.error_message = str(e)
             verification.save()
-            logger.error(f"IIN verification failed: {e}")
+            logger.error("IIN verification failed: %s", e)
             return verification
     
     def verify_passport(self, passport_number: str, user=None) -> DocumentVerification:

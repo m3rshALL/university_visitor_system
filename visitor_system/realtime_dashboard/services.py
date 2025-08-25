@@ -1,12 +1,11 @@
 # realtime_dashboard/services.py
-from django.db.models import Count, Q, Avg, Sum
+from django.db.models import Count
 from django.utils import timezone
 from datetime import timedelta, datetime
 from django.core.cache import cache
 from visitors.models import Visit, StudentVisit, Guest
 from departments.models import Department
 from .models import DashboardMetric, RealtimeEvent
-import json
 import logging
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -396,10 +395,10 @@ class DashboardMetricsService:
                     },
                 )
             except Exception as ws_err:
-                logger.warning(f"WS metrics broadcast failed: {ws_err}")
+                logger.warning("WS metrics broadcast failed: %s", ws_err)
             
         except Exception as e:
-            logger.error(f"Error saving dashboard metrics: {e}")
+            logger.error("Error saving dashboard metrics: %s", e)
 
 
 class RealtimeEventService:
@@ -421,7 +420,7 @@ class RealtimeEventService:
                 data=data or {}
             )
             
-            logger.info(f"Realtime event created: {event.title}")
+            logger.info("Realtime event created: %s", event.title)
             # Транслируем событие по WS
             try:
                 channel_layer = get_channel_layer()
@@ -443,11 +442,11 @@ class RealtimeEventService:
                     },
                 )
             except Exception as ws_err:
-                logger.warning(f"WS broadcast failed: {ws_err}")
+                logger.warning("WS broadcast failed: %s", ws_err)
             return event
             
         except Exception as e:
-            logger.error(f"Error creating realtime event: {e}")
+            logger.error("Error creating realtime event: %s", e)
             return None
     
     @staticmethod

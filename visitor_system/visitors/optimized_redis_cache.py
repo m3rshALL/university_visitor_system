@@ -131,7 +131,7 @@ def optimize_redis_connection():
         else:
             logger.warning("Could not optimize Redis connection - client not available")
     except Exception as e:
-        logger.error(f"Failed to optimize Redis connection: {e}")
+        logger.error("Failed to optimize Redis connection: %s", e)
 
 class RedisBatchCache:
     """
@@ -161,7 +161,7 @@ class RedisBatchCache:
             values = self.client.mget(keys)
             return dict(zip(keys, values))
         except Exception as e:
-            logger.error(f"Redis mget error: {e}")
+            logger.error("Redis mget error: %s", e)
             return {}
             
     def mset(self, mapping, ttl=300):
@@ -190,5 +190,5 @@ class RedisBatchCache:
             pipe.execute()
             return True
         except Exception as e:
-            logger.error(f"Redis mset error: {e}")
+            logger.error("Redis mset error: %s", e)
             return False

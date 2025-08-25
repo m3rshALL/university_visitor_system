@@ -153,7 +153,7 @@ def mark_event_read(request, event_id):
             'error': 'Событие не найдено'
         }, status=404)
     except Exception as e:
-        logger.error(f"Error marking event as read: {e}")
+        logger.error("Error marking event as read: %s", e)
         return JsonResponse({
             'success': False,
             'error': 'Ошибка обновления события'

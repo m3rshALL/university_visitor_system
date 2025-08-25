@@ -22,7 +22,7 @@ def handle_visit_events(sender, instance, created, **kwargs):
             elif instance.status == 'CHECKED_OUT' and instance.exit_time:
                 event_service.notify_visit_checked_out(instance)
     except Exception as e:
-        logger.error(f"Error handling visit event: {e}")
+        logger.error("Error handling visit event: %s", e)
 
 
 @receiver(post_save, sender=StudentVisit)
@@ -69,4 +69,4 @@ def handle_student_visit_events(sender, instance, created, **kwargs):
                     }
                 )
     except Exception as e:
-        logger.error(f"Error handling student visit event: {e}")
+        logger.error("Error handling student visit event: %s", e)
