@@ -1,11 +1,11 @@
-# visitors/new_employee_dashboard.py
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Count, Q
 from itertools import chain
 from operator import attrgetter
-from .visitors.models import Visit, StudentVisit, EmployeeProfile, GuestInvitation, STATUS_AWAITING_ARRIVAL, GroupInvitation
+from .visitors.models import Visit, StudentVisit, EmployeeProfile,\
+                            GuestInvitation, STATUS_AWAITING_ARRIVAL, GroupInvitation
 from django.shortcuts import render
 from django.contrib.auth.models import User
 

@@ -6,26 +6,22 @@ from datetime import timedelta
 
 load_dotenv()
 
-
 BASE_DIR = Path(__file__).resolve().parents[2]
-
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-insecure-placeholder')
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
 
 _allowed_hosts_raw = os.getenv('DJANGO_ALLOWED_HOSTS', '').strip()
 if _allowed_hosts_raw:
-	ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_raw.split(',') if h.strip()]
+    ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_raw.split(',') if h.strip()]
 else:
-	ALLOWED_HOSTS = []
-
+    ALLOWED_HOSTS = []
 # В режиме разработки всегда добавляем локальные хосты
 dev_hosts = {'127.0.0.1', 'localhost', 'testserver', '0.0.0.0'}
 if DEBUG:
-	ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | dev_hosts)
+    ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | dev_hosts)
 else:
-	ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | {'testserver'}) # В проде добавим только testserver для тестов/CI
-
+    ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | {'testserver'})  # В проде добавим только testserver для тестов/CI
 INTERNAL_IPS = ['127.0.0.1']
 
 INSTALLED_APPS = [
@@ -65,8 +61,7 @@ INSTALLED_APPS = [
 # Подключаем drf_spectacular, только если пакет доступен
 _has_spectacular = _importlib_util.find_spec('drf_spectacular') is not None
 if _has_spectacular and 'drf_spectacular' not in INSTALLED_APPS:
-	INSTALLED_APPS.append('drf_spectacular')
-
+    INSTALLED_APPS.append('drf_spectacular')
 
 MIDDLEWARE = [
 	'django_prometheus.middleware.PrometheusBeforeMiddleware',
@@ -367,38 +362,41 @@ LOGGING = {
 }
 
 
-# Sentry SDK (опционально)
+# Sentry SDK
 SENTRY_DSN = os.getenv('SENTRY_DSN', '')
 if SENTRY_DSN:
-	import sentry_sdk  # type: ignore
-	from sentry_sdk.integrations.django import DjangoIntegration  # type: ignore
-	from sentry_sdk.integrations.celery import CeleryIntegration  # type: ignore
+	try:
+		import sentry_sdk
+		from sentry_sdk.integrations.django import DjangoIntegration
+		from sentry_sdk.integrations.celery import CeleryIntegration
 
-	def _before_send(event):
-		try:
-			import re
-			def _scrub(val):
-				s = str(val)
-				s = re.sub(r"\b\d{12}\b", "************", s)  # ИИН
-				s = re.sub(r"\b\+?\d{10,14}\b", "********", s)  # телефоны
-				return s
-			for k in ('request', 'extra', 'breadcrumbs'):
-				if k in event:
-					event[k] = _scrub(event[k])
-		except Exception:
-			pass
-		return event
+		def _before_send(event):
+			try:
+				import re
+				def _scrub(val):
+					s = str(val)
+					s = re.sub(r"\b\d{12}\b", "************", s)  # ИИН
+					s = re.sub(r"\b\+?\d{10,14}\b", "********", s)  # телефоны
+					return s
+				for k in ('request', 'extra', 'breadcrumbs'):
+					if k in event:
+						event[k] = _scrub(event[k])
+			except Exception:
+				pass
+			return event
 
-	traces_rate = os.getenv('SENTRY_TRACES') or os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')
-	sentry_sdk.init(
-		dsn=SENTRY_DSN,
-		integrations=[DjangoIntegration(), CeleryIntegration()],
-		traces_sample_rate=float(traces_rate),
-		send_default_pii=False,
-		release=os.getenv('SENTRY_RELEASE', os.getenv('GIT_COMMIT', '')),
-		environment=os.getenv('SENTRY_ENV', 'dev'),
-		before_send=_before_send,
-	)
+		traces_rate = os.getenv('SENTRY_TRACES') or os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')
+		sentry_sdk.init(
+			dsn=SENTRY_DSN,
+			integrations=[DjangoIntegration(), CeleryIntegration()],
+			traces_sample_rate=float(traces_rate),
+			send_default_pii=False,
+			release=os.getenv('SENTRY_RELEASE', os.getenv('GIT_COMMIT', '')),
+			environment=os.getenv('SENTRY_ENV', 'dev'),
+			before_send=_before_send,
+		)
+	except ImportError:
+		pass
 
 CACHES = {
 	'default': {

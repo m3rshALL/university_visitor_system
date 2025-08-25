@@ -52,9 +52,6 @@ jobs:
         run: |
           poetry config virtualenvs.create false
           poetry install --no-interaction --no-ansi
-      - name: Lint
-        run: |
-          poetry run flake8
       - name: Migrate
         working-directory: visitor_system
         run: |

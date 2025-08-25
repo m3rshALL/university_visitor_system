@@ -1,10 +1,8 @@
-# egov_integration/management/commands/setup_egov_settings.py
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from egov_integration.models import EgovSettings
 from cryptography.fernet import Fernet
 from django.conf import settings
-import base64
 
 
 class Command(BaseCommand):
@@ -28,9 +26,8 @@ class Command(BaseCommand):
             help='Имя администратора для записи настроек'
         )
 
-    def handle(self, *args, **options):
+    def handle(self, **options):
         self.stdout.write('Настройка интеграции с egov.kz...')
-        
         # Получаем пользователя-администратора
         admin_user = None
         if options['admin_user']:
@@ -40,10 +37,8 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.WARNING(f'Пользователь {options["admin_user"]} не найден')
                 )
-        
         if not admin_user:
             admin_user = User.objects.filter(is_superuser=True).first()
-        
         # Создаем базовые настройки
         settings_data = [
             {
@@ -77,7 +72,6 @@ class Command(BaseCommand):
                 'is_encrypted': False
             }
         ]
-        
         # Добавляем API ключ, если предоставлен
         if options['api_key']:
             api_key_encrypted = self._encrypt_value(options['api_key'])
@@ -87,11 +81,9 @@ class Command(BaseCommand):
                 'description': 'API ключ для доступа к egov.kz (зашифрован)',
                 'is_encrypted': True
             })
-        
         # Создаем или обновляем настройки
         created_count = 0
         updated_count = 0
-        
         for setting_data in settings_data:
             setting, created = EgovSettings.objects.update_or_create(
                 name=setting_data['name'],
@@ -102,7 +94,6 @@ class Command(BaseCommand):
                     'updated_by': admin_user
                 }
             )
-            
             if created:
                 created_count += 1
                 self.stdout.write(
@@ -113,14 +104,12 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.WARNING(f'⚠ Обновлена настройка: {setting.name}')
                 )
-        
         self.stdout.write('')
         self.stdout.write(
             self.style.SUCCESS(
                 f'Настройка завершена! Создано: {created_count}, обновлено: {updated_count}'
             )
         )
-        
         if not options['api_key']:
             self.stdout.write('')
             self.stdout.write(
@@ -129,7 +118,6 @@ class Command(BaseCommand):
                     'Добавьте его через Django Admin или повторно запустите команду с --api-key'
                 )
             )
-        
         self.stdout.write('')
         self.stdout.write('Следующие шаги:')
         self.stdout.write('1. Получите API ключ на портале egov.kz')
@@ -146,10 +134,9 @@ class Command(BaseCommand):
                     self.style.ERROR('IIN_ENCRYPTION_KEY не настроен в settings')
                 )
                 return value
-            
             f = Fernet(key.encode())
             return f.encrypt(value.encode()).decode()
-        except Exception as e:
+        except (ValueError, TypeError, AttributeError, ImportError, OSError) as e:
             self.stdout.write(
                 self.style.ERROR(f'Ошибка шифрования: {e}')
             )

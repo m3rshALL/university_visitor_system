@@ -1,4 +1,3 @@
-# authentication/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
 # from django.contrib.auth.decorators import login_required
@@ -8,11 +7,10 @@ from django.contrib.auth import logout as auth_logout
 
 def login_view(request):
     """
-    Эта страница должна инициировать процесс входа через Microsoft.
+    Эта страница должна инициировать процесс входа через Microsoft.ы
     Если используется django-allauth, здесь может быть ссылка типа:
     <a href="{% provider_login_url 'microsoft' %}">Войти через Microsoft</a>
     """
-    # TODO: Интегрировать с MS Auth (например, редирект на URL провайдера)
     return render(request, 'registration/login.html')
 
 
@@ -24,12 +22,11 @@ def logout_view(request):
     return redirect('login')
 
 
-def microsoft_callback(request):
+def microsoft_callback():
     """
     URL, на который Microsoft перенаправит пользователя после аутентификации.
     Здесь происходит обработка токена и вход пользователя в Django.
     Эту логику обычно берет на себя библиотека типа django-allauth.
     """
-    # TODO: Обработать ответ от Microsoft, аутентифицировать пользователя в Django
     # Если успешно, редирект на LOGIN_REDIRECT_URL
     return redirect('employee_dashboard')  # Пример редиректа
