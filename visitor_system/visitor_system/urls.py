@@ -40,7 +40,7 @@ from visitor_system.celery import app as celery_app
 
 
 # Healthcheck views with safe fallbacks
-def healthz_view():
+def healthz_view(request):
     try:
         connections['default'].cursor().execute('SELECT 1')
         caches['default'].set('healthz', 'ok', 5)
@@ -49,7 +49,7 @@ def healthz_view():
         return JsonResponse({'status': 'degraded'})
 
 
-def healthz_celery_view():
+def healthz_celery_view(request):
     try:
         workers = len(celery_app.control.ping(timeout=1.0) or [])
         return JsonResponse({'status': 'ok', 'workers': workers})

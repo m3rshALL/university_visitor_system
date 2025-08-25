@@ -24,14 +24,14 @@ def test_settings():
     print("🔧 Проверка настроек...")
     
     try:
-        print(f"Base URL: 
-              {egov_service.base_url}")
-        print(f"API Key: 
-              {'✓ Настроен' if egov_service.api_key else '✗ Не настроен'}")
-        print(f"Timeout: 
-              {egov_service.timeout}s")
-        print(f"Max Retries: 
-              {egov_service.max_retries}")
+        print("Base URL: {}".format(egov_service.base_url))
+        print(
+            "API Key: {}".format(
+                "✓ Настроен" if egov_service.api_key else "✗ Не настроен"
+            )
+        )
+        print("Timeout: {}s".format(egov_service.timeout))
+        print("Max Retries: {}".format(egov_service.max_retries))
         return True
     except Exception as e:
         print(f"✗ Ошибка: {e}")
@@ -50,13 +50,15 @@ def test_api_health():
             print("✓ API доступен")
             return True
         else:
-            print(f"✗ API недоступен: 
-                  {health.get('error', 'Неизвестная ошибка')}")
+            print(
+                "✗ API недоступен: {}".format(
+                    health.get('error', 'Неизвестная ошибка')
+                )
+            )
             return False
             
     except Exception as e:
-        print(f"✗ Ошибка подключения: 
-              {e}")
+        print("✗ Ошибка подключения: {}".format(e))
         return False
 
 

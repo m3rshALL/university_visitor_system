@@ -33,23 +33,23 @@ def audit_student_visit_create_update(instance: StudentVisit, created: bool, **k
 
 # visitors/signals.py
 
-from django.conf import settings # Для ссылки на модель User
-from django.db.models.signals import post_save
+from django.conf import settings  # Для ссылки на модель User
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 # from notifications.tasks import send_visit_notification_task # Импортируем задачу для отправки уведомлений
 # Импортируем ваши модели User (хотя settings.AUTH_USER_MODEL лучше) и EmployeeProfile
 # from django.contrib.auth.models import User # Менее гибко
 # from .models import EmployeeProfile # Убедитесь, что EmployeeProfile импортирован
 # from .models import Visit, StudentVisit # Импортируем модели Visit и StudentVisit
 
-# Лучше использовать settings.AUTH_USER_MODEL для гибкости
-User = settings.AUTH_USER_MODEL
+# Используем реальную модель пользователя
+UserModel = get_user_model()
 
 # --- Обработчик для модели Visit ---
 @receiver(post_save, sender='visitors.Visit')
 def notify_on_visit_creation(instance, created, **kwargs):
-    from notifications.tasks import send_visit_notification_task
     """Отправляет уведомление при создании нового Visit."""
+    from notifications.tasks import send_visit_notification_task
     if created: # Отправляем только при СОЗДАНИИ записи
         import logging
         logging.getLogger(__name__).info(
@@ -62,8 +62,8 @@ def notify_on_visit_creation(instance, created, **kwargs):
 # --- Обработчик для модели StudentVisit ---
 @receiver(post_save, sender='visitors.StudentVisit')
 def notify_on_student_visit_creation(instance, created, **kwargs):
-    from notifications.tasks import send_visit_notification_task
     """Отправляет уведомление при создании нового StudentVisit."""
+    from notifications.tasks import send_visit_notification_task
     if created: # Отправляем только при СОЗДАНИИ записи
         import logging
         logging.getLogger(__name__).info(
@@ -74,7 +74,7 @@ def notify_on_student_visit_creation(instance, created, **kwargs):
 # ---------------------------------------
 
 # Этот приемник будет срабатывать КАЖДЫЙ раз после сохранения объекта User
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=UserModel)
 def create_or_update_employee_profile(instance, created, **kwargs):
     """
     Создает EmployeeProfile для нового пользователя или просто убеждается,
@@ -84,9 +84,8 @@ def create_or_update_employee_profile(instance, created, **kwargs):
     from .models import EmployeeProfile
     # -------------------------------
 
-    # Используем get_or_create: он либо найдет существующий профиль,
-    # либо создаст новый, если его нет. Это безопасно вызывать много раз.
-    # profile, profile_created = EmployeeProfile.objects.get_or_create(user=instance)
+    # Убеждаемся, что профиль существует
+    EmployeeProfile.objects.get_or_create(user=instance)
 
     if created: # Если пользователь был только что СОЗДАН
         # Можно добавить логику, выполняемую только при создании профиля
