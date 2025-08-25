@@ -76,7 +76,7 @@ jobs:
 
   sentry-release:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' && secrets.SENTRY_AUTH_TOKEN != '' && secrets.SENTRY_ORG != '' && secrets.SENTRY_PROJECT != '' }}
+    if: github.ref == 'refs/heads/main'
     needs: docker-build
     steps:
       - uses: actions/checkout@v4
@@ -90,6 +90,11 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_LOG_LEVEL: debug
         run: |
+          if [ -z "${SENTRY_AUTH_TOKEN}" ] || [ -z "${SENTRY_ORG}" ] || [ -z "${SENTRY_PROJECT}" ]; then
+            echo "Sentry secrets are missing. Skipping Sentry release."
+            exit 0
+          fi
+
           set +e
           echo "Validating Sentry configuration..."
           sentry-cli info
