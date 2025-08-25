@@ -1,0 +1,27 @@
+[flake8]
+max-line-length = 120
+extend-ignore = E203, W503
+exclude =
+    .git,
+    .venv,
+    venv,
+    visitor_system/*/migrations/*,
+    visitor_system/*/static/*,
+    visitor_system/static/*,
+    visitor_system/*/templates/*
+
+per-file-ignores =
+    */admin.py:F401,W293,W291,E501
+    */tests.py:F401,W293,W291,E501
+    visitor_system/manage.py:E501
+    visitor_system/egov_integration/*:E501,E402,F401,W293,E722
+    visitor_system/new_employee_dashboard.py:E501,W293,E114,E701,E261,F401
+    visitor_system/notifications/utils.py:E261,E501,W293,E701,F401
+    visitor_system/realtime_dashboard/models.py:F401,W293,E501
+    visitor_system/realtime_dashboard/services.py:F401,W293,E501
+    visitor_system/classroom_book/*:E501,W293,F401,E302,W292,W291
+    visitor_system/departments/*:E501,W293,F401,W292,W191
+    visitor_system/authentication/urls.py:E501,W292
+    visitor_system/egov_integration/setup_api_key.py:F541,E402,E501,W293
+    visitor_system/egov_integration/simple_test.py:F541,E501,E722,W293
+
