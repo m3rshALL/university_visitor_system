@@ -41,7 +41,9 @@ class UniversitySocialAccountAdapter(DefaultSocialAccountAdapter):
         extra = getattr(sociallogin.account, 'extra_data', {}) or {}
         department_name = extra.get('department') or extra.get('Department')
         phone = (
-            extra.get('telephoneNumber') or extra.get('mobilePhone') or extra.get('phone')
+            extra.get('telephoneNumber')
+            or extra.get('mobilePhone')
+            or extra.get('phone')
         )
         profile, _ = EmployeeProfile.objects.get_or_create(user=user)
         if phone and not profile.phone_number:
@@ -52,5 +54,3 @@ class UniversitySocialAccountAdapter(DefaultSocialAccountAdapter):
                 profile.department = dept
         profile.save()
         return user
-
-

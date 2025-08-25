@@ -3,15 +3,15 @@ import os
 import sys
 import django
 
+from visitors.models import GuestInvitation
+from django.contrib.auth.models import User
+
 # Add the project directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Set up Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'visitor_system.settings')
 django.setup()
-
-from visitors.models import GuestInvitation
-from django.contrib.auth.models import User
 
 print("=== Проверка состояния приглашений гостей ===")
 
@@ -29,7 +29,8 @@ filled_invitations = invitations.filter(is_filled=True)
 print(f"Заполненных приглашений: {filled_invitations.count()}")
 
 pending_invitations = invitations.filter(is_filled=True, is_registered=False)
-print(f"Ожидающих приглашений (filled=True, registered=False): {pending_invitations.count()}")
+print(f"Ожидающих приглашений (filled=True, registered=False): "
+      f"{pending_invitations.count()}")
 
 print("\n=== Детали ожидающих приглашений ===")
 for inv in pending_invitations:

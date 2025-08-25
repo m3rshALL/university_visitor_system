@@ -8,6 +8,7 @@ from . import views
 # path('logout/', LogoutView.as_view(), name='account_logout'),
 # path('', include('allauth.urls')), # Включить все URL allauth, включая callback'и
 
+
 # Заглушки:
 urlpatterns = [
     path('login/', views.login_view, name='login'),

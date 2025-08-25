@@ -37,7 +37,7 @@ from django.http import JsonResponse
 from django.db import connections
 from django.core.cache import caches
 from visitor_system.celery import app as celery_app
-from visitors import views as visitors_views
+
 
 # Healthcheck views with safe fallbacks
 def healthz_view(request):
@@ -47,6 +47,7 @@ def healthz_view(request):
         return JsonResponse({'status': 'ok'})
     except Exception:
         return JsonResponse({'status': 'degraded'})
+
 
 def healthz_celery_view(request):
     try:
@@ -74,24 +75,27 @@ urlpatterns = [
     *([
         path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
         path('api/schema', SpectacularAPIView.as_view(), name='schema_noslash'),
-        path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-        path('api/docs', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui_noslash'),
+        path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'),
+             name='swagger-ui'),
+        path('api/docs', SpectacularSwaggerView.as_view(url_name='schema'),
+             name='swagger-ui_noslash'),
     ] if _spectacular_available else []),
     # Главная страница - перенаправляем на панель сотрудника
     path('', visitor_views.employee_dashboard_view, name='home'),
     path("select2/", include("django_select2.urls")),
-    
+
     # Custom service worker view to handle encoding issues
     path('serviceworker.js', service_worker_view, name='serviceworker'),
-    
+
     # Custom manifest.json view to handle syntax issues
     path('manifest.json', manifest_json_view, name='manifest'),
-    
+
     # PWA URLs, our custom service worker view override will take precedence
     path('', include('pwa.urls')),  # <- добавляем PWA
-    
+
     # Страница для оффлайн-режима
-    path('offline.html', TemplateView.as_view(template_name='errors/offline.html'), name='offline'),
+    path('offline.html', TemplateView.as_view(template_name='errors/offline.html'),
+         name='offline'),
 
     # Healthcheck
     path('healthz', healthz_view, name='healthz'),
@@ -112,19 +116,26 @@ except Exception:
 if _api_import_ok:
     drf_router = DefaultRouter()
     drf_router.register(r'visits', VisitViewSet, basename='api-visits')
-    drf_router.register(r'student_visits', StudentVisitViewSet, basename='api-student-visits')
-    urlpatterns += [path('api/v1/', include((drf_router.urls, 'api'), namespace='api_v1'))]
+    drf_router.register(r'student_visits', StudentVisitViewSet,
+                        basename='api-student-visits')
+    urlpatterns += [path('api/v1/', include((drf_router.urls, 'api'),
+                                            namespace='api_v1'))]
 
 
 # Добавляем маршруты для статических и медиа файлов в режиме DEBUG
 if settings.DEBUG:
     # Keep media files as they were
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
+
     # Для статики используем стандартную раздачу в DEBUG через django.contrib.staticfiles
     # urlpatterns.extend(debug_toolbar_urls())  # Добавляем URL-ы от debug_toolbar
 
 if not settings.DEBUG:
-    handler403 = lambda request, exception: render(request, 'errors/403.html', status=403)
-    handler404 = lambda request, exception: render(request, 'errors/404.html', status=404)
-    handler500 = lambda request: render(request, 'errors/500.html', status=500)
+    def handler403(request, exception):
+        return render(request, 'errors/403.html', status=403)
+
+    def handler404(request, exception):
+        return render(request, 'errors/404.html', status=404)
+
+    def handler500(request):
+        return render(request, 'errors/500.html', status=500)

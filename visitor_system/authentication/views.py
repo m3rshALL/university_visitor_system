@@ -15,12 +15,14 @@ def login_view(request):
     # TODO: Интегрировать с MS Auth (например, редирект на URL провайдера)
     return render(request, 'registration/login.html')
 
+
 def logout_view(request):
     """Выход пользователя из системы."""
     auth_logout(request)
     # Редирект на страницу входа или главную страницу
     # LOGOUT_REDIRECT_URL из settings.py будет использован, если не указать явно
     return redirect('login')
+
 
 def microsoft_callback(request):
     """
@@ -30,4 +32,4 @@ def microsoft_callback(request):
     """
     # TODO: Обработать ответ от Microsoft, аутентифицировать пользователя в Django
     # Если успешно, редирект на LOGIN_REDIRECT_URL
-    return redirect('employee_dashboard') # Пример редиректа
+    return redirect('employee_dashboard')  # Пример редиректа
