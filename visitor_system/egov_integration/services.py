@@ -1,6 +1,5 @@
 # egov_integration/services.py
 import requests
-import json
 import logging
 from typing import Dict, Any, Optional, Tuple
 from django.conf import settings
@@ -288,7 +287,7 @@ class EgovService:
             verification.status = 'failed'
             verification.error_message = str(e)
             verification.save()
-            logger.error(f"Passport verification failed: {e}")
+            logger.error("Passport verification failed: %s", e)
             return verification
     
     def get_citizen_info(self, iin: str, user=None) -> Optional[Dict]:
@@ -308,11 +307,11 @@ class EgovService:
             if status_code == 200:
                 return response_data
             else:
-                logger.warning(f"Failed to get citizen info for IIN: {iin}")
+                logger.warning("Failed to get citizen info for IIN: %s", iin)
                 return None
                 
         except Exception as e:
-            logger.error(f"Error getting citizen info: {e}")
+            logger.error("Error getting citizen info: %s", e)
             return None
     
     def _encrypt_document_number(self, document_number: str) -> str:
@@ -331,7 +330,7 @@ class EgovService:
             f = Fernet(encryption_key.encode())
             return f.encrypt(document_number.encode()).decode()
         except Exception as e:
-            logger.error(f"Failed to encrypt document number: {e}")
+            logger.error("Failed to encrypt document number: %s", e)
             # Fallback - хешируем
             return hashlib.sha256(document_number.encode()).hexdigest()
     

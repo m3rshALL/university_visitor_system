@@ -268,7 +268,13 @@ class Command(BaseCommand):
                     visit = Visit.objects.create(**visit_data)
                     self.stdout.write(self.style.SUCCESS(f'Created Official Visit ID: {visit.id} for {guest.full_name} to {employee_for_visit.get_full_name()} ({current_status})'))
                 except Exception as e:
-                    logger.error(f'Error creating official visit for {guest.full_name}: {e}. Data: {visit_data}', exc_info=True)
+                    logger.error(
+                        'Error creating official visit for %s: %s. Data: %s',
+                        guest.full_name,
+                        e,
+                        visit_data,
+                        exc_info=True,
+                    )
                     self.stdout.write(self.style.ERROR(f'Error creating official visit for {guest.full_name}: {e}'))
 
             elif chosen_visit_type == 'student':
@@ -293,7 +299,13 @@ class Command(BaseCommand):
                     student_visit = StudentVisit.objects.create(**student_visit_data)
                     self.stdout.write(self.style.SUCCESS(f'Created Student Visit ID: {student_visit.id} for {guest.full_name} to {department_for_visit.name} ({current_status})'))
                 except Exception as e:
-                    logger.error(f'Error creating student visit for {guest.full_name}: {e}. Data: {student_visit_data}', exc_info=True)
+                    logger.error(
+                        'Error creating student visit for %s: %s. Data: %s',
+                        guest.full_name,
+                        e,
+                        student_visit_data,
+                        exc_info=True,
+                    )
                     self.stdout.write(self.style.ERROR(f'Error creating student visit for {guest.full_name}: {e}'))
 
         self.stdout.write(self.style.SUCCESS(f'Successfully populated database with fake data.'))

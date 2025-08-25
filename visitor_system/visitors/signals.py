@@ -53,7 +53,10 @@ def notify_on_visit_creation(sender, instance, created, **kwargs):
     from notifications.tasks import send_visit_notification_task
     """Отправляет уведомление при создании нового Visit."""
     if created: # Отправляем только при СОЗДАНИИ записи
-        print(f"Создан Visit ID: {instance.id}, запуск задачи уведомления...")
+        import logging
+        logging.getLogger(__name__).info(
+            "Создан Visit ID: %s, запуск задачи уведомления...", instance.id
+        )
         # Запускаем асинхронную задачу
         send_visit_notification_task.delay(instance.id, 'official')
 # ----------------------------------
@@ -64,7 +67,10 @@ def notify_on_student_visit_creation(sender, instance, created, **kwargs):
     from notifications.tasks import send_visit_notification_task
     """Отправляет уведомление при создании нового StudentVisit."""
     if created: # Отправляем только при СОЗДАНИИ записи
-        print(f"Создан StudentVisit ID: {instance.id}, запуск задачи уведомления...")
+        import logging
+        logging.getLogger(__name__).info(
+            "Создан StudentVisit ID: %s, запуск задачи уведомления...", instance.id
+        )
         # Запускаем асинхронную задачу
         send_visit_notification_task.delay(instance.id, 'student')
 # ---------------------------------------
@@ -87,7 +93,10 @@ def create_or_update_employee_profile(sender, instance, created, **kwargs):
     if created: # Если пользователь был только что СОЗДАН
         # Можно добавить логику, выполняемую только при создании профиля
         # Например, попытаться вытащить данные из allauth (но это сложнее)
-        print(f"Создан профиль для нового пользователя {instance.username}")
+        import logging
+        logging.getLogger(__name__).info(
+            "Создан профиль для нового пользователя %s", instance.username
+        )
         pass
     else: # Если пользователь ОБНОВЛЕН (не создан)
         # Можно добавить логику обновления профиля, если нужно,

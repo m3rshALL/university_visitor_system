@@ -28,9 +28,18 @@ def optimized_cache_get(key, default=None, version=None, retry_count=3, retry_de
             return cache.get(key, default, version)
         except Exception as e:
             if attempt == retry_count - 1:
-                logger.error(f"Failed to get from cache after {retry_count} attempts: {e}")
+                logger.error(
+                    "Failed to get from cache after %s attempts: %s",
+                    retry_count,
+                    e,
+                )
                 return default
-            logger.warning(f"Cache get error (attempt {attempt+1}/{retry_count}): {e}")
+            logger.warning(
+                "Cache get error (attempt %s/%s): %s",
+                attempt + 1,
+                retry_count,
+                e,
+            )
             time.sleep(retry_delay)
     return default
 
@@ -54,9 +63,18 @@ def optimized_cache_set(key, value, timeout=None, version=None, retry_count=3, r
             return cache.set(key, value, timeout, version)
         except Exception as e:
             if attempt == retry_count - 1:
-                logger.error(f"Failed to set cache after {retry_count} attempts: {e}")
+                logger.error(
+                    "Failed to set cache after %s attempts: %s",
+                    retry_count,
+                    e,
+                )
                 return False
-            logger.warning(f"Cache set error (attempt {attempt+1}/{retry_count}): {e}")
+            logger.warning(
+                "Cache set error (attempt %s/%s): %s",
+                attempt + 1,
+                retry_count,
+                e,
+            )
             time.sleep(retry_delay)
     return False
 
@@ -70,7 +88,7 @@ def get_redis_client():
     try:
         return get_redis_connection("default")
     except Exception as e:
-        logger.error(f"Failed to get Redis connection: {e}")
+        logger.error("Failed to get Redis connection: %s", e)
         return None
 
 def redis_pipeline_decorator(func=None, ttl=300):
@@ -104,7 +122,7 @@ def redis_pipeline_decorator(func=None, ttl=300):
             try:
                 pipeline.execute()
             except Exception as e:
-                logger.error(f"Redis pipeline error: {e}")
+                logger.error("Redis pipeline error: %s", e)
                 
             return result
         return wrapper

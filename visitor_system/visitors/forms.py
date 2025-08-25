@@ -244,9 +244,12 @@ class GuestRegistrationForm(forms.Form):
             iin_hash = hashlib.sha256(guest_iin_value.encode()).hexdigest()
             guest = Guest.objects.filter(iin_hash=iin_hash).first()
             if guest:
-                print(f"Найден существующий гость по ИИН: {guest.full_name}")
+                logger.info("Найден существующий гость по ИИН: %s", guest.full_name)
             else:
-                print(f"Гость с ИИН {guest_iin_value} не найден, будет создан новый (или найден по ФИО).")
+                logger.info(
+                    "Гость с ИИН %s не найден, будет создан новый (или найден по ФИО).",
+                    guest_iin_value,
+                )
 
 
         if not guest:
@@ -261,7 +264,7 @@ class GuestRegistrationForm(forms.Form):
                  defaults=guest_data # Используем все данные при СОЗДАНИИ
              )
              if created:
-                 print(f"Создан новый гость: {guest.full_name}")
+                 logger.info("Создан новый гость: %s", guest.full_name)
 
         # Если гость был найден (по ИИН или ФИО), обновим его данные, если они изменились
         if not created:

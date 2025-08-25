@@ -1056,7 +1056,10 @@ def employee_dashboard_view(request):
                 
                 # Проверяем обязательные поля
                 if not invite.token:  # Удален чек invite.department
-                    logger.warning(f"Приглашение {invite.pk} имеет некорректные данные (отсутствует token)")
+                    logger.warning(
+                        "Приглашение %s имеет некорректные данные (отсутствует token)",
+                        invite.pk,
+                    )
                     has_invitation_data_issues = True
             except Exception as inner_e:
                 logger.warning(
@@ -1174,7 +1177,10 @@ def register_student_visit_view(request):
                 try:
                     send_new_visit_notification_to_security(student_visit, 'student')
                 except Exception as e:
-                    logger.error(f"Ошибка при вызове send_new_visit_notification_to_security для студента: {e}")
+                    logger.error(
+                        "Ошибка при вызове send_new_visit_notification_to_security для студента: %s",
+                        e,
+                    )
                 # --------------------------------------------
                 messages.success(request, f"Визит студента {student_visit.guest.full_name} успешно зарегистрирован!")
                 return redirect('employee_dashboard')
@@ -1515,8 +1521,7 @@ def get_department_details_view(request):
 @login_required
 def get_employee_details_view(request, user_id):
     """Возвращает детали сотрудника (пока только телефон) по его User ID. """
-    print(f"--- Get Employee Details Request ---")
-    print(f"Received user_id: {user_id}")
+    logger.info("Get Employee Details Request: user_id=%s", user_id)
     data = {'phone_number': ''} # Значение по умолчанию
     try:
         # Ищем пользователя и его профиль
@@ -1535,29 +1540,7 @@ def get_employee_details_view(request, user_id):
     return JsonResponse(data)
 # -----------------------------------------------
 
-"""def get_employee_details_view(request, user_id):
-    print(f"--- Get Employee Details Request ---")
-    print(f"Received user_id: {user_id}")
-    data = {'phone_number': ''}
-    try:
-        # Используем select_related для профиля
-        user = User.objects.select_related('employee_profile').get(pk=user_id, is_active=True)
-        print(f"Found user: {user.username}")
-        # Проверяем наличие профиля и телефона в нем
-        if hasattr(user, 'employee_profile') and user.employee_profile and user.employee_profile.phone_number:
-            print(f"User has profile. Phone found: {user.employee_profile.phone_number}")
-            data['phone_number'] = user.employee_profile.phone_number
-        elif hasattr(user, 'employee_profile') and user.employee_profile:
-             print(f"User {user.username} has profile, but NO phone number.")
-        else:
-            print(f"User {user.username} has NO employee profile linked.")
-    except User.DoesNotExist:
-        print(f"User with ID {user_id} not found.")
-    except Exception as e:
-         print(f"Error fetching employee details for user {user_id}: {e}")
-    print(f"Returning data: {data}")
-    print(f"----------------------------------")
-    return JsonResponse(data)"""
+"""Legacy debug version of get_employee_details_view removed."""
 # -----------------------------------------------
 
 # --- View для отметки Check-in ---

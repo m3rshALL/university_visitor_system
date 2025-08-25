@@ -74,7 +74,7 @@ def verify_iin_ajax(request):
         }, status=400)
     
     except Exception as e:
-        logger.error(f"Error in verify_iin_ajax: {e}")
+        logger.error("Error in verify_iin_ajax: %s", e)
         return JsonResponse({
             'success': False,
             'error': 'Внутренняя ошибка сервера'
@@ -115,7 +115,7 @@ def verify_passport_ajax(request):
         return JsonResponse(response_data)
         
     except Exception as e:
-        logger.error(f"Error in verify_passport_ajax: {e}")
+        logger.error("Error in verify_passport_ajax: %s", e)
         return JsonResponse({
             'success': False,
             'error': 'Внутренняя ошибка сервера'
@@ -224,7 +224,7 @@ class VerifyIINAPIView(APIView):
             }, status=status.HTTP_502_BAD_GATEWAY)
         
         except Exception as e:
-            logger.error(f"Error in VerifyIINAPIView: {e}")
+            logger.error("Error in VerifyIINAPIView: %s", e)
             return Response({
                 'error': 'Внутренняя ошибка сервера'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -270,7 +270,7 @@ class VerifyPassportAPIView(APIView):
             }, status=status.HTTP_502_BAD_GATEWAY)
         
         except Exception as e:
-            logger.error(f"Error in VerifyPassportAPIView: {e}")
+            logger.error("Error in VerifyPassportAPIView: %s", e)
             return Response({
                 'error': 'Внутренняя ошибка сервера'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
