@@ -2060,11 +2060,23 @@ def mark_group_exit_view(request, visit_id):
         return redirect('visit_history')
 
     except Http404:
-        logger.warning(f"Attempted to mark exit for non-existent GroupInvitation ID: {visit_id} by user {request.user.username}")
-        messages.error(request, f"Ошибка: Групповой визит с ID {visit_id} не найден. Возможно, он был удален.")
+        logger.warning(
+            f"Attempted to mark exit for non-existent GroupInvitation ID: "
+            f"{visit_id} by user {request.user.username}"
+        )
+        messages.error(
+            request,
+            f"Ошибка: Групповой визит с ID {visit_id} не найден. Возможно, он был удален."
+        )
         return redirect('visit_history')
 
     except Exception as e:
-        logger.error(f"Unexpected error marking group exit for visit ID {visit_id}: {e}", exc_info=True)
-        messages.error(request, "Произошла непредвиденная ошибка при отметке выхода группы.")
+        logger.error(
+            f"Unexpected error marking group exit for visit ID {visit_id}: {e}",
+            exc_info=True,
+        )
+        messages.error(
+            request,
+            "Произошла непредвиденная ошибка при отметке выхода группы."
+        )
         return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
