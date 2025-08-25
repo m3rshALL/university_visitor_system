@@ -591,6 +591,7 @@ function setPageListItems(event) {
     
     // Update URL and reload page
     url.search = params.toString();
+    try { localStorage.setItem('visitHistory_per_page', value); } catch (e) {}
     window.location.href = url.toString();
 }
 
@@ -865,6 +866,22 @@ document.addEventListener('change', function(e) {
 
 // Восстанавливаем состояния при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
+    // Восстанавливаем per_page из localStorage, если его нет в URL
+    try {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+        if (!params.has('per_page')) {
+            const saved = localStorage.getItem('visitHistory_per_page');
+            if (saved && ['10','20','50','100'].includes(saved)) {
+                params.set('per_page', saved);
+                // при добавлении per_page сбрасываем page
+                if (params.has('page')) params.set('page', '1');
+                url.search = params.toString();
+                window.location.replace(url.toString());
+                return; // прерываем дальнейшую инициализацию на старой странице
+            }
+        }
+    } catch (e) {}
     // Проверяем, имеет ли URL параметр status (фильтр статуса)
     const urlParams = new URLSearchParams(window.location.search);
     const hasStatus = urlParams.has('status');

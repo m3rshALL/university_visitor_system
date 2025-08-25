@@ -50,7 +50,9 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - REDIS_CACHE_URL=redis://redis:6379/1
-      - IIN_ENCRYPTION_KEY=_9_qSE9mtVZ5m3TrJ_jewsldCM7UmRn9Q4TPZkHmy9c=
+      # Секреты передаём из .env/.secrets, а не хардкодим
+      - DJANGO_SECRET_KEY
+      - IIN_ENCRYPTION_KEY
 
   nginx:
     image: nginx:1.27-alpine
@@ -84,7 +86,8 @@ services:
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - IIN_ENCRYPTION_KEY=_9_qSE9mtVZ5m3TrJ_jewsldCM7UmRn9Q4TPZkHmy9c=
+      - DJANGO_SECRET_KEY
+      - IIN_ENCRYPTION_KEY
 
   celery-beat:
     build: .
@@ -105,7 +108,8 @@ services:
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - IIN_ENCRYPTION_KEY=_9_qSE9mtVZ5m3TrJ_jewsldCM7UmRn9Q4TPZkHmy9c=
+      - DJANGO_SECRET_KEY
+      - IIN_ENCRYPTION_KEY
 
   flower:
     build: .
@@ -126,7 +130,8 @@ services:
       - REDIS_PORT=6379
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - IIN_ENCRYPTION_KEY=_9_qSE9mtVZ5m3TrJ_jewsldCM7UmRn9Q4TPZkHmy9c=
+      - DJANGO_SECRET_KEY
+      - IIN_ENCRYPTION_KEY
     ports:
       - "5555:5555"
 

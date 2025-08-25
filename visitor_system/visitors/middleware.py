@@ -21,83 +21,58 @@ SETUP_EXEMPT_URL_PREFIXES = ['/static/', '/media/', '/admin/', '/__debug__/', '/
 class ProfileSetupMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
-        # Проверим доступность модели при инициализации
         try:
-             apps.get_model('visitors', 'EmployeeProfile') # Проверка загрузки модели
-             self.profile_model_available = True
+            apps.get_model('visitors', 'EmployeeProfile')
+            self.profile_model_available = True
         except LookupError:
-             self.profile_model_available = False
-             logger.warning("[Middleware] EmployeeProfile model not found on init. Profile check will be skipped.")
-
+            self.profile_model_available = False
+            logger.warning("[Middleware] EmployeeProfile model not found on init. Profile check will be skipped.")
 
     def __call__(self, request):
-        # Сначала выполняем основную часть запроса
-        # Это важно делать в начале, чтобы получить response от view
-        response = self.get_response(request)
-
-        # --- Быстрые выходы ---
+        # --- Быстрые выходы до обработки view ---
         if not self.profile_model_available or \
            not request.user.is_authenticated or \
            request.user.is_anonymous or \
            request.user.is_superuser:
-            return response
+            return self.get_response(request)
 
         path = request.path_info
         for prefix in SETUP_EXEMPT_URL_PREFIXES:
             if path.startswith(prefix):
-                return response
+                return self.get_response(request)
 
         try:
             resolver_match = resolve(path)
             if resolver_match.url_name in SETUP_EXEMPT_URL_NAMES:
-                return response
+                return self.get_response(request)
         except Resolver404:
-            pass # Не имеет имени, проверяем профиль
+            pass
         except Exception as e:
-            logger.error(f"[Middleware] Error resolving URL name for path '{path}': {e}", exc_info=True)
-            return response # Пропускаем при ошибке
-        # --- Конец быстрых выходов ---
+            logger.error("[Middleware] Error resolving URL name for path '%s': %s", path, e, exc_info=True)
+            return self.get_response(request)
 
-
-        # --- Основная проверка профиля через try...except ---
+        # --- Проверка профиля до вызова view ---
         try:
-             # Пытаемся получить профиль напрямую
-             profile = request.user.employee_profile
-             # Если профиль получен, проверяем полноту
-             profile_complete = bool(profile.phone_number and profile.department)
-
-             if not profile_complete:
-                  setup_url = reverse('profile_setup')
-                  if request.path != setup_url:
-                       logger.info(f"[Middleware] User '{request.user.username}' profile incomplete. Redirecting to setup.")
-                       next_url = request.get_full_path()
-                       if not next_url.startswith(setup_url):
-                             redirect_url = f"{setup_url}?next={next_url}"
-                             return redirect(redirect_url) # <-- Возвращаем HttpResponseRedirect
-                       else:
-                             return redirect(setup_url) # <-- Возвращаем HttpResponseRedirect
-                  # else: Мы уже на странице настройки, ничего не делаем, вернется response
-
+            profile = request.user.employee_profile
+            profile_complete = bool(profile.phone_number and profile.department)
+            if not profile_complete:
+                setup_url = reverse('profile_setup')
+                if request.path != setup_url:
+                    logger.info("[Middleware] User '%s' profile incomplete. Redirecting to setup.", request.user.username)
+                    next_url = request.get_full_path()
+                    if not next_url.startswith(setup_url):
+                        redirect_url = f"{setup_url}?next={next_url}"
+                        return redirect(redirect_url)
+                    return redirect(setup_url)
         except EmployeeProfile.DoesNotExist:
-             # Сигнал не сработал ИЛИ пользователь как-то удалил профиль?
-             logger.error(f"[Middleware] EmployeeProfile DOES NOT EXIST for user '{request.user.username}'. Redirecting to setup.")
-             # Редиректим на настройку, там get_or_create должен сработать
-             setup_url = reverse('profile_setup')
-             if request.path != setup_url:
-                 return redirect(setup_url) # <-- Возвращаем HttpResponseRedirect
-
+            logger.error("[Middleware] EmployeeProfile DOES NOT EXIST for user '%s'. Redirecting to setup.", request.user.username)
+            setup_url = reverse('profile_setup')
+            if request.path != setup_url:
+                return redirect(setup_url)
         except AttributeError:
-             # Этого не должно происходить, если user аутентифицирован,
-             # но на всякий случай, если у user нет employee_profile
-             logger.error(f"[Middleware] User '{request.user.username}' has no attribute 'employee_profile'.", exc_info=True)
-             # Возможно, стоит пропустить проверку? Зависит от логики. Пока пропускаем.
-             pass
+            logger.error("[Middleware] User '%s' has no attribute 'employee_profile'.", request.user.username, exc_info=True)
+        except Exception:
+            logger.exception("[Middleware] Unexpected error accessing profile for user '%s'.", request.user.username)
 
-        except Exception as e:
-             # Логируем другие ошибки доступа к профилю
-             logger.exception(f"[Middleware] Unexpected error accessing profile for user '{request.user.username}'.")
-        # ----------------------------------------------------
-
-        # Если не было редиректа или ошибки - возвращаем ОРИГИНАЛЬНЫЙ ответ от view
-        return response
+        return self.get_response(request)
 

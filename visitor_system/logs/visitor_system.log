@@ -14450,3 +14450,10 @@ INFO 2025-08-22 17:29:43,605 views 29 139904622323456 Statistics data prepared f
 WARNING 2025-08-22 17:30:42,484 log 30 139904613930752 Not Found: /ws/dashboard/
 WARNING 2025-08-22 17:33:39,275 log 29 139904500967168 Not Found: /ws/dashboard/
 WARNING 2025-08-22 17:34:22,746 log 30 139904613930752 Not Found: /ws/dashboard/
+INFO 2025-08-22 17:37:31,746 apps 13 140507184146240 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:37:34,393 apps 14 140500067813184 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:38:09,668 apps 29 139896595765056 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-22 17:38:09,709 apps 30 139896595765056 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-22 17:53:37,896 log 30 139896395126528 Not Found: /ws/dashboard/
+WARNING 2025-08-22 17:54:22,397 log 29 139896396175104 Not Found: /ws/dashboard/
+WARNING 2025-08-22 18:06:45,344 log 29 139896396175104 Not Found: /ws/dashboard/

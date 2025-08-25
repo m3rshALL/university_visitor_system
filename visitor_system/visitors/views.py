@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test, per
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.http import JsonResponse, HttpResponse, Http404
-from django.views.decorators.cache import never_cache, cache_page
+from django.views.decorators.cache import never_cache, cache_page, cache_control
 
 from django.contrib import messages
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
@@ -37,6 +37,7 @@ from itertools import chain
 from operator import attrgetter
 from collections import defaultdict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import transaction
 
 import openpyxl
 from openpyxl import Workbook
@@ -1400,12 +1401,11 @@ def employee_autocomplete_view(request):
         cache.incr(cache_key) if cache.get(cache_key) else cache.set(cache_key, 1, timeout=10)
     except Exception:
         pass
-    print(f"--- Autocomplete Request ---") # Отладочное сообщение
-    print(f"GET params: {request.GET}")   # Печатаем все GET параметры
+    logger.debug("[autocomplete] GET params: %s", request.GET)
 
     term = request.GET.get('term', '').strip()
     department_id = request.GET.get('department_id') # Получаем ID
-    print(f"Search Term: '{term}', Department ID: '{department_id}'") # Печатаем полученные значения
+    logger.debug("[autocomplete] Search Term='%s', Department ID='%s'", term, department_id)
 
     results = []
     queryset = User.objects.filter(is_active=True)
@@ -1417,22 +1417,22 @@ def employee_autocomplete_view(request):
             Q(email__icontains=term)
         )
 
-    print(f"Users found before department filter: {queryset.count()}") # Сколько нашли до фильтра по деп.
+    logger.debug("[autocomplete] Users found before department filter: %s", queryset.count())
 
     if department_id and department_id.isdigit():
         try:
             dept_id_int = int(department_id)
             # Важный фильтр:
             queryset = queryset.filter(employee_profile__department__id=dept_id_int)
-            print(f"Users found AFTER department filter (Dept ID: {dept_id_int}): {queryset.count()}") # Сколько осталось ПОСЛЕ фильтра
+            logger.debug("[autocomplete] Users after dept filter (Dept ID=%s): %s", dept_id_int, queryset.count())
         except ValueError:
-            print(f"Ошибка: department_id '{department_id}' не является числом.")
+            logger.warning("[autocomplete] department_id '%s' is not int", department_id)
             queryset = User.objects.none()
     elif not department_id:
-        print("Department ID not provided, returning empty.")
+        logger.debug("[autocomplete] Department ID not provided, returning empty")
         queryset = User.objects.none()
     else: # На случай если department_id не None, не пустой, но и не isdigit()
-         print(f"Department ID '{department_id}' is not a digit, returning empty.")
+         logger.warning("[autocomplete] Department ID '%s' is not digit, returning empty", department_id)
          queryset = User.objects.none()
 
 
@@ -1441,8 +1441,7 @@ def employee_autocomplete_view(request):
 
     results = [{'id': user.id, 'text': f"{user.get_full_name() or user.username} ({user.email})"} for user in queryset]
 
-    print(f"Returning {len(results)} results.") # Сколько результатов возвращаем
-    print(f"----------------------------")
+    logger.debug("[autocomplete] Returning %s results", len(results))
 
     return JsonResponse({'results': results, 'count': count_total})
 # ---------------------------------
@@ -1705,64 +1704,103 @@ def guest_invitation_fill(request, token):
 
 @login_required
 def finalize_guest_invitation(request, pk):
-    invitation = get_object_or_404(GuestInvitation, pk=pk, is_filled=True, is_registered=False)
-    if request.method == 'POST':        
-        form = GuestInvitationFinalizeForm(request.POST, instance=invitation)
-        if form.is_valid():
-            invitation = form.save(commit=False)
-            # Fix for the MultipleObjectsReturned issue - use filter().first() instead of get_or_create
-            guest = Guest.objects.filter(iin=invitation.guest_iin).first()
-            if not guest:
-                # Create a new guest if no matching guest was found
-                guest = Guest.objects.create(
-                    iin=invitation.guest_iin,
-                    full_name=invitation.guest_full_name,
-                    email=invitation.guest_email,
-                    phone_number=invitation.guest_phone
+    """Финализация приглашения: атомарно создаём/находим гостя по ИИН (через хэш) и регистрируем визит.
+    Делаем идемпотентно и устойчиво к повторной отправке формы.
+    """
+    if request.method == 'POST':
+        with transaction.atomic():
+            try:
+                invitation = (
+                    GuestInvitation.objects.select_for_update()
+                    .get(pk=pk, is_filled=True)
                 )
-            else:
-                # Update the guest's information if they already exist
-                guest.full_name = invitation.guest_full_name
-                guest.email = invitation.guest_email
-                guest.phone_number = invitation.guest_phone
-                guest.save()
-            visit = Visit.objects.create(
-                guest=guest,
-                employee=invitation.employee,
-                department=invitation.employee.employee_profile.department,
-                purpose='Гостевой визит по приглашению',
-                expected_entry_time=invitation.visit_time,
-                registered_by=request.user,
-                employee_contact_phone=invitation.employee.employee_profile.phone_number,
-                consent_acknowledged=True,
-            )
-            invitation.is_registered = True
-            invitation.visit = visit
-            invitation.save()
-            # Отправляем уведомление гостю о регистрации визита
-            if invitation.guest_email:
-                subject_guest = f"Ваш визит зарегистрирован"
-                message_guest = (
-                    f"Здравствуйте, {invitation.guest_full_name}!\n\n"
-                    f"Ваш визит к {invitation.employee.get_full_name() or invitation.employee.username} "
-                    f"({invitation.employee.email}) зарегистрирован на {invitation.visit_time.strftime('%Y-%m-%d %H:%M')}.\n"
-                    f"Если у вас возникнут вопросы, свяжитесь с сотрудником по телефону: {invitation.guest_phone or '-'}.\n"
-                    "Спасибо, что воспользовались нашей системой."
-                )
-                try:
-                    send_mail(
-                        subject_guest,
-                        message_guest,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [invitation.guest_email],
-                        fail_silently=False
+            except GuestInvitation.DoesNotExist:
+                raise Http404
+
+            if invitation.is_registered:
+                messages.info(request, "Это приглашение уже было зарегистрировано.")
+                return redirect('employee_dashboard')
+
+            form = GuestInvitationFinalizeForm(request.POST, instance=invitation)
+            if form.is_valid():
+                invitation = form.save(commit=False)
+
+                # Ищем гостя по хэшу ИИН, а не по виртуальному свойству
+                guest = None
+                if invitation.guest_iin:
+                    import hashlib
+                    iin_hash = hashlib.sha256(invitation.guest_iin.encode()).hexdigest()
+                    guest = Guest.objects.filter(iin_hash=iin_hash).first()
+
+                if not guest:
+                    # Создаём нового гостя, используя property для шифрования ИИН
+                    guest = Guest(
+                        full_name=invitation.guest_full_name,
+                        email=invitation.guest_email,
+                        phone_number=invitation.guest_phone,
                     )
-                except Exception as e:
-                    logger.error(f"Ошибка при отправке уведомления гостю {invitation.guest_email}: {e}")
+                    try:
+                        guest.iin = invitation.guest_iin  # setter зашифрует и проставит хэш
+                    except Exception as e:
+                        logger.error(f"Некорректный ИИН в приглашении {invitation.pk}: {e}")
+                        messages.error(request, "Некорректный ИИН гостя.")
+                        return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
+                    guest.save()
+                else:
+                    # Обновляем данные существующего гостя
+                    guest.full_name = invitation.guest_full_name
+                    guest.email = invitation.guest_email
+                    guest.phone_number = invitation.guest_phone
+                    guest.save(update_fields=['full_name', 'email', 'phone_number'])
+
+                # Создаём визит
+                visit = Visit.objects.create(
+                    guest=guest,
+                    employee=invitation.employee,
+                    department=getattr(invitation.employee.employee_profile, 'department', None),
+                    purpose='Гостевой визит по приглашению',
+                    expected_entry_time=invitation.visit_time,
+                    registered_by=request.user,
+                    employee_contact_phone=getattr(invitation.employee.employee_profile, 'phone_number', None),
+                    consent_acknowledged=True,
+                )
+
+                # Помечаем приглашение как зарегистрированное
+                invitation.is_registered = True
+                invitation.visit = visit
+                invitation.save(update_fields=['is_registered', 'visit'])
+
+                # Отправляем email после фиксации транзакции
+                if invitation.guest_email:
+                    subject_guest = "Ваш визит зарегистрирован"
+                    message_guest = (
+                        f"Здравствуйте, {invitation.guest_full_name}!\n\n"
+                        f"Ваш визит к {invitation.employee.get_full_name() or invitation.employee.username} "
+                        f"({invitation.employee.email}) зарегистрирован на "
+                        f"{invitation.visit_time.strftime('%Y-%m-%d %H:%M') if invitation.visit_time else '-'}.\n"
+                        f"Если у вас возникнут вопросы, свяжитесь с сотрудником по телефону: {invitation.guest_phone or '-'}.\n"
+                        "Спасибо, что воспользовались нашей системой."
+                    )
+                    def _send():
+                        try:
+                            send_mail(
+                                subject_guest,
+                                message_guest,
+                                settings.DEFAULT_FROM_EMAIL,
+                                [invitation.guest_email],
+                                fail_silently=False,
+                            )
+                        except Exception as e:
+                            logger.error(f"Ошибка при отправке уведомления гостю {invitation.guest_email}: {e}")
+                    transaction.on_commit(_send)
+
                 messages.success(request, 'Визит успешно зарегистрирован.')
                 return redirect('employee_dashboard')
-    else:
-        form = GuestInvitationFinalizeForm(instance=invitation)
+            else:
+                return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
+    # GET
+    invitation = get_object_or_404(GuestInvitation, pk=pk, is_filled=True, is_registered=False)
+    form = GuestInvitationFinalizeForm(instance=invitation)
     return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
 # --------------------------------------------------
 
@@ -1949,10 +1987,17 @@ def register_group_visit_view(request, invitation_id):
         form = GroupVisitRegistrationForm(request.POST, instance=invitation)
         if form.is_valid():
             try:
-                group_invitation = form.save(request.user)
+                with transaction.atomic():
+                    # Блокируем приглашение для исключения гонок при двойной отправке
+                    inv_locked = GroupInvitation.objects.select_for_update().get(id=invitation_id)
+                    if inv_locked.is_registered:
+                        messages.info(request, "Групповой визит уже зарегистрирован.")
+                        return redirect('employee_dashboard')
+                    group_invitation = form.save(request.user)
                 messages.success(request, "Групповой визит успешно зарегистрирован!")
                 return redirect('employee_dashboard')
             except Exception as e:
+                logger.exception("Ошибка при регистрации группового визита: %s", e)
                 messages.error(request, f"Ошибка при регистрации группового визита: {e}")
         else:
             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")

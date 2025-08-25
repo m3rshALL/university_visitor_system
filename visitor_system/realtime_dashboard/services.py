@@ -241,33 +241,41 @@ class DashboardMetricsService:
         return stats
     
     def get_hourly_stats(self):
-        """Почасовая статистика за последние 24 часа"""
-        now = timezone.now()
+        """Почасовая статистика за последние 24 часа (агрегация на стороне БД)."""
+        now = timezone.now().replace(minute=0, second=0, microsecond=0)
+        start = now - timedelta(hours=23)
+
+        from django.db.models.functions import TruncHour
+
+        visit_agg = (
+            Visit.objects.filter(entry_time__gte=start, entry_time__lte=now + timedelta(hours=1))
+            .annotate(h=TruncHour('entry_time'))
+            .values('h')
+            .annotate(cnt=Count('id'))
+        )
+        student_agg = (
+            StudentVisit.objects.filter(entry_time__gte=start, entry_time__lte=now + timedelta(hours=1))
+            .annotate(h=TruncHour('entry_time'))
+            .values('h')
+            .annotate(cnt=Count('id'))
+        )
+
+        # Приводим к словарям для быстрого объединения
+        v_map = {row['h']: row['cnt'] for row in visit_agg}
+        sv_map = {row['h']: row['cnt'] for row in student_agg}
+
         stats = []
-        
         for i in range(24):
-            hour_start = now - timedelta(hours=23-i)
-            hour_start = hour_start.replace(minute=0, second=0, microsecond=0)
-            hour_end = hour_start + timedelta(hours=1)
-            
-            visits_count = Visit.objects.filter(
-                entry_time__gte=hour_start,
-                entry_time__lt=hour_end
-            ).count()
-            
-            student_visits_count = StudentVisit.objects.filter(
-                entry_time__gte=hour_start,
-                entry_time__lt=hour_end
-            ).count()
-            
+            hour = start + timedelta(hours=i)
+            v = v_map.get(hour, 0)
+            sv = sv_map.get(hour, 0)
             stats.append({
-                'hour': hour_start.strftime('%H:00'),
-                'timestamp': hour_start.isoformat(),
-                'visits': visits_count,
-                'student_visits': student_visits_count,
-                'total': visits_count + student_visits_count
+                'hour': hour.strftime('%H:00'),
+                'timestamp': hour.isoformat(),
+                'visits': v,
+                'student_visits': sv,
+                'total': v + sv,
             })
-        
         return stats
     
     def get_recent_events(self, limit=10):

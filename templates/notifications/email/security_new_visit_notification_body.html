@@ -30,10 +30,14 @@
             {% if guests_list %}
                 <p style="margin-top: 15px;"><strong>Участники группы:</strong></p>
                 <ol>
-                    {% for individual_visit in guests_list %}
+                    {% for g in guests_list %}
                         <li>
-                            {{ individual_visit.guest.full_name }}
-                            {% if individual_visit.guest.iin %}(ИИН: {{ individual_visit.guest.iin }}){% endif %}
+                            {# Поддержка разных структур: GroupGuest или визит #}
+                            {% if g.guest %}
+                                {{ g.guest.full_name }}{% if g.guest.iin %} (ИИН: {{ g.guest.iin }}){% endif %}
+                            {% else %}
+                                {{ g.full_name }}{% if g.iin %} (ИИН: {{ g.iin }}){% endif %}
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ol>

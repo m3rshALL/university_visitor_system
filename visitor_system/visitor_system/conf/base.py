@@ -213,6 +213,13 @@ REST_FRAMEWORK = {
 	'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema' if _has_spectacular else 'rest_framework.schemas.openapi.AutoSchema',
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 	'PAGE_SIZE': int(os.getenv('API_PAGE_SIZE', '20')),
+	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework.authentication.SessionAuthentication',
+		'rest_framework.authentication.BasicAuthentication',
+	),
+	'DEFAULT_PERMISSION_CLASSES': (
+		'rest_framework.permissions.IsAuthenticated',
+	),
 }
 
 if _has_spectacular:
@@ -229,11 +236,11 @@ AXES_FAILURE_LIMIT = int(os.getenv('AXES_FAILURE_LIMIT', '5'))
 AXES_COOLOFF_TIME = int(os.getenv('AXES_COOLOFF_MINUTES', '60'))  # минут
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 
-# CSP (пока в report-only, чтобы не ломать существующие инлайны)
-CSP_REPORT_ONLY = True
+# CSP (постепенная ужесточение: уберём unsafe-eval, инлайны оставим временно)
+CSP_REPORT_ONLY = os.getenv('CSP_REPORT_ONLY', 'True').lower() == 'true'
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com')
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net')
+CSP_SCRIPT_SRC = ("'self'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com') + (("'unsafe-inline'",) if DEBUG else tuple())
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net') + (("'unsafe-inline'",) if DEBUG else tuple())
 CSP_IMG_SRC = ("'self'", 'data:', 'https:')
 CSP_FONT_SRC = ("'self'", 'data:', 'https://fonts.gstatic.com')
 CSP_CONNECT_SRC = ("'self'", 'ws:', 'wss:', 'https:')

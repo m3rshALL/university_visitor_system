@@ -18,7 +18,7 @@ def simple_test(x, y):
     print(f"Running simple_test with {x}, {y}")
     return x + y
 
-@shared_task
+@shared_task(autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 5})
 def send_exit_notification(recipient_email, subject, message):
     """
     Асинхронно отправляет уведомление о выходе посетителя.
@@ -42,5 +42,5 @@ def send_exit_notification(recipient_email, subject, message):
         logger.info(f"Уведомление о выходе успешно отправлено на {recipient_email}")
         return True
     except Exception as e:
-        logger.error(f"Ошибка при отправке уведомления о выходе: {e}")
-        return False
+        logger.error("Ошибка при отправке уведомления о выходе: %s", e)
+        raise

@@ -164,14 +164,16 @@ def send_new_visit_notification_to_security(visit_or_group_instance, visit_kind)
     }
     
     if visit_kind == 'group':
+        # Ожидаем объект GroupInvitation
         visit_group = visit_or_group_instance
         context.update({
             'visit_group': visit_group,
             'visit_kind_display': f"Групповой визит: {visit_group.group_name or 'Без названия'}",
-            'guests_list': visit_group.individual_visits.select_related('guest').all() # Получаем всех гостей группы
+            'guests_list': list(visit_group.guests.all()),
         })
-        # Для темы письма можно использовать имя группы или первого гостя
-        subject_context_name = visit_group.group_name or (visit_group.individual_visits.first().guest.full_name + " и др." if visit_group.individual_visits.exists() else "Группа")
+        # Для темы письма используем имя группы или первого гостя
+        first_guest_name = visit_group.guests.first().full_name if visit_group.guests.exists() else "Группа"
+        subject_context_name = visit_group.group_name or (first_guest_name + " и др.")
     else: # official или student
         visit_instance = visit_or_group_instance
         context.update({
@@ -194,6 +196,10 @@ def send_new_visit_notification_to_security(visit_or_group_instance, visit_kind)
             html_message=html_message,
             fail_silently=False,
         )
-        logger.info(f"Уведомление о новом визите ({visit_kind} ID: {visit_instance.id}) успешно отправлено группе безопасности.")
+        try:
+            entity_id = visit_or_group_instance.id
+        except Exception:
+            entity_id = 'n/a'
+        logger.info("Уведомление о новом визите (%s ID: %s) успешно отправлено группе безопасности.", visit_kind, entity_id)
     except Exception as e:
         logger.error(f"Ошибка при отправке уведомления о новом визите группе безопасности: {e}")
