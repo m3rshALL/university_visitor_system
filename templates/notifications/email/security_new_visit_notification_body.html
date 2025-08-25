@@ -1,3 +1,4 @@
+{% load iin_filters %}
 {% autoescape off %}
 <!DOCTYPE html>
 <html>
@@ -16,7 +17,7 @@
                 <li><strong>К сотруднику (основной контакт):</strong> {{ visit_group.employee.get_full_name|default:visit_group.employee.username }}</li>
             {% endif %}
             <li><strong>Департамент:</strong> {{ visit_group.department.name|default:"-" }}</li>
-            <li><strong>Цель визита группы:</strong> {{ visit_group.purpose.name|default:visit_group.purpose_other_text|default:"Не указана" }}</li>
+            <li><strong>Цель визита группы:</strong> {{ visit_group.purpose|default:visit_group.purpose_other_text|default:"Не указана" }}</li>
             {% if visit_group.purpose_other_text and visit_group.purpose.name != visit_group.purpose_other_text %}
                 <li><strong>Уточнение цели:</strong> {{ visit_group.purpose_other_text }}</li>
             {% endif %}

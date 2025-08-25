@@ -2,6 +2,7 @@ import os
 import importlib.util as _importlib_util
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -233,7 +234,7 @@ if _has_spectacular:
 # Django-Axes (защита от брутфорса)
 AXES_ENABLED = True
 AXES_FAILURE_LIMIT = int(os.getenv('AXES_FAILURE_LIMIT', '5'))
-AXES_COOLOFF_TIME = int(os.getenv('AXES_COOLOFF_MINUTES', '60'))  # минут
+AXES_COOLOFF_TIME = timedelta(minutes=int(os.getenv('AXES_COOLOFF_MINUTES', '60')))
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 
 # CSP (постепенная ужесточение: уберём unsafe-eval, инлайны оставим временно)
@@ -374,14 +375,30 @@ if SENTRY_DSN:
 	from sentry_sdk.integrations.django import DjangoIntegration  # type: ignore
 	from sentry_sdk.integrations.celery import CeleryIntegration  # type: ignore
 
+	def _before_send(event, hint):
+		try:
+			import re
+			def _scrub(val):
+				s = str(val)
+				s = re.sub(r"\b\d{12}\b", "************", s)  # ИИН
+				s = re.sub(r"\b\+?\d{10,14}\b", "********", s)  # телефоны
+				return s
+			for k in ('request', 'extra', 'breadcrumbs'):
+				if k in event:
+					event[k] = _scrub(event[k])
+		except Exception:
+			pass
+		return event
+
 	traces_rate = os.getenv('SENTRY_TRACES') or os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')
 	sentry_sdk.init(
 		dsn=SENTRY_DSN,
 		integrations=[DjangoIntegration(), CeleryIntegration()],
 		traces_sample_rate=float(traces_rate),
 		send_default_pii=False,
-		release=os.getenv('SENTRY_RELEASE', ''),
+		release=os.getenv('SENTRY_RELEASE', os.getenv('GIT_COMMIT', '')),
 		environment=os.getenv('SENTRY_ENV', 'dev'),
+		before_send=_before_send,
 	)
 
 CACHES = {

@@ -23,6 +23,7 @@ import logging
 import uuid
 from django.urls import reverse
 from django.core import signing
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from qrcode import QRCode
 from io import BytesIO
 from django.core.mail import send_mail
@@ -60,6 +61,7 @@ from notifications.utils import send_new_visit_notification_to_security
 from .models import GroupInvitation, GroupGuest
 from django.forms import modelformset_factory
 from django.utils.crypto import get_random_string
+from django.utils.dateparse import parse_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -221,13 +223,13 @@ def qr_resolve_view(request):
         messages.error(request, 'Пустой код')
         return redirect('qr_scan')
 
-    # Пробуем распарсить как подписанный токен
+    # Пробуем распарсить как подписанный токен с TTL (15 минут)
     try:
-        data = signing.Signer().unsign_object(raw)
+        data = TimestampSigner().unsign_object(raw, max_age=900)
         kind = data.get('kind')
         pk = int(data.get('id'))
         action = data.get('action', 'checkin')
-    except Exception:
+    except (SignatureExpired, BadSignature, Exception):
         # Фоллбэк: парсим как URL нашего сайта вида /visitors/checkin/<kind>/<id>/
         try:
             from urllib.parse import urlparse
@@ -261,7 +263,7 @@ def qr_code_view(request, kind: str, pk: int):
     action: по умолчанию checkin
     """
     payload = {'kind': kind, 'id': pk, 'action': 'checkin'}
-    token = signing.Signer().sign_object(payload)
+    token = TimestampSigner().sign_object(payload)
     url = request.build_absolute_uri(reverse('qr_resolve'))
 
     qr = QRCode(border=1)
@@ -659,19 +661,17 @@ def mark_guest_exit_view(request, visit_id):
     except Exception:
         logger.exception('Failed to write AuditLog for guest exit')
 
-    # Асинхронно отправляем уведомление о выходе, если у визита есть назначенный сотрудник с email
-    if hasattr(visit, 'host_employee') and visit.host_employee and visit.host_employee.email:
+    # Асинхронно отправляем уведомление о выходе принимающему сотруднику, если у него есть email
+    if visit.employee and visit.employee.email:
         from notifications.tasks import send_exit_notification
         subject = f"Посетитель {visit.guest.full_name} покинул здание"
         message = f"Посетитель {visit.guest.full_name} покинул здание в {visit.exit_time.strftime('%H:%M:%S')}."
-        
-        # Вызываем задачу Celery асинхронно
         send_exit_notification.delay(
-            visit.host_employee.email,
+            visit.employee.email,
             subject,
             message
         )
-        logger.info(f"Поставлена задача на отправку уведомления о выходе для визита {visit_id}")
+        logger.info("Поставлена задача на отправку уведомления о выходе для визита %s", visit_id)
 
     messages.success(request, f"Выход гостя '{visit.guest.full_name}' успешно зарегистрирован.")
     # Перенаправляем на список текущих гостей
@@ -1306,7 +1306,7 @@ def export_visits_xlsx(request):
                 "Гость сотрудника/Другое", # Тип
                 status_str, # Статус
                 visit.guest.full_name,
-                getattr(visit.guest, 'iin', None),
+                (getattr(visit.guest, 'iin', None)[:-4].replace(getattr(visit.guest, 'iin', '')[:-4], '********') + getattr(visit.guest, 'iin', '')[-4:]) if getattr(visit.guest, 'iin', None) else '',
                 visit.guest.phone_number,
                 visit.guest.email,
                 visit.employee.get_full_name() if visit.employee else '-', # Сотрудник ФИО
@@ -1534,8 +1534,10 @@ def get_employee_details_view(request, user_id):
 @require_POST # Разрешаем только POST запросы для безопасности
 def check_in_visit(request, visit_kind, visit_id):
     """Отмечает фактический вход для ожидающего визита."""
-    # TODO: Добавить проверку прав доступа (например, только staff/охрана)
-    # if not request.user.is_staff: raise PermissionDenied
+    # Ограничиваем право check-in: только staff или члены группы RECEPTION
+    is_reception = request.user.is_authenticated and request.user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    if not (request.user.is_staff or is_reception):
+        raise PermissionDenied
 
     model = Visit if visit_kind == 'official' else StudentVisit if visit_kind == 'student' else None
     if not model:
@@ -1733,18 +1735,31 @@ def finalize_guest_invitation(request, pk):
                     guest = Guest.objects.filter(iin_hash=iin_hash).first()
 
                 if not guest:
-                    # Создаём нового гостя, используя property для шифрования ИИН
+                    # Создаём нового гостя: берём ИИН из invitation.guest_iin, либо расшифровываем encrypted
+                    raw_iin = invitation.guest_iin
+                    if not raw_iin and getattr(invitation, 'guest_iin_encrypted', None):
+                        try:
+                            from visitors.models import get_fernet
+                            f = get_fernet()
+                            data = invitation.guest_iin_encrypted
+                            if isinstance(data, memoryview):
+                                data = bytes(data)
+                            raw_iin = f.decrypt(data).decode()
+                        except Exception:
+                            raw_iin = None
+
                     guest = Guest(
                         full_name=invitation.guest_full_name,
                         email=invitation.guest_email,
                         phone_number=invitation.guest_phone,
                     )
-                    try:
-                        guest.iin = invitation.guest_iin  # setter зашифрует и проставит хэш
-                    except Exception as e:
-                        logger.error(f"Некорректный ИИН в приглашении {invitation.pk}: {e}")
-                        messages.error(request, "Некорректный ИИН гостя.")
-                        return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
+                    if raw_iin:
+                        try:
+                            guest.iin = raw_iin  # setter зашифрует и проставит хэш
+                        except Exception as e:
+                            logger.error(f"Некорректный ИИН в приглашении {invitation.pk}: {e}")
+                            messages.error(request, "Некорректный ИИН гостя.")
+                            return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
                     guest.save()
                 else:
                     # Обновляем данные существующего гостя
@@ -1907,13 +1922,22 @@ def group_invitation_fill_view(request, token):
     if request.method == 'POST':        
         formset = GroupGuestFormSet(request.POST, request.FILES, queryset=group_invitation.guests.all())
         # Получаем данные о визите из формы
-        visit_time = request.POST.get('visit_time')
+        visit_time_raw = request.POST.get('visit_time')
         purpose = request.POST.get('purpose')
-        # Проверяем наличие обязательных полей
-        if not visit_time or not purpose:
-            from django.contrib import messages
-            messages.error(request, "Необходимо заполнить время прибытия и цель визита")
-            formset = GroupGuestFormSet(request.POST, request.FILES, queryset=group_invitation.guests.all())
+        # Валидация обязательных полей
+        errors = []
+        if not purpose:
+            errors.append("Укажите цель визита")
+        visit_time_dt = None
+        if not visit_time_raw:
+            errors.append("Укажите время прибытия")
+        else:
+            visit_time_dt = parse_datetime(visit_time_raw)
+            if visit_time_dt is None:
+                errors.append("Некорректный формат времени (ожидается ISO 8601)")
+        if errors:
+            for e in errors:
+                messages.error(request, e)
             return render(request, 'visitors/groups/group_invitation_fill.html', {
                 'group_invitation': group_invitation,
                 'formset': formset
@@ -1926,9 +1950,9 @@ def group_invitation_fill_view(request, token):
                 guest.is_filled = True
                 guest.save()
                 
-            # Сохраняем информацию о визите
+            # Сохраняем информацию о визите с валидированной датой
             group_invitation.is_filled = True
-            group_invitation.visit_time = visit_time
+            group_invitation.visit_time = visit_time_dt
             group_invitation.purpose = purpose
             
             group_invitation.save()

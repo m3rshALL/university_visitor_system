@@ -39,6 +39,22 @@ from django.core.cache import caches
 from visitor_system.celery import app as celery_app
 from visitors import views as visitors_views
 
+# Healthcheck views with safe fallbacks
+def healthz_view(request):
+    try:
+        connections['default'].cursor().execute('SELECT 1')
+        caches['default'].set('healthz', 'ok', 5)
+        return JsonResponse({'status': 'ok'})
+    except Exception:
+        return JsonResponse({'status': 'degraded'})
+
+def healthz_celery_view(request):
+    try:
+        workers = len(celery_app.control.ping(timeout=1.0) or [])
+        return JsonResponse({'status': 'ok', 'workers': workers})
+    except Exception:
+        return JsonResponse({'status': 'degraded', 'workers': 0})
+
 # Временный импорт для тестирования (удален после проверки)
 # import sys
 # sys.path.append('/app/visitor_system')
@@ -78,12 +94,8 @@ urlpatterns = [
     path('offline.html', TemplateView.as_view(template_name='errors/offline.html'), name='offline'),
 
     # Healthcheck
-    path('healthz', lambda request: (
-        (connections['default'].cursor().execute('SELECT 1'), caches['default'].set('healthz', 'ok', 5)) and JsonResponse({'status': 'ok'})
-    ), name='healthz'),
-    path('healthz/celery', lambda request: (
-        JsonResponse({'status': 'ok', 'workers': len(celery_app.control.ping(timeout=1.0))})
-    ), name='healthz_celery'),
+    path('healthz', healthz_view, name='healthz'),
+    path('healthz/celery', healthz_celery_view, name='healthz_celery'),
     # Временный маршрут для тестирования ИИН (удален после проверки)
     # path('test-iin/', test_iin_view, name='test_iin'),
 

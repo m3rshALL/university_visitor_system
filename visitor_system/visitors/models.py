@@ -8,8 +8,10 @@ from django.core.validators import RegexValidator, MinLengthValidator, MaxLength
 from cryptography.fernet import Fernet, InvalidToken  # type: ignore
 import base64
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 import uuid
 from django.contrib.auth import get_user_model
+import hashlib
 
 # --- Статусы визитов ---
 STATUS_AWAITING_ARRIVAL = 'AWAITING'
@@ -27,8 +29,10 @@ VISIT_STATUS_CHOICES = [
 def get_fernet():
     key_str = getattr(settings, 'IIN_ENCRYPTION_KEY', '')
     if not key_str:
-        # Генерируем временный ключ для дев-окружения, но не сохраняем
         # В проде ключ обязателен в окружении
+        if not getattr(settings, 'DEBUG', False):
+            raise ImproperlyConfigured('IIN_ENCRYPTION_KEY is required in production')
+        # В dev допускаем временный ключ
         key = base64.urlsafe_b64encode(b'0'*32)
     else:
         # Ключ Fernet уже в base64 формате, просто кодируем в байты
@@ -358,6 +362,9 @@ class GuestInvitation(models.Model):
         null=True,
         verbose_name="ИИН гостя"
     )
+    # Защищённое хранение ИИН: шифр + хэш
+    guest_iin_encrypted = models.BinaryField(null=True, blank=True, editable=False, verbose_name="Зашифрованный ИИН (приглашение)")
+    guest_iin_hash = models.CharField(max_length=64, null=True, blank=True, db_index=True, editable=False, verbose_name="Хэш ИИН (приглашение)")
     # Для группп регистрации и отображения маски удобно хранить последние 4 цифры
     guest_iin_last4 = models.CharField(max_length=4, blank=True, null=True, editable=False)
     guest_photo = models.ImageField(upload_to='guest_photos/', blank=True, null=True, verbose_name="Фото гостя")
@@ -377,7 +384,20 @@ class GuestInvitation(models.Model):
     def save(self, *args, **kwargs):
         # Обновляем guest_iin_last4
         if self.guest_iin and len(self.guest_iin) >= 4:
-            self.guest_iin_last4 = self.guest_iin[-4:]
+            raw_iin = self.guest_iin
+            self.guest_iin_last4 = raw_iin[-4:]
+            # Заполняем хэш/шифр
+            try:
+                f = get_fernet()
+                self.guest_iin_encrypted = f.encrypt(raw_iin.encode())
+            except Exception:
+                self.guest_iin_encrypted = None
+            try:
+                self.guest_iin_hash = hashlib.sha256(raw_iin.encode()).hexdigest()
+            except Exception:
+                self.guest_iin_hash = None
+            # Не храним полный ИИН в открытую
+            self.guest_iin = None
         else:
             self.guest_iin_last4 = None
         super().save(*args, **kwargs)
@@ -429,6 +449,9 @@ class GroupGuest(models.Model):
         null=True,
         verbose_name="ИИН гостя"
     )
+    # Защищённое хранение ИИН: шифр + хэш
+    iin_encrypted = models.BinaryField(null=True, blank=True, editable=False, verbose_name="Зашифрованный ИИН (группа)")
+    iin_hash = models.CharField(max_length=64, null=True, blank=True, db_index=True, editable=False, verbose_name="Хэш ИИН (группа)")
     iin_last4 = models.CharField(max_length=4, blank=True, null=True, editable=False)
     photo = models.ImageField(upload_to='group_guests/', blank=True, null=True, verbose_name="Фото гостя")
     is_filled = models.BooleanField(default=False, verbose_name="Гость заполнил данные")
@@ -444,7 +467,20 @@ class GroupGuest(models.Model):
     def save(self, *args, **kwargs):
         # Обновляем iin_last4
         if self.iin and len(self.iin) >= 4:
-            self.iin_last4 = self.iin[-4:]
+            raw_iin = self.iin
+            self.iin_last4 = raw_iin[-4:]
+            # Заполняем шифр/хэш
+            try:
+                f = get_fernet()
+                self.iin_encrypted = f.encrypt(raw_iin.encode())
+            except Exception:
+                self.iin_encrypted = None
+            try:
+                self.iin_hash = hashlib.sha256(raw_iin.encode()).hexdigest()
+            except Exception:
+                self.iin_hash = None
+            # Очищаем открытый ИИН
+            self.iin = None
         else:
             self.iin_last4 = None
         super().save(*args, **kwargs)

@@ -4,7 +4,8 @@
 Информируем вас о зарегистрированном планируемом визите ({% if visit.status == 'AWAITING' %}ожидает прибытия{% else %}статус: {{ visit.get_status_display }}{% endif %}).
 
 Посетитель: {{ visit.guest.full_name|default:"Не указано" }}
-{% if visit.guest.iin %}ИИН: {{ visit.guest.iin }}{% endif %}
+{% load iin_filters %}
+{% if visit.guest.iin %}ИИН: {{ visit.guest.iin|mask_iin }}{% endif %}
 {% if visit.guest.phone_number %}Телефон: {{ visit.guest.phone_number }}{% endif %}
 {% if visit.guest.email %}Email: {{ visit.guest.email }}{% endif %}
 

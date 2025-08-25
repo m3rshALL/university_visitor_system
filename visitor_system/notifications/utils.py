@@ -5,6 +5,13 @@ from django.conf import settings
 from django.template.loader import render_to_string # Для HTML писем (опционально)
 from django.core.mail import send_mail
 from django.contrib.auth.models import User, Group # Добавляем Group
+try:
+    from prometheus_client import Counter  # type: ignore
+    EMAIL_SEND_TOTAL = Counter('email_send_total', 'Total email send attempts', ['kind'])
+    EMAIL_SEND_FAILURES = Counter('email_send_failures_total', 'Total email send failures', ['kind'])
+except Exception:
+    EMAIL_SEND_TOTAL = None
+    EMAIL_SEND_FAILURES = None
 
 logger = logging.getLogger(__name__)
 
@@ -50,11 +57,13 @@ def send_guest_arrival_email(visit):
         # send_mail(subject, message, from_email, recipient_list, fail_silently=False, html_message=html_message)
 
         # Простое текстовое письмо:
+        if EMAIL_SEND_TOTAL: EMAIL_SEND_TOTAL.labels(kind='guest_arrival').inc()
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
         logger.info(f"Уведомление о прибытии гостя {guest.full_name} отправлено сотруднику {employee.email}")
         return True
     except Exception as e:
+        if EMAIL_SEND_FAILURES: EMAIL_SEND_FAILURES.labels(kind='guest_arrival').inc()
         logger.error(f"Ошибка отправки email уведомления сотруднику {employee.email}: {e}", exc_info=True)
         # В реальном проекте здесь лучше использовать асинхронные задачи (Celery)
         # чтобы ошибка отправки не влияла на основной процесс регистрации
@@ -120,6 +129,7 @@ def send_visit_creation_notification(visit_id, visit_kind):
         message_txt = render_to_string('notifications/visit_notification.txt', context)
         # message_html = render_to_string('notifications/email/visit_notification.html', context)
         logger.debug(f"Sending visit notification email to: {recipients}")
+        if EMAIL_SEND_TOTAL: EMAIL_SEND_TOTAL.labels(kind='visit_creation').inc()
         send_mail(
             subject, message_txt, settings.DEFAULT_FROM_EMAIL,
             list(recipients), fail_silently=False#, html_message=message_html
@@ -127,6 +137,7 @@ def send_visit_creation_notification(visit_id, visit_kind):
         logger.info(f"Visit notification email for {visit_kind} ID {visit_id} SENT successfully to {log_recipients}.")
         return True
     except Exception as e:
+        if EMAIL_SEND_FAILURES: EMAIL_SEND_FAILURES.labels(kind='visit_creation').inc()
         logger.exception(f"Core email sending FAILED for visit {visit_kind} ID {visit_id} to {recipients}.")
         return False
 
@@ -188,6 +199,7 @@ def send_new_visit_notification_to_security(visit_or_group_instance, visit_kind)
     html_message = render_to_string(html_body_template_name, context)
 
     try:
+        if EMAIL_SEND_TOTAL: EMAIL_SEND_TOTAL.labels(kind=f'new_visit_{visit_kind}').inc()
         send_mail(
             subject,
             '', # Используем html_message, поэтому plain_message можно оставить пустым или использовать text_body_template_name
@@ -202,4 +214,5 @@ def send_new_visit_notification_to_security(visit_or_group_instance, visit_kind)
             entity_id = 'n/a'
         logger.info("Уведомление о новом визите (%s ID: %s) успешно отправлено группе безопасности.", visit_kind, entity_id)
     except Exception as e:
+        if EMAIL_SEND_FAILURES: EMAIL_SEND_FAILURES.labels(kind=f'new_visit_{visit_kind}').inc()
         logger.error(f"Ошибка при отправке уведомления о новом визите группе безопасности: {e}")

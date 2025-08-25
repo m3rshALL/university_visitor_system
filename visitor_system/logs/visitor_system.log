@@ -14457,3 +14457,23 @@ INFO 2025-08-22 17:38:09,709 apps 30 139896595765056 AXES: BEGIN version 6.5.2, 
 WARNING 2025-08-22 17:53:37,896 log 30 139896395126528 Not Found: /ws/dashboard/
 WARNING 2025-08-22 17:54:22,397 log 29 139896396175104 Not Found: /ws/dashboard/
 WARNING 2025-08-22 18:06:45,344 log 29 139896396175104 Not Found: /ws/dashboard/
+INFO 2025-08-25 10:47:39,749 apps 13 140674932311872 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 10:48:25,321 apps 13 140190745179968 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 10:49:10,772 apps 13 140429658011456 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 10:49:13,159 apps 14 140022579382080 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 10:49:17,899 apps 24 140471630698304 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 10:49:27,971 apps 34 140041750255424 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 10:49:49,274 apps 49 140511913301824 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 10:49:49,360 apps 50 140511913301824 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+WARNING 2025-08-25 10:51:02,982 log 50 140511730988800 Not Found: /ws/dashboard/
+WARNING 2025-08-25 10:51:05,698 log 50 140511730988800 Not Found: /ws/dashboard/
+INFO 2025-08-25 10:51:15,210 services 50 140511722596096 Realtime event created: Посетитель покинул здание
+INFO 2025-08-25 10:51:15,293 views 50 140511722596096 Поставлена задача на отправку уведомления о выходе для визита 7
+INFO 2025-08-25 10:51:17,275 services 49 140511730988800 Realtime event created: Посетитель покинул здание
+INFO 2025-08-25 10:51:17,355 views 49 140511730988800 Поставлена задача на отправку уведомления о выходе для визита 6
+INFO 2025-08-25 10:51:18,922 services 49 140511730988800 Realtime event created: Посетитель покинул здание
+INFO 2025-08-25 10:51:18,930 views 49 140511730988800 Поставлена задача на отправку уведомления о выходе для визита 5
+WARNING 2025-08-25 10:51:54,618 log 50 140511730988800 Not Found: /healthz/
+WARNING 2025-08-25 10:51:54,718 log 50 140511730988800 Not Found: /favicon.ico
+INFO 2025-08-25 11:02:49,489 apps 295 139798959314752 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 11:02:54,715 apps 305 139760432568128 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address

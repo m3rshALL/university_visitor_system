@@ -10,6 +10,15 @@ import json
 import logging
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+try:
+    from prometheus_client import Gauge  # type: ignore
+    ACTIVE_VISITS_GAUGE = Gauge('active_visits_total', 'Active visits in building')
+    NO_SHOW_GAUGE = Gauge('no_show_total', 'No-show planned visits (past expected, never checked-in)')
+    AVG_VISIT_DURATION_MIN = Gauge('avg_visit_duration_minutes', 'Average visit duration (completed)')
+except Exception:
+    ACTIVE_VISITS_GAUGE = None
+    NO_SHOW_GAUGE = None
+    AVG_VISIT_DURATION_MIN = None
 
 logger = logging.getLogger(__name__)
 
@@ -121,12 +130,18 @@ class DashboardMetricsService:
                 'duration_minutes': self.calculate_duration_minutes(visit.entry_time) if visit.entry_time else 0
             })
         
-        return {
+        result = {
             'count': len(visits_data),
             'official_count': active_visits.count(),
             'student_count': active_student_visits.count(),
             'visits': visits_data
         }
+        try:
+            if ACTIVE_VISITS_GAUGE:
+                ACTIVE_VISITS_GAUGE.set(result['count'])
+        except Exception:
+            pass
+        return result
     
     def get_today_registrations(self, start_dt: datetime | None = None):
         """Регистрации за сегодня"""
@@ -204,11 +219,28 @@ class DashboardMetricsService:
         
         avg_duration = total_duration_minutes / total_count if total_count > 0 else 0
         
-        return {
+        result = {
             'avg_duration_minutes': round(avg_duration, 1),
             'avg_duration_hours': round(avg_duration / 60, 1),
             'completed_visits_count': total_count
         }
+        try:
+            if AVG_VISIT_DURATION_MIN:
+                AVG_VISIT_DURATION_MIN.set(result['avg_duration_minutes'])
+        except Exception:
+            pass
+        return result
+    
+    def get_no_show_count(self):
+        """Количество no-show: запланированные визиты, время в прошлом, без check-in."""
+        now = timezone.now()
+        count_official = Visit.objects.filter(expected_entry_time__lt=now, entry_time__isnull=True, status='AWAITING').count()
+        try:
+            if NO_SHOW_GAUGE:
+                NO_SHOW_GAUGE.set(count_official)
+        except Exception:
+            pass
+        return count_official
     
     def get_department_stats(self):
         """Статистика по департаментам"""
