@@ -17,7 +17,7 @@ if _allowed_hosts_raw:
 else:
     ALLOWED_HOSTS = []
 # В режиме разработки всегда добавляем локальные хосты
-dev_hosts = {'127.0.0.1', 'localhost', 'testserver', '0.0.0.0'}
+dev_hosts = {'127.0.0.1', 'localhost', 'testserver', '0.0.0.0', 'host.docker.internal'}
 if DEBUG:
     ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | dev_hosts)
 else:

@@ -8,6 +8,11 @@
 # VS Code
 .vscode
 
+# github
+.github/prompts
+.github
+
+
 # Python
 __pycache__/
 *.py[cod]
@@ -52,3 +57,7 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+# IDE
+.idea/
+.vscode/

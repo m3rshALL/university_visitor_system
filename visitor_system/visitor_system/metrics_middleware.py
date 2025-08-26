@@ -4,6 +4,7 @@ import logging
 
 try:
     from prometheus_client import Counter, Histogram, Gauge  # type: ignore
+    from prometheus_client.core import GaugeMetricFamily, REGISTRY  # type: ignore
     
     # HTTP метрики
     HTTP_REQUESTS_TOTAL = Counter(
@@ -30,8 +31,55 @@ except ImportError:
     HTTP_REQUESTS_TOTAL = None
     HTTP_REQUEST_DURATION_SECONDS = None
     HTTP_REQUESTS_IN_PROGRESS = None
+    GaugeMetricFamily = None  # type: ignore
+    REGISTRY = None  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+# Register a lightweight custom collector to expose Celery workers count via Django /metrics
+_celery_collector_registered = False
+if PROMETHEUS_AVAILABLE and REGISTRY is not None:
+    try:
+        from visitor_system.celery import app as _celery_app
+
+        import time as _time
+
+        # simple in-process cache to avoid flapping and extra broker calls
+        _last_workers_sample = {
+            'ts': 0.0,
+            'count': 0,
+        }
+
+        class CeleryWorkersCollector:
+            """Produces celery_workers_active gauge by pinging Celery workers, with short caching."""
+
+            def collect(self):  # noqa: D401
+                now = _time.time()
+                # reuse cached value if sampled in last 15s
+                if now - _last_workers_sample['ts'] < 15.0:
+                    count = int(_last_workers_sample['count'])
+                else:
+                    try:
+                        workers = _celery_app.control.ping(timeout=2.0) or []
+                        count = len(workers)
+                        _last_workers_sample['count'] = count
+                        _last_workers_sample['ts'] = now
+                    except Exception:  # pragma: no cover
+                        # fallback to last good sample (up to 2 minutes), else 0
+                        if now - _last_workers_sample['ts'] < 120.0:
+                            count = int(_last_workers_sample['count'])
+                        else:
+                            count = 0
+                metric = GaugeMetricFamily('celery_workers_active', 'Number of active Celery workers')
+                metric.add_metric([], count)
+                yield metric
+
+        REGISTRY.register(CeleryWorkersCollector())
+        _celery_collector_registered = True
+    except Exception:
+        # Don't break the app if Celery isn't importable; skip collector
+        logger.debug("CeleryWorkersCollector registration skipped", exc_info=True)
 
 
 class PrometheusMetricsMiddleware(MiddlewareMixin):
