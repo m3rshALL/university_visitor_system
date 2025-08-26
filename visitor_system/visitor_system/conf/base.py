@@ -3,6 +3,7 @@ import importlib.util as _importlib_util
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
+import sentry_sdk
 
 load_dotenv()
 
@@ -361,42 +362,48 @@ LOGGING = {
 	},
 }
 
+sentry_sdk.init(
+    dsn="https://68d9a3f5d154cedfd60afd8e7d1091a7@o4509905057873921.ingest.de.sentry.io/4509905060364368",
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+)
 
 # Sentry SDK
-SENTRY_DSN = os.getenv('SENTRY_DSN', '')
-if SENTRY_DSN:
-	try:
-		import sentry_sdk
-		from sentry_sdk.integrations.django import DjangoIntegration
-		from sentry_sdk.integrations.celery import CeleryIntegration
-
-		def _before_send(event):
-			try:
-				import re
-				def _scrub(val):
-					s = str(val)
-					s = re.sub(r"\b\d{12}\b", "************", s)  # ИИН
-					s = re.sub(r"\b\+?\d{10,14}\b", "********", s)  # телефоны
-					return s
-				for k in ('request', 'extra', 'breadcrumbs'):
-					if k in event:
-						event[k] = _scrub(event[k])
-			except Exception:
-				pass
-			return event
-
-		traces_rate = os.getenv('SENTRY_TRACES') or os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')
-		sentry_sdk.init(
-			dsn=SENTRY_DSN,
-			integrations=[DjangoIntegration(), CeleryIntegration()],
-			traces_sample_rate=float(traces_rate),
-			send_default_pii=False,
-			release=os.getenv('SENTRY_RELEASE', os.getenv('GIT_COMMIT', '')),
-			environment=os.getenv('SENTRY_ENV', 'dev'),
-			before_send=_before_send,
-		)
-	except ImportError:
-		pass
+# SENTRY_DSN = os.getenv('SENTRY_DSN', '')
+# if SENTRY_DSN:
+# 	try:
+# 		import sentry_sdk
+# 		from sentry_sdk.integrations.django import DjangoIntegration
+# 		from sentry_sdk.integrations.celery import CeleryIntegration
+#
+# 		def _before_send(event):
+# 			try:
+# 				import re
+# 				def _scrub(val):
+# 					s = str(val)
+# 					s = re.sub(r"\b\d{12}\b", "************", s)  # ИИН
+# 					s = re.sub(r"\b\+?\d{10,14}\b", "********", s)  # телефоны
+# 					return s
+# 				for k in ('request', 'extra', 'breadcrumbs'):
+# 					if k in event:
+# 						event[k] = _scrub(event[k])
+# 			except Exception:
+# 				pass
+# 			return event
+#
+# 		traces_rate = os.getenv('SENTRY_TRACES') or os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')
+# 		sentry_sdk.init(
+# 			dsn=SENTRY_DSN,
+# 			integrations=[DjangoIntegration(), CeleryIntegration()],
+# 			traces_sample_rate=float(traces_rate),
+# 			send_default_pii=False,
+# 			release=os.getenv('SENTRY_RELEASE', os.getenv('GIT_COMMIT', '')),
+# 			environment=os.getenv('SENTRY_ENV', 'dev'),
+# 			before_send=_before_send,
+# 		)
+# 	except ImportError:
+# 		pass
 
 CACHES = {
 	'default': {

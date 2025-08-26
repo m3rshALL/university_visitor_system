@@ -3,10 +3,10 @@
 # Instead, commit a .env.example file with placeholder values.
 .env
 .env.*
-!.env.example
+.env.example
 
 # VS Code
-.vscode/
+.vscode
 
 # Python
 __pycache__/

@@ -14480,3 +14480,344 @@ INFO 2025-08-25 11:02:54,715 apps 305 139760432568128 AXES: BEGIN version 6.5.2,
 WARNING 2025-08-25 11:21:11,974 log 50 140511730988800 Not Found: /ws/dashboard/
 WARNING 2025-08-25 15:00:04,718 log 49 140511721547520 Not Found: /ws/dashboard/
 WARNING 2025-08-25 15:05:26,634 log 50 140511730988800 Not Found: /ws/dashboard/
+WARNING 2025-08-25 19:00:27,948 log 50 140511730988800 Not Found: /sentry-debug/
+WARNING 2025-08-25 19:00:30,290 log 50 140511730988800 Not Found: /sentry-debug/
+WARNING 2025-08-25 19:00:40,322 log 49 140511721547520 Not Found: /sentry-debug/
+WARNING 2025-08-25 19:03:28,778 log 50 140511730988800 Not Found: /sentry-debug/
+WARNING 2025-08-25 19:03:30,195 log 50 140511730988800 Not Found: /sentry-debug/
+INFO 2025-08-25 19:05:52,728 apps 75940 72092 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:05:52,729 apps 75940 72092 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:05:53,728 apps 79408 79404 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:05:53,729 apps 79408 79404 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:05:53,744 autoreload 79408 79404 Watching for file changes with StatReloader
+INFO 2025-08-25 19:06:03,625 basehttp 79408 78920 "GET / HTTP/1.1" 302 0
+INFO 2025-08-25 19:06:03,645 basehttp 79408 78920 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-08-25 19:06:03,855 basehttp 79408 78044 "GET /accounts/login/?next=/ HTTP/1.1" 200 6393
+INFO 2025-08-25 19:06:03,877 basehttp 79408 78044 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:03,879 basehttp 79408 79020 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:03,880 basehttp 79408 78044 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:03,883 basehttp 79408 78044 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:03,883 basehttp 79408 79020 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:03,886 basehttp 79408 78044 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:03,888 basehttp 79408 79020 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:03,888 basehttp 79408 78044 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:06:05,332 basehttp 79408 78044 "GET /accounts/microsoft/login/?process=login&next=%2F HTTP/1.1" 302 0
+INFO 2025-08-25 19:06:05,722 basehttp 79408 78044 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-25 19:06:24,150 attempts 79408 78044 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-08-25 13:06:24.124605+00:00
+INFO 2025-08-25 19:06:24,150 database 79408 78044 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/microsoft/login/callback/"}.
+INFO 2025-08-25 19:06:24,167 basehttp 79408 78044 "GET /accounts/microsoft/login/callback/?code=1.ATwA8xWPFeCDBkmCTGm9xQ2dYRhWh_P6tx1Pkc0XiOdYBvMaAR88AA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_hlVXrbDtuIc9T-YneewmR2y-MbA4NaXsM4YQ9OTmrY_GQfgSYUnR3Hd6lHHl2gaaqZpi5snAhYXx60CuKNjEDro9GHtvkbm97aO5LMg3QWaknL5cefUf4MQOw7DwYNfuOziuUiF6AyFKdzQGdOKJ2X-_eHALfi_9cjwRZ8xeqi3vuXUrOIqdTgh8dOiwiuMrueHENjTKWPAQpkaYI3UT67fp6akQbgjI4Gm96CDClrsfUQ3OsYdol0210AhfUSIqgE14DbtnuIZCZcggsCZe_NN73DK93Z3vxzeEszL6P80EnVcRRhwTxzWEeSwgHxl51HVJYCoWYZGntkmTxzi9vFSUzvH_-FfM38t0FkhrIEc7XxjWUl0kEE1O78Gu3qGHq0vvclSVEkAeaxRHnWYdaqzNZH2pqkzSbwYgKQkSYhnr4RN0vTfAGW8dU6ukklcW2p2cvmHOmu0eLsAfLt-3L72kTngE96RVhLIEA2GF3CStO6Zv2DHPXjBHFlL0u_0FZV_0UvzzNardtoFSzsurUjcf8v2buFMLw-4XLOm1NOlZMQ0WpSNdCcV-uzshzKAu2DfJoZpAlaRA2WWgYlXVpQNd3vEtCmqFEn-_lIwui9hi-go6TBoQWZBO_oF662w8fB9PMS-_eZYN-968me6VzWo54K7w4y7Wy6OlIueEkQx0FP-751Xk4P2XVrpLr4rLU9fDt-tIFUSuDBfO0A0LQEt55Qxx3U4s7dM3O99SNSOlskk13CjHnaH64AqWd6w&state=zg23P1Kty1B9JVFs&session_state=004d8ba9-262a-29ff-2a96-9b8d07982867 HTTP/1.1" 302 0
+ERROR 2025-08-25 19:06:25,512 log 79408 78044 Internal Server Error: /
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column visitors_guestinvitation.guest_iin_encrypted does not exist
+LINE 1: ...t_phone", "visitors_guestinvitation"."guest_iin", "visitors_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\sentry_sdk\integrations\django\views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\university_visitor_system\visitor_system\visitors\views.py", line 1087, in employee_dashboard_view
+    return render(request, 'visitors/employee_dashboard.html', context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\sentry_sdk\utils.py", line 1816, in runner
+    return sentry_patched_function(*args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\sentry_sdk\integrations\django\templates.py", line 105, in render
+    return real_render(request, template_name, context, *args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\template\defaulttags.py", line 199, in render
+    len_values = len(values)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 366, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 1945, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1623, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\sentry_sdk\utils.py", line 1816, in runner
+    return sentry_patched_function(*args, **kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\sentry_sdk\integrations\django\__init__.py", line 652, in execute
+    result = real_execute(self, sql, params)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column visitors_guestinvitation.guest_iin_encrypted does not exist
+LINE 1: ...t_phone", "visitors_guestinvitation"."guest_iin", "visitors_...
+                                                             ^
+
+ERROR 2025-08-25 19:06:25,522 basehttp 79408 78044 "GET / HTTP/1.1" 500 301290
+INFO 2025-08-25 19:06:27,502 basehttp 79408 78044 "GET /serviceworker.js HTTP/1.1" 200 14645
+WARNING 2025-08-25 19:06:46,340 connectionpool 79408 56148 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000018FF4B06AD0>, 'Connection to o4509905057873921.ingest.de.sentry.io timed out. (connect timeout=30)')': /api/4509905060364368/envelope/
+INFO 2025-08-25 19:07:43,873 autoreload 79408 79404 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-08-25 19:07:45,771 apps 76124 79128 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:07:45,772 apps 76124 79128 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:07:45,783 autoreload 76124 79128 Watching for file changes with StatReloader
+INFO 2025-08-25 19:08:33,668 apps 76424 78960 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:08:33,669 apps 76424 78960 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:08:42,195 apps 49516 49960 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:08:42,196 apps 49516 49960 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:08:46,945 basehttp 76124 70120 "GET / HTTP/1.1" 200 96302
+INFO 2025-08-25 19:08:46,962 basehttp 76124 70120 "GET /static/tabler/css/tabler.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,966 basehttp 76124 70120 "GET /static/tabler/css/tabler-flags.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,966 basehttp 76124 74320 "GET /static/tabler/css/tabler-socials.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,970 basehttp 76124 70120 "GET /static/tabler/css/tabler-payments.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,970 basehttp 76124 74320 "GET /static/tabler/css/tabler-vendors.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,972 basehttp 76124 70120 "GET /static/tabler/css/tabler-marketing.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,972 basehttp 76124 74320 "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,975 basehttp 76124 70120 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,976 basehttp 76124 74320 "GET /static/tabler/js/tabler-theme.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,993 basehttp 76124 74320 "GET /static/js/navigation.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,995 basehttp 76124 70120 "GET /static/js/optimized-offline-handler.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,996 basehttp 76124 22884 "GET /static/js/egov-integration.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:46,999 basehttp 76124 74320 "GET /static/js/ui.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:47,009 basehttp 76124 70120 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:47,009 basehttp 76124 22884 "GET /static/js/vendor/apexcharts.min.js HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:47,058 basehttp 76124 74320 "GET /media/guest_photos/72x72_7ubsthY.png HTTP/1.1" 200 9337
+INFO 2025-08-25 19:08:47,073 basehttp 76124 70120 "GET /media/guest_photos/IMG_2095.jpeg HTTP/1.1" 200 721083
+INFO 2025-08-25 19:08:47,101 basehttp 76124 70120 "GET /static/img/icons/icon-512x512.png HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:47,489 basehttp 76124 79152 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-08-25 19:08:47,494 basehttp 76124 70120 "GET /static/img/icons/icon-144x144.png HTTP/1.1" 304 0
+INFO 2025-08-25 19:08:49,409 basehttp 76124 70120 "GET /serviceworker.js HTTP/1.1" 200 14645
+ERROR 2025-08-25 19:08:53,688 log 76124 70120 Internal Server Error: /sentry-debug/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\sentry_sdk\integrations\django\views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+  File "D:\university_visitor_system\visitor_system\visitor_system\urls.py", line 42, in trigger_error
+    division_by_zero = 1 / 0
+                       ~~^~~
+ZeroDivisionError: division by zero
+ERROR 2025-08-25 19:08:53,690 basehttp 76124 70120 "GET /sentry-debug/ HTTP/1.1" 500 101688
+INFO 2025-08-25 19:08:55,505 basehttp 76124 70120 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-25 19:09:06,423 autoreload 76124 79128 D:\university_visitor_system\visitor_system\visitor_system\urls.py changed, reloading.
+INFO 2025-08-25 19:09:07,906 apps 79004 60540 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:09:07,907 apps 79004 60540 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:09:07,918 autoreload 79004 60540 Watching for file changes with StatReloader
+INFO 2025-08-25 19:09:41,529 apps 13 140126025279296 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:09:41,534 apps 13 140126025279296 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:09:44,382 apps 16 140075843323712 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:09:44,387 apps 16 140075843323712 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:10:27,598 apps 33 140374635726656 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:10:27,604 apps 33 140374635726656 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:10:30,641 apps 1 140002948503360 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:10:30,647 apps 1 140002948503360 Notifications app ready: Prometheus counters available
+ERROR 2025-08-25 19:10:54,205 log 79004 43772 Internal Server Error: /sentry-debug/
+Traceback (most recent call last):
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\university_visitor_system\.venv\Lib\site-packages\sentry_sdk\integrations\django\views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+  File "D:\university_visitor_system\visitor_system\visitor_system\urls.py", line 42, in trigger_error
+    division_by_zero = 1 / 0
+                       ~~^~~
+ZeroDivisionError: division by zero
+ERROR 2025-08-25 19:10:54,208 basehttp 79004 43772 "GET /sentry-debug/ HTTP/1.1" 500 101825
+INFO 2025-08-25 19:10:55,870 basehttp 79004 43772 "GET /serviceworker.js HTTP/1.1" 200 14645
+INFO 2025-08-25 19:11:08,192 autoreload 79004 60540 D:\university_visitor_system\visitor_system\visitor_system\urls.py changed, reloading.
+INFO 2025-08-25 19:11:09,905 apps 75340 79728 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:11:09,906 apps 75340 79728 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:11:09,917 autoreload 75340 79728 Watching for file changes with StatReloader
+INFO 2025-08-25 19:12:13,868 apps 13 140236427872064 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:12:13,873 apps 13 140236427872064 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:12:37,667 apps 12 140372300781376 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:12:37,671 apps 12 140372300781376 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:12:55,371 apps 13 139845090772800 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:12:55,375 apps 13 139845090772800 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:14:28,678 autoreload 75340 79728 D:\university_visitor_system\visitor_system\visitor_system\urls.py changed, reloading.
+INFO 2025-08-25 19:14:30,232 apps 68112 78852 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:14:30,233 apps 68112 78852 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:14:30,245 autoreload 68112 78852 Watching for file changes with StatReloader
+INFO 2025-08-25 19:14:56,255 apps 13 140092015671104 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:14:56,260 apps 13 140092015671104 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:14:59,113 apps 16 139809614407488 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:14:59,117 apps 16 139809614407488 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:15:40,165 apps 41 140247716779840 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:15:40,170 apps 41 140247716779840 Notifications app ready: Prometheus counters available
+INFO 2025-08-25 19:15:40,200 apps 42 140247716779840 AXES: BEGIN version 6.5.2, blocking by combination of username and ip_address
+INFO 2025-08-25 19:15:40,204 apps 42 140247716779840 Notifications app ready: Prometheus counters available
+ERROR 2025-08-25 19:15:43,703 log 42 140247604762368 Internal Server Error: /sentry-debug/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sentry_sdk/integrations/django/views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitor_system/urls.py", line 61, in trigger_error
+    raise Exception("Sentry debug test")
+Exception: Sentry debug test
+ERROR 2025-08-25 19:16:41,774 log 41 140247604844288 Internal Server Error: /sentry-debug/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sentry_sdk/integrations/django/views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitor_system/urls.py", line 61, in trigger_error
+    raise Exception("Sentry debug test")
+Exception: Sentry debug test
+INFO 2025-08-25 19:17:05,143 attempts 42 140247518144256 AXES: Cleaned up 2 expired access attempts from database that were older than 2025-08-25 13:17:05.137514+00:00
+INFO 2025-08-25 19:17:05,144 database 42 140247518144256 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36", path_info: "/accounts/microsoft/login/callback/"}.
+ERROR 2025-08-25 19:17:18,885 log 42 140247604762368 Internal Server Error: /sentry-debug/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sentry_sdk/integrations/django/views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitor_system/urls.py", line 61, in trigger_error
+    raise Exception("Sentry debug test")
+Exception: Sentry debug test
+ERROR 2025-08-25 19:17:19,138 log 42 140247604762368 Internal Server Error: /sentry-debug/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sentry_sdk/integrations/django/views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitor_system/urls.py", line 61, in trigger_error
+    raise Exception("Sentry debug test")
+Exception: Sentry debug test

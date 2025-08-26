@@ -56,6 +56,10 @@ def healthz_celery_view(request):
     except Exception:
         return JsonResponse({'status': 'degraded', 'workers': 0})
 
+# Sentry debug endpoint handler
+def trigger_error(request):
+    raise Exception("Sentry debug test")
+
 # Временный импорт для тестирования (удален после проверки)
 # import sys
 # sys.path.append('/app/visitor_system')
@@ -102,8 +106,7 @@ urlpatterns = [
     path('healthz/celery', healthz_celery_view, name='healthz_celery'),
     # Временный маршрут для тестирования ИИН (удален после проверки)
     # path('test-iin/', test_iin_view, name='test_iin'),
-
-    # Можно добавить другие корневые URL, если нужно
+    path('sentry-debug/', trigger_error),
 ]
 
 # DRF routers (API v1)
@@ -131,10 +134,10 @@ if settings.DEBUG:
     # urlpatterns.extend(debug_toolbar_urls())  # Добавляем URL-ы от debug_toolbar
 
 if not settings.DEBUG:
-    def handler403(request, exception):
+    def handler403(request):
         return render(request, 'errors/403.html', status=403)
 
-    def handler404(request, exception):
+    def handler404(request):
         return render(request, 'errors/404.html', status=404)
 
     def handler500(request):
