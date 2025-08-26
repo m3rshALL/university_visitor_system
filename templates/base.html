@@ -317,6 +317,20 @@
 <script src="{% static 'js/optimized-offline-handler.js' %}" defer></script>
 <script src="{% static 'js/ui.js' %}" defer></script>
 
+<!-- htmx & Alpine.js -->
+<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-7/jT8S0UYkQv8I0u3fqO3gCAxU0cY1T7XgO5WvQ7o77fD1bO8XQ0w9m3a9HkGykB" crossorigin="anonymous"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script>
+document.addEventListener('htmx:configRequest', function (event) {
+    try {
+        var match = document.cookie.match(new RegExp('(^| )csrftoken=([^;]+)'));
+        if (match) {
+            event.detail.headers['X-CSRFToken'] = match[2];
+        }
+    } catch (e) {}
+});
+</script>
+
 
 
 

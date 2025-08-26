@@ -1,5 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from asgiref.sync import sync_to_async
 from .services import dashboard_service
 
 
@@ -9,8 +10,8 @@ class DashboardConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
-        # Отправляем начальные метрики
-        metrics = dashboard_service.get_current_metrics()
+        # Отправляем начальные метрики (не блокируем event loop)
+        metrics = await sync_to_async(dashboard_service.get_current_metrics)()
         await self.send_json({
             "type": "initial",
             "data": metrics,

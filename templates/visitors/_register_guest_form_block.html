@@ -1,0 +1,195 @@
+{% load static %}
+{# Блок формы регистрации гостя для htmx-обновлений #}
+<div id="guest-form-container">
+    <form method="post" novalidate class="needs-validation"
+          hx-post="{% url 'register_guest' %}"
+          hx-target="#guest-form-container" hx-swap="outerHTML">
+        {% csrf_token %}
+
+        {% if guest_form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in guest_form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+        </div>
+        {% endif %}
+
+        {% with form=guest_form %}
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-clock me-2"></i>Время регистрации
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="form-label">Время регистрации:</div>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="guest_reg_time" id="guest_reg_now" value="now" checked="">
+                                <span class="form-check-label" for="guest_reg_now">Сейчас</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="guest_reg_time" id="guest_reg_later" value="later">
+                                <span class="form-check-label" for="guest_reg_later">Запланировать</span>
+                            </label>
+                            <div class="mt-2 expected-time-field" id="guest_expected_time_wrapper">
+                                <label for="{{ form.expected_entry_time.id_for_label }}" class="form-label">{{ form.expected_entry_time.label }}:</label>
+                                {{ form.expected_entry_time }}
+                                {% if form.expected_entry_time.errors %} <div class="invalid-feedback d-block">{% for e in form.expected_entry_time.errors %}{{ e }}{% endfor %}</div> {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-person me-2"></i>Данные гостя
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="guest_surname" class="form-label required">Фамилия:</label>
+                                <input type="text" id="guest_surname" name="guest_surname" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="guest_firstname" class="form-label required">Имя:</label>
+                                <input type="text" id="guest_firstname" name="guest_firstname" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="guest_patronymic" class="form-label">Отчество:</label>
+                                <input type="text" id="guest_patronymic" name="guest_patronymic" class="form-control">
+                                <div class="form-text">Если имеется</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" name="{{ form.guest_full_name.html_name }}" id="guest_full_name_hidden">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.guest_iin.id_for_label }}" class="form-label required">ИИН:</label>
+                                <input type="text" id="{{ form.guest_iin.id_for_label }}" name="{{ form.guest_iin.html_name }}"
+                                       class="form-control" value="{{ form.guest_iin.value|default:'' }}"
+                                       placeholder="Введите 12 цифр ИИН" maxlength="12" pattern="[0-9]{12}"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                {% if form.guest_iin.errors %}
+                                    <div class="invalid-feedback d-block">{% for e in form.guest_iin.errors %}{{ e }}{% endfor %}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="guest_phone_masked" class="form-label required">Номер телефона:</label>
+                                <input type="text" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __">
+                                {% if form.guest_phone.errors %}
+                                    <div class="invalid-feedback d-block">{% for e in form.guest_phone.errors %}{{ e }}{% endfor %}</div>
+                                {% endif %}
+                                <input type="hidden" name="{{ form.guest_phone.html_name }}" id="{{ form.guest_phone.id_for_label }}" value="{{ form.guest_phone.value|default:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-clipboard2-data me-2"></i>Детали визита
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.department.id_for_label }}" class="form-label required">{{ form.department.label }}:</label>
+                            {{ form.department }}
+                            {% if form.department.errors %}
+                                <div class="invalid-feedback d-block">{% for e in form.department.errors %}{{ e }}{% endfor %}</div>
+                            {% endif %}
+                            <div class="form-text" id="director_info_wrapper" style="display: none; margin-top: 5px;">
+                                <strong>Директор департамента:</strong> <span id="director_name_display">-</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.employee.id_for_label }}" class="form-label required">{{ form.employee.label }}:</label>
+                            {{ form.employee }}
+                            {% if form.employee.errors %}
+                                <div class="invalid-feedback d-block">{% for e in form.employee.errors %}{{ e }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="employee_phone_masked" class="form-label required">{{ form.employee_contact_phone_form.label }}:</label>
+                            <input type="text" id="employee_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __">
+                            {% if form.employee_contact_phone_form.errors %}
+                                <div class="invalid-feedback d-block">{% for e in form.employee_contact_phone_form.errors %}{{ e }}{% endfor %}</div>
+                            {% endif %}
+                            <input type="hidden" name="{{ form.employee_contact_phone_form.html_name }}" id="{{ form.employee_contact_phone_form.id_for_label }}" value="{{ form.employee_contact_phone_form.value|default:'' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.purpose.id_for_label }}" class="form-label required">{{ form.purpose.label }}:</label>
+                            {{ form.purpose }}
+                            {% if form.purpose.errors %}
+                                <div class="invalid-feedback d-block">{% for e in form.purpose.errors %}{{ e }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3" id="guest_purpose_other_wrapper">
+                            <label for="{{ form.purpose_other_text.id_for_label }}" class="form-label">{{ form.purpose_other_text.label }}:</label>
+                            {{ form.purpose_other_text }}
+                            {% if form.purpose_other_text.errors %}
+                                <div class="invalid-feedback d-block">{% for e in form.purpose_other_text.errors %}{{ e }}{% endfor %}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="bi bi-check-circle me-2"></i>Подтверждение информирования
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            {{ form.consent_acknowledged.errors }}
+                            <input type="checkbox" name="{{ form.consent_acknowledged.html_name }}"
+                                   class="form-check-input {% if form.consent_acknowledged.errors %}is-invalid{% endif %}"
+                                   required id="{{ form.consent_acknowledged.id_for_label }}">
+                            <label class="form-check-label required" for="{{ form.consent_acknowledged.id_for_label }}">
+                                {{ form.consent_acknowledged.label }}
+                            </label>
+                            {% if form.consent_acknowledged.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.consent_acknowledged.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Это поле обязательно для завершения регистрации.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-between mt-3 mb-4">
+                    <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Отмена
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-person-plus me-2"></i>Зарегистрировать визит
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

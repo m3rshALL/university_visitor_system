@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.core.exceptions import PermissionDenied
 from django.utils import timezone
-from django.http import JsonResponse, HttpResponse, Http404
+from django.http import JsonResponse, HttpResponse, Http404, QueryDict
 from django.views.decorators.cache import never_cache, cache_page, cache_control
 
 from django.contrib import messages
@@ -25,6 +25,7 @@ from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 from qrcode import QRCode
 from io import BytesIO
 from django.conf import settings
+from urllib.parse import urlparse
 
 from django.contrib.auth.models import Group # Импорт модели группы пользователей
 from django.db.models import Count
@@ -44,6 +45,7 @@ from rest_framework.throttling import AnonRateThrottle, UserRateThrottle  # type
 from django.utils.http import url_has_allowed_host_and_scheme # Для безопасного редиректа
 
 from django.contrib.staticfiles.views import serve as serve_static
+from django.core.mail import send_mail
 
 from notifications.utils import send_new_visit_notification_to_security
 
@@ -63,17 +65,13 @@ def get_scoped_visits_qs(user):
     """
     Возвращает QuerySet'ы для официальных и студенческих визитов,
     отфильтрованные в соответствии с правами пользователя.
-    - Администраторы (is_staff) и члены группы RECEPTION_GROUP_NAME видят все визиты.
+    - Администраторы (is_staff) и члены группы RECEPTION_GROUP видят все визиты.
     - Остальные сотрудники видят визиты только своего департамента.
     """
-    official_visits_qs = (
-        Visit.objects.select_related('guest', 'employee', 'department', 'registered_by')
-    )
-    student_visits_qs = (
-        StudentVisit.objects.select_related('guest', 'department', 'registered_by')
-    )
+    official_visits_qs = Visit.objects.all()
+    student_visits_qs = StudentVisit.objects.all()
 
-    is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP).exists()
     is_staff = user.is_staff
 
     if not is_reception and not is_staff:
@@ -105,7 +103,7 @@ def combine_visit_lists(official_visits_qs, student_visits_qs):
     Сортирует по релевантному времени (entry_time или expected_entry_time).
     
     Args:
-        official_visits_qs: QuerySet с объектами Visit
+    official_visits_qs: QuerySet с объектами Visit
         student_visits_qs: QuerySet с объектами StudentVisit
     
     Returns:
@@ -176,15 +174,23 @@ def register_guest_view(request):
                         )
                     # --------------------------------------------
                     messages.success(request, f"Визит гостя {visit.guest.full_name} успешно зарегистрирован ({'сейчас' if registration_type == 'now' else 'заранее'})!")
+                    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+                        resp = HttpResponse(status=204)
+                        resp['HX-Redirect'] = reverse('employee_dashboard')
+                        return resp
                     return redirect('employee_dashboard')
                 except Exception as e:
                     messages.error(request, f"Ошибка при регистрации визита: {e}")
         else:
             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
+            if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+                return render(request, 'visitors/_register_guest_form_block.html', {'guest_form': form})
     else:
         form = GuestRegistrationForm(prefix="guest")
 
     context = {'guest_form': form} # Передаем форму под именем guest_form
+    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+        return render(request, 'visitors/_register_guest_form_block.html', context)
     return render(request, 'visitors/register_guest.html', context)
 @login_required
 def qr_scan_view(request):
@@ -326,7 +332,14 @@ def visit_history_view(request):
     # Если есть GET-параметры, это фильтрация - не кэшируем
     user = request.user # Получаем текущего пользователя
     # Получаем визиты с учетом прав доступа пользователя
-    official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)    # Получаем групповые визиты - для всех, у кого есть права на историю визитов
+    official_visits_qs, student_visits_qs = get_scoped_visits_qs(user)
+    
+    # Оптимизируем запросы: добавляем select_related для связанных объектов
+    # Visit имеет поле 'employee', StudentVisit - только 'registered_by'
+    official_visits_qs = official_visits_qs.select_related('guest', 'department', 'employee')
+    student_visits_qs = student_visits_qs.select_related('guest', 'department', 'registered_by')
+    
+    # Получаем групповые визиты - для всех, у кого есть права на историю визитов
     # Выбираем только зарегистрированные групповые визиты
     group_visits_qs = GroupInvitation.objects.filter(
         is_registered=True,  # Берем только зарегистрированные групповые визиты
@@ -336,7 +349,7 @@ def visit_history_view(request):
     ).prefetch_related('guests')
     
     # Фильтруем групповые визиты по правам доступа, аналогично другим типам визитов
-    is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    is_reception = user.is_authenticated and user.groups.filter(name=RECEPTION_GROUP).exists()
     is_staff = user.is_staff
     
     if not is_reception and not is_staff:
@@ -355,7 +368,7 @@ def visit_history_view(request):
                 group_visits_qs = group_visits_qs.none()
     
     # Определяем, должен ли пользователь видеть полные фильтры
-    is_reception_or_staff = user.is_staff or user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    is_reception_or_staff = user.is_staff or user.groups.filter(name=RECEPTION_GROUP).exists()
 
     # Инициализируем форму фильтра GET-данными
     filter_form = HistoryFilterForm(request.GET or None)
@@ -545,6 +558,9 @@ def visit_history_view(request):
         'filter_params_url': filter_params_url,
         'show_filters': is_reception_or_staff # <--- Передаем флаг в шаблон
     }
+    # Если это HX-запрос (htmx), возвращаем только содержимое таблицы
+    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+        return render(request, 'visitors/_visit_table_block.html', context)
     return render(request, 'visitors/visit_history.html', context)
 # ---------------------------------
 
@@ -664,6 +680,16 @@ def mark_guest_exit_view(request, visit_id):
         logger.info("Поставлена задача на отправку уведомления о выходе для визита %s", visit_id)
 
     messages.success(request, f"Выход гостя '{visit.guest.full_name}' успешно зарегистрирован.")
+    # HX: вернуть обновлённую таблицу
+    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+        try:
+            current_url = request.META.get('HTTP_HX_CURRENT_URL', '')
+            if current_url:
+                parsed = urlparse(current_url)
+                request.GET = QueryDict(parsed.query)
+        except Exception:
+            pass
+        return visit_history_view(request)
     # Перенаправляем на список текущих гостей
     return redirect('visit_history')
 
@@ -726,6 +752,15 @@ def mark_student_exit_view(request, visit_id):
             logger.exception('Failed to write AuditLog for student exit')
 
         messages.success(request, f"Выход посетителя '{visit.guest.full_name}' успешно зарегистрирован.")
+        if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+            try:
+                current_url = request.META.get('HTTP_HX_CURRENT_URL', '')
+                if current_url:
+                    parsed = urlparse(current_url)
+                    request.GET = QueryDict(parsed.query)
+            except Exception:
+                pass
+            return visit_history_view(request)
         return redirect('visit_history')
 
     except Http404:
@@ -756,53 +791,50 @@ def employee_dashboard_view(request):
     today = timezone.now().date()
     one_week_later = today + timedelta(days=7)
     
-    # Получаем департамент текущего сотрудника
+    # Получаем департамент текущего сотрудника с оптимизацией
     try:
-        user_department = user.employee_profile.department
-    except (AttributeError, EmployeeProfile.DoesNotExist):
+        user_profile = EmployeeProfile.objects.select_related('department').get(user=user)
+        user_department = user_profile.department
+    except EmployeeProfile.DoesNotExist:
         user_department = None
+    
     # Получаем визиты на ближайшую неделю для сотрудников своего департамента
     if user_department:
-        # Получаем всех сотрудников департамента
-        department_employee_ids = User.objects.filter(
-            employee_profile__department=user_department
-        ).values_list('id', flat=True)
-        
-        # Получаем визиты всех сотрудников департамента
+        # Оптимизированный запрос: используем department напрямую вместо списка ID
         upcoming_visits_qs = Visit.objects.filter(
-            employee_id__in=department_employee_ids,  # Фильтруем по списку ID сотрудников департамента
+            department=user_department,  # Фильтруем по департаменту напрямую
             expected_entry_time__date__gte=today,
             expected_entry_time__date__lt=one_week_later,
-            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],  # Ожидаемая регистрация и уже в здании
-        ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
+            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],
+        ).select_related('guest', 'department', 'registered_by').order_by('expected_entry_time')
     else:
         # Если у пользователя нет департамента, показываем только его визиты
         upcoming_visits_qs = Visit.objects.filter(
             employee=user,
             expected_entry_time__date__gte=today,
             expected_entry_time__date__lt=one_week_later,
-            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],  # Ожидаемая регистрация и уже в здании
-        ).select_related('guest', 'department', 'employee').order_by('expected_entry_time')
+            status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],
+        ).select_related('guest', 'department', 'registered_by').order_by('expected_entry_time')
     
     # Convert queryset to list and add visit_kind for template URL generation
     upcoming_visits_week_list = list(upcoming_visits_qs)
     for visit_obj in upcoming_visits_week_list:
         visit_obj.visit_kind = 'official'
-    # Получаем студенческие визиты на ту же неделю
+    # Получаем студенческие визиты на ту же неделю с оптимизацией
     if user_department:
         student_visits_qs = StudentVisit.objects.filter(
             department=user_department,
             entry_time__date__gte=today,
             entry_time__date__lt=one_week_later,
             status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],
-        ).select_related('guest', 'department').order_by('entry_time')
+        ).select_related('guest', 'department', 'registered_by').order_by('entry_time')
     else:
         student_visits_qs = StudentVisit.objects.filter(
             registered_by=user,
             entry_time__date__gte=today,
             entry_time__date__lt=one_week_later,
             status__in=[STATUS_AWAITING_ARRIVAL, STATUS_CHECKED_IN],
-        ).select_related('guest', 'department').order_by('entry_time')
+        ).select_related('guest', 'department', 'registered_by').order_by('entry_time')
     
     # Добавляем студенческие визиты в список
     student_visits_list = list(student_visits_qs)
@@ -993,7 +1025,7 @@ def employee_dashboard_view(request):
         recent_student_visits = StudentVisit.objects.filter(
             department=user_department,
             entry_time__gte=recent_time_threshold
-        ).select_related('guest', 'department').order_by('-entry_time')[:10]
+        ).select_related('guest', 'department', 'registered_by').order_by('-entry_time')[:10]
     else:
         # Если нет департамента, показываем визиты, связанные с пользователем
         recent_official_visits = Visit.objects.filter(
@@ -1004,7 +1036,7 @@ def employee_dashboard_view(request):
         recent_student_visits = StudentVisit.objects.filter(
             registered_by=user,
             entry_time__gte=recent_time_threshold
-        ).select_related('guest', 'department').order_by('-entry_time')[:10]
+        ).select_related('guest', 'department', 'registered_by').order_by('-entry_time')[:10]
     
     # Добавляем атрибут для различения типов визитов в шаблоне
     for v in recent_official_visits: v.visit_kind = 'official'
@@ -1092,18 +1124,18 @@ def has_functional_access(user):
     Доступ предоставляется, если:
     1. Пользователь аутентифицирован.
     2. Пользователь является администратором (is_staff = True).
-    3. Пользователь состоит в группе FUNCTIONAL_ACCESS_GROUP_NAME.
+    3. Пользователь состоит в группе SECURITY_GROUP.
     """
     if not user.is_authenticated:
         return False
     if user.is_staff: # Администраторы всегда имеют доступ
         return True
     try:
-        return user.groups.filter(name=FUNCTIONAL_ACCESS_GROUP_NAME).exists()
+        return user.groups.filter(name=SECURITY_GROUP).exists()
     except Group.DoesNotExist: # На случай, если группа была удалена или еще не создана
         logger.warning(
             "Группа '%s' не найдена в базе данных. Функциональный доступ для пользователя %s не предоставлен по группе.",
-            FUNCTIONAL_ACCESS_GROUP_NAME,
+            SECURITY_GROUP,
             user.username,
         )
         return False
@@ -1115,7 +1147,7 @@ def has_functional_access(user):
 def example_special_feature_view(request):
     """
     Пример представления, доступного администраторам (is_staff)
-    и пользователям из группы FUNCTIONAL_ACCESS_GROUP_NAME.
+    и пользователям из группы SECURITY_GROUP.
     """
     # Ваша логика для этой специальной функции
     context = {
@@ -1170,15 +1202,23 @@ def register_student_visit_view(request):
                     )
                 # --------------------------------------------
                 messages.success(request, f"Визит студента {student_visit.guest.full_name} успешно зарегистрирован!")
+                if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+                    resp = HttpResponse(status=204)
+                    resp['HX-Redirect'] = reverse('employee_dashboard')
+                    return resp
                 return redirect('employee_dashboard')
             except Exception as e:
                 messages.error(request, f"Ошибка при регистрации визита студента: {e}")
         else:
             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
+            if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+                return render(request, 'visitors/_register_student_form_block.html', {'student_form': form})
     else:
         form = StudentVisitRegistrationForm(prefix="student")
 
     context = {'student_form': form} # Передаем форму под именем student_form
+    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+        return render(request, 'visitors/_register_student_form_block.html', context)
     return render(request, 'visitors/register_student_visit.html', context)
 # -------------------------------------------------------------
 
@@ -1331,7 +1371,7 @@ def export_visits_xlsx(request):
                 "Гость сотрудника/Другое", # Тип
                 status_str, # Статус
                 visit.guest.full_name,
-                (getattr(visit.guest, 'iin', None)[:-4].replace(getattr(visit.guest, 'iin', '')[:-4], '********') + getattr(visit.guest, 'iin', '')[-4:]) if getattr(visit.guest, 'iin', None) else '',
+                (('********' + str(getattr(visit.guest, 'iin', ''))[-4:]) if getattr(visit.guest, 'iin', None) else ''),
                 visit.guest.phone_number,
                 visit.guest.email,
                 visit.employee.get_full_name() if visit.employee else '-', # Сотрудник ФИО
@@ -1350,15 +1390,22 @@ def export_visits_xlsx(request):
                 consent_acknowledged_str, # Согласие
             ]
         elif visit.visit_kind == 'student':
-             # У студенческих визитов нет этих полей
-             expected_entry_time_str = '-'
-             consent_acknowledged_str = '-'
-             row_data = [
+            # У студенческих визитов нет expected_entry_time/consent
+            expected_entry_time_str = '-'
+            consent_acknowledged_str = '-'
+            masked_iin = ''
+            try:
+                raw_iin = getattr(visit.guest, 'iin', None)
+                if raw_iin:
+                    masked_iin = ('********' + str(raw_iin)[-4:]) if len(str(raw_iin)) >= 4 else '********'
+            except Exception:
+                masked_iin = ''
+            row_data = [
                 visit.id,
                 "Студент/Абитуриент", # Тип
                 status_str, # Статус
                 visit.guest.full_name,
-                getattr(visit.guest, 'iin', None),
+                masked_iin,
                 visit.guest.phone_number,
                 visit.guest.email,
                 '-', # Сотрудник ФИО
@@ -1457,8 +1504,8 @@ def employee_autocomplete_view(request):
         logger.debug("[autocomplete] Department ID not provided, returning empty")
         queryset = User.objects.none()
     else: # На случай если department_id не None, не пустой, но и не isdigit()
-         logger.warning("[autocomplete] Department ID '%s' is not digit, returning empty", department_id)
-         queryset = User.objects.none()
+        logger.warning("[autocomplete] Department ID '%s' is not digit, returning empty", department_id)
+        queryset = User.objects.none()
 
 
     queryset = queryset.order_by('last_name', 'first_name')[:20]
@@ -1519,10 +1566,10 @@ def get_employee_details_view(request, user_id):
     except User.DoesNotExist:
         pass # Пользователь не найден, вернется пустой телефон
     except EmployeeProfile.DoesNotExist:
-         pass # У пользователя нет профиля, вернется пустой телефон
+        pass # У пользователя нет профиля, вернется пустой телефон
     except AttributeError:
-         # На случай если employee_profile не настроен правильно
-         pass
+        # На случай если employee_profile не настроен правильно
+        pass
 
     return JsonResponse(data)
 # -----------------------------------------------
@@ -1537,7 +1584,7 @@ def get_employee_details_view(request, user_id):
 def check_in_visit(request, visit_kind, visit_id):
     """Отмечает фактический вход для ожидающего визита."""
     # Ограничиваем право check-in: только staff или члены группы RECEPTION
-    is_reception = request.user.is_authenticated and request.user.groups.filter(name=RECEPTION_GROUP_NAME).exists()
+    is_reception = request.user.is_authenticated and request.user.groups.filter(name=RECEPTION_GROUP).exists()
     if not (request.user.is_staff or is_reception):
         raise PermissionDenied
 
@@ -1576,6 +1623,16 @@ def check_in_visit(request, visit_kind, visit_id):
     except Exception as e:
         messages.error(request, f"Ошибка при регистрации входа: {e}")
 
+    # HX: вернуть обновлённую таблицу
+    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+        try:
+            current_url = request.META.get('HTTP_HX_CURRENT_URL', '')
+            if current_url:
+                parsed = urlparse(current_url)
+                request.GET = QueryDict(parsed.query)
+        except Exception:
+            pass
+        return visit_history_view(request)
     return redirect(request.META.get('HTTP_REFERER', 'visit_history')) # Возвращаемся назад
 # ------------------------------------
 
@@ -1632,15 +1689,24 @@ def cancel_visit(request, visit_kind, visit_id):
     except Http404:
         messages.warning(request, f"Визит с ID {visit_id} не найден или уже не ожидает прибытия.")
     except Exception as e:
-         logger.error(
-             "Ошибка при отмене %s визита ID %s: %s",
-             visit_kind,
-             visit_id,
-             e,
-             exc_info=True,
-         )
-         messages.error(request, f"Ошибка при отмене визита: {e}")
+        logger.error(
+            "Ошибка при отмене %s визита ID %s: %s",
+            visit_kind,
+            visit_id,
+            e,
+            exc_info=True,
+        )
+        messages.error(request, f"Ошибка при отмене визита: {e}")
 
+    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+        try:
+            current_url = request.META.get('HTTP_HX_CURRENT_URL', '')
+            if current_url:
+                parsed = urlparse(current_url)
+                request.GET = QueryDict(parsed.query)
+        except Exception:
+            pass
+        return visit_history_view(request)
     return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
 # ---------------------------------
 
@@ -2085,6 +2151,15 @@ def mark_group_exit_view(request, visit_id):
             request,
             "Выход для группового визита успешно зарегистрирован."
         )
+        if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+            try:
+                current_url = request.META.get('HTTP_HX_CURRENT_URL', '')
+                if current_url:
+                    parsed = urlparse(current_url)
+                    request.GET = QueryDict(parsed.query)
+            except Exception:
+                pass
+            return visit_history_view(request)
         return redirect('visit_history')
 
     except Http404:

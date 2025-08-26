@@ -79,9 +79,11 @@
                 </div>
             </div>
 
-            <form method="post" novalidate class="needs-validation">
+            <div id="guest-form-container">
+            <form method="post" novalidate class="needs-validation"
+                  hx-post="{% url 'register_guest' %}"
+                  hx-target="#guest-form-container" hx-swap="outerHTML">
                 {% csrf_token %}
-                {# Передаем guest_form как form для удобства внутри with #}
                 {% with form=guest_form %}
                 <div class="row">
                     <div class="col-md-12">
@@ -289,6 +291,7 @@
                     </div>
                 </div>
             </form>
+            </div>
         </div>
     </div>
     <!-- END PAGE BODY -->

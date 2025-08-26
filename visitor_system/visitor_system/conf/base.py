@@ -3,7 +3,6 @@ import importlib.util as _importlib_util
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
-import sentry_sdk
 
 load_dotenv()
 
@@ -66,6 +65,7 @@ if _has_spectacular and 'drf_spectacular' not in INSTALLED_APPS:
 
 MIDDLEWARE = [
 	'django_prometheus.middleware.PrometheusBeforeMiddleware',
+	'visitor_system.metrics_middleware.PrometheusMetricsMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'csp.middleware.CSPMiddleware',
 	'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -194,7 +194,22 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 
+# Security settings
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# HSTS и SSL редирект в проде
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 год
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+# Безопасные куки
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_HTTPONLY = True
 
 # DRF throttling
 REST_FRAMEWORK = {
@@ -219,12 +234,12 @@ REST_FRAMEWORK = {
 }
 
 if _has_spectacular:
-	SPECTACULAR_SETTINGS = {
-		'TITLE': 'AITU Visitor System API',
-		'DESCRIPTION': 'Документация API для дашборда и сервисов системы пропусков',
-		'VERSION': '1.0.0',
-		'COMPONENT_SPLIT_REQUEST': True,
-	}
+    SPECTACULAR_SETTINGS = {
+        'TITLE': 'AITU Visitor System API',
+        'DESCRIPTION': 'Документация API для дашборда и сервисов системы пропусков',
+        'VERSION': '1.0.0',
+        'COMPONENT_SPLIT_REQUEST': True,
+    }
 
 # Django-Axes (защита от брутфорса)
 AXES_ENABLED = True
@@ -232,11 +247,16 @@ AXES_FAILURE_LIMIT = int(os.getenv('AXES_FAILURE_LIMIT', '5'))
 AXES_COOLOFF_TIME = timedelta(minutes=int(os.getenv('AXES_COOLOFF_MINUTES', '60')))
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
 
-# CSP (постепенная ужесточение: уберём unsafe-eval, инлайны оставим временно)
-CSP_REPORT_ONLY = os.getenv('CSP_REPORT_ONLY', 'True').lower() == 'true'
+# CSP - жёсткий в проде, мягкий в dev
+CSP_REPORT_ONLY = DEBUG
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com') + (("'unsafe-inline'",) if DEBUG else tuple())
-CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net') + (("'unsafe-inline'",) if DEBUG else tuple())
+if DEBUG:
+    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com')
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net')
+else:
+    # Продакшен: без unsafe-inline/unsafe-eval
+    CSP_SCRIPT_SRC = ("'self'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com')
+    CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net')
 CSP_IMG_SRC = ("'self'", 'data:', 'https:')
 CSP_FONT_SRC = ("'self'", 'data:', 'https://fonts.gstatic.com')
 CSP_CONNECT_SRC = ("'self'", 'ws:', 'wss:', 'https:')
@@ -244,14 +264,13 @@ CSP_CONNECT_SRC = ("'self'", 'ws:', 'wss:', 'https:')
 # Referrer Policy
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
-# Ключ для шифрования ИИН (Fernet, base64 urlsafe-encoded 32 bytes)
-IIN_ENCRYPTION_KEY = os.getenv('IIN_ENCRYPTION_KEY', '')
-USE_X_FORWARDED_HOST = True
-
-CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'False').lower() == 'true'
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'False').lower() == 'true'
+# Дополнительные настройки безопасности
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+USE_X_FORWARDED_HOST = True
+
+# Ключ для шифрования ИИН (Fernet, base64 urlsafe-encoded 32 bytes)
+IIN_ENCRYPTION_KEY = os.getenv('IIN_ENCRYPTION_KEY', '')
 
 CSRF_TRUSTED_ORIGINS = [
 	*[
@@ -362,12 +381,35 @@ LOGGING = {
 	},
 }
 
-sentry_sdk.init(
-    dsn="https://68d9a3f5d154cedfd60afd8e7d1091a7@o4509905057873921.ingest.de.sentry.io/4509905060364368",
-    # Add data like request headers and IP for users,
-    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-    send_default_pii=True,
-)
+try:
+    import sentry_sdk  # type: ignore
+    from sentry_sdk.integrations.django import DjangoIntegration  # type: ignore
+    from sentry_sdk.integrations.celery import CeleryIntegration  # type: ignore
+    def _before_send(event):
+        try:
+            import re
+            def _scrub(val):
+                s = str(val)
+                s = re.sub(r"\b\d{12}\b", "************", s)  # ИИН
+                s = re.sub(r"\b\+?\d{10,14}\b", "********", s)  # телефоны
+                return s
+            for k in ('request', 'extra', 'breadcrumbs'):
+                if k in event:
+                    event[k] = _scrub(event[k])
+        except Exception:
+            pass
+        return event
+
+    sentry_sdk.init(
+        dsn="https://68d9a3f5d154cedfd60afd8e7d1091a7@o4509905057873921.ingest.de.sentry.io/4509905060364368",
+        integrations=[DjangoIntegration(), CeleryIntegration()],
+        send_default_pii=False,
+        traces_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')),
+        environment=os.getenv('SENTRY_ENV', 'dev'),
+        before_send=_before_send,
+    )
+except Exception:
+    pass
 
 # Sentry SDK
 # SENTRY_DSN = os.getenv('SENTRY_DSN', '')

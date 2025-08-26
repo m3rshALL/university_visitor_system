@@ -1,0 +1,127 @@
+{% load static %}
+<div id="student-form-container">
+  <form method="post" novalidate class="needs-validation" id="student-reg-form"
+        hx-post="{% url 'register_student_visit' %}"
+        hx-target="#student-form-container" hx-swap="outerHTML">
+    {% csrf_token %}
+    {% with form=student_form %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-header"><div class="card-title"><i class="bi bi-person me-2"></i>Данные посетителя</div></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="guest_surname" class="form-label required">Фамилия:</label>
+                <input type="text" id="guest_surname" name="guest_surname" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="guest_firstname" class="form-label required">Имя:</label>
+                <input type="text" id="guest_firstname" name="guest_firstname" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="guest_patronymic" class="form-label">Отчество:</label>
+                <input type="text" id="guest_patronymic" name="guest_patronymic" class="form-control">
+                <div class="form-text">Если имеется</div>
+              </div>
+            </div>
+            <input type="hidden" name="{{ form.guest_full_name.html_name }}" id="guest_full_name_hidden">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.guest_iin.id_for_label }}" class="form-label required">ИИН:</label>
+                <input type="text" id="{{ form.guest_iin.id_for_label }}" name="{{ form.guest_iin.html_name }}" class="form-control"
+                       value="{{ form.guest_iin.value|default:'' }}" placeholder="Введите 12 цифр ИИН" maxlength="12"
+                       pattern="[0-9]{12}" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                {% if form.guest_iin.errors %}
+                  <div class="invalid-feedback d-block">{% for e in form.guest_iin.errors %}{{ e }}{% endfor %}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="guest_phone_masked" class="form-label required">Номер телефона:</label>
+                <input type="text" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __">
+                {% if form.guest_phone.errors %}
+                  <div class="invalid-feedback d-block">{% for e in form.guest_phone.errors %}{{ e }}{% endfor %}</div>
+                {% endif %}
+                <input type="hidden" name="{{ form.guest_phone.html_name }}" id="{{ form.guest_phone.id_for_label }}" value="{{ form.guest_phone.value|default:'' }}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header"><div class="card-title"><i class="bi bi-card-checklist me-2"></i>Детали визита студента/абитуриента</div></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.student_id_number.id_for_label }}" class="form-label">{{ form.student_id_number.label }}:</label>
+                {{ form.student_id_number }}
+                {% if form.student_id_number.errors %}
+                  <div class="invalid-feedback d-block">{% for error in form.student_id_number.errors %}{{ error }}{% endfor %}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="{{ form.student_course.id_for_label }}" class="form-label">{{ form.student_course.label }}:</label>
+                {{ form.student_course }}
+                {% if form.student_course.errors %}
+                  <div class="invalid-feedback d-block">{% for error in form.student_course.errors %}{{ error }}{% endfor %}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="{{ form.student_group.id_for_label }}" class="form-label">{{ form.student_group.label }}:</label>
+                {{ form.student_group }}
+                {% if form.student_group.errors %}
+                  <div class="invalid-feedback d-block">{% for error in form.student_group.errors %}{{ error }}{% endfor %}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="{{ form.department.id_for_label }}" class="form-label required">{{ form.department.label }}:</label>
+                {{ form.department }}
+                {% if form.department.errors %}
+                  <div class="invalid-feedback d-block">{% for error in form.department.errors %}{{ error }}{% endfor %}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="{{ form.purpose.id_for_label }}" class="form-label required">{{ form.purpose.label }}:</label>
+                {{ form.purpose }}
+                {% if form.purpose.errors %}
+                  <div class="invalid-feedback d-block">{% for error in form.purpose.errors %}{{ error }}{% endfor %}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mb-3" id="student_purpose_other_wrapper">
+                <label for="{{ form.purpose_other_text.id_for_label }}" class="form-label">{{ form.purpose_other_text.label }}:</label>
+                {{ form.purpose_other_text }}
+                {% if form.purpose_other_text.errors %}
+                  <div class="invalid-feedback d-block">{% for error in form.purpose_other_text.errors %}{{ error }}{% endfor %}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-between mt-3 mb-4">
+          <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle me-2"></i>Отмена
+          </a>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-person-plus me-2"></i>Зарегистрировать визит студента
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endwith %}
+  </form>
+</div>
+

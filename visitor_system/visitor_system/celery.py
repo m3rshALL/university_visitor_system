@@ -9,6 +9,36 @@ app = Celery('visitor_system')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
+# Подключаем сигналы для метрик
+try:
+    from . import celery_signals  # noqa: F401
+except ImportError:
+    pass
+
+# Настройка Celery Beat для периодических задач
+from celery.schedules import crontab
+
+app.conf.beat_schedule = {
+    'auto-close-expired-visits': {
+        'task': 'visitors.tasks.auto_close_expired_visits',
+        'schedule': crontab(minute='*/15'),  # Каждые 15 минут
+    },
+    'update-dashboard-metrics': {
+        'task': 'realtime_dashboard.tasks.update_dashboard_metrics',
+        'schedule': crontab(minute='*/5'),  # Каждые 5 минут
+    },
+    'cleanup-old-audit-logs': {
+        'task': 'visitors.tasks.cleanup_old_audit_logs',
+        'schedule': crontab(hour=2, minute=0),  # Ежедневно в 2:00
+    },
+    'send-daily-visit-summary': {
+        'task': 'notifications.tasks.send_daily_visit_summary',
+        'schedule': crontab(hour=18, minute=0),  # Ежедневно в 18:00
+    },
+}
+
+app.conf.timezone = 'Asia/Almaty'
+
 
 @app.task(bind=True, ignore_result=True)
 def debug_task(self):

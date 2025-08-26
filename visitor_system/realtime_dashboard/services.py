@@ -241,38 +241,59 @@ class DashboardMetricsService:
         return count_official
     
     def get_department_stats(self):
-        """Статистика по департаментам"""
-        departments = Department.objects.all()
-        stats = []
-        
-        for dept in departments:
-            visits_count = Visit.objects.filter(department=dept).count()
-            student_visits_count = StudentVisit.objects.filter(department=dept).count()
-            active_count = Visit.objects.filter(
-                department=dept,
-                status='CHECKED_IN'
-            ).count() + StudentVisit.objects.filter(
-                department=dept,
-                status='CHECKED_IN'
-            ).count()
+        """Статистика по департаментам с кэшированием"""
+        cache_key = "dash:department_stats"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
             
+        # Оптимизированный запрос с агрегацией
+        from django.db.models import Q, Case, When, IntegerField
+        
+        departments = Department.objects.annotate(
+            visits_count=Count('visit', distinct=True),
+            student_visits_count=Count('studentvisit', distinct=True),
+            active_visits_count=Count(
+                Case(
+                    When(Q(visit__status='CHECKED_IN'), then=1),
+                    output_field=IntegerField()
+                ),
+                distinct=True
+            ) + Count(
+                Case(
+                    When(Q(studentvisit__status='CHECKED_IN'), then=1),
+                    output_field=IntegerField()
+                ),
+                distinct=True
+            )
+        ).values('id', 'name', 'visits_count', 'student_visits_count', 'active_visits_count')
+        
+        stats = []
+        for dept in departments:
+            total_visits = dept['visits_count'] + dept['student_visits_count']
             stats.append({
-                'department_id': dept.id,
-                'department': dept.name,
-                'total_visits': visits_count + student_visits_count,
-                'official_visits': visits_count,
-                'student_visits': student_visits_count,
-                'active_visits': active_count
+                'department_id': dept['id'],
+                'department': dept['name'],
+                'total_visits': total_visits,
+                'official_visits': dept['visits_count'],
+                'student_visits': dept['student_visits_count'],
+                'active_visits': dept['active_visits_count']
             })
         
         # Сортируем по общему количеству визитов
         stats.sort(key=lambda x: x['total_visits'], reverse=True)
         
+        cache.set(cache_key, stats, timeout=300)  # 5 минут
         return stats
     
     def get_hourly_stats(self):
-        """Почасовая статистика за последние 24 часа (агрегация на стороне БД)."""
+        """Почасовая статистика за последние 24 часа с кэшированием."""
         now = timezone.now().replace(minute=0, second=0, microsecond=0)
+        cache_key = f"dash:hourly_stats:{now.hour}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+            
         start = now - timedelta(hours=23)
 
         from django.db.models.functions import TruncHour
@@ -306,6 +327,8 @@ class DashboardMetricsService:
                 'student_visits': sv,
                 'total': v + sv,
             })
+        
+        cache.set(cache_key, stats, timeout=1800)  # 30 минут
         return stats
     
     def get_recent_events(self, limit=10):

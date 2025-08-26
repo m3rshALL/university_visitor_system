@@ -46,7 +46,10 @@
             </div>
             {% endif %}
 
-            <form method="post" novalidate class="needs-validation" id="student-reg-form">
+            <div id="student-form-container">
+            <form method="post" novalidate class="needs-validation" id="student-reg-form"
+                  hx-post="{% url 'register_student_visit' %}"
+                  hx-target="#student-form-container" hx-swap="outerHTML">
                 {% csrf_token %}                {% with form=student_form %}
                 <div class="row">
                     <div class="col-md-12">
@@ -198,6 +201,7 @@
                 </div>
                 {% endwith %}
             </form>
+            </div>
         </div>
     </div>
     <!-- END PAGE BODY -->

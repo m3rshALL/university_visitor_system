@@ -1,0 +1,87 @@
+{% load iin_filters %}
+<tr id="visit-row-{{ visit.visit_kind }}-{{ visit.id }}">
+  <td>
+    <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select">
+  </td>
+  <td class="sort-name">
+    {% if visit.visit_kind == 'official' %}
+      <a href="{% url 'visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
+    {% elif visit.visit_kind == 'student' %}
+      <a href="{% url 'student_visit_detail' visit.id %}">{{ visit.guest.full_name }}</a>
+    {% elif visit.visit_kind == 'group' %}
+      <a href="{% url 'group_visit_card' visit.id %}">
+        <span class="badge bg-orange-lt me-1">Группа</span>
+        {% if visit.guest %}
+          {{ visit.guest.full_name }}
+          {% if visit.guests_count > 1 %}<span class="badge bg-orange-lt ms-1">+{{ visit.guests_count|add:"-1" }}</span>{% endif %}
+        {% else %}
+          {{ visit.purpose|default:"Групповой визит"|truncatechars:25 }}
+        {% endif %}
+      </a>
+    {% else %}
+      {{ visit.guest.full_name }}
+    {% endif %}
+  </td>
+  <td class="sort-iin">{% if visit.visit_kind == 'group' %}-{% else %}{{ visit.guest.iin|mask_iin }}{% endif %}</td>
+  <td class="sort-city">
+    {% if visit.visit_kind == 'official' and visit.employee %}
+      {{ visit.employee.get_full_name|default:visit.employee.username }}
+    {% elif visit.visit_kind == 'student' %}
+      ID: {{ visit.student_id_number|default:"-" }} <br> Гр: {{ visit.student_group|default:"-" }} К: {{ visit.student_course|default:"-" }}
+    {% elif visit.visit_kind == 'group' and visit.employee %}
+      {{ visit.employee.get_full_name|default:visit.employee.username }}
+      <span class="badge bg-info-lt ms-1">Группа</span>
+    {% else %}-{% endif %}
+  </td>
+  <td class="sort-status">{{ visit.department.name|default:"-" }}</td>
+  <td class="sort-entry">
+    {% if visit.entry_time %}{{ visit.entry_time|date:"Y-m-d H:i" }}
+    {% elif visit.status == 'AWAITING' %}
+      {% if visit.expected_entry_time %}<span class="badge" title="Планируемое">Ожид: {{ visit.expected_entry_time|date:"Y-m-d H:i" }}</span>
+      {% elif visit.visit_time %}<span class="badge" title="Планируемое">Ожид: {{ visit.visit_time|date:"Y-m-d H:i" }}</span>
+      {% else %}<span class="badge bg-purple-lt">Ожидается</span>{% endif %}
+    {% elif visit.status == 'CANCELLED' %}
+      <span class="badge bg-danger-lt">Отменен</span>
+    {% else %}-{% endif %}
+  </td>
+  <td class="sort-exit">
+    {% if visit.exit_time %}{{ visit.exit_time|date:"Y-m-d H:i" }}
+    {% elif visit.status == 'CHECKED_IN' %}<span class="badge bg-success-lt">В здании</span>
+    {% else %}<span class="text-muted">-</span>{% endif %}
+  </td>
+  <td class="sort-tags">
+    <div class="badges-list">
+      {% if visit.purpose %}<span class="badge">{{ visit.purpose }}</span>{% else %}<span class="text-muted">-</span>{% endif %}
+    </div>
+  </td>
+  <td class="sort-category py-0">
+    {% if visit.visit_kind == 'group' and visit.status == 'CHECKED_OUT' %}
+      <span class="badge bg-secondary-lt">Завершен</span>
+    {% elif visit.visit_kind == 'group' and visit.status == 'CHECKED_IN' %}
+      <form hx-post="{% url 'mark_group_exit' visit.id %}" hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML">
+        {% csrf_token %}
+        <button type="submit" class="badge bg-success-lt btn btn-sm">Выход группы</button>
+      </form>
+    {% elif visit.status == 'AWAITING' %}
+      <form hx-post="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="badge bg-success-lt btn btn-sm">Вход</button>
+      </form>
+      <form hx-post="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML" class="d-inline ms-1">
+        {% csrf_token %}
+        <button type="submit" class="badge bg-danger-lt btn btn-sm" onclick="return confirm('Отменить этот визит?');">Отменить</button>
+      </form>
+    {% elif visit.status == 'CHECKED_IN' and visit.visit_kind != 'group' %}
+      <form {% if visit.visit_kind == 'official' %} hx-post="{% url 'mark_guest_exit' visit.id %}"
+            {% elif visit.visit_kind == 'student' %} hx-post="{% url 'mark_student_exit' visit.id %}"
+            {% endif %}
+            hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="badge bg-secondary-lt btn btn-sm">Выход</button>
+      </form>
+    {% else %}
+      <span class="text-muted">-</span>
+    {% endif %}
+  </td>
+</tr>
+
