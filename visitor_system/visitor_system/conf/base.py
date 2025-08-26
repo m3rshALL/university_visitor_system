@@ -245,7 +245,8 @@ if _has_spectacular:
 AXES_ENABLED = True
 AXES_FAILURE_LIMIT = int(os.getenv('AXES_FAILURE_LIMIT', '5'))
 AXES_COOLOFF_TIME = timedelta(minutes=int(os.getenv('AXES_COOLOFF_MINUTES', '60')))
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
+# Комбинация блокировки: пользователь + IP (новый параметр вместо устаревшего AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP)
+AXES_LOCKOUT_PARAMETERS = ['username', 'ip_address']
 
 # CSP - жёсткий в проде, мягкий в dev
 CSP_REPORT_ONLY = DEBUG
