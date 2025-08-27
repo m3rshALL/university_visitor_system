@@ -1475,13 +1475,15 @@ def employee_autocomplete_view(request):
         pass
     logger.debug("[autocomplete] GET params: %s", request.GET)
 
-    term = request.GET.get('term', '').strip()
+    # Accept both 'term' (our JS) and 'q' (some Select2 configs)
+    term = (request.GET.get('term') or request.GET.get('q') or '').strip()
     department_id = request.GET.get('department_id') # Получаем ID
     logger.debug("[autocomplete] Search Term='%s', Department ID='%s'", term, department_id)
 
     results = []
     queryset = User.objects.filter(is_active=True)
 
+    # Фильтруем по поисковому термину, если он не пустой
     if len(term) >= 1:
         queryset = queryset.filter(
             Q(first_name__icontains=term) |
@@ -1491,24 +1493,26 @@ def employee_autocomplete_view(request):
 
     logger.debug("[autocomplete] Users found before department filter: %s", queryset.count())
 
-    if department_id and department_id.isdigit():
+    # Проверяем department_id и фильтруем по нему, если он валидный
+    if department_id and department_id.strip() and department_id.strip().lower() not in ['none', 'null', 'undefined', ''] and department_id.isdigit():
         try:
             dept_id_int = int(department_id)
-            # Важный фильтр:
+            # Важный фильтр: только пользователи с профилем и из выбранного департамента
             queryset = queryset.filter(employee_profile__department__id=dept_id_int)
             logger.debug("[autocomplete] Users after dept filter (Dept ID=%s): %s", dept_id_int, queryset.count())
         except ValueError:
             logger.warning("[autocomplete] department_id '%s' is not int", department_id)
-            queryset = User.objects.none()
-    elif not department_id:
-        logger.debug("[autocomplete] Department ID not provided, returning empty")
-        queryset = User.objects.none()
-    else: # На случай если department_id не None, не пустой, но и не isdigit()
-        logger.warning("[autocomplete] Department ID '%s' is not digit, returning empty", department_id)
-        queryset = User.objects.none()
+    else:
+        # Если department_id отсутствует, пустой, None, null или не является числом
+        # При инициализации формы показываем первые 10 активных пользователей
+        logger.debug("[autocomplete] Department ID not valid ('%s'), showing first 10 active users", department_id)
 
+    # Ограничиваем количество результатов: если term пустой, показываем максимум 10 пользователей
+    if not term:
+        queryset = queryset[:10]
+    else:
+        queryset = queryset[:20]
 
-    queryset = queryset.order_by('last_name', 'first_name')[:20]
     count_total = queryset.count()
 
     results = [{'id': user.id, 'text': f"{user.get_full_name() or user.username} ({user.email})"} for user in queryset]

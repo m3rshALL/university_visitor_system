@@ -1,6 +1,6 @@
 {% load static %}
 {# Блок формы регистрации гостя для htmx-обновлений #}
-<div id="guest-form-container">
+<div id="guest-form-container" data-busy-container>
     <form method="post" novalidate class="needs-validation"
           hx-post="{% url 'register_guest' %}"
           hx-target="#guest-form-container" hx-swap="outerHTML">
@@ -184,7 +184,7 @@
                     <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
                         <i class="bi bi-x-circle me-2"></i>Отмена
                     </a>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" hx-indicator="#guest-form-container">
                         <i class="bi bi-person-plus me-2"></i>Зарегистрировать визит
                     </button>
                 </div>

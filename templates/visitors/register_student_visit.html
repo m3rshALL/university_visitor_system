@@ -6,8 +6,8 @@
 {% block extra_head %}
     {{ student_form.media.css }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Добавляем библиотеку IMask для создания масок ввода -->
-    <script src="https://unpkg.com/imask@6.4.3/dist/imask.js"></script>    
+    <!-- Локальная IMask (быстрее + офлайн) -->
+    <script src="{% static 'js/vendor/imask.6.4.3.min.js' %}" defer></script>    
 
 {% endblock %}
 
@@ -46,10 +46,15 @@
             </div>
             {% endif %}
 
-            <div id="student-form-container">
-            <form method="post" novalidate class="needs-validation" id="student-reg-form"
+          <div id="student-form-container" data-busy-container
+              data-form-id="#student-reg-form"
+              data-purpose-id="#{{ student_form.purpose.id_for_label }}"
+              data-dept-id="#{{ student_form.department.id_for_label }}"
+              data-guest-phone-hidden-id="#{{ student_form.guest_phone.id_for_label }}"
+              data-guest-iin-id="#{{ student_form.guest_iin.id_for_label }}">
+    <form method="post" novalidate class="needs-validation" id="student-reg-form" data-sticky-submit
                   hx-post="{% url 'register_student_visit' %}"
-                  hx-target="#student-form-container" hx-swap="outerHTML">
+            hx-target="#student-form-container" hx-swap="outerHTML">
                 {% csrf_token %}                {% with form=student_form %}
                 <div class="row">
                     <div class="col-md-12">
@@ -64,16 +69,16 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="guest_surname" class="form-label required">Фамилия:</label>
-                                        <input type="text" id="guest_surname" name="guest_surname" class="form-control" required>
+                                        <input type="text" id="guest_surname" name="guest_surname" class="form-control" required autocomplete="family-name">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="guest_firstname" class="form-label required">Имя:
                                         </label>
-                                        <input type="text" id="guest_firstname" name="guest_firstname" class="form-control" required>
+                                        <input type="text" id="guest_firstname" name="guest_firstname" class="form-control" required autocomplete="given-name">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="guest_patronymic" class="form-label">Отчество:</label>
-                                        <input type="text" id="guest_patronymic" name="guest_patronymic" class="form-control">
+                                        <input type="text" id="guest_patronymic" name="guest_patronymic" class="form-control" autocomplete="additional-name">
                                         <div class="form-text">Если имеется</div>
                                     </div>
                                 </div>                                 <!-- Скрытое поле для хранения полного имени -->
@@ -187,13 +192,13 @@
                     </div>
                 </div>
                 <!-- Кнопки -->
-                <div class="row">
+                <div class="row sticky-submit">
                     <div class="col-md-12">
                         <div class="d-flex justify-content-between mt-3 mb-4">
                             <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
                                 <i class="bi bi-x-circle me-2"></i>Отмена
                             </a>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" hx-indicator="#student-form-container">
                                 <i class="bi bi-person-plus me-2"></i>Зарегистрировать визит студента
                             </button>
                         </div>
@@ -209,456 +214,6 @@
 {% endblock %}
 
 {% block extra_scripts %}
-    {# --- JS для виджетов формы (используем правильное имя) --- #}
     {{ student_form.media.js }}
-
-    {# --- JS для поля "Другое" цели визита (исправлены селекторы) --- #}    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Используем ID из student_form и уникальный ID обертки
-        const spSelect = document.getElementById('{{ student_form.purpose.id_for_label }}');
-        const spWrapper = document.getElementById('student_purpose_other_wrapper');
-        if (spSelect && spWrapper) {
-            const spInput = spWrapper.querySelector('input, textarea');
-            function toggleStudentOther() {
-                if (spSelect.value === 'Other') { spWrapper.style.display = 'block'; }
-                else { spWrapper.style.display = 'none'; if (spInput) spInput.value = ''; }
-            }
-            toggleStudentOther();
-            spSelect.addEventListener('change', toggleStudentOther);
-        } else { console.warn("Элементы 'Другой цели' для студента не найдены."); }
-    });
-    </script>
-    {# ---------------------------------------- #}
-
-    {# --- JS для стилей Bootstrap (используем ID формы) --- #}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('student-reg-form'); // ID этой формы
-            if (form) {
-                const formControls = form.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="hidden"]), textarea, select');
-                formControls.forEach(function(control) {
-                    if (control.tagName === 'SELECT') { control.classList.add('form-select'); }
-                    else if (!control.classList.contains('btn')) { control.classList.add('form-control'); }
-                    // Добавление is-invalid по наличию ошибки
-                    const errorDiv = control.closest('.mb-3')?.querySelector('.invalid-feedback');
-                    if (errorDiv && errorDiv.innerText.trim() !== '') { control.classList.add('is-invalid'); }
-                    else { control.classList.remove('is-invalid'); }
-                });
-            } else { console.warn("Форма #student-reg-form не найдена для стилизации.");}
-        });
-    </script>    
-
-    <!-- Маски для ввода и обработка полей имени -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            
-              // Маска для телефона гостя
-            const phoneMaskElement = document.getElementById('guest_phone_masked');
-            const phoneHiddenElement = document.getElementById('{{ student_form.guest_phone.id_for_label }}');
-            
-            if (phoneMaskElement && phoneHiddenElement) {
-                // Настройки для маски телефона
-                const phoneMask = IMask(phoneMaskElement, {
-                    mask: '+7 (000) 000-00-00',
-                    lazy: false,
-                    
-                });
-                
-                // Инициализация значением из hidden-поля, если оно есть
-                if (phoneHiddenElement.value) {
-                    // Форматируем значение, убирая все, кроме цифр
-                    let phoneValue = phoneHiddenElement.value.replace(/\D/g, '');
-                    if (phoneValue.startsWith('7')) {
-                        phoneMask.unmaskedValue = phoneValue.substring(1); // Убираем первую 7
-                    } else {
-                        phoneMask.unmaskedValue = phoneValue;
-                    }
-                }               // Обновление hidden-поля при вводе
-                phoneMaskElement.addEventListener('input', function() {
-                    phoneHiddenElement.value = '+7' + phoneMask.unmaskedValue;
-                    
-                    // Визуальная валидация номера телефона
-                    validatePhoneNumber();
-                });
-                
-                // Функция для валидации номера телефона
-                function validatePhoneNumber() {
-                    // Номер считается валидным, если в нем ровно 10 цифр (без учета +7)
-                    const isValid = phoneMask.unmaskedValue && phoneMask.unmaskedValue.length === 10;
-                    
-                    if (phoneMask.unmaskedValue.length > 0) {
-                        if (isValid) {
-                            phoneMaskElement.classList.remove('is-invalid');
-                            phoneMaskElement.classList.add('is-valid');
-                        } else {
-                            phoneMaskElement.classList.remove('is-valid');
-                            phoneMaskElement.classList.add('is-invalid');
-                        }
-                    } else {
-                        // Если поле пустое, убираем все классы валидации
-                        phoneMaskElement.classList.remove('is-valid', 'is-invalid');
-                    }
-                    
-                    return isValid;
-                }
-                  // Проверка при потере фокуса
-                phoneMaskElement.addEventListener('blur', function() {
-                    phoneMaskElement.classList.remove('focused-input');
-                    
-                    // Проверка валидности при потере фокуса
-                    if (phoneMask.unmaskedValue && phoneMask.unmaskedValue.length > 0) {
-                        validatePhoneNumber();
-                    } else if (phoneMaskElement.required) {
-                        // Если поле обязательное и пустое - показать ошибку
-                        phoneMaskElement.classList.add('is-invalid');
-                        
-                        let errorDiv = phoneMaskElement.nextElementSibling;
-                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
-                            errorDiv = document.createElement('div');
-                            errorDiv.classList.add('invalid-feedback', 'd-block');
-                            phoneMaskElement.parentNode.insertBefore(errorDiv, phoneMaskElement.nextSibling);
-                        }
-                        
-                        errorDiv.textContent = 'Введите номер телефона';
-                        errorDiv.style.display = 'block';
-                    }
-                });// Проверка при отправке формы
-                const form = phoneMaskElement.closest('form');
-                if (form) {
-                    form.addEventListener('submit', function(e) {
-                        // Проверяем заполнение телефона
-                        if (!phoneMask.unmaskedValue || phoneMask.unmaskedValue.length === 0) {
-                            // Телефон не заполнен (обязательное поле)
-                            phoneMaskElement.classList.add('is-invalid');
-                            
-                            let errorDiv = phoneMaskElement.nextElementSibling;
-                            if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
-                                errorDiv = document.createElement('div');
-                                errorDiv.classList.add('invalid-feedback', 'd-block');
-                                phoneMaskElement.parentNode.insertBefore(errorDiv, phoneMaskElement.nextSibling);
-                            }
-                            
-                            errorDiv.textContent = 'Введите номер телефона';
-                            errorDiv.style.display = 'block';
-                            
-                            e.preventDefault();
-                            phoneMaskElement.focus();
-                            return;
-                        }
-                        
-                        // Проверяем корректность заполнения
-                        if (!validatePhoneNumber()) {
-                            e.preventDefault();
-                            phoneMaskElement.focus();
-                        }
-                    });
-                }
-                
-                // Начальная валидация
-                if (phoneMask.unmaskedValue && phoneMask.unmaskedValue.length > 0) {
-                    validatePhoneNumber();
-                }
-                
-                // Улучшения визуализации маски при фокусировке
-                phoneMaskElement.addEventListener('focus', function() {
-                    if (!phoneMask.unmaskedValue || phoneMask.unmaskedValue.length === 0) {
-                        // Чтобы пользователь видел, где находится курсор при первом клике
-                        phoneMaskElement.classList.add('focused-input');
-                    }
-                });
-                
-                phoneMaskElement.addEventListener('blur', function() {
-                    phoneMaskElement.classList.remove('focused-input');
-                });
-            }
-            // Объединение полей имени в одно поле перед отправкой формы
-            const surnameField = document.getElementById('guest_surname');
-            const firstnameField = document.getElementById('guest_firstname');
-            const patronymicField = document.getElementById('guest_patronymic');
-            const fullNameHiddenField = document.getElementById('guest_full_name_hidden');
-            
-            // Проверяем, есть ли у нас скрытое поле ФИО и выходим, если нет
-            if (!fullNameHiddenField) return;
-            
-            // Функция обновления полного имени
-            function updateFullName() {
-                const surname = surnameField ? surnameField.value.trim() : '';
-                const firstname = firstnameField ? firstnameField.value.trim() : '';
-                const patronymic = patronymicField ? patronymicField.value.trim() : '';
-                
-                let fullName = '';
-                if (surname) fullName += surname;
-                if (firstname) fullName += (fullName ? ' ' : '') + firstname;
-                if (patronymic) fullName += (fullName ? ' ' : '') + patronymic;
-                
-                fullNameHiddenField.value = fullName;
-            }
-            
-            // Обновляем полное имя при изменении любого из полей
-            if (surnameField) surnameField.addEventListener('input', updateFullName);
-            if (firstnameField) firstnameField.addEventListener('input', updateFullName);
-            if (patronymicField) patronymicField.addEventListener('input', updateFullName);            // Заполнение разделенных полей ФИО из существующего значения
-            const existingFullName = "{{ student_form.guest_full_name.value|default:'' }}";
-            if (existingFullName) {
-                const nameParts = existingFullName.split(' ');
-                if (nameParts.length >= 1 && surnameField) {
-                    surnameField.value = nameParts[0];
-                }
-                if (nameParts.length >= 2 && firstnameField) {
-                    firstnameField.value = nameParts[1];
-                }
-                if (nameParts.length >= 3 && patronymicField) {
-                    patronymicField.value = nameParts.slice(2).join(' ');
-                }
-            }
-            
-            // Инициализируем полное имя
-            updateFullName();
-            
-            // Проверка обязательных полей имени и фамилии при отправке формы
-            const form = document.getElementById('student-reg-form');
-            if (form && surnameField && firstnameField) {
-                form.addEventListener('submit', function(e) {
-                    let hasError = false;
-                    
-                    // Проверка фамилии
-                    if (!surnameField.value.trim()) {
-                        surnameField.classList.add('is-invalid');
-                        
-                        let errorDiv = surnameField.parentNode.querySelector('.invalid-feedback');
-                        if (!errorDiv) {
-                            errorDiv = document.createElement('div');
-                            errorDiv.classList.add('invalid-feedback', 'd-block');
-                            surnameField.parentNode.appendChild(errorDiv);
-                        }
-                        
-                        errorDiv.textContent = 'Введите фамилию';
-                        errorDiv.style.display = 'block';
-                        
-                        hasError = true;
-                    } else {
-                        surnameField.classList.remove('is-invalid');
-                        const errorDiv = surnameField.parentNode.querySelector('.invalid-feedback');
-                        if (errorDiv) {
-                            errorDiv.style.display = 'none';
-                        }
-                    }
-                    
-                    // Проверка имени
-                    if (!firstnameField.value.trim()) {
-                        firstnameField.classList.add('is-invalid');
-                        
-                        let errorDiv = firstnameField.parentNode.querySelector('.invalid-feedback');
-                        if (!errorDiv) {
-                            errorDiv = document.createElement('div');
-                            errorDiv.classList.add('invalid-feedback', 'd-block');
-                            firstnameField.parentNode.appendChild(errorDiv);
-                        }
-                        
-                        errorDiv.textContent = 'Введите имя';
-                        errorDiv.style.display = 'block';
-                        
-                        hasError = true;
-                    } else {
-                        firstnameField.classList.remove('is-invalid');
-                        const errorDiv = firstnameField.parentNode.querySelector('.invalid-feedback');
-                        if (errorDiv) {
-                            errorDiv.style.display = 'none';
-                        }
-                    }
-                    
-                    if (hasError) {
-                        e.preventDefault();
-                        if (!firstnameField.value.trim()) {
-                            firstnameField.focus();
-                        } else if (!surnameField.value.trim()) {
-                            surnameField.focus();
-                        }
-                    }
-                });
-            }
-        });
-    </script>    {# --- JS для валидации ИИН --- #}    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Получаем поле ИИН
-        const iinField = document.getElementById('{{ student_form.guest_iin.id_for_label }}');
-        
-        if (iinField) {
-            // Функция для валидации ИИН
-            function validateIIN() {
-                const value = iinField.value.trim();
-                const isValid = /^\d{12}$/.test(value);
-                
-                // Визуальное отображение валидности
-                if (value.length > 0) {
-                    if (isValid) {
-                        iinField.classList.remove('is-invalid');
-                        iinField.classList.add('is-valid');
-                    } else {
-                        iinField.classList.remove('is-valid');
-                        iinField.classList.add('is-invalid');
-                        
-                        // Показываем подсказку об ошибке
-                        let errorDiv = iinField.nextElementSibling;
-                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
-                            errorDiv = document.createElement('div');
-                            errorDiv.classList.add('invalid-feedback', 'd-block');
-                            iinField.parentNode.insertBefore(errorDiv, iinField.nextSibling);
-                        }
-                        
-                        let errorMessage = '';
-                        if (value.length !== 12) {
-                            errorMessage = '';
-                        } else if (!/^\d+$/.test(value)) {
-                            errorMessage = 'ИИН должен содержать только цифры';
-                        }
-                        
-                        errorDiv.textContent = errorMessage;
-                    }
-                } else {
-                    // Если поле пустое, убираем все классы валидации
-                    iinField.classList.remove('is-valid', 'is-invalid');
-                }
-                
-                return isValid;
-            }
-            
-            // Обработка ввода: разрешаем только цифры
-            iinField.addEventListener('input', function(e) {
-                // Заменяем все нецифровые символы
-                const cursorPos = this.selectionStart;
-                const oldValue = this.value;
-                const newValue = oldValue.replace(/[^\d]/g, '');
-                
-                // Если значение изменилось, обновляем его и устанавливаем курсор
-                if (oldValue !== newValue) {
-                    this.value = newValue;
-                    this.setSelectionRange(cursorPos - (oldValue.length - newValue.length), cursorPos - (oldValue.length - newValue.length));
-                }
-                
-                validateIIN();
-            });
-            
-            // Проверка при потере фокуса
-            iinField.addEventListener('blur', validateIIN);
-              // Проверка при отправке формы
-            const form = iinField.closest('form');
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    // Проверка на заполненность (обязательное поле)
-                    if (iinField.value.trim().length === 0) {
-                        iinField.classList.add('is-invalid');
-                        
-                        let errorDiv = iinField.nextElementSibling;
-                        if (!errorDiv || !errorDiv.classList.contains('invalid-feedback')) {
-                            errorDiv = document.createElement('div');
-                            errorDiv.classList.add('invalid-feedback', 'd-block');
-                            iinField.parentNode.insertBefore(errorDiv, iinField.nextSibling);
-                        }
-                        
-                        errorDiv.textContent = 'Введите ИИН';
-                        errorDiv.style.display = 'block';
-                        
-                        e.preventDefault();
-                        iinField.focus();
-                        return;
-                    }
-                    
-                    // Проверка на корректность
-                    if (!validateIIN() && iinField.value.trim().length > 0) {
-                        e.preventDefault();
-                        iinField.focus();
-                    }
-                });
-            }
-            
-            // Начальная валидация
-            if (iinField.value.trim().length > 0) {
-                validateIIN();
-            }
-        }
-    });
-    </script>
-    {# --- JS для валидации обязательных полей формы --- #}
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Проверка валидации департамента и цели визита (обязательные поля)
-        const form = document.getElementById('student-reg-form');
-        const departmentSelect = document.getElementById('{{ student_form.department.id_for_label }}');
-        const purposeSelect = document.getElementById('{{ student_form.purpose.id_for_label }}');
-        
-        if (form && departmentSelect && purposeSelect) {
-            form.addEventListener('submit', function(e) {
-                let hasError = false;
-                
-                // Проверка департамента
-                if (!departmentSelect.value) {
-                    departmentSelect.classList.add('is-invalid');
-                    
-                    let errorDiv = departmentSelect.closest('.mb-3').querySelector('.invalid-feedback');
-                    if (!errorDiv) {
-                        errorDiv = document.createElement('div');
-                        errorDiv.classList.add('invalid-feedback', 'd-block');
-                        departmentSelect.closest('.mb-3').appendChild(errorDiv);
-                    }
-                    
-                    errorDiv.textContent = 'Выберите департамент';
-                    errorDiv.style.display = 'block';
-                    
-                    hasError = true;
-                } else {
-                    departmentSelect.classList.remove('is-invalid');
-                }
-                
-                // Проверка цели визита
-                if (!purposeSelect.value) {
-                    purposeSelect.classList.add('is-invalid');
-                    
-                    let errorDiv = purposeSelect.closest('.mb-3').querySelector('.invalid-feedback');
-                    if (!errorDiv) {
-                        errorDiv = document.createElement('div');
-                        errorDiv.classList.add('invalid-feedback', 'd-block');
-                        purposeSelect.closest('.mb-3').appendChild(errorDiv);
-                    }
-                    
-                    errorDiv.textContent = 'Выберите цель визита';
-                    errorDiv.style.display = 'block';
-                    
-                    hasError = true;
-                } else {
-                    purposeSelect.classList.remove('is-invalid');
-                    
-                    // Проверка наличия "Другой цели" если выбран пункт "Other"
-                    if (purposeSelect.value === 'Other') {
-                        const otherWrapper = document.getElementById('student_purpose_other_wrapper');
-                        const otherInput = otherWrapper.querySelector('input, textarea');
-                        
-                        if (otherInput && !otherInput.value.trim()) {
-                            otherInput.classList.add('is-invalid');
-                            
-                            let errorDiv = otherInput.closest('.mb-3').querySelector('.invalid-feedback');
-                            if (!errorDiv) {
-                                errorDiv = document.createElement('div');
-                                errorDiv.classList.add('invalid-feedback', 'd-block');
-                                otherInput.closest('.mb-3').appendChild(errorDiv);
-                            }
-                            
-                            errorDiv.textContent = 'Укажите другую цель визита';
-                            errorDiv.style.display = 'block';
-                            
-                            hasError = true;
-                        } else if (otherInput) {
-                            otherInput.classList.remove('is-invalid');
-                        }
-                    }
-                }
-                
-                if (hasError) {
-                    e.preventDefault();
-                }
-            });
-        }
-    });
-    </script>
-    {# ------------------------------- #}
+    <script src="{% static 'js/register-student.js' %}" defer></script>
 {% endblock %}

@@ -60,66 +60,89 @@ document.addEventListener('DOMContentLoaded', function() {
         return networkStatusElement;
     }
 
-    // Оптимизированная версия: кэширование запросов DOM
+    // Вспомогательная: является ли форма HTMX-формой (обрабатывается htmx и может быть в очереди офлайн)
+    function isHxForm(form) {
+        return !!(form.getAttribute('hx-post') || form.getAttribute('hx-get') || form.getAttribute('hx-put') || form.getAttribute('hx-delete') || form.getAttribute('data-hx-post') || form.getAttribute('data-hx-get') || form.getAttribute('data-hx-put') || form.getAttribute('data-hx-delete'));
+    }
+
+    // Обработчик, который повторно сканирует DOM на новые формы/кнопки и включает/отключает их по состоянию сети
     const createCachedIndicator = () => {
-        // Lazy инициализация кэшированных элементов
-        if (!cachedForms || !cachedButtons) {
-            cachedForms = Array.from(document.querySelectorAll('form:not(.cached-form-processed)'));
-            cachedForms.forEach(form => form.classList.add('cached-form-processed'));
-            
-            cachedButtons = Array.from(document.querySelectorAll('button[type="submit"]:not(.cached-button-processed)'));
-            cachedButtons.forEach(button => button.classList.add('cached-button-processed'));
-        }
-        
         const isOffline = !navigator.onLine;
-        
-        // Обработка форм только при изменении статуса сети
+
+        // На каждом вызове подбираем НОВЫЕ элементы, которых мы ещё не касались
+        const newlyFoundForms = Array.from(document.querySelectorAll('form:not(.cached-form-processed)'));
+        newlyFoundForms.forEach(form => form.classList.add('cached-form-processed'));
+        if (!cachedForms) { cachedForms = []; }
+        cachedForms.push(...newlyFoundForms);
+
+        const newlyFoundButtons = Array.from(document.querySelectorAll('button[type="submit"]:not(.cached-button-processed)'));
+        newlyFoundButtons.forEach(button => button.classList.add('cached-button-processed'));
+        if (!cachedButtons) { cachedButtons = []; }
+        cachedButtons.push(...newlyFoundButtons);
+
+        // Обновляем состояние форм: не трогаем формы offline-ready и HTMX-формы
         cachedForms.forEach(form => {
-            if (!form.classList.contains('offline-ready')) {
-                if (isOffline && !form.classList.contains('offline-disabled')) {
-                    // Сохраняем оригинальные значения только если еще не сохранены
-                    if (!form.hasAttribute('data-original-action')) {
-                        form.setAttribute('data-original-action', form.action || '');
-                        form.setAttribute('data-original-onsubmit', form.onsubmit || '');
-                        
-                        // Предотвращаем отправку формы
-                        form.onsubmit = (e) => {
-                            e.preventDefault();
-                            showOfflineMessage('Форма недоступна в офлайн-режиме');
-                            return false;
-                        };
-                        
-                        // Добавляем визуальный индикатор
-                        form.classList.add('offline-disabled');
-                    }
-                } else if (!isOffline && form.classList.contains('offline-disabled')) {
-                    // Восстанавливаем формы при возврате онлайн
+            if (form.classList.contains('offline-ready') || isHxForm(form)) {
+                // Если ранее отключали эту форму (по ошибке/старому состоянию) — восстановим
+                if (!isOffline && form.classList.contains('offline-disabled')) {
                     const originalAction = form.getAttribute('data-original-action');
                     if (originalAction) form.action = originalAction;
                     form.onsubmit = null;
                     form.classList.remove('offline-disabled');
                 }
+                return;
+            }
+
+            if (isOffline && !form.classList.contains('offline-disabled')) {
+                if (!form.hasAttribute('data-original-action')) {
+                    form.setAttribute('data-original-action', form.action || '');
+                    form.setAttribute('data-original-onsubmit', form.onsubmit || '');
+                }
+                // Блокируем отправку обычных (не HTMX) форм в офлайне
+                form.onsubmit = (e) => {
+                    e.preventDefault();
+                    showOfflineMessage('Форма недоступна в офлайн-режиме');
+                    return false;
+                };
+                form.classList.add('offline-disabled');
+            } else if (!isOffline && form.classList.contains('offline-disabled')) {
+                // Восстанавливаем онлайн
+                const originalAction = form.getAttribute('data-original-action');
+                if (originalAction) form.action = originalAction;
+                form.onsubmit = null;
+                form.classList.remove('offline-disabled');
             }
         });
-        
-        // Аналогично для кнопок
+
+        // Кнопки: не блокируем кнопки внутри HTMX-форм или внутри .offline-ready
         cachedButtons.forEach(button => {
-            if (!button.closest('.offline-ready')) {
-                if (isOffline && !button.classList.contains('offline-disabled-btn')) {
-                    button.setAttribute('data-original-disabled', button.disabled || false);
-                    button.disabled = true;
-                    button.setAttribute('data-original-title', button.title || '');
-                    button.title = 'Недоступно в офлайн-режиме';
-                    button.classList.add('offline-disabled-btn');
-                } else if (!isOffline && button.classList.contains('offline-disabled-btn')) {
+            const parentOfflineReady = button.closest('.offline-ready');
+            const parentForm = button.closest('form');
+            const parentIsHx = parentForm && isHxForm(parentForm);
+
+            if (parentOfflineReady || parentIsHx) {
+                if (!isOffline && button.classList.contains('offline-disabled-btn')) {
                     const originalDisabled = button.getAttribute('data-original-disabled');
                     const originalTitle = button.getAttribute('data-original-title');
-                    
                     button.disabled = originalDisabled === 'true';
                     if (originalTitle) button.title = originalTitle;
-                    
                     button.classList.remove('offline-disabled-btn');
                 }
+                return;
+            }
+
+            if (isOffline && !button.classList.contains('offline-disabled-btn')) {
+                button.setAttribute('data-original-disabled', String(!!button.disabled));
+                button.disabled = true;
+                button.setAttribute('data-original-title', button.title || '');
+                button.title = 'Недоступно в офлайн-режиме';
+                button.classList.add('offline-disabled-btn');
+            } else if (!isOffline && button.classList.contains('offline-disabled-btn')) {
+                const originalDisabled = button.getAttribute('data-original-disabled');
+                const originalTitle = button.getAttribute('data-original-title');
+                button.disabled = originalDisabled === 'true';
+                if (originalTitle) button.title = originalTitle;
+                button.classList.remove('offline-disabled-btn');
             }
         });
         
@@ -430,6 +453,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Слушаем изменения статуса сети с дебаунсингом
     window.addEventListener('online', () => debounceNetworkStatus(updateNetworkStatus, 300));
     window.addEventListener('offline', () => debounceNetworkStatus(updateNetworkStatus, 300));
+
+    // Переинициализируем офлайн-индикаторы после HTMX-обновлений DOM
+    document.addEventListener('htmx:afterSwap', () => {
+        try { createCachedIndicator(); } catch(_) {}
+    });
     
     // Проверка статуса при видимости страницы
     document.addEventListener('visibilitychange', () => {

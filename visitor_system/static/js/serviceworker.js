@@ -12,6 +12,7 @@ const STATIC_ASSETS = [
     // Используем только существующие файлы
     '/static/js/optimized-offline-handler.js',
     '/static/js/optimized-offline-sync.js',
+    '/static/js/vendor/imask.6.4.3.min.js',
     '/static/css/style.css',
     // Иконки PWA
     '/static/img/icons/icon-72x72.png',

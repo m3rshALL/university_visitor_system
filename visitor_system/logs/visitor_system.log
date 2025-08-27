@@ -18128,3 +18128,345 @@ INFO 2025-08-26 18:41:24,203 apps 13 139651501303616 AXES: BEGIN version 6.5.2, 
 INFO 2025-08-26 18:41:24,207 apps 13 139651501303616 Notifications app ready: Prometheus counters available
 INFO 2025-08-26 18:41:29,281 apps 16 139728918095680 AXES: BEGIN version 6.5.2, blocking by username or ip_address
 INFO 2025-08-26 18:41:29,284 apps 16 139728918095680 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:42:12,445 apps 33 140142520715072 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:42:12,452 apps 33 140142520715072 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:42:12,496 apps 34 140142520715072 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:42:12,502 apps 34 140142520715072 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:54:38,385 views 34 140142390839040 Get Employee Details Request: user_id=1
+INFO 2025-08-26 18:54:41,584 forms 34 140142390839040 Гость с ИИН 000000000000 не найден, будет создан новый (или найден по ФИО).
+INFO 2025-08-26 18:54:41,596 forms 34 140142390839040 Создан новый гость: John Smith
+INFO 2025-08-26 18:54:41,596 forms 34 140142390839040 Using guest object: John Smith (ID: 3), Created: True
+INFO 2025-08-26 18:54:41,596 forms 34 140142390839040 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-08-26 18:54:41,605 signals 34 140142390839040 Создан Visit ID: 8, запуск задачи уведомления...
+INFO 2025-08-26 18:54:41,642 forms 34 140142390839040 Celery task queued for Visit ID 8
+INFO 2025-08-26 18:54:41,643 forms 34 140142390839040 Saved Visit ID 8, Status: AWAITING, Consent Ack: True
+ERROR 2025-08-26 18:54:41,645 utils 34 140142390839040 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+INFO 2025-08-26 18:57:49,906 apps 95524 68528 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:49,907 apps 95524 68528 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:50,693 apps 79928 81508 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:50,694 apps 79928 81508 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,149 apps 82000 87292 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,150 apps 82000 87292 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,178 apps 83576 71648 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,179 apps 83576 71648 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,214 apps 95300 54468 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,215 apps 95300 54468 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,226 apps 78532 87988 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,227 apps 78532 87988 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 19:01:26,138 apps 77252 82848 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 19:01:26,139 apps 77252 82848 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 19:01:31,546 apps 60072 91268 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 19:01:31,547 apps 60072 91268 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 19:01:31,559 apps 84348 76684 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 19:01:31,560 apps 84348 76684 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 10:25:50,813 apps 13 139919295493952 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 10:25:50,828 apps 13 139919295493952 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 10:25:58,369 apps 16 139907841673024 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 10:25:58,374 apps 16 139907841673024 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 10:26:45,789 apps 33 140607283472192 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 10:26:45,794 apps 33 140607283472192 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 10:26:45,854 apps 34 140607283472192 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 10:26:45,859 apps 34 140607283472192 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 10:39:43,336 apps 200 140239597455168 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 10:39:43,340 apps 200 140239597455168 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 10:53:03,163 apps 242 139922605705024 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 10:53:03,167 apps 242 139922605705024 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 11:09:25,960 apps 306 140171967604544 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 11:09:25,965 apps 306 140171967604544 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 12:27:02,140 apps 501 139955504973632 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 12:27:02,144 apps 501 139955504973632 Notifications app ready: Prometheus counters available
+ERROR 2025-08-27 12:28:04,137 services 34 140607186020096 Request to egov.kz failed: Expecting value: line 1 column 1 (char 0)
+ERROR 2025-08-27 12:28:04,144 services 34 140607186020096 Passport verification failed: Request failed: Expecting value: line 1 column 1 (char 0)
+INFO 2025-08-27 15:39:25,860 apps 708 139865928734528 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 15:39:25,865 apps 708 139865928734528 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 15:43:46,781 views 34 140607066457856 Get Employee Details Request: user_id=1
+INFO 2025-08-27 16:03:56,933 apps 1063 139892193294144 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 16:03:56,937 apps 1063 139892193294144 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 16:25:03,354 apps 1142 140419574445888 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 16:25:03,359 apps 1142 140419574445888 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 16:51:30,473 apps 13 139785013626688 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 16:51:30,479 apps 13 139785013626688 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 16:51:34,738 apps 16 139622384588608 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 16:51:34,744 apps 16 139622384588608 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 16:52:14,573 apps 33 139884408346432 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 16:52:14,579 apps 33 139884408346432 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 16:52:14,671 apps 34 139884408346432 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 16:52:14,677 apps 34 139884408346432 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 16:56:42,717 log 33 139884278470400 Forbidden (Permission denied): /visitors/checkin/official/8/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sentry_sdk/integrations/django/views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/http.py", line 64, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitors/views.py", line 1590, in check_in_visit
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-08-27 16:56:42,794 log 33 139884278470400 Not Found: /favicon.ico
+WARNING 2025-08-27 16:56:45,251 log 33 139884278470400 Forbidden (Permission denied): /visitors/checkin/official/8/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sentry_sdk/integrations/django/views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/http.py", line 64, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitors/views.py", line 1590, in check_in_visit
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+WARNING 2025-08-27 16:57:03,317 log 33 139884278470400 Forbidden (Permission denied): /visitors/checkin/official/8/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 489, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 439, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 493, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/sentry_sdk/integrations/django/views.py", line 94, in sentry_wrapped_callback
+    return callback(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/http.py", line 64, in inner
+    return func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/visitor_system/visitors/views.py", line 1590, in check_in_visit
+    raise PermissionDenied
+django.core.exceptions.PermissionDenied
+INFO 2025-08-27 16:57:06,234 views 33 139884310894336 User 'sagat.akimbay' cancelled official visit ID 8.
+WARNING 2025-08-27 16:58:47,073 log 34 139884048144128 Not Found: /ws/dashboard/
+WARNING 2025-08-27 16:59:42,170 log 33 139884278470400 Not Found: /ws/dashboard/
+INFO 2025-08-27 17:05:01,587 apps 408 140112417199936 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:05:01,592 apps 408 140112417199936 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:11:30,165 log 33 139884278470400 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:11:59,837 apps 643 140327491729216 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:11:59,842 apps 643 140327491729216 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:12:26,816 log 33 139884278470400 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:12:29,642 log 33 139884278470400 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:13:53,198 apps 13 140519134664512 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:13:53,205 apps 13 140519134664512 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:13:56,667 apps 16 139683482330944 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:13:56,673 apps 16 139683482330944 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:14:02,446 apps 27 140692976465728 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:14:02,452 apps 27 140692976465728 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:14:25,658 apps 45 140700872341312 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:14:25,665 apps 45 140700872341312 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:14:25,702 apps 46 140700872341312 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:14:25,708 apps 46 140700872341312 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:15:33,688 apps 13 139678774486848 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:15:33,696 apps 13 139678774486848 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:15:38,871 apps 16 140194908321600 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:15:38,876 apps 16 140194908321600 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:16:16,883 apps 33 140696767305536 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:16:16,889 apps 33 140696767305536 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:16:16,985 apps 34 140696767305536 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:16:16,990 apps 34 140696767305536 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:17:36,976 log 34 140696629036800 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:25:39,698 apps 13 140177005254464 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:25:39,704 apps 13 140177005254464 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:25:45,717 apps 16 140126639785792 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:25:45,724 apps 16 140126639785792 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:26:28,195 apps 33 139954561238848 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:26:28,200 apps 33 139954561238848 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:26:28,237 apps 34 139954561238848 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:26:28,244 apps 34 139954561238848 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:27:39,005 log 33 139954345330432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:29:41,926 apps 17 140680209712960 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:29:41,931 apps 17 140680209712960 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:29:42,176 apps 20 139685734913856 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:29:42,182 apps 20 139685734913856 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:29:47,605 apps 24 140126228256576 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:29:47,612 apps 24 140126228256576 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:30:27,538 apps 42 140284634113856 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:30:27,543 apps 42 140284634113856 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:30:27,605 apps 43 140284634113856 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:30:27,611 apps 43 140284634113856 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:30:30,305 log 42 140284512630528 Not Found: /visitors/register-guest/
+WARNING 2025-08-27 17:31:07,957 log 42 140284512630528 Not Found: /visitors/register-guest
+WARNING 2025-08-27 17:31:36,008 log 43 140284436412160 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:31:40,537 log 43 140284436412160 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:32:34,748 apps 184 139653417252672 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:32:34,753 apps 184 139653417252672 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:32:43,820 log 43 140284436412160 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:34:02,373 log 42 140284512630528 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:34:38,845 apps 297 140460829882176 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:34:38,851 apps 297 140460829882176 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:34:47,274 log 43 140284436412160 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:36:20,327 apps 13 139809033967424 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:36:20,332 apps 13 139809033967424 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:36:25,419 apps 16 139699268806464 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:36:25,423 apps 16 139699268806464 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:37:01,302 apps 33 139950416840512 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:37:01,307 apps 33 139950416840512 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:37:01,322 apps 34 139950416840512 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:37:01,327 apps 34 139950416840512 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:37:04,159 log 33 139950084499200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:37:35,088 log 33 139950084499200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:38:07,755 log 33 139950084499200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:38:10,308 log 34 139950203049728 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:38:46,415 log 33 139950084499200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:39:57,587 log 33 139950084499200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:40:11,383 log 33 139950084499200 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:40:15,844 log 34 139950203049728 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:40:51,609 apps 385 139777859745600 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:40:51,614 apps 385 139777859745600 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:41:08,534 log 34 139950203049728 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:41:26,429 apps 13 140681629906752 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:41:26,434 apps 13 140681629906752 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:41:31,585 apps 16 139963942803264 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:41:31,590 apps 16 139963942803264 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:42:07,356 apps 34 140056682653504 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:42:07,356 apps 33 140056682653504 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:42:07,360 apps 33 140056682653504 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:42:07,360 apps 34 140056682653504 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:42:10,203 log 33 140056561170176 Not Found: /register/
+WARNING 2025-08-27 17:42:16,289 log 33 140056561170176 Not Found: /visitors/register-guest/
+WARNING 2025-08-27 17:42:54,828 log 33 140056561170176 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:44:22,828 log 34 140056560121600 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:45:38,467 apps 65980 61536 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:45:38,468 apps 65980 61536 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:45:52,960 log 33 140056561170176 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:45:56,538 log 34 140056560121600 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:47:04,220 apps 63956 29124 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:47:04,221 apps 63956 29124 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:48:36,378 apps 67156 69644 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:48:36,379 apps 67156 69644 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 17:49:25,089 log 34 140056560121600 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:49:42,809 log 33 140056561170176 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:50:07,593 log 33 140056561170176 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 17:50:22,055 log 34 140056560121600 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 17:50:43,854 apps 13 139935183894336 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:50:43,859 apps 13 139935183894336 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:50:48,764 apps 16 140707163572032 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:50:48,769 apps 16 140707163572032 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:51:21,827 apps 33 140137811167040 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:51:21,832 apps 33 140137811167040 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 17:51:21,876 apps 34 140137811167040 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 17:51:21,880 apps 34 140137811167040 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:05:25,141 apps 13 140535819921216 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:05:25,145 apps 13 140535819921216 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:05:30,076 apps 16 139645086455616 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:05:30,081 apps 16 139645086455616 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:06:10,459 apps 34 140438828562240 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:06:10,459 apps 33 140438828562240 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:06:10,463 apps 33 140438828562240 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:06:10,466 apps 34 140438828562240 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:06:11,171 apps 41 140173692225344 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:06:11,185 apps 41 140173692225344 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:08:53,958 apps 13 139683156522816 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:08:53,963 apps 13 139683156522816 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:08:58,799 apps 16 140699530729280 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:08:58,803 apps 16 140699530729280 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:09:40,909 apps 33 140578348455744 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:09:40,917 apps 33 140578348455744 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:09:40,940 apps 34 140578348455744 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:09:40,944 apps 34 140578348455744 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:09:50,444 views 33 140578171909888 Get Employee Details Request: user_id=1
+INFO 2025-08-27 18:11:29,366 views 34 140578251003648 Get Employee Details Request: user_id=3
+INFO 2025-08-27 18:11:30,631 views 34 140578251003648 Get Employee Details Request: user_id=2
+INFO 2025-08-27 18:11:32,303 views 34 140578251003648 Get Employee Details Request: user_id=4
+INFO 2025-08-27 18:11:34,428 views 34 140578251003648 Get Employee Details Request: user_id=1
+INFO 2025-08-27 18:11:43,995 views 34 140578251003648 Get Employee Details Request: user_id=4
+INFO 2025-08-27 18:11:48,212 views 34 140578251003648 Get Employee Details Request: user_id=2
+INFO 2025-08-27 18:14:22,691 views 33 140578251003648 Get Employee Details Request: user_id=1
+INFO 2025-08-27 18:14:46,901 apps 13 139739399509824 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:14:46,905 apps 13 139739399509824 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:14:49,857 apps 16 139901862303552 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:14:49,861 apps 16 139901862303552 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:15:23,452 apps 33 140291185162048 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:15:23,457 apps 33 140291185162048 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:15:23,509 apps 34 140291185162048 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:15:23,513 apps 34 140291185162048 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 18:16:43,382 log 34 140290610427648 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 18:16:49,839 log 34 140290610427648 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 18:17:08,898 log 34 140290610427648 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-08-27 18:17:18,878 log 33 140290610427648 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 18:17:31,744 apps 13 139799000663872 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:17:31,749 apps 13 139799000663872 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:17:37,123 apps 16 139943176050496 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:17:37,128 apps 16 139943176050496 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:18:13,153 apps 33 140343625955136 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:18:13,158 apps 33 140343625955136 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:18:13,184 apps 34 140343625955136 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:18:13,189 apps 34 140343625955136 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 18:18:32,785 log 34 140343503423232 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 18:18:37,768 views 33 140343511717632 Get Employee Details Request: user_id=1
+INFO 2025-08-27 18:19:47,378 apps 91 139628559865664 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:19:47,383 apps 91 139628559865664 Notifications app ready: Prometheus counters available
+WARNING 2025-08-27 18:20:01,300 log 33 140343528503040 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 18:20:05,175 views 33 140343266739968 Get Employee Details Request: user_id=1
+INFO 2025-08-27 18:20:12,317 views 33 140343266739968 Get Employee Details Request: user_id=3
+INFO 2025-08-27 18:20:13,288 views 33 140343266739968 Get Employee Details Request: user_id=1
+WARNING 2025-08-27 18:20:37,270 log 33 140343528503040 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+INFO 2025-08-27 18:21:29,439 views 33 140343520110336 Get Employee Details Request: user_id=1
+INFO 2025-08-27 18:23:16,693 apps 202 140049821796160 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:23:16,698 apps 202 140049821796160 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:23:52,115 apps 13 140437166548800 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:23:52,120 apps 13 140437166548800 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:23:56,925 apps 16 140330623813440 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:23:56,931 apps 16 140330623813440 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:24:31,006 apps 33 140103911388992 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:24:31,011 apps 33 140103911388992 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:24:31,025 apps 34 140103911388992 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-27 18:24:31,030 apps 34 140103911388992 Notifications app ready: Prometheus counters available
+INFO 2025-08-27 18:24:40,128 views 33 140103578023680 Get Employee Details Request: user_id=1
+INFO 2025-08-27 18:24:49,730 views 33 140103536060160 Get Employee Details Request: user_id=1

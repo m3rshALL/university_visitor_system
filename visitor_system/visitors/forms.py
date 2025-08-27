@@ -115,18 +115,16 @@ class GuestRegistrationForm(forms.Form):
         widget=forms.Select(attrs={'id': 'id_visit_department'}) # <-- Добавим уникальный ID
     )
     employee = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_active=True).select_related('employee_profile'), # Можно добавить employee_profile
+        queryset=User.objects.filter(is_active=True).select_related('employee_profile'), # Используем select_related для оптимизации
         label="Принимающий сотрудник",
         widget=Select2Widget(
             attrs={
-                'data-placeholder': 'Сначала выберите департамент...', # Изменим placeholder
-                # URL остается тот же, но JS будет добавлять параметр
+                'data-placeholder': 'Сначала выберите департамент...',
                 'data-ajax--url': reverse_lazy('employee_autocomplete'),
-                # Зависимость будет управляться через JS
-                'id': 'id_visit_employee' # <-- Добавим ID
+                'id': 'id_visit_employee'
                 }
         ),
-        required=False # Или True, проверяется в clean()
+        required=True # Делаем поле обязательным
     )
     
     # Новое поле для планируемого времени
@@ -151,22 +149,9 @@ class GuestRegistrationForm(forms.Form):
     )
     # ------------------------------------
 
-    # --- Заменяем поле Email на поле выбора сотрудника ---
+    # --- Поле Email заменено на поле выбора сотрудника в верхней части формы ---
     # visiting_employee_email = forms.EmailField(label="Email принимающего сотрудника", required=True) # <-- Старое поле
-    employee = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_active=True),
-        label="Принимающий сотрудник",
-        widget=Select2Widget(
-            # Передаем attrs ОДИН раз со всеми нужными ключами
-            attrs={
-                'data-placeholder': 'Начните вводить ФИО или email...',
-                'data-ajax--url': reverse_lazy('employee_autocomplete'),
-                # Сюда же можно добавить другие data-атрибуты, если нужно
-                # 'data-minimum-input-length': '2',
-            }
-        ),
-        required=True
-    )
+    # Примечание: поле employee уже определено выше
     # ------------------------------------------------------
     employee_contact_phone_form = forms.CharField(
         label="Контактный тел. сотрудника", max_length=20, required=True,
@@ -251,18 +236,18 @@ class GuestRegistrationForm(forms.Form):
 
 
         if not guest:
-             guest_full_name_value = guest_data.get('full_name')
-             if not guest_full_name_value:
-                 # Этого не должно быть при правильной настройке формы, но проверим
-                 raise forms.ValidationError("Необходимо указать ФИО гостя.")
+            guest_full_name_value = guest_data.get('full_name')
+            if not guest_full_name_value:
+                # Этого не должно быть при правильной настройке формы, но проверим
+                raise forms.ValidationError("Необходимо указать ФИО гостя.")
 
-             # Ищем или создаем по ФИО (без учета регистра)
-             guest, created = Guest.objects.get_or_create(
-                 full_name__iexact=guest_full_name_value,
-                 defaults=guest_data # Используем все данные при СОЗДАНИИ
-             )
-             if created:
-                 logger.info("Создан новый гость: %s", guest.full_name)
+            # Ищем или создаем по ФИО (без учета регистра)
+            guest, created = Guest.objects.get_or_create(
+                full_name__iexact=guest_full_name_value,
+                defaults=guest_data  # Используем все данные при СОЗДАНИИ
+            )
+            if created:
+                logger.info("Создан новый гость: %s", guest.full_name)
 
         # Если гость был найден (по ИИН или ФИО), обновим его данные, если они изменились
         if not created:
@@ -438,10 +423,18 @@ class StudentVisitRegistrationForm(forms.Form):
         if not guest:
              guest, created = Guest.objects.get_or_create(full_name=guest_data['full_name'], defaults=guest_data)
         else:
-             created = False; updated = False # Обновляем существующего
-             for field, value in guest_data.items():
-                 if value and getattr(guest, field) != value: setattr(guest, field, value); updated = True
-             if updated: guest.save()
+            created = False  # Обновляем существующего
+            updated = False
+            # Проходим по всем полям гостя из формы
+            for field_name in ['full_name', 'email', 'phone_number', 'iin']:  # Перечисляем поля модели Guest
+                form_value = guest_data.get(field_name)
+                # Обновляем, если в форме есть значение И оно отличается от значения в базе
+                if form_value and getattr(guest, field_name) != form_value:
+                    setattr(guest, field_name, form_value)
+                    updated = True
+            if updated:
+                guest.save()
+                logger.info("Обновлены данные для существующего гостя: %s", guest.full_name)
 
         # 2. Определить цель визита
         purpose_to_save = self.cleaned_data.get('purpose')

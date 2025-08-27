@@ -11,7 +11,7 @@
 
 {% if page_obj.object_list %}
 {# --- Пагинация --- #}
-<div class="card">
+<div class="card" x-data="VisitHistory()">
    <div class="card-table">
       <div class="card-header">
          <div class="row w-full">
@@ -35,40 +35,16 @@
                            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
                            <path d="M21 21l-6 -6" />
                          </span>
-                         <input id="advanced-table-search" type="text" name="search" class="form-control" autocomplete="off" placeholder="Поиск" 
+                                <input id="advanced-table-search" type="text" name="search" class="form-control" autocomplete="off" placeholder="Поиск" 
                                 hx-get="{% url 'visit_history' %}" 
                                 hx-trigger="keyup changed delay:500ms" 
                                 hx-target="#advanced-table" 
-                                hx-push-url="true"
+                                hx-push-url="true" hx-preserve="true"
                                 hx-include="[name='status'], [name='visit_type'], [name='per_page']"
                                 value="{{ request.GET.search|default:'' }}">
                          <span class="input-group-text">
                             <kbd>Поиск</kbd>
                          </span>
-                            <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const searchInput = document.getElementById('advanced-table-search');
-                                const tableRows = document.querySelectorAll('.table-tbody tr');
-
-                                searchInput.addEventListener('input', function() {
-                                    const query = searchInput.value.toLowerCase();
-
-                                    tableRows.forEach(row => {
-                                        const visitor = row.querySelector('.sort-name')?.textContent.toLowerCase() || '';
-                                        const iin = row.querySelector('.sort-iin')?.textContent.toLowerCase() || '';
-                                        const department = row.querySelector('.sort-status')?.textContent.toLowerCase() || '';
-                                        const employee = row.querySelector('.sort-city')?.textContent.toLowerCase() || '';
-                                        const purpose = row.querySelector('.sort-tags')?.textContent.toLowerCase() || '';
-
-                                        if (visitor.includes(query) || iin.includes(query) || department.includes(query) || employee.includes(query) || purpose.includes(query)) {
-                                            row.style.display = '';
-                                        } else {
-                                            row.style.display = 'none';
-                                        }
-                                    });
-                                });
-                            });
-                            </script>
                   </div>
                   {% comment %}
                      <a class="btn btn-icon" aria-label="Button">
@@ -77,12 +53,12 @@
                         </svg>
    						</a>
                   {% endcomment %}
-                  <a id="filter-selected-btn" class="btn btn-outline-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Показать только отмеченные записи">
+                        <a id="filter-selected-btn" class="btn btn-outline-primary ms-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Показать только отмеченные записи" @click.prevent="toggleFilterSelected()">
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-filter">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-9l-4.414 -4.414a2 2 0 0 1 -.586 -1.414v-2.172z" />
                      </svg>
-                     <span class="btn-text">Показать отмеченных</span>
+                            <span class="btn-text" x-text="filterSelected ? 'Сбросить отметки' : 'Показать отмеченных'"></span>
                   </a>                  <div class="dropdown">
                     <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
@@ -512,31 +488,7 @@ function updateStatusFilterLinks() {
 
 // Filter by selected checkboxes
 let filterSelectedActive = false;
-const filterBtn = document.getElementById('filter-selected-btn');
-if (filterBtn) {
-    filterBtn.addEventListener('click', function() {
-        filterSelectedActive = !filterSelectedActive;
-        
-        if (!filterSelectedActive) {
-            // When turning off the filter, clear all checkboxes
-            document.querySelectorAll('.table-tbody tr input.table-selectable-check').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            // Clear saved states in localStorage
-            localStorage.removeItem('visitHistory_checkboxStates');
-            // Update filter links to reflect that nothing is selected
-            updateStatusFilterLinks();
-        }
-        
-        // Show/hide rows based on the filter state
-        document.querySelectorAll('.table-tbody tr').forEach(row => {
-            const chk = row.querySelector('input.table-selectable-check');
-            row.style.display = filterSelectedActive ? ((chk && chk.checked) ? '' : 'none') : '';
-        });
-        
-        filterBtn.querySelector('.btn-text').textContent = filterSelectedActive ? 'Сбросить отметки' : 'Показать отмеченных';
-    });
-}
+// Alpine handles toggle via VisitHistory component
 
 // Сохраняем состояние при изменении чекбоксов
 document.addEventListener('change', function(e) {
@@ -592,5 +544,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+<script src="{% static 'js/visit-history.js' %}" defer></script>
 
 {% endblock %}

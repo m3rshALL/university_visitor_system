@@ -46,7 +46,7 @@
                                 </svg>
                                 Фото гостя:&nbsp;
                                 <div class="guest-photo-container">
-                                    <img src="{{ visit.invitation.guest_photo.url }}" alt="Фото гостя" class="rounded guest-photo">
+                                    <img src="{{ visit.invitation.guest_photo.url }}" alt="Фото гостя" class="rounded guest-photo" loading="lazy" decoding="async" referrerpolicy="no-referrer">
                                 </div>
                             </div>
                             {% endif %}
