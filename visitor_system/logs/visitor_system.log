@@ -18128,3 +18128,34 @@ INFO 2025-08-26 18:41:24,203 apps 13 139651501303616 AXES: BEGIN version 6.5.2, 
 INFO 2025-08-26 18:41:24,207 apps 13 139651501303616 Notifications app ready: Prometheus counters available
 INFO 2025-08-26 18:41:29,281 apps 16 139728918095680 AXES: BEGIN version 6.5.2, blocking by username or ip_address
 INFO 2025-08-26 18:41:29,284 apps 16 139728918095680 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:42:12,445 apps 33 140142520715072 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:42:12,452 apps 33 140142520715072 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:42:12,496 apps 34 140142520715072 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:42:12,502 apps 34 140142520715072 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:54:38,385 views 34 140142390839040 Get Employee Details Request: user_id=1
+INFO 2025-08-26 18:54:41,584 forms 34 140142390839040 Гость с ИИН 000000000000 не найден, будет создан новый (или найден по ФИО).
+INFO 2025-08-26 18:54:41,596 forms 34 140142390839040 Создан новый гость: John Smith
+INFO 2025-08-26 18:54:41,596 forms 34 140142390839040 Using guest object: John Smith (ID: 3), Created: True
+INFO 2025-08-26 18:54:41,596 forms 34 140142390839040 Visit None created with status AWAITING_ARRIVAL.
+INFO 2025-08-26 18:54:41,605 signals 34 140142390839040 Создан Visit ID: 8, запуск задачи уведомления...
+INFO 2025-08-26 18:54:41,642 forms 34 140142390839040 Celery task queued for Visit ID 8
+INFO 2025-08-26 18:54:41,643 forms 34 140142390839040 Saved Visit ID 8, Status: AWAITING, Consent Ack: True
+ERROR 2025-08-26 18:54:41,645 utils 34 140142390839040 Группа 'Security Notifications' не найдена. Уведомления безопасности не будут отправлены.
+INFO 2025-08-26 18:57:49,906 apps 95524 68528 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:49,907 apps 95524 68528 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:50,693 apps 79928 81508 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:50,694 apps 79928 81508 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,149 apps 82000 87292 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,150 apps 82000 87292 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,178 apps 83576 71648 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,179 apps 83576 71648 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,214 apps 95300 54468 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,215 apps 95300 54468 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 18:57:56,226 apps 78532 87988 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 18:57:56,227 apps 78532 87988 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 19:01:26,138 apps 77252 82848 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 19:01:26,139 apps 77252 82848 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 19:01:31,546 apps 60072 91268 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 19:01:31,547 apps 60072 91268 Notifications app ready: Prometheus counters available
+INFO 2025-08-26 19:01:31,559 apps 84348 76684 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-08-26 19:01:31,560 apps 84348 76684 Notifications app ready: Prometheus counters available
