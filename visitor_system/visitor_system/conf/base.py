@@ -252,14 +252,14 @@ AXES_LOCKOUT_PARAMETERS = ['username', 'ip_address']
 CSP_REPORT_ONLY = DEBUG
 CSP_DEFAULT_SRC = ("'self'",)
 if DEBUG:
-    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com')
+    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com', 'https://unpkg.com')
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net')
 else:
     # Продакшен: без unsafe-inline/unsafe-eval
-    CSP_SCRIPT_SRC = ("'self'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com')
+    CSP_SCRIPT_SRC = ("'self'", 'https://cdn.jsdelivr.net', 'https://code.jquery.com', 'https://cdnjs.cloudflare.com', 'https://unpkg.com')
     CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com', 'https://cdn.jsdelivr.net')
 CSP_IMG_SRC = ("'self'", 'data:', 'https:')
-CSP_FONT_SRC = ("'self'", 'data:', 'https://fonts.gstatic.com')
+CSP_FONT_SRC = ("'self'", 'data:', 'https://fonts.gstatic.com', 'https://cdn.jsdelivr.net')
 CSP_CONNECT_SRC = ("'self'", 'ws:', 'wss:', 'https:')
 
 # Referrer Policy

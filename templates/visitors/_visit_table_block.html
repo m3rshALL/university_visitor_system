@@ -1,5 +1,5 @@
 {% load iin_filters %}
-<div id="advanced-table" hx-target="#advanced-table" hx-swap="outerHTML">
+<div id="advanced-table" hx-target="#advanced-table" hx-swap="outerHTML" hx-push-url="true" data-busy-container role="region" aria-live="polite">
   {% include 'visitors/_visit_table.html' %}
   <div class="card-footer d-flex align-items-center">
     <p class="m-0 text-secondary">Показано <span>{{ page_obj.start_index }}-{{ page_obj.end_index }}</span> из <span>{{ page_obj.paginator.count }}</span> записей</p>

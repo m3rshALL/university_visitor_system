@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -310,7 +311,7 @@
                             </div>
                         {% endif %}
 
-                        <form method="post" enctype="multipart/form-data" novalidate class="needs-validation">
+                        <form method="post" enctype="multipart/form-data" novalidate class="needs-validation" data-sticky-submit>
                             {% csrf_token %}
                             
                             <!-- Full Name Field -->
@@ -395,7 +396,7 @@
                                             {{ form.guest_phone.label }}
                                         </label>
                                         <!-- Поле с маской для отображения -->
-                                        <input type="tel" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __" inputmode="numeric">
+                                        <input type="tel" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __" inputmode="tel" autocomplete="tel">
                                         {% if form.guest_phone.errors %}
                                             <div class="invalid-feedback d-block">
                                                 {% for error in form.guest_phone.errors %}{{ error }}{% endfor %}
@@ -467,7 +468,7 @@
                             </div>
 
                             <!-- Submit Buttons -->
-                            <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                            <div class="card-footer bg-transparent d-flex justify-content-between align-items-center sticky-submit">
                                 <button type="button" class="btn btn-outline-secondary" data-go-back data-back-url="{% url 'employee_dashboard' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left me-1" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -496,142 +497,5 @@
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация маски для телефона
-    const phoneField = document.getElementById('guest_phone_masked');
-    const hiddenPhoneField = document.getElementById('{{ form.guest_phone.id_for_label }}');
-    
-    if (phoneField && hiddenPhoneField) {
-        const phoneMask = IMask(phoneField, {
-            mask: '+{7} (000) 000 00 00',
-            definitions: {
-                '0': /[0-9]/
-            }
-        });
-
-        // Устанавливаем начальное значение, если есть
-        if (hiddenPhoneField.value) {
-            phoneMask.value = hiddenPhoneField.value;
-        }
-
-        // Обновляем скрытое поле при изменении
-        phoneMask.on('accept', function() {
-            hiddenPhoneField.value = phoneMask.unmaskedValue;
-        });
-    }    // Валидация формы с улучшенной обратной связью для мобильных
-    const form = document.querySelector('form');
-    if (form) {
-        // Добавляем состояние загрузки для улучшения UX на мобильных
-        form.addEventListener('submit', function(e) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const requiredFields = form.querySelectorAll('[required]');
-            let isValid = true;
-            let firstInvalidField = null;
-
-            // Проверка валидности полей
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.classList.add('is-invalid');
-                    if (!firstInvalidField) {
-                        firstInvalidField = field;
-                    }
-                } else {
-                    field.classList.remove('is-invalid');
-                }
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-                // Прокручиваем к первому неверному полю и фокусируемся на нем
-                if (firstInvalidField) {
-                    firstInvalidField.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
-                    setTimeout(() => {
-                        firstInvalidField.focus();
-                    }, 300);
-                }
-                
-                // Показываем уведомление
-                const existingAlert = document.querySelector('.validation-alert');
-                if (existingAlert) {
-                    existingAlert.remove();
-                }
-                
-                const alertDiv = document.createElement('div');
-                alertDiv.className = 'alert alert-danger validation-alert mt-3';
-                alertDiv.innerHTML = `
-                    <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M12 9v2m0 4v.01" />
-                                <path d="M5 19h14a2 2 0 0 0 1.414 -3.414l-7 -7a2 2 0 0 0 -2.828 0l-7 7a2 2 0 0 0 1.414 3.414z" />
-                            </svg>
-                        </div>
-                        <div class="ms-2">
-                            <h4 class="alert-title">Заполните обязательные поля</h4>
-                            <div class="text-muted">Пожалуйста, заполните все обязательные поля формы</div>
-                        </div>
-                    </div>
-                `;
-                
-                form.insertBefore(alertDiv, form.firstChild);
-                
-                // Автоматически скрываем уведомление через 5 секунд
-                setTimeout(() => {
-                    alertDiv.remove();
-                }, 5000);
-            } else {
-                // Показываем состояние загрузки при отправке формы
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = `
-                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        <span class="d-none d-sm-inline">Отправка...</span>
-                        <span class="d-sm-none">...</span>
-                    `;
-                    
-                    // Если форма не отправилась через 10 секунд, возвращаем кнопку в исходное состояние
-                    setTimeout(() => {
-                        if (submitBtn.disabled) {
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = `
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send me-1" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                    <path d="M10 14l11 -11" />
-                                    <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
-                                </svg>
-                                <span class="d-none d-sm-inline">Отправить данные</span>
-                                <span class="d-sm-none">Отправить</span>
-                            `;
-                        }
-                    }, 10000);
-                }
-            }
-        });
-    }
-
-    // Улучшенная обработка ошибок валидации в реальном времени
-    const inputs = form.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            if (this.hasAttribute('required') && !this.value.trim()) {
-                this.classList.add('is-invalid');
-            } else {
-                this.classList.remove('is-invalid');
-            }
-        });
-        
-        input.addEventListener('input', function() {
-            if (this.classList.contains('is-invalid') && this.value.trim()) {
-                this.classList.remove('is-invalid');
-            }
-        });
-    });
-});
-</script>
+<script src="{% static 'js/guest-invitation-fill.js' %}"></script>
 {% endblock %}

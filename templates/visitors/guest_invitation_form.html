@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -202,6 +203,25 @@
                 margin-bottom: 0.25rem;
             }
         }
+
+        /* Sticky submit bar (standalone page does not inherit base.css) */
+        .sticky-submit {
+            position: sticky;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            padding: 0.5rem;
+            z-index: 500;
+        }
+        @media (min-width: 768px) {
+            .sticky-submit {
+                position: static;
+                background: transparent;
+                border: 0;
+                padding: 0;
+            }
+        }
     </style>
 </head>
 
@@ -367,7 +387,7 @@
                             </div>
                         {% endif %}
 
-                            <form id="visitor-form" method="post" enctype="multipart/form-data" novalidate class="needs-validation">
+                            <form id="visitor-form" method="post" enctype="multipart/form-data" novalidate class="needs-validation" data-sticky-submit>
                                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                                 
                                 <!-- Full Name Field -->
@@ -462,7 +482,7 @@
                                             </label>
                                             <!-- Поле с маской для отображения -->
                                             
-                                            <input type="tel" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __" inputmode="numeric" required>
+                                            <input type="tel" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __" inputmode="tel" autocomplete="tel" required>
                                             
                                             {% if form.guest_phone.errors %}
                                             <div class="invalid-feedback d-block">
@@ -543,7 +563,7 @@
                                 </div>
 
                                 <!-- Submit Buttons -->
-                                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center sticky-submit">
                                     <button type="button" class="btn btn-outline-secondary" onclick="window.close();">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left me-1" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -554,7 +574,7 @@
                                         <span class="d-none d-sm-inline">Закрыть</span>
                                         <span class="d-sm-none">←</span>
                                     </button>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" hx-indicator="#timer-warning">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send me-1" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                             <path d="M10 14l11 -11" />
@@ -573,215 +593,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let submitted = false;
-        const form = document.getElementById('visitor-form');
-        const timerWarning = document.getElementById('timer-warning');
-        const timeLeftSpan = document.getElementById('time-left');
-        const mainTimerSpan = document.getElementById('main-timer');
-        
-        // Устанавливаем общее время таймера в секундах (5 минут = 300 секунд)
-        let totalTime = 300;
-        let timerInterval;
-        
-        // Инициализация маски для телефона
-        const phoneField = document.getElementById('guest_phone_masked');
-        const hiddenPhoneField = document.getElementById('guest_phone');
-        
-        if (phoneField && hiddenPhoneField) {
-            const phoneMask = IMask(phoneField, {
-                mask: '+{7} (000) 000 00 00',
-                definitions: {
-                    '0': /[0-9]/
-                }
-            });
-    
-            // Обновляем скрытое поле при изменении
-            phoneMask.on('accept', function() {
-                hiddenPhoneField.value = phoneMask.unmaskedValue;
-            });
-        }
-        
-        // Инициализация маски для ИИН
-        const iinField = document.getElementById('guest_iin');
-        if (iinField) {
-            const iinMask = IMask(iinField, {
-                mask: '000000000000', // 12 цифр
-                definitions: {
-                    '0': /[0-9]/
-                }
-            });
-        }
-        
-        // Функция обновления таймера
-        function updateTimer() {
-            if (totalTime <= 0) {
-                clearInterval(timerInterval);
-                alert('Время заполнения формы истекло. Страница будет закрыта.');
-                window.close();
-                return;
-            }
-            
-            totalTime--;
-            
-            // Форматируем время для отображения (MM:SS)
-            const minutes = Math.floor(totalTime / 60);
-            const seconds = totalTime % 60;
-            const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            
-            // Обновляем основной таймер
-            mainTimerSpan.textContent = formattedTime;
-            
-            // Показываем предупреждение, когда осталось 30 секунд
-            if (totalTime <= 30) {
-                timeLeftSpan.textContent = totalTime;
-                timerWarning.style.display = 'block';
-            }
-        }
-        
-        // Запускаем таймер
-        timerInterval = setInterval(updateTimer, 1000);
-        
-        // Обработка отправки формы
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Предотвращаем стандартную отправку
-                
-                // Проверяем валидность формы
-                const requiredFields = form.querySelectorAll('[required]');
-                let isValid = true;
-                let firstInvalidField = null;
-                
-                requiredFields.forEach(field => {
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        field.classList.add('is-invalid');
-                        if (!firstInvalidField) {
-                            firstInvalidField = field;
-                        }
-                    } else {
-                        field.classList.remove('is-invalid');
-                    }
-                });
-                
-                if (!isValid) {
-                    // Прокручиваем к первому неверному полю
-                    if (firstInvalidField) {
-                        firstInvalidField.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'center' 
-                        });
-                        setTimeout(() => {
-                            firstInvalidField.focus();
-                        }, 300);
-                    }
-                    
-                    // Показываем уведомление об ошибке
-                    const existingAlert = document.querySelector('.validation-alert');
-                    if (existingAlert) {
-                        existingAlert.remove();
-                    }
-                    
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-danger validation-alert mt-3';
-                    alertDiv.innerHTML = `
-                        <div class="d-flex">
-                            <div class="flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                    <path d="M12 9v2m0 4v.01" />
-                                    <path d="M5 19h14a2 2 0 0 0 1.414 -3.414l-7 -7a2 2 0 0 0 -2.828 0l-7 7a2 2 0 0 0 1.414 3.414z" />
-                                </svg>
-                            </div>
-                            <div class="ms-2">
-                                <h4 class="alert-title">Заполните обязательные поля</h4>
-                                <div class="text-muted">Пожалуйста, заполните все обязательные поля формы</div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    form.insertBefore(alertDiv, form.firstChild);
-                    
-                    // Автоматически скрываем уведомление через 5 секунд
-                    setTimeout(() => {
-                        alertDiv.remove();
-                    }, 5000);
-                } else {
-                    // Отмечаем форму как отправленную
-                    submitted = true;
-                    
-                    // Останавливаем таймер
-                    clearInterval(timerInterval);
-                    
-                    // Показываем состояние загрузки
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    if (submitBtn) {
-                        submitBtn.disabled = true;
-                        submitBtn.innerHTML = `
-                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                            <span class="d-none d-sm-inline">Отправка...</span>
-                            <span class="d-sm-none">...</span>
-                        `;
-                    }
-                    
-                    // Симулируем отправку (в реальном приложении здесь был бы AJAX запрос)
-                    setTimeout(() => {
-                        // Показываем сообщение об успешной отправке
-                        alert('Ваши данные успешно отправлены! Приглашение оформлено.');
-                        
-                        // Перенаправляем на страницу успешной отправки или закрываем окно
-                        window.location.href = 'visitors/guest_invitation_filled_success.html';
-                    }, 1500);
-                }
-            });
-            
-            // Улучшенная обработка ошибок валидации в реальном времени
-            const inputs = form.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    if (this.hasAttribute('required') && !this.value.trim()) {
-                        this.classList.add('is-invalid');
-                    } else {
-                        this.classList.remove('is-invalid');
-                    }
-                });
-                
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('is-invalid') && this.value.trim()) {
-                        this.classList.remove('is-invalid');
-                    }
-                });
-            });
-        }
-        
-        // Проверяем активность пользователя для сброса таймера, если форма еще не отправлена
-        function resetInactivityTimer() {
-            if (!submitted) {
-                clearInterval(timerInterval);
-                totalTime = 300; // Сбрасываем таймер на 5 минут
-                timerWarning.style.display = 'none';
-                timerInterval = setInterval(updateTimer, 1000);
-            }
-        }
-        
-        // События, которые свидетельствуют об активности пользователя
-        document.addEventListener('click', resetInactivityTimer);
-        document.addEventListener('keypress', resetInactivityTimer);
-        document.addEventListener('scroll', resetInactivityTimer);
-        form.addEventListener('input', resetInactivityTimer);
-        
-        // Обработка закрытия окна/вкладки
-        window.addEventListener('beforeunload', function(e) {
-            if (!submitted && form.querySelector('input[name="guest_full_name"]').value.trim()) {
-                // Если пользователь начал заполнять форму, но не отправил ее
-                const message = 'Вы уверены, что хотите покинуть страницу? Введенные данные будут потеряны.';
-                e.returnValue = message;
-                return message;
-            }
-        });
-    });
-    </script>
+    <script src="{% static 'js/guest-invitation-standalone.js' %}"></script>
 </body>
 {% endblock %}
 </html>

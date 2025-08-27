@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% comment %}
 		<meta name="theme-color" content="#206bc4"> <!-- Должен совпадать с theme_color в manifest.json -->
-		    <meta name="apple-mobile-web-app-capable" content="yes">
-		    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- или default, black -->
-		    <meta name="apple-mobile-web-app-title" content="Пропуска"> <!-- Короткое имя для iOS -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- или default, black -->
+		<meta name="apple-mobile-web-app-title" content="Пропуска"> <!-- Короткое имя для iOS -->
 	{% endcomment %}
     <title>{% block title %}Система пропусков Университета{% endblock %}</title>
 
-        {# --- Подключение CSS --- #}
+    {# --- Подключение CSS --- #}
     
     {# Tabler CSS#}
     <link rel="stylesheet" href="{% static 'tabler/css/tabler.css' %}"/>
@@ -23,19 +23,47 @@
 	<link rel="stylesheet" href="{% static 'tabler/css/tabler-vendors.css' %}"/>
 	<link rel="stylesheet" href="{% static 'tabler/css/tabler-marketing.css' %}"/>
 
-    {# --- ВСТАВКА КОДА GOOGLE FONTS --- #}
+	{# --- ВСТАВКА КОДА GOOGLE FONTS --- #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" fetchpriority="high">
     {# ---------------------------------- #}    
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
+		<style>
+			/* Toasts */
+			.toast-container{position:fixed;right:1rem;bottom:1rem;z-index:1080;display:flex;flex-direction:column;gap:.5rem}
+			.toast-item{border-radius:.5rem;padding:.5rem .75rem;box-shadow:0 2px 8px rgba(0,0,0,.08);opacity:.98;transition:opacity .25s ease,transform .25s ease}
+			.toast-item.hide{opacity:0;transform:translateY(6px)}
+			.toast-dot{width:.5rem;height:.5rem;border-radius:50%;background:currentColor;opacity:.6}
+			/* Sticky submit bar */
+			.sticky-submit{position:sticky;bottom:0;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-top:1px solid rgba(0,0,0,.06);padding:.5rem;z-index:500}
+			@media (min-width: 768px){.sticky-submit{position:static;background:transparent;border:0;padding:0}}
+			/* Focus visible for keyboard users */
+			:focus-visible{outline:3px solid #206bc4;outline-offset:2px}
+			/* HTMX indicator */
+			.is-loading{opacity:.6;pointer-events:none}
+			[aria-busy="true"]{cursor:progress}
+			/* Skeleton placeholder */
+			.skeleton{position:relative;overflow:hidden;background-color:#f3f4f6}
+			.skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background-image:linear-gradient(90deg,rgba(255,255,255,0) 0,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 100%);animation:shimmer 1.2s infinite}
+			@keyframes shimmer{100%{transform:translateX(100%)}}
+			/* Smooth state transitions */
+			.card,.btn,.form-control,.form-select,.table{transition:background-color .2s ease,opacity .2s ease,box-shadow .2s ease}
+			/* Larger tap targets on mobile */
+			@media (max-width: 576px){
+				.btn{min-height:44px}
+				input,select,textarea{min-height:44px}
+			}
+		</style>
 
     <link rel="apple-touch-icon" href="{% static 'img/icons/apple-touch-icon.png' %}">
 
     {% block extra_head %}
 	{% endblock %}
-    {% progressive_web_app_meta %}
+	{% progressive_web_app_meta %}
+	<link rel="manifest" href="{% url 'manifest' %}">
 
 	</head>
 	<body>    <!-- BEGIN PRELOADER -->
@@ -74,15 +102,15 @@
     Source code
     </a>
 
-{% comment %}
-    <a href="#" class="btn btn-6" target="_blank" rel="noreferrer">
-    <!-- Download SVG icon from http://tabler.io/icons/icon/heart -->
-    	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-pink icon-2"><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-    Text me 2
-    </a>
-    		</div>
-    	</div>
-{% endcomment %}
+	{% comment %}
+		<a href="#" class="btn btn-6" target="_blank" rel="noreferrer">
+		<!-- Download SVG icon from http://tabler.io/icons/icon/heart -->
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-pink icon-2"><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+		Text me 2
+		</a>
+				</div>
+			</div>
+	{% endcomment %}
 
     {% if user.is_authenticated %}
 	<div class="d-none d-md-flex">
@@ -266,7 +294,7 @@
 		</div>
 	</header>
 		<!-- END NAVBAR  -->
-    <main id="main-content" class="page-body" role="main">					
+	<main id="main-content" class="page-body" role="main" hx-boost="true">                    
 			<div class="container-xl">
                 <div class="row row-deck row-cards">
                     {# Отображение сообщений Django (success, error, warning) - Перемещено сюда #}
@@ -312,14 +340,25 @@
 {# Опционально: Tabler Demo JS, если используете его функции. Обычно не нужен для продакшена. #}
 {# <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/demo.min.js" defer></script> #}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script>window.jQuery||document.write('<script src="{% static 'rest_framework/js/jquery-3.7.1.min.js' %}">\x3C/script>')</script>
+<script>
+// Fallback for jQuery without document.write
+if (typeof jQuery === 'undefined') {
+    var script = document.createElement('script');
+    script.src = '{% static 'rest_framework/js/jquery-3.7.1.min.js' %}';
+    script.onload = function() { console.log('jQuery fallback loaded'); };
+    document.head.appendChild(script);
+}
+</script>
 <script src="{% static 'js/navigation.js' %}" defer></script>
 <script src="{% static 'js/optimized-offline-handler.js' %}" defer></script>
 <script src="{% static 'js/ui.js' %}" defer></script>
 
 <!-- htmx & Alpine.js -->
-<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-7/jT8S0UYkQv8I0u3fqO3gCAxU0cY1T7XgO5WvQ7o77fD1bO8XQ0w9m3a9HkGykB" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-7/jT8S0UYkQv8I0u3fqO3gCAxU0cY1T7XgO5WvQ7o77fD1bO8XQ0w9m3a9HkGykB" crossorigin="anonymous" defer></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="{% static 'js/htmx-alpine-bridge.js' %}" defer></script>
+<script src="{% static 'js/toast.js' %}" defer></script>
+<script src="{% static 'js/a11y-ux.js' %}" defer></script>
 <script>
 document.addEventListener('htmx:configRequest', function (event) {
     try {
@@ -328,6 +367,18 @@ document.addEventListener('htmx:configRequest', function (event) {
             event.detail.headers['X-CSRFToken'] = match[2];
         }
     } catch (e) {}
+});
+// Queue failed POST requests when offline
+document.addEventListener('htmx:responseError', function (e) {
+	try {
+		var req = e.detail && e.detail.requestConfig;
+		if (req && req.verb && req.verb.toUpperCase() === 'POST') {
+			if (typeof window.queueRequestForSync === 'function') {
+				window.queueRequestForSync(req.path, 'POST', req.parameters);
+				if (window.toast) toast('Запрос сохранен и будет отправлен при восстановлении соединения', 'info');
+			}
+		}
+	} catch (_) {}
 });
 </script>
 
@@ -343,6 +394,15 @@ document.addEventListener('htmx:configRequest', function (event) {
 <!-- Preloader -->
 <script src="{% static 'js/preloader.js' %}" defer></script>
 <!-- End Offline mode handler -->
+
+<script>
+// Register service worker
+if ('serviceWorker' in navigator) {
+	window.addEventListener('load', function() {
+		navigator.serviceWorker.register('{% url 'serviceworker' %}');
+	});
+}
+</script>
 
 </body>
 

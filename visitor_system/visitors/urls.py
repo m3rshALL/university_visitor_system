@@ -42,8 +42,6 @@ urlpatterns = [
     
     # --- путь для экспорта в Excel ---
     path('history/export/xlsx/', views.export_visits_xlsx, name='export_visits_xlsx'),
-    
-    path('ajax/employee-autocomplete/', views.employee_autocomplete_view, name='employee_autocomplete'),
     # --- URL для получения деталей сотрудника ---
     path('ajax/employee-details/<int:user_id>/', views.get_employee_details_view, name='get_employee_details'),
     # --- URL для деталей департамента ---

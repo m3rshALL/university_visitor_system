@@ -60,16 +60,16 @@
     {% elif visit.visit_kind == 'group' and visit.status == 'CHECKED_IN' %}
       <form hx-post="{% url 'mark_group_exit' visit.id %}" hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML">
         {% csrf_token %}
-        <button type="submit" class="badge bg-success-lt btn btn-sm">Выход группы</button>
+        <button type="submit" class="badge bg-success-lt btn btn-sm" hx-indicator="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}">Выход группы</button>
       </form>
     {% elif visit.status == 'AWAITING' %}
       <form hx-post="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML" class="d-inline">
         {% csrf_token %}
-        <button type="submit" class="badge bg-success-lt btn btn-sm">Вход</button>
+        <button type="submit" class="badge bg-success-lt btn btn-sm" hx-indicator="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}">Вход</button>
       </form>
       <form hx-post="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML" class="d-inline ms-1">
         {% csrf_token %}
-        <button type="submit" class="badge bg-danger-lt btn btn-sm" onclick="return confirm('Отменить этот визит?');">Отменить</button>
+        <button type="submit" class="badge bg-danger-lt btn btn-sm" hx-indicator="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" onclick="return confirm('Отменить этот визит?');">Отменить</button>
       </form>
     {% elif visit.status == 'CHECKED_IN' and visit.visit_kind != 'group' %}
       <form {% if visit.visit_kind == 'official' %} hx-post="{% url 'mark_guest_exit' visit.id %}"
@@ -77,7 +77,7 @@
             {% endif %}
             hx-target="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}" hx-swap="outerHTML" class="d-inline">
         {% csrf_token %}
-        <button type="submit" class="badge bg-secondary-lt btn btn-sm">Выход</button>
+        <button type="submit" class="badge bg-secondary-lt btn btn-sm" hx-indicator="#visit-row-{{ visit.visit_kind }}-{{ visit.id }}">Выход</button>
       </form>
     {% else %}
       <span class="text-muted">-</span>

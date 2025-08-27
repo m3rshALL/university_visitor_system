@@ -96,26 +96,26 @@
             {% if visit.visit_kind == 'group' and visit.status == 'CHECKED_OUT' %}
               <span class="badge bg-secondary-lt">Завершен</span>
             {% elif visit.visit_kind == 'group' and visit.status == 'CHECKED_IN' %}
-              <form hx-post="{% url 'mark_group_exit' visit.id %}" hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline">
+              <form action="{% url 'mark_group_exit' visit.id %}" method="post" hx-post="{% url 'mark_group_exit' visit.id %}" hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline">
                 {% csrf_token %}
-                <button type="submit" class="badge bg-success-lt btn btn-sm" title="Отметить выход группы">Выход группы</button>
+                <button type="submit" class="badge bg-success-lt btn btn-sm" title="Отметить выход группы" hx-indicator="#advanced-table">Выход группы</button>
               </form>
             {% elif visit.status == 'AWAITING' %}
-              <form hx-post="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline">
+              <form action="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" hx-post="{% url 'check_in_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline">
                 {% csrf_token %}
-                <button type="submit" class="badge bg-success-lt btn btn-sm" title="Зарегистрировать вход">Вход</button>
+                <button type="submit" class="badge bg-success-lt btn btn-sm" title="Зарегистрировать вход" hx-indicator="#advanced-table">Вход</button>
               </form>
-              <form hx-post="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline ms-1">
+              <form action="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" hx-post="{% url 'cancel_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline ms-1">
                 {% csrf_token %}
-                <button type="submit" class="badge bg-danger-lt btn btn-sm" title="Отменить визит" onclick="return confirm('Отменить этот визит?');">Отменить</button>
+                <button type="submit" class="badge bg-danger-lt btn btn-sm" title="Отменить визит" onclick="return confirm('Отменить этот визит?');" hx-indicator="#advanced-table">Отменить</button>
               </form>
             {% elif visit.status == 'CHECKED_IN' and visit.visit_kind != 'group' %}
-              <form {% if visit.visit_kind == 'official' %} hx-post="{% url 'mark_guest_exit' visit.id %}"
-                    {% elif visit.visit_kind == 'student' %} hx-post="{% url 'mark_student_exit' visit.id %}"
+              <form {% if visit.visit_kind == 'official' %} action="{% url 'mark_guest_exit' visit.id %}" hx-post="{% url 'mark_guest_exit' visit.id %}"
+                    {% elif visit.visit_kind == 'student' %} action="{% url 'mark_student_exit' visit.id %}" hx-post="{% url 'mark_student_exit' visit.id %}"
                     {% endif %}
-                    hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline">
+                    method="post" hx-target="#advanced-table" hx-swap="outerHTML" class="d-inline">
                 {% csrf_token %}
-                <button type="submit" class="badge bg-secondary-lt btn btn-sm" title="Отметить выход">Выход</button>
+                <button type="submit" class="badge bg-secondary-lt btn btn-sm" title="Отметить выход" hx-indicator="#advanced-table">Выход</button>
               </form>
             {% else %}
               <span class="text-muted">-</span>
