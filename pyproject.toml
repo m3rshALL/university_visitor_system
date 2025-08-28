@@ -42,6 +42,7 @@ django-axes = "^6.5.0"
 channels = "^4.0.0"
 channels-redis = "^4.2.0"
 drf-spectacular = "^0.27.2"
+django-htmx = "^1.23.2"
 
 
 [tool.poetry.group.dev.dependencies]

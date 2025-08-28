@@ -7,8 +7,8 @@
     {# Используем ПРАВИЛЬНОЕ имя переменной формы #}
     {{ guest_form.media.css }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Локальная IMask (быстрее + офлайн) -->
-    <script src="{% static 'js/vendor/imask.6.4.3.min.js' %}" defer></script>
+    <!-- JS Input Mask для телефонов -->
+    <script src="{% static 'js/vendor/js-inputmask-enhanced.js' %}" defer></script>
     
 {% endblock %}
 
@@ -173,7 +173,7 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="guest_phone_masked" class="form-label required">Номер телефона:</label>
-                                        <input type="text" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __">
+                                        <input type="text" id="guest_phone_masked" class="form-control tel" placeholder="+7 (___) ___ ____" data-hidden-field="{{ form.guest_phone.id_for_label }}">
                                         {% if form.guest_phone.errors %}
                                             <div class="invalid-feedback d-block">{% for e in form.guest_phone.errors %}{{ e }}{% endfor %}</div>
                                         {% endif %}
@@ -223,7 +223,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="employee_phone_masked" class="form-label required">{{ form.employee_contact_phone_form.label }}:</label>
-                                    <input type="text" id="employee_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __">
+                                    <input type="text" id="employee_phone_masked" class="form-control tel" placeholder="+7 (___) ___ ____" data-hidden-field="{{ form.employee_contact_phone_form.id_for_label }}">
                                     {% if form.employee_contact_phone_form.errors %}
                                         <div class="invalid-feedback d-block">{% for e in form.employee_contact_phone_form.errors %}{{ e }}{% endfor %}</div>
                                     {% endif %}

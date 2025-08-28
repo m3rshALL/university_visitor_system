@@ -3,15 +3,14 @@
 # Instead, commit a .env.example file with placeholder values.
 .env
 .env.*
-.env.example
+!.env.example
 
 # VS Code
-.vscode
+.vscode/settings.json
 
-# github
-.github/prompts
-.github
-
+# GitHub (keep CI/CD workflows but ignore prompts)
+.github/prompts/
+.github/copilot-instructions.md
 
 # Python
 __pycache__/
@@ -19,17 +18,24 @@ __pycache__/
 *$py.class
 *.so
 .Python
-media/images/
-media/i/
 *.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
 
 # Django
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-media
 staticfiles/
+/visitor_system/media/
+!/visitor_system/media/.gitkeep
+
+# Django secret key and sensitive files
+secret_key.txt
 
 # Build artifacts
 dist/
@@ -39,11 +45,12 @@ build/
 eggs/
 wheels/
 develop-eggs/
+.eggs/
 
 # Poetry
 .poetry/
-# poetry.lock # Usually committed, but some prefer to ignore if all devs use `poetry install` without `poetry.lock`
-# For consistency, it's generally better to commit poetry.lock
+# Commit poetry.lock for reproducible builds
+# poetry.lock
 
 # Virtual environment
 .venv/
@@ -52,12 +59,68 @@ ENV/
 env/
 pythonenv*
 
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+htmlcov/
+.coverage.*
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Redis dumps
+dump.rdb
+
+# Prometheus metrics (if storing locally)
+prometheus_data/
+
+# Backup files
+*.bak
+*.backup
+backup.json
+backup_utf8.json
+/visitor_system/backup.json
+/visitor_system/backup_utf8.json
+/visitor_system/dump.sql
+/visitor_system/visitor_system_data_only.sql
+/visitor_system/cert.crt
+/visitor_system/cert.key
+/visitor_system/logs/
+
 # Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
 
 # IDE
 .idea/
 .vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker
+.dockerignore
+
+# Temporary files
+*.tmp
+*.temp

@@ -15,6 +15,10 @@ class DashboardMetric(models.Model):
         ('department_stats', 'Статистика по департаментам'),
         ('hourly_stats', 'Почасовая статистика'),
         ('security_alerts', 'Предупреждения безопасности'),
+        ('status_distribution', 'Распределение по статусам'),
+        ('weekly_trend', 'Тренд по дням недели'),
+        ('duration_distribution', 'Распределение по длительности'),
+        ('visitor_type_comparison', 'Сравнение типов посетителей'),
     ]
 
     metric_type = models.CharField(
@@ -245,3 +249,14 @@ class DashboardWidget(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.get_widget_type_display()})"
+        
+    def get_metric_name(self):
+        """Получить имя метрики из конфигурации виджета"""
+        return self.config.get('metric', '')
+        
+    def get_css_classes(self):
+        """Получить CSS классы для виджета"""
+        classes = [f"grid-w-{self.width}", f"grid-h-{self.height}"]
+        if self.config.get('color'):
+            classes.append(f"color-{self.config['color']}")
+        return " ".join(classes)

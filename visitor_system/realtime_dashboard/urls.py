@@ -9,6 +9,7 @@ urlpatterns = [
     
     # AJAX API
     path('api/metrics/', views.dashboard_metrics_api, name='metrics_api'),
+    path('api/metrics/test/', views.dashboard_metrics_test_api, name='metrics_test_api'),
     path('api/events/', views.dashboard_events_api, name='events_api'),
     path('api/events/<int:event_id>/read/', views.mark_event_read, name='mark_event_read'),
     path('api/widgets/<int:widget_id>/data/', views.widget_data_api, name='widget_data_api'),

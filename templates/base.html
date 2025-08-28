@@ -1,3 +1,4 @@
+{% load django_htmx %}
 {% load static pwa %} 
 {% load iin_filters %}
 <!DOCTYPE html>
@@ -73,6 +74,13 @@
 			<div class="preloader-text">Загрузка системы пропусков...</div>
 		</div>
 		<!-- END PRELOADER -->
+
+		<!-- Глобальный спиннер для HTMX -->
+		<div id="global-spinner" style="display: none;" class="position-fixed top-0 end-0 m-3" aria-hidden="true">
+			<div class="spinner-border spinner-border-sm text-primary" role="status">
+				<span class="visually-hidden">Загрузка...</span>
+			</div>
+		</div>
 
 		<!-- BEGIN GLOBAL THEME SCRIPT -->
 		<script src="{% static 'tabler/js/tabler-theme.js' %}"></script>
@@ -354,10 +362,26 @@ if (typeof jQuery === 'undefined') {
 <script src="{% static 'js/ui.js' %}" defer></script>
 
 <!-- htmx & Alpine.js -->
-<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-7/jT8S0UYkQv8I0u3fqO3gCAxU0cY1T7XgO5WvQ7o77fD1bO8XQ0w9m3a9HkGykB" crossorigin="anonymous" defer></script>
+<script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script src="{% static 'js/htmx-alpine-bridge.js' %}" defer></script>
+<!-- Fallback for htmx in case CDN fails -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if htmx loaded correctly
+    if (typeof htmx === 'undefined') {
+        console.warn('HTMX failed to load from CDN, loading fallback...');
+        var fallbackScript = document.createElement('script');
+        fallbackScript.src = 'https://cdn.jsdelivr.net/npm/htmx.org@1.9.12/dist/htmx.min.js';
+        fallbackScript.onload = function() {
+            console.log('HTMX fallback loaded successfully');
+        };
+        document.head.appendChild(fallbackScript);
+    }
+});
+</script>
 <script src="{% static 'js/toast.js' %}" defer></script>
+<script src="{% static 'js/htmx-handlers.js' %}" defer></script>
 <script src="{% static 'js/a11y-ux.js' %}" defer></script>
 <script>
 document.addEventListener('htmx:configRequest', function (event) {

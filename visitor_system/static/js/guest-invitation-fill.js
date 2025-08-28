@@ -15,28 +15,93 @@
 
     if (phoneMasked && hiddenPhone) {
       if (window.IMask) {
-        const mask = IMask(phoneMasked, {
-          mask: '+{7} (000) 000 00 00',
-          definitions: { '0': /[0-9]/ },
+        const mask = IMask(phoneMasked, { 
+          mask: '+7 (000) 000 00 00', 
+          lazy: false 
         });
-
-        // Populate UI from hidden value if present
-        if (hiddenPhone.value) {
-          try {
-            mask.value = hiddenPhone.value;
-          } catch (_) {}
-        }
-
-        mask.on('accept', function () {
-          hiddenPhone.value = mask.unmaskedValue;
-        });
-      } else {
-        // Lightweight fallback: keep digits only in hidden field
-        const sync = () => {
-          hiddenPhone.value = (phoneMasked.value || '').replace(/\D/g, '');
+        
+        // Initialize from existing hidden value if present
+        const setFromHidden = () => {
+          const v = (hiddenPhone.value || '').replace(/\D/g, '');
+          // If hidden starts with 7, remove it for the mask (since mask adds +7)
+          const digits = v.startsWith('7') ? v.substring(1) : v;
+          if (digits) mask.unmaskedValue = digits; else phoneMasked.value = '';
         };
-        phoneMasked.addEventListener('input', sync);
-        sync();
+        setFromHidden();
+        
+        // Validate phone number and provide visual feedback
+        function validate() {
+          const ok = mask.unmaskedValue && mask.unmaskedValue.length === 10;
+          if (mask.unmaskedValue.length > 0) {
+            phoneMasked.classList.toggle('is-valid', !!ok);
+            phoneMasked.classList.toggle('is-invalid', !ok);
+          } else {
+            phoneMasked.classList.remove('is-valid', 'is-invalid');
+          }
+          return ok;
+        }
+        
+        // Update hidden field with E.164 format on input
+        mask.on('accept', function() {
+          // Simply set the value to +7 followed by the unmasked digits
+          hiddenPhone.value = '+7' + mask.unmaskedValue;
+          validate();
+        });
+        
+        // Also validate on blur
+        phoneMasked.addEventListener('blur', function() {
+          if (mask.unmaskedValue && mask.unmaskedValue.length > 0) validate();
+        });
+        
+        // Form submission validation
+        form.addEventListener('submit', function(e) {
+          if (mask.unmaskedValue && mask.unmaskedValue.length > 0 && !validate()) {
+            e.preventDefault();
+            phoneMasked.focus();
+          }
+        });
+        
+        // Initial validation if value exists
+        if (mask.unmaskedValue.length > 0) validate();
+      } else {
+        // Simple fallback when IMask isn't available
+        function formatPhone(value) {
+          const digits = (value || '').replace(/\D/g, '');
+          if (!digits) return '';
+          
+          let formatted = '+7';
+          if (digits.length > 0) formatted += ' ' + digits.substring(0, 3);
+          if (digits.length > 3) formatted += ' ' + digits.substring(3, 6);
+          if (digits.length > 6) formatted += ' ' + digits.substring(6, 8);
+          if (digits.length > 8) formatted += ' ' + digits.substring(8, 10);
+          return formatted;
+        }
+        
+        // Initialize from existing value
+        if (hiddenPhone.value) {
+          const digits = hiddenPhone.value.replace(/\D/g, '');
+          const cleanDigits = digits.startsWith('7') ? digits.substring(1) : digits;
+          phoneMasked.value = formatPhone(cleanDigits);
+        }
+        
+        function validate() {
+          const digits = phoneMasked.value.replace(/\D/g, '');
+          const ok = digits.length === 10 || (digits.length === 11 && digits.startsWith('7'));
+          if (digits.length > 0) {
+            phoneMasked.classList.toggle('is-valid', ok);
+            phoneMasked.classList.toggle('is-invalid', !ok);
+          } else {
+            phoneMasked.classList.remove('is-valid', 'is-invalid');
+          }
+          return ok;
+        }
+        
+        phoneMasked.addEventListener('input', function() {
+          const digits = this.value.replace(/\D/g, '').substring(0, 10);
+          hiddenPhone.value = '+7' + digits;
+          this.value = formatPhone(digits);
+          validate();
+        });
       }
     }
 

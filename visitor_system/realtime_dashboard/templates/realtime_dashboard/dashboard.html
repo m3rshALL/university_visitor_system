@@ -257,6 +257,18 @@
                     </button>
                 </div>
             </div>
+            
+            {% if has_new_widgets %}
+            <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
+                <strong>Внимание!</strong> Добавлены новые виджеты. Если они не отображаются, 
+                <a href="?update_widgets=1&clear_cache=1" class="alert-link">нажмите сюда</a> для обновления дашборда.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+            
+            {% if debug_mode %}
+                {% include "realtime_dashboard/debug_panel.html" %}
+            {% endif %}
         </div>
     </div>
     
@@ -290,19 +302,97 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" onerror="console.error('Failed to load Chart.js')"></script>
+<!-- Fixed Chart.js loading with fallback -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
+// Check if Chart.js loaded correctly and load a fallback if not
+if (typeof Chart === 'undefined') {
+    console.warn('Chart.js failed to load from primary CDN, trying fallback...');
+    var chartScript = document.createElement('script');
+    chartScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js';
+    chartScript.onload = function() {
+        console.log('Chart.js fallback loaded successfully');
+        chartReady = true;
+        if (typeof refreshAllWidgets === 'function') {
+            setTimeout(refreshAllWidgets, 500);
+        }
+    };
+    document.head.appendChild(chartScript);
+}
+</script>
+<script>
+// НАЧАЛО ОТЛАДКИ - этот лог должен быть виден в консоли сразу же
+console.log('=== DASHBOARD SCRIPT START ===');
+console.log('Script loading time:', new Date().toISOString());
+
+// Глобальные перехватчики ошибок для диагностики
+window.addEventListener('error', function (e) {
+    try {
+        console.error('Global JS error:', e.error || e.message || e);
+    } catch (_) {}
+});
+window.addEventListener('unhandledrejection', function (e) {
+    try {
+        console.error('Unhandled promise rejection:', e.reason || e);
+    } catch (_) {}
+});
+
 // Глобальные переменные
+console.log('=== DECLARING GLOBAL VARIABLES ===');
 let charts = {};
 let refreshIntervals = {};
 let isRefreshing = false;
 let chartReady = typeof Chart !== 'undefined';
+console.log('chartReady:', chartReady, 'Chart available:', typeof Chart !== 'undefined');
 // Храним предыдущее состояние метрик на уровне виджета, чтобы
 // одинаковые метрики в разных виджетах не блокировали рендер
 window.__lastMetricStateByWidget = window.__lastMetricStateByWidget || {};
+console.log('Global variables declared successfully');
+
+// Ручной тестовый триггер для загрузки данных
+window.triggerDashboardTest = function () {
+    console.log('Manual dashboard test: triggering meta refresh');
+    try {
+        const dep = (document.body && document.body.dataset && document.body.dataset.filterDepartment) || '';
+        const period = (document.body && document.body.dataset && document.body.dataset.filterPeriod) || '';
+        if (typeof refreshAllWidgetsWithMeta === 'function') {
+            refreshAllWidgetsWithMeta(dep, period);
+        } else {
+            console.warn('refreshAllWidgetsWithMeta not ready yet; scheduling retry');
+            setTimeout(() => {
+                if (typeof refreshAllWidgetsWithMeta === 'function') {
+                    refreshAllWidgetsWithMeta(dep, period);
+                } else {
+                    console.error('refreshAllWidgetsWithMeta still not available');
+                }
+            }, 1000);
+        }
+    } catch (e) {
+        console.error('Manual test failed:', e);
+    }
+};
+
+// Ожидатель готовности функций дашборда
+function waitForDashboardFunctions(callback, attempt = 0) {
+    const maxAttempts = 20; // ~10 сек при шаге 500мс
+    const ready = (
+        typeof initializeDashboard === 'function' &&
+        typeof setupAutoRefresh === 'function' &&
+        typeof refreshAllWidgetsWithMeta === 'function'
+    );
+    if (ready) {
+        try { callback(); } catch (e) { console.error('waitForDashboardFunctions callback failed:', e); }
+        return;
+    }
+    if (attempt >= maxAttempts) {
+        console.error('Dashboard functions did not become ready in time');
+        return;
+    }
+    setTimeout(() => waitForDashboardFunctions(callback, attempt + 1), 500);
+}
 
 // Объявляем функцию refreshAllWidgets в глобальной области
-function refreshAllWidgets() {
+window.refreshAllWidgets = function() {
     console.log('refreshAllWidgets called, isRefreshing:', isRefreshing);
     
     if (isRefreshing) return;
@@ -322,8 +412,8 @@ function refreshAllWidgets() {
             console.log('Refreshing widget (critical):', widgetId);
             refreshWidget(widgetId);
         } else {
-            // Получим свежий мета штамп из /metrics и сравним
-            // Опрашиваем только один раз
+            console.log('Refreshing widget (chart):', widgetId);
+            refreshWidget(widgetId);
         }
     });
     
@@ -338,7 +428,10 @@ window.refreshAllWidgets = refreshAllWidgets;
 
 // Инициализация дашборда
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== DOM CONTENT LOADED EVENT FIRED ===');
     console.log('DOM loaded, initializing dashboard...');
+    console.log('Current timestamp:', new Date().toISOString());
+    console.log('Chart.js status:', typeof Chart !== 'undefined');
     
     // Проверяем доступность Chart.js
     if (typeof Chart === 'undefined') {
@@ -348,9 +441,35 @@ document.addEventListener('DOMContentLoaded', function() {
         s.onload = () => {
             chartReady = true;
             console.log('Chart.js loaded dynamically');
-            try { refreshAllWidgets(); } catch (e) { console.warn('Refresh after chart load failed', e); }
+            setTimeout(() => {
+                try { 
+                    console.log('Attempting refresh after Chart.js load');
+                    refreshAllWidgets(); 
+                } catch (e) { 
+                    console.warn('Refresh after chart load failed', e); 
+                    // Fallback to meta refresh
+                    try {
+                        const dep = document.body.dataset.filterDepartment || '';
+                        const period = document.body.dataset.filterPeriod || '';
+                        refreshAllWidgetsWithMeta(dep, period);
+                    } catch (e2) {
+                        console.error('Meta refresh failed too', e2);
+                    }
+                }
+            }, 500); // Delay to ensure Chart.js is fully initialized
         };
-        s.onerror = () => console.error('Dynamic Chart.js load failed');
+        s.onerror = () => {
+            console.error('Dynamic Chart.js load failed');
+            // Even if Chart.js fails, try to load non-chart widgets
+            setTimeout(() => {
+                document.querySelectorAll('.widget').forEach(widget => {
+                    const type = widget.dataset.widgetType;
+                    if (type !== 'chart_line' && type !== 'chart_pie' && type !== 'chart_bar') {
+                        refreshWidget(widget.dataset.widgetId);
+                    }
+                });
+            }, 500);
+        };
         document.head.appendChild(s);
     } else {
         chartReady = true;
@@ -376,8 +495,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } catch (e) { console.warn('Cleanup onclick failed', e); }
 
-    initializeDashboard();
-    setupAutoRefresh();
+    // Основная инициализация с ожиданием готовности функций
+    waitForDashboardFunctions(() => {
+        console.log('Dashboard functions ready; running init');
+        try { initializeDashboard(); } catch (e) { console.error('initializeDashboard failed:', e); }
+        try { setupAutoRefresh(); } catch (e) { console.error('setupAutoRefresh failed:', e); }
+    });
+    
+    // ПРИНУДИТЕЛЬНАЯ ЗАГРУЗКА ДАННЫХ - ДОБАВЛЕНО ДЛЯ ОТЛАДКИ
+    console.log('=== FORCING DATA LOAD ===');
+    setTimeout(() => {
+        console.log('Executing forced data refresh...');
+        waitForDashboardFunctions(() => {
+            const dep = document.body.dataset.filterDepartment || '';
+            const period = document.body.dataset.filterPeriod || '';
+            refreshAllWidgetsWithMeta(dep, period);
+        });
+    }, 1500);
+
+    // Дополнительный дубль-резерв на случай блокировок
+    setTimeout(() => {
+        console.log('Executing backup forced data refresh...');
+        waitForDashboardFunctions(() => {
+            try {
+                const dep = document.body.dataset.filterDepartment || '';
+                const period = document.body.dataset.filterPeriod || '';
+                refreshAllWidgetsWithMeta(dep, period);
+            } catch (e) {
+                console.error('Backup forced refresh failed:', e);
+            }
+        });
+    }, 4000);
 
     // WebSocket подключения для живых обновлений
     try {
@@ -387,7 +535,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const socket = new WebSocket(wsUrl);
 
         socket.onopen = () => console.log('WS connected');
-        socket.onclose = () => console.warn('WS disconnected');
+        socket.onclose = (e) => {
+            console.warn('WS disconnected', e && (e.code + ':' + e.reason));
+            // При проблемах с WS — подстраховка: жёсткая перезагрузка данных
+            try { window.triggerDashboardTest(); } catch(_) {}
+        };
         socket.onerror = (e) => console.error('WS error', e);
         socket.onmessage = (event) => {
             try {
@@ -509,25 +661,9 @@ function initFilters() {
         document.body.dataset.filterPeriod = saved.period || '';
     } catch {}
     // Первичное заполнение департаментов из общего запроса
-    fetch(`/dashboard/api/metrics/`, { credentials: 'same-origin', cache: 'no-store' })
-        .then(r => r.ok ? r.json() : Promise.reject(r.status))
-        .then(meta => {
-            const stats = meta?.data?.department_stats || [];
-            // Очищаем кроме первой опции "Все департаменты"
-            Array.from(depSelect.options).slice(1).forEach(o => o.remove());
-            stats.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.department_id || '';
-                opt.textContent = s.department;
-                depSelect.appendChild(opt);
-            });
-            // Применим сохранённый департамент
-            try {
-                const saved = JSON.parse(localStorage.getItem('dashboardFilters') || '{}');
-                if (saved && saved.department_id) depSelect.value = saved.department_id;
-            } catch {}
-        }).catch(() => {});
-
+    console.log('Загрузка департаментов из API...');
+    loadDepartments();
+    
     const apply = () => {
         const dep = depSelect.value;
         const period = periodSelect.value;
@@ -540,30 +676,138 @@ function initFilters() {
     periodSelect.addEventListener('change', apply);
 }
 
+function loadDepartments(retryCount = 3) {
+    const depSelect = document.getElementById('filter-department');
+    if (!depSelect) return;
+    
+    console.log(`Attempting to load departments (retry=${retryCount})`);
+    
+    fetch(`/dashboard/api/metrics/`, { 
+        credentials: 'same-origin', 
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(r => {
+        if (!r.ok) {
+            console.error(`Ошибка загрузки департаментов: HTTP ${r.status}`);
+            throw new Error(`HTTP ${r.status}`);
+        }
+        return r.json();
+    })
+    .then(meta => {
+        console.log('Получены данные о департаментах:', meta);
+        if (!meta || !meta.success || !meta.data) {
+            console.error('Некорректный формат данных департаментов:', meta);
+            throw new Error('Некорректный формат данных');
+        }
+        
+        const stats = meta?.data?.department_stats || [];
+        if (!Array.isArray(stats) || stats.length === 0) {
+            console.warn('Список департаментов пуст:', stats);
+            if (retryCount > 0) {
+                console.log(`Список департаментов пуст, повторная попытка через 2 секунды (осталось ${retryCount})...`);
+                setTimeout(() => loadDepartments(retryCount - 1), 2000);
+                return;
+            }
+        }
+        
+        // Очищаем кроме первой опции "Все департаменты"
+        Array.from(depSelect.options).slice(1).forEach(o => o.remove());
+        stats.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.department_id || '';
+            opt.textContent = s.department;
+            depSelect.appendChild(opt);
+        });
+        // Применим сохранённый департамент
+        try {
+            const saved = JSON.parse(localStorage.getItem('dashboardFilters') || '{}');
+            if (saved && saved.department_id) depSelect.value = saved.department_id;
+        } catch {}
+        
+        console.log('Департаменты успешно загружены и добавлены в select:', stats.length);
+        
+        // Если загрузка прошла успешно, обновим виджеты
+        const dep = depSelect.value;
+        const period = document.getElementById('filter-period')?.value || '24h';
+        
+        // Force refresh of all widgets with the department data
+        setTimeout(() => {
+            console.log('Triggering widget refresh with department data');
+            refreshAllWidgetsWithMeta(dep, period);
+            
+            // Check for failed widgets after a short delay and retry them
+            setTimeout(() => {
+                const failedWidgets = document.querySelectorAll('.widget[data-render-failed="1"]');
+                if (failedWidgets.length > 0) {
+                    console.log(`Found ${failedWidgets.length} failed widgets, retrying...`);
+                    failedWidgets.forEach(widget => {
+                        const widgetId = widget.dataset.widgetId;
+                        if (widgetId) {
+                            refreshWidget(widgetId);
+                        }
+                    });
+                }
+            }, 2000);
+        }, 500);
+    })
+    .catch(err => {
+        console.error('Ошибка при загрузке департаментов:', err);
+        if (retryCount > 0) {
+            console.log(`Повторная попытка загрузки департаментов (осталось ${retryCount})...`);
+            setTimeout(() => loadDepartments(retryCount - 1), 3000);
+        } else {
+            showToast('Ошибка', 'Не удалось загрузить список департаментов. Попробуйте обновить страницу.', 'danger');
+        }
+    });
+
 function refreshAllWidgetsWithMeta(dep, period) {
+    console.log('refreshAllWidgetsWithMeta invoked with:', { dep, period });
     const qs = new URLSearchParams();
     if (dep) qs.set('department_id', dep);
     if (period) qs.set('period', period);
-    fetch(`/dashboard/api/metrics/${qs.toString() ? `?${qs.toString()}` : ''}`, {
+    
+    const url = `/dashboard/api/metrics/${qs.toString() ? `?${qs.toString()}` : ''}`;
+    console.log('Fetching metrics data from:', url);
+    
+    fetch(url, {
         credentials: 'same-origin',
         cache: 'no-store',
         headers: { 'Accept': 'application/json' }
     })
-    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(r => {
+        console.log('Metrics API response status:', r.status);
+        if (!r.ok) {
+            console.error(`Error fetching metrics: HTTP ${r.status}`);
+            return Promise.reject(r.status);
+        }
+        return r.json();
+    })
     .then(meta => {
+        console.log('Metrics API response data:', meta);
+        
         if (!meta || !meta.success || !meta.data) {
+            console.error('Invalid metrics data format:', meta);
             // Если мета не пришла — делаем per-widget фолбэк
             document.querySelectorAll('.widget').forEach(w => refreshWidget(w.dataset.widgetId));
             return;
         }
         const ts = meta.data.timestamp || meta.timestamp || new Date().toISOString();
-        document.querySelectorAll('.widget').forEach(widget => {
+        console.log('Found widgets:', document.querySelectorAll('.widget').length);
+        
+    const allWidgets = document.querySelectorAll('.widget');
+    console.log('Found widgets count:', allWidgets.length);
+    allWidgets.forEach(widget => {
             const widgetId = widget.dataset.widgetId;
             const metric = widget.dataset.metric;
+            const widgetType = widget.dataset.widgetType;
             const newData = metric ? meta.data[metric] : null;
+            
+            console.log(`Processing widget ${widgetId} (type: ${widgetType}, metric: ${metric}):`, newData);
 
             // Если нужной метрики нет в ответе, делаем фолбэк на per-widget API
             if (metric && typeof newData === 'undefined') {
+                console.log(`No data for metric ${metric}, using fallback for widget ${widgetId}`);
                 refreshWidget(widgetId);
                 return;
             }
@@ -573,6 +817,8 @@ function refreshAllWidgetsWithMeta(dep, period) {
             const prevStr = window.__lastMetricStateByWidget[key];
 
             const isInitialized = widget.getAttribute('data-initialized') === '1';
+            console.log(`Widget ${widgetId} - initialized: ${isInitialized}, data changed: ${prevStr !== newStr}`);
+            
             if (!isInitialized || prevStr !== newStr) {
                 window.__lastMetricStateByWidget[key] = newStr;
                 const payload = {
@@ -581,24 +827,37 @@ function refreshAllWidgetsWithMeta(dep, period) {
                     config: { metric },
                     timestamp: ts
                 };
-                renderWidget(widgetId, payload);
+                console.log(`Rendering widget ${widgetId} with payload:`, payload);
+                try {
+                    renderWidget(widgetId, payload);
+                } catch (e) {
+                    console.error(`renderWidget failed for ${widgetId}`, e);
+                }
                 widget.setAttribute('data-initialized', '1');
+            } else {
+                console.log(`Widget ${widgetId} skipped - no changes`);
             }
         });
     })
     .catch(err => {
         console.error('refreshAllWidgetsWithMeta failed', err);
         // Сеть/ошибка — фолбэк: перерисовать из per-widget API
-        document.querySelectorAll('.widget').forEach(w => refreshWidget(w.dataset.widgetId));
+        try {
+            document.querySelectorAll('.widget').forEach(w => {
+                try { refreshWidget(w.dataset.widgetId); } catch(e) { console.error('refreshWidget fallback failed', e); }
+            });
+        } catch (_) {}
     });
 }
 
 function initializeDashboard() {
+    console.log('=== ИНИЦИАЛИЗАЦИЯ ДАШБОРДА ===');
     console.log('Инициализация дашборда...');
     
     // Первичная загрузка: тянем общие метрики и рендерим все виджеты одним запросом
     const dep = document.body.dataset.filterDepartment || '';
     const period = document.body.dataset.filterPeriod || '';
+    console.log('Calling refreshAllWidgetsWithMeta with dep:', dep, 'period:', period);
     refreshAllWidgetsWithMeta(dep, period);
 }
 
@@ -626,8 +885,6 @@ function refreshWidget(widgetId) {
         return;
     }
     
-    if (!widget || !content) return;
-    
     // Показываем индикатор загрузки
     const refreshIcon = widget.querySelector('.widget-refresh i');
     if (refreshIcon) refreshIcon.classList.add('refresh-indicator');
@@ -637,23 +894,39 @@ function refreshWidget(widgetId) {
     const qs = new URLSearchParams();
     if (dep) qs.set('department_id', dep);
     if (period) qs.set('period', period);
-    fetch(`/dashboard/api/widgets/${widgetId}/data/${qs.toString() ? `?${qs.toString()}` : ''}`, {
+    
+    const url = `/dashboard/api/widgets/${widgetId}/data/${qs.toString() ? `?${qs.toString()}` : ''}`;
+    console.log(`Fetching widget data for ${widgetId} from: ${url}, widget type: ${widget.dataset.widgetType}, metric: ${widget.dataset.metric || 'unknown'}`);
+    
+    // Debug the widget data
+    console.log(`Widget details:`, {
+        id: widgetId,
+        type: widget.dataset.widgetType,
+        metric: widget.dataset.metric,
+        initialized: widget.getAttribute('data-initialized')
+    });
+    
+    fetch(url, {
         method: 'GET',
         credentials: 'same-origin',
         headers: { 'Accept': 'application/json' },
         cache: 'no-store'
     })
         .then(response => {
+            console.log(`Widget ${widgetId} API response status:`, response.status);
             if (!response.ok) {
+                console.error(`Ошибка HTTP ${response.status} при загрузке виджета ${widgetId}`);
                 throw new Error(`HTTP ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
+            console.log(`Widget ${widgetId} API response data:`, data);
             if (data.success) {
                 renderWidget(widgetId, data.data);
             } else {
-                showWidgetError(content, data.error);
+                console.error(`Ошибка в ответе API для виджета ${widgetId}:`, data.error);
+                showWidgetError(content, data.error || 'Ошибка загрузки данных');
             }
         })
         .catch(error => {
@@ -664,6 +937,9 @@ function refreshWidget(widgetId) {
                 showWidgetError(content, 'Ошибка загрузки данных');
                 return;
             }
+            
+            console.log(`Попытка фолбэк-загрузки для виджета ${widgetId} (метрика ${metricName})`);
+            
             fetch(`/dashboard/api/metrics/`, {
                 method: 'GET',
                 credentials: 'same-origin',
@@ -671,7 +947,10 @@ function refreshWidget(widgetId) {
                 cache: 'no-store'
             })
             .then(r => {
-                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                if (!r.ok) {
+                    console.error(`Ошибка HTTP ${r.status} при загрузке метрик`);
+                    throw new Error(`HTTP ${r.status}`);
+                }
                 return r.json();
             })
             .then(meta => {
@@ -685,6 +964,7 @@ function refreshWidget(widgetId) {
                     console.log('Fallback render for widget', widgetId, 'metric', metricName, fallback);
                     renderWidget(widgetId, fallback);
                 } else {
+                    console.error('Fallback failed: no metric data found', metricName);
                     showWidgetError(content, 'Данные недоступны');
                 }
             })
@@ -698,36 +978,159 @@ function refreshWidget(widgetId) {
         });
 }
 
+// Экспортируем функцию в глобальную область
+window.refreshWidget = refreshWidget;
+}
+
 function renderWidget(widgetId, data) {
+    console.log(`renderWidget called for ${widgetId}:`, data);
     const widget = document.querySelector(`[data-widget-id="${widgetId}"]`);
     const content = document.getElementById(`widget-content-${widgetId}`);
-    const widgetType = widget.dataset.widgetType;
+    const widgetType = widget?.dataset?.widgetType;
+    
+    console.log(`Widget DOM elements - widget: ${!!widget}, content: ${!!content}, type: ${widgetType}`);
+    
+    if (!widget || !content) {
+        console.error(`Widget DOM not found: widgetId=${widgetId}, widget=${widget}, content=${content}`);
+        return;
+    }
+    
     if (data && data.timestamp) {
         widget.setAttribute('data-last-ts', data.timestamp);
+    }
+    
+    // Store the metric name in the widget data attribute for future reference
+    if (data?.config?.metric) {
+        widget.dataset.metric = data.config.metric;
     }
     
     // Добавляем отладочную информацию
     console.log(`Rendering widget ${widgetId} (${widgetType}):`, data);
     
-    switch (widgetType) {
-        case 'counter':
-            renderCounterWidget(content, data);
-            break;
-        case 'chart_line':
-            renderLineChartWidget(widgetId, content, data);
-            break;
-        case 'chart_pie':
-            renderPieChartWidget(widgetId, content, data);
-            break;
-        case 'activity_feed':
-            renderActivityFeedWidget(content, data);
-            break;
-        case 'table':
-            renderTableWidget(content, data);
-            break;
-        default:
-            content.innerHTML = '<p class="text-muted">Неподдерживаемый тип виджета</p>';
+    try {
+        switch (widgetType) {
+            case 'counter':
+                console.log(`Rendering counter widget ${widgetId}`);
+                renderCounterWidget(content, data);
+                break;
+            case 'chart_line':
+                console.log(`Rendering line chart widget ${widgetId}`);
+                renderLineChartWidget(widgetId, content, data);
+                break;
+            case 'chart_pie':
+                console.log(`Rendering pie chart widget ${widgetId}`);
+                renderPieChartWidget(widgetId, content, data);
+                break;
+            case 'chart_bar':
+                console.log(`Rendering bar chart widget ${widgetId}`);
+                renderBarChartWidget(widgetId, content, data);
+                break;
+            case 'activity_feed':
+                console.log(`Rendering activity feed widget ${widgetId}`);
+                renderActivityFeedWidget(content, data);
+                break;
+            case 'table':
+                console.log(`Rendering table widget ${widgetId}`);
+                renderTableWidget(content, data);
+                break;
+            default:
+                console.warn(`Неподдерживаемый тип виджета: ${widgetType}`);
+                content.innerHTML = `<p class="text-muted">Неподдерживаемый тип виджета: ${widgetType}</p>`;
+        }
+        
+        // Mark widget as successfully initialized
+        widget.setAttribute('data-initialized', '1');
+        console.log(`Widget ${widgetId} successfully rendered and marked as initialized`);
+        
+    } catch (error) {
+        console.error(`Error rendering widget ${widgetId} (${widgetType}):`, error);
+        showWidgetError(content, `Ошибка рендеринга: ${error.message || 'Неизвестная ошибка'}`);
+        
+        // Mark as failed for potential retry
+        widget.setAttribute('data-render-failed', '1');
     }
+}
+
+function renderBarChartWidget(widgetId, content, data) {
+    const canvasId = `chart-${widgetId}`;
+    content.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+    
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    
+    if (!chartReady || typeof Chart === 'undefined') {
+        content.innerHTML = '<p class="text-muted">Графики временно недоступны</p>';
+        return;
+    }
+    
+    // Уничтожаем предыдущий график если есть
+    if (charts[widgetId]) {
+        charts[widgetId].destroy();
+    }
+    
+    // Определяем источник данных в зависимости от метрики
+    let chartData = {
+        labels: [],
+        datasets: []
+    };
+    
+    let isHorizontal = false;
+    
+    if (data.config && data.config.metric === 'weekly_trend') {
+        const metric = Array.isArray(data.data) ? data.data : [];
+        
+        chartData.labels = metric.map(item => item.day_short || item.day || '');
+        chartData.datasets = [
+            {
+                label: 'Официальные',
+                data: metric.map(item => item.official_count || 0),
+                backgroundColor: 'rgba(0, 123, 255, 0.6)',
+                borderColor: '#007bff',
+                borderWidth: 1
+            },
+            {
+                label: 'Студенты',
+                data: metric.map(item => item.student_count || 0),
+                backgroundColor: 'rgba(40, 167, 69, 0.6)',
+                borderColor: '#28a745',
+                borderWidth: 1
+            }
+        ];
+    }
+    else if (data.config && data.config.metric === 'duration_distribution') {
+        const metric = Array.isArray(data.data) ? data.data : [];
+        
+        chartData.labels = metric.map(item => item.label || '');
+        chartData.datasets = [
+            {
+                label: 'Визитов',
+                data: metric.map(item => item.count || 0),
+                backgroundColor: 'rgba(0, 123, 255, 0.6)',
+                borderColor: '#007bff',
+                borderWidth: 1
+            }
+        ];
+        isHorizontal = true; // Горизонтальная гистограмма для длинных названий интервалов
+    }
+    
+    charts[widgetId] = new Chart(ctx, {
+        type: isHorizontal ? 'bar' : 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: isHorizontal ? 'y' : 'x',
+            plugins: {
+                legend: {
+                    display: chartData.datasets.length > 1
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
 
 function renderCounterWidget(content, data) {
@@ -763,40 +1166,79 @@ function renderCounterWidget(content, data) {
 }
 
 function renderLineChartWidget(widgetId, content, data) {
+    console.log(`renderLineChartWidget called for ${widgetId}:`, data);
+    console.log(`Chart.js available: ${typeof Chart !== 'undefined'}, chartReady: ${chartReady}`);
+    
     const canvasId = `chart-${widgetId}`;
     content.innerHTML = `<canvas id="${canvasId}"></canvas>`;
     
     const ctx = document.getElementById(canvasId).getContext('2d');
-    const metric = Array.isArray(data.data) ? data.data : (data.data?.hourly_data || []);
-
+    
     if (!chartReady || typeof Chart === 'undefined') {
+        console.error(`Chart.js not ready for widget ${widgetId}`);
         content.innerHTML = '<p class="text-muted">Графики временно недоступны</p>';
         return;
     }
     
     // Уничтожаем предыдущий график если есть
     if (charts[widgetId]) {
+        console.log(`Destroying previous chart for widget ${widgetId}`);
         charts[widgetId].destroy();
+    }
+    
+    // Определяем источник данных в зависимости от метрики
+    let chartData = {
+        labels: [],
+        datasets: []
+    };
+    
+    console.log(`Processing chart data for metric: ${data.config?.metric}`);
+    
+    if (data.config && data.config.metric === 'hourly_stats') {
+        const metric = Array.isArray(data.data) ? data.data : (data.data?.hourly_data || []);
+        console.log(`Hourly stats data:`, metric);
+        
+        chartData.labels = metric.map(item => item.hour || '');
+        chartData.datasets = [{
+            label: 'Визиты',
+            data: metric.map(item => item.total || 0),
+            borderColor: '#007bff',
+            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+            tension: 0.4
+        }];
+    }
+    else if (data.config && data.config.metric === 'visitor_type_comparison') {
+        const metric = Array.isArray(data.data) ? data.data : [];
+        console.log(`Visitor type comparison data:`, metric);
+        
+        chartData.labels = metric.map(item => item.date || '');
+        chartData.datasets = [
+            {
+                label: 'Официальные',
+                data: metric.map(item => item.official_count || 0),
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                tension: 0.4
+            },
+            {
+                label: 'Студенты',
+                data: metric.map(item => item.student_count || 0),
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4
+            }
+        ];
     }
     
     charts[widgetId] = new Chart(ctx, {
         type: 'line',
-        data: {
-            labels: metric.map(item => item.hour || ''),
-            datasets: [{
-                label: 'Визиты',
-                data: metric.map(item => item.total || 0),
-                borderColor: '#007bff',
-                backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                tension: 0.4
-            }]
-        },
+        data: chartData,
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false
+                    display: chartData.datasets.length > 1
                 }
             },
             scales: {
@@ -825,22 +1267,54 @@ function renderPieChartWidget(widgetId, content, data) {
         charts[widgetId].destroy();
     }
     
-    // Берем топ-5 департаментов
-    const topDepartments = metric.slice(0, 5);
+    // Определяем источник данных в зависимости от метрики
+    let labels = [];
+    let values = [];
+    let bgColors = [
+        '#007bff',
+        '#28a745',
+        '#fd7e14',
+        '#6f42c1',
+        '#dc3545',
+        '#17a2b8',
+        '#ffc107',
+        '#6c757d'
+    ];
+    
+    if (data.config && data.config.metric === 'department_stats') {
+        // Берем топ-5 департаментов
+        const topDepartments = metric.slice(0, 5);
+        labels = topDepartments.map(item => item.department || '');
+        values = topDepartments.map(item => item.total_visits || 0);
+    }
+    else if (data.config && data.config.metric === 'status_distribution') {
+        // Берем распределение по статусам
+        labels = metric.map(item => item.status_name || item.status || '');
+        values = metric.map(item => item.total || 0);
+    }
+    else {
+        // Обработка других типов данных
+        if (Array.isArray(metric)) {
+            for (const item of metric) {
+                if (item.label) labels.push(item.label);
+                else if (item.name) labels.push(item.name);
+                else if (item.department) labels.push(item.department);
+                else if (item.status) labels.push(item.status);
+                
+                if (item.value !== undefined) values.push(item.value);
+                else if (item.count !== undefined) values.push(item.count);
+                else if (item.total !== undefined) values.push(item.total);
+            }
+        }
+    }
     
     charts[widgetId] = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: topDepartments.map(item => item.department || ''),
+            labels: labels,
             datasets: [{
-                data: topDepartments.map(item => item.total_visits || 0),
-                backgroundColor: [
-                    '#007bff',
-                    '#28a745',
-                    '#fd7e14',
-                    '#6f42c1',
-                    '#dc3545'
-                ]
+                data: values,
+                backgroundColor: bgColors
             }]
         },
         options: {
@@ -949,7 +1423,37 @@ function showWidgetError(content, message) {
     `;
 }
 
-// showToast переопределяется глобальной реализацией из ui.js
+// showToast function
+function showToast(title, message, type = 'info') {
+    console.log(`Toast: ${type} - ${title}: ${message}`);
+    
+    const toastRoot = document.getElementById('toast-root');
+    if (!toastRoot) {
+        console.warn('Toast container not found, creating fallback');
+        const div = document.createElement('div');
+        div.id = 'toast-root';
+        div.className = 'toast-container';
+        document.body.appendChild(div);
+    }
+    
+    const container = document.getElementById('toast-root') || document.body;
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    toast.innerHTML = `
+        <div class="title">${title || 'Уведомление'}</div>
+        <div class="msg">${message || ''}</div>
+    `;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 5000);
+    
+    return toast;
+}
 
 // Функция refreshAllWidgets уже объявлена выше
 

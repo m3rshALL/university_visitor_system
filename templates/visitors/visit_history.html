@@ -4,7 +4,9 @@
 
 {% block title %}История визитов{% endblock %}
 
-{% block extra_head %}   
+{% block extra_head %}
+    {# Загружаем компонент Alpine раньше, чем инициализируется Alpine.js #}
+    <script src="{% static 'js/visit-history.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}    
@@ -544,6 +546,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-<script src="{% static 'js/visit-history.js' %}" defer></script>
-
 {% endblock %}

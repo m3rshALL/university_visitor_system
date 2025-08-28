@@ -1,15 +1,12 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Заполнение приглашения</title>
-<!-- Мета-тег для корректного отображения на мобильных устройствах -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- Добавляем библиотеку IMask для создания масок ввода -->
-<script src="https://unpkg.com/imask@6.4.3/dist/imask.js" defer></script>
-<script>window.IMask||document.write('<script src="{% static 'js/vendor/imask.6.4.3.min.js' %}">\x3C/script>')</script>
-{# Tabler CSS подключён в base.html #}
+
+{% block title %}Заполнение приглашения{% endblock %}
+
+{% block extra_head %}
+<!-- JS Input Mask -->
+<script src="{% static 'js/vendor/js-inputmask-enhanced.js' %}" defer></script>
+
 <!-- Стили для мобильной адаптации -->
 <style>
     @media (max-width: 768px) {
@@ -146,7 +143,8 @@
             margin-bottom: 0.25rem;
         }
     }
-</style>
+ </style>
+{% endblock %}
 
 {% block content %}
 <!-- BEGIN PAGE HEADER -->
@@ -396,7 +394,7 @@
                                             {{ form.guest_phone.label }}
                                         </label>
                                         <!-- Поле с маской для отображения -->
-                                        <input type="tel" id="guest_phone_masked" class="form-control" placeholder="+7 (___) ___ __ __" inputmode="tel" autocomplete="tel">
+                                        <input type="tel" id="guest_phone_masked" class="form-control tel" placeholder="+7 (___) ___ ____" inputmode="tel" autocomplete="tel" required data-hidden-field="{{ form.guest_phone.id_for_label }}">
                                         {% if form.guest_phone.errors %}
                                             <div class="invalid-feedback d-block">
                                                 {% for error in form.guest_phone.errors %}{{ error }}{% endfor %}
@@ -404,6 +402,7 @@
                                         {% endif %}
                                         <!-- Скрытое поле для хранения значения без маски -->
                                         <input type="hidden" name="{{ form.guest_phone.html_name }}" id="{{ form.guest_phone.id_for_label }}" value="{{ form.guest_phone.value|default:'' }}">
+                                        <div class="form-text">Введите 10-значный номер телефона (формат +7 XXX XXX XXXX)</div>
                                         <div class="form-text">
                                             <span class="d-none d-sm-inline">Контактный номер телефона</span>
                                             <span class="d-sm-none">Номер телефона</span>
@@ -495,7 +494,9 @@
             </div>
         </div>
     </div>
-</div>
+ </div>
+{% endblock %}
 
-<script src="{% static 'js/guest-invitation-fill.js' %}"></script>
+{% block extra_scripts %}
+<!-- No JS needed as js-inputmask-enhanced.js handles everything -->
 {% endblock %}

@@ -47,6 +47,9 @@ urlpatterns = [
     # --- URL для деталей департамента ---
     path('ajax/department-details/', views.get_department_details_view, name='get_department_details'),
     
+    # --- API для HTMX polling ---
+    path('api/counters/', views.get_counters_api, name='get_counters_api'),
+    
     # --- Приглашения гостей ---
     path('invite/', views.create_guest_invitation, name='create_guest_invitation'),
     path('invite/fill/<uuid:token>/', views.guest_invitation_fill, name='guest_invitation_fill'),

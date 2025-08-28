@@ -57,6 +57,11 @@ class DashboardMetricsService:
             'hourly_stats': self.get_hourly_stats(),
             'recent_events': self.get_recent_events(),
             'security_alerts': self.get_security_alerts(),
+            # Новые метрики
+            'status_distribution': self.get_status_distribution(department_id=department_id, period=period),
+            'weekly_trend': self.get_weekly_trend(department_id=department_id),
+            'duration_distribution': self.get_duration_distribution(department_id=department_id, period=period),
+            'visitor_type_comparison': self.get_visitor_type_comparison(department_id=department_id, period=period),
             'timestamp': now.isoformat()
         }
 
@@ -375,6 +380,294 @@ class DashboardMetricsService:
             }
             for alert in alerts
         ]
+    
+    def get_status_distribution(self, department_id=None, period=None):
+        """Распределение визитов по статусам"""
+        cache_key = f"dash:status_distribution:dep={department_id or 'all'}:period={(period or '24h').lower()}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+        
+        # Определяем временную границу
+        now = timezone.now()
+        if period == 'today':
+            start_dt = timezone.make_aware(datetime.combine(now.date(), datetime.min.time()))
+        elif period in ('24h', '1d'):
+            start_dt = now - timedelta(hours=24)
+        elif period in ('7d', 'week'):
+            start_dt = now - timedelta(days=7)
+        elif period in ('30d', 'month'):
+            start_dt = now - timedelta(days=30)
+        else:
+            start_dt = now - timedelta(hours=24)
+        
+        # Добавляем логирование для отладки
+        logger.info(f"Status distribution period: {period}, start_dt: {start_dt}")
+        
+        # Базовые фильтры
+        visit_filter = {}
+        student_filter = {}
+        
+        # Применяем фильтры по времени и департаменту
+        if start_dt:
+            visit_filter['entry_time__gte'] = start_dt
+            student_filter['entry_time__gte'] = start_dt
+        if department_id:
+            visit_filter['department_id'] = department_id
+            student_filter['department_id'] = department_id
+        
+        # Получаем статистику по статусам
+        official_stats = dict(Visit.objects.filter(**visit_filter).values('status').annotate(count=Count('id')).values_list('status', 'count'))
+        student_stats = dict(StudentVisit.objects.filter(**student_filter).values('status').annotate(count=Count('id')).values_list('status', 'count'))
+        
+        # Объединяем статистику
+        all_statuses = set(official_stats.keys()) | set(student_stats.keys())
+        combined = []
+        
+        # Человекочитаемые названия статусов
+        status_names = {
+            'AWAITING': 'Ожидает',
+            'CHECKED_IN': 'В здании',
+            'CHECKED_OUT': 'Завершен',
+            'CANCELLED': 'Отменен',
+            'EXPIRED': 'Просрочен',
+            'PENDING': 'В обработке'
+        }
+        
+        for status in all_statuses:
+            status_name = status_names.get(status, status)
+            combined.append({
+                'status': status,
+                'status_name': status_name,
+                'official_count': official_stats.get(status, 0),
+                'student_count': student_stats.get(status, 0),
+                'total': official_stats.get(status, 0) + student_stats.get(status, 0)
+            })
+        
+        # Сортировка по общему количеству
+        combined.sort(key=lambda x: x['total'], reverse=True)
+        
+        cache.set(cache_key, combined, timeout=300)  # 5 минут
+        return combined
+        
+    def get_weekly_trend(self, department_id=None):
+        """Тренд посещений по дням недели"""
+        cache_key = f"dash:weekly_trend:dep={department_id or 'all'}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+        
+        # Последние 4 недели для точной статистики
+        four_weeks_ago = timezone.now() - timedelta(days=28)
+        
+        from django.db.models.functions import ExtractWeekDay
+        
+        # Базовые фильтры
+        visit_filter = {'entry_time__gte': four_weeks_ago}
+        student_filter = {'entry_time__gte': four_weeks_ago}
+        
+        if department_id:
+            visit_filter['department_id'] = department_id
+            student_filter['department_id'] = department_id
+        
+        # Агрегация по дням недели (1=понедельник, 7=воскресенье)
+        official_by_day = dict(
+            Visit.objects.filter(**visit_filter)
+            .annotate(weekday=ExtractWeekDay('entry_time'))
+            .values('weekday')
+            .annotate(count=Count('id'))
+            .values_list('weekday', 'count')
+        )
+        
+        student_by_day = dict(
+            StudentVisit.objects.filter(**student_filter)
+            .annotate(weekday=ExtractWeekDay('entry_time'))
+            .values('weekday')
+            .annotate(count=Count('id'))
+            .values_list('weekday', 'count')
+        )
+        
+        # Дни недели на русском языке
+        days = {
+            1: 'Понедельник',
+            2: 'Вторник',
+            3: 'Среда',
+            4: 'Четверг',
+            5: 'Пятница',
+            6: 'Суббота',
+            7: 'Воскресенье'
+        }
+        
+        result = []
+        for day_num in range(1, 8):
+            official_count = official_by_day.get(day_num, 0)
+            student_count = student_by_day.get(day_num, 0)
+            
+            result.append({
+                'day_num': day_num,
+                'day': days[day_num],
+                'day_short': days[day_num][:2],
+                'official_count': official_count,
+                'student_count': student_count,
+                'total': official_count + student_count
+            })
+        
+        cache.set(cache_key, result, timeout=3600)  # 1 час
+        return result
+        
+    def get_duration_distribution(self, department_id=None, period=None):
+        """Распределение визитов по длительности"""
+        cache_key = f"dash:duration_distribution:dep={department_id or 'all'}:period={(period or '30d').lower()}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+        
+        # Определяем временную границу
+        now = timezone.now()
+        if period == 'today':
+            start_dt = timezone.make_aware(datetime.combine(now.date(), datetime.min.time()))
+        elif period in ('24h', '1d'):
+            start_dt = now - timedelta(hours=24)
+        elif period in ('7d', 'week'):
+            start_dt = now - timedelta(days=7)
+        elif period in ('30d', 'month'):
+            start_dt = now - timedelta(days=30)
+        else:
+            start_dt = now - timedelta(days=30)  # По умолчанию 30 дней
+        
+        # Базовые фильтры для завершенных визитов
+        visit_filter = {
+            'entry_time__gte': start_dt,
+            'exit_time__isnull': False
+        }
+        student_filter = {
+            'entry_time__gte': start_dt,
+            'exit_time__isnull': False
+        }
+        
+        if department_id:
+            visit_filter['department_id'] = department_id
+            student_filter['department_id'] = department_id
+        
+        # Получаем данные о визитах
+        completed_visits = list(Visit.objects.filter(**visit_filter).values('entry_time', 'exit_time'))
+        completed_student_visits = list(StudentVisit.objects.filter(**student_filter).values('entry_time', 'exit_time'))
+        
+        # Группировка по интервалам (в минутах)
+        intervals = {
+            '<15min': {'min': 0, 'max': 15, 'count': 0, 'label': 'До 15 мин'},
+            '15-30min': {'min': 15, 'max': 30, 'count': 0, 'label': '15-30 мин'},
+            '30-60min': {'min': 30, 'max': 60, 'count': 0, 'label': '30-60 мин'},
+            '1-2h': {'min': 60, 'max': 120, 'count': 0, 'label': '1-2 часа'},
+            '2-4h': {'min': 120, 'max': 240, 'count': 0, 'label': '2-4 часа'},
+            '4-8h': {'min': 240, 'max': 480, 'count': 0, 'label': '4-8 часов'},
+            '>8h': {'min': 480, 'max': float('inf'), 'count': 0, 'label': 'Более 8 часов'}
+        }
+        
+        # Функция для определения интервала
+        def get_interval_key(minutes):
+            for key, interval in intervals.items():
+                if interval['min'] <= minutes < interval['max']:
+                    return key
+            return '>8h'  # Фолбэк для длительностей >8ч
+        
+        # Заполняем распределение
+        for visit in completed_visits + completed_student_visits:
+            if visit['entry_time'] and visit['exit_time']:
+                duration = (visit['exit_time'] - visit['entry_time']).total_seconds() / 60
+                interval_key = get_interval_key(duration)
+                intervals[interval_key]['count'] += 1
+        
+        # Преобразуем в список для фронтенда
+        result = [
+            {
+                'interval': key,
+                'count': data['count'],
+                'min_minutes': data['min'],
+                'max_minutes': data['max'] if data['max'] != float('inf') else None,
+                'label': data['label']
+            }
+            for key, data in intervals.items()
+        ]
+        
+        cache.set(cache_key, result, timeout=3600)  # 1 час
+        return result
+        
+    def get_visitor_type_comparison(self, department_id=None, period='month'):
+        """Сравнение типов посетителей (официальные vs студенты) по времени"""
+        cache_key = f"dash:visitor_type_comparison:{period}:dep={department_id or 'all'}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+        
+        now = timezone.now()
+        
+        if period == 'week':
+            # Последние 7 дней
+            start_date = now - timedelta(days=7)
+            date_format = 'D (j.m)'  # День недели + дата
+            date_trunc = 'day'
+        elif period == 'month':
+            # Последние 30 дней
+            start_date = now - timedelta(days=30)
+            date_format = 'j.m'  # День месяца
+            date_trunc = 'day'
+        else:  # 'year'
+            # Последние 12 месяцев
+            start_date = now - timedelta(days=365)
+            date_format = 'M Y'  # Месяц и год
+            date_trunc = 'month'
+        
+        from django.db.models.functions import TruncDay, TruncMonth
+        
+        trunc_func = TruncDay if date_trunc == 'day' else TruncMonth
+        
+        # Базовые фильтры
+        visit_filter = {'entry_time__gte': start_date}
+        student_filter = {'entry_time__gte': start_date}
+        
+        if department_id:
+            visit_filter['department_id'] = department_id
+            student_filter['department_id'] = department_id
+        
+        official_data = (
+            Visit.objects.filter(**visit_filter)
+            .annotate(date=trunc_func('entry_time'))
+            .values('date')
+            .annotate(count=Count('id'))
+            .order_by('date')
+        )
+        
+        student_data = (
+            StudentVisit.objects.filter(**student_filter)
+            .annotate(date=trunc_func('entry_time'))
+            .values('date')
+            .annotate(count=Count('id'))
+            .order_by('date')
+        )
+        
+        # Создаем словари для быстрого доступа
+        official_dict = {item['date']: item['count'] for item in official_data}
+        student_dict = {item['date']: item['count'] for item in student_data}
+        
+        # Объединяем все даты
+        all_dates = sorted(set(official_dict.keys()) | set(student_dict.keys()))
+        
+        result = []
+        for date in all_dates:
+            official_count = official_dict.get(date, 0)
+            student_count = student_dict.get(date, 0)
+            
+            result.append({
+                'date': date.strftime(date_format),
+                'timestamp': date.isoformat(),
+                'official_count': official_count,
+                'student_count': student_count,
+                'total': official_count + student_count
+            })
+        
+        cache.set(cache_key, result, timeout=1800)  # 30 минут
+        return result
     
     def calculate_duration_minutes(self, start_time):
         """Вычисление длительности в минутах"""

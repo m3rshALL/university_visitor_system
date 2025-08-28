@@ -5,6 +5,9 @@ from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.http import JsonResponse, HttpResponse, Http404, QueryDict
 from django.views.decorators.cache import never_cache, cache_page, cache_control
+from django.core.cache import cache
+from django_htmx.http import HttpResponseStopPolling, trigger_client_event, push_url
+from .htmx_utils import htmx_cache_control, etag_htmx, htmx_toast, htmx_redirect_with_toast
 
 from django.contrib import messages
 from .models import Visit, Guest, StudentVisit, EmployeeProfile, Department, \
@@ -174,22 +177,33 @@ def register_guest_view(request):
                         )
                     # --------------------------------------------
                     messages.success(request, f"Визит гостя {visit.guest.full_name} успешно зарегистрирован ({'сейчас' if registration_type == 'now' else 'заранее'})!")
-                    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
-                        resp = HttpResponse(status=204)
-                        resp['HX-Redirect'] = reverse('employee_dashboard')
-                        return resp
+                    if request.htmx:
+                        response = HttpResponse()
+                        
+                        # Добавляем тост
+                        htmx_toast(response, f"Визит гостя {visit.guest.full_name} успешно зарегистрирован ({'сейчас' if registration_type == 'now' else 'заранее'})!", 'success')
+                        
+                        # Обновляем счетчики
+                        trigger_client_event(response, 'updateCounters', {
+                            'active_visits_count': 'refresh',  # Сигнал для обновления
+                            'current_guests_count': 'refresh',
+                            'today_visits_count': 'refresh'
+                        })
+                        
+                        response['HX-Redirect'] = reverse('employee_dashboard')
+                        return response
                     return redirect('employee_dashboard')
                 except Exception as e:
                     messages.error(request, f"Ошибка при регистрации визита: {e}")
         else:
             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
-            if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+            if request.htmx:
                 return render(request, 'visitors/_register_guest_form_block.html', {'guest_form': form})
     else:
         form = GuestRegistrationForm(prefix="guest")
 
-    context = {'guest_form': form} # Передаем форму под именем guest_form
-    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+    context = {'guest_form': form}  # Передаем форму под именем guest_form
+    if request.htmx:
         return render(request, 'visitors/_register_guest_form_block.html', context)
     return render(request, 'visitors/register_guest.html', context)
 @login_required
@@ -327,6 +341,8 @@ def current_guests_view(request):
 from django.views.decorators.cache import never_cache
 @login_required
 @never_cache  # Отключаем кэширование для динамического представления с фильтрацией
+@htmx_cache_control(max_age=60, must_revalidate=True)  # Кэшируем на 1 минуту с обязательной перепроверкой
+@etag_htmx(lambda request, *args, **kwargs: f"visit_history_{request.user.id}_{timezone.now().strftime('%Y%m%d%H%M')}")
 def visit_history_view(request):
     """Отображение И общей истории визитов с фильтрацией."""
     # Если есть GET-параметры, это фильтрация - не кэшируем
@@ -559,7 +575,7 @@ def visit_history_view(request):
         'show_filters': is_reception_or_staff # <--- Передаем флаг в шаблон
     }
     # Если это HX-запрос (htmx), возвращаем только содержимое таблицы
-    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+    if request.htmx:
         return render(request, 'visitors/_visit_table_block.html', context)
     return render(request, 'visitors/visit_history.html', context)
 # ---------------------------------
@@ -681,7 +697,7 @@ def mark_guest_exit_view(request, visit_id):
 
     messages.success(request, f"Выход гостя '{visit.guest.full_name}' успешно зарегистрирован.")
     # HX: вернуть обновлённую таблицу
-    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+    if request.htmx:
         try:
             current_url = request.META.get('HTTP_HX_CURRENT_URL', '')
             if current_url:
@@ -752,7 +768,7 @@ def mark_student_exit_view(request, visit_id):
             logger.exception('Failed to write AuditLog for student exit')
 
         messages.success(request, f"Выход посетителя '{visit.guest.full_name}' успешно зарегистрирован.")
-        if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+        if request.htmx:
             try:
                 current_url = request.META.get('HTTP_HX_CURRENT_URL', '')
                 if current_url:
@@ -1102,6 +1118,43 @@ def employee_dashboard_view(request):
     if has_invitation_data_issues:
         messages.warning(request, "Некоторые групповые приглашения могут отображаться некорректно из-за проблем с данными.")
     
+    # Подсчитываем статистики для счетчиков
+    active_visits_count = Visit.objects.filter(
+        department_filter,
+        status__in=[STATUS_CHECKED_IN, STATUS_AWAITING_ARRIVAL],
+        exit_time__isnull=True
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter,
+        status__in=[STATUS_CHECKED_IN, STATUS_AWAITING_ARRIVAL],
+        exit_time__isnull=True
+    ).count()
+    
+    current_guests_count = Visit.objects.filter(
+        department_filter,
+        status=STATUS_CHECKED_IN,
+        exit_time__isnull=True
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter, 
+        status=STATUS_CHECKED_IN,
+        exit_time__isnull=True
+    ).count()
+    
+    awaiting_visits_count = Visit.objects.filter(
+        department_filter,
+        status=STATUS_AWAITING_ARRIVAL
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter,
+        status=STATUS_AWAITING_ARRIVAL
+    ).count()
+    
+    today_visits_count = Visit.objects.filter(
+        department_filter,
+        entry_time__date=today
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter,
+        entry_time__date=today
+    ).count()
+
     context = {
         'upcoming_visits': upcoming_visits_week_list, # Визиты на неделю всего департамента
         'my_current_guests': my_current_guests,
@@ -1115,8 +1168,97 @@ def employee_dashboard_view(request):
         'has_invitation_data_issues': has_invitation_data_issues,  # Флаг проблем с данными приглашений
         'official_visits_percent': official_percent,  # Процент официальных визитов для графика
         'student_visits_percent': student_percent,   # Процент студенческих визитов для графика
+        # Добавляем счетчики для HTMX
+        'active_visits_count': active_visits_count,
+        'current_guests_count': current_guests_count,
+        'awaiting_visits_count': awaiting_visits_count,
+        'today_visits_count': today_visits_count,
     }
     return render(request, 'visitors/employee_dashboard.html', context)
+
+
+@login_required
+@htmx_cache_control(max_age=30, must_revalidate=True)
+@etag_htmx(lambda request, *args, **kwargs: f"counters_{request.user.id}_{timezone.now().strftime('%Y%m%d%H%M')}")
+def get_counters_api(request):
+    """API для получения актуальных счетчиков через polling."""
+    user = request.user
+    
+    # Получаем департамент пользователя
+    try:
+        user_profile = EmployeeProfile.objects.select_related('department').get(user=user)
+        user_department = user_profile.department
+    except EmployeeProfile.DoesNotExist:
+        user_department = None
+    
+    # Фильтры для подсчетов
+    department_filter = Q(department=user_department) if user_department else Q(employee=user)
+    student_department_filter = Q(department=user_department) if user_department else Q()
+    
+    today = timezone.now().date()
+    
+    # Подсчитываем актуальные значения
+    active_visits_count = Visit.objects.filter(
+        department_filter,
+        status__in=[STATUS_CHECKED_IN, STATUS_AWAITING_ARRIVAL],
+        exit_time__isnull=True
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter,
+        status__in=[STATUS_CHECKED_IN, STATUS_AWAITING_ARRIVAL],
+        exit_time__isnull=True
+    ).count()
+    
+    current_guests_count = Visit.objects.filter(
+        department_filter,
+        status=STATUS_CHECKED_IN,
+        exit_time__isnull=True
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter, 
+        status=STATUS_CHECKED_IN,
+        exit_time__isnull=True
+    ).count()
+    
+    awaiting_visits_count = Visit.objects.filter(
+        department_filter,
+        status=STATUS_AWAITING_ARRIVAL
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter,
+        status=STATUS_AWAITING_ARRIVAL
+    ).count()
+    
+    today_visits_count = Visit.objects.filter(
+        department_filter,
+        entry_time__date=today
+    ).count() + StudentVisit.objects.filter(
+        student_department_filter,
+        entry_time__date=today
+    ).count()
+    
+    if request.htmx:
+        # Возвращаем HTML фрагменты для обновления счетчиков с hx-swap-oob
+        response = HttpResponse()
+        
+        # Добавляем HX-Trigger для обновления счетчиков
+        trigger_client_event(response, 'updateCounters', {
+            'active_visits_count': active_visits_count,
+            'current_guests_count': current_guests_count,
+            'awaiting_visits_count': awaiting_visits_count,
+            'today_visits_count': today_visits_count
+        })
+        
+        # Если счетчики не изменились, можем остановить polling на некоторое время
+        # (это можно сделать через дополнительную логику проверки предыдущих значений)
+        
+        return response
+    
+    # Fallback для обычных запросов
+    return JsonResponse({
+        'active_visits_count': active_visits_count,
+        'current_guests_count': current_guests_count,
+        'awaiting_visits_count': awaiting_visits_count,
+        'today_visits_count': today_visits_count
+    })
+
 
 def has_functional_access(user):
     """
@@ -1202,22 +1344,26 @@ def register_student_visit_view(request):
                     )
                 # --------------------------------------------
                 messages.success(request, f"Визит студента {student_visit.guest.full_name} успешно зарегистрирован!")
-                if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
-                    resp = HttpResponse(status=204)
-                    resp['HX-Redirect'] = reverse('employee_dashboard')
-                    return resp
+                if request.htmx:
+                    response = HttpResponse()
+                    trigger_client_event(response, "showToast", {
+                        "message": f"Визит студента {student_visit.guest.full_name} успешно зарегистрирован!",
+                        "type": "success"
+                    })
+                    response['HX-Redirect'] = reverse('employee_dashboard')
+                    return response
                 return redirect('employee_dashboard')
             except Exception as e:
                 messages.error(request, f"Ошибка при регистрации визита студента: {e}")
         else:
             messages.error(request, "Пожалуйста, исправьте ошибки в форме.")
-            if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+            if request.htmx:
                 return render(request, 'visitors/_register_student_form_block.html', {'student_form': form})
     else:
         form = StudentVisitRegistrationForm(prefix="student")
 
-    context = {'student_form': form} # Передаем форму под именем student_form
-    if request.headers.get('HX-Request') == 'true' or request.META.get('HTTP_HX_REQUEST') == 'true':
+    context = {'student_form': form}  # Передаем форму под именем student_form
+    if request.htmx:
         return render(request, 'visitors/_register_student_form_block.html', context)
     return render(request, 'visitors/register_student_visit.html', context)
 # -------------------------------------------------------------
@@ -1748,7 +1894,7 @@ def profile_setup_view(request):
                 form.errors.as_json(),
             )
     else: # GET запрос
-        form = ProfileSetupForm(instance=profile) # Показываем форму с текущими данными профиля
+        form = ProfileSetupForm(instance=profile)
 
     context = {
         'form': form

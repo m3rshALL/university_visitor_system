@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 	'axes',
 	'csp',
 	'channels',
+	'django_htmx',
 
 	'authentication',
 	'visitors',
@@ -72,6 +73,7 @@ MIDDLEWARE = [
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
+	'django_htmx.middleware.HtmxMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'axes.middleware.AxesMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',

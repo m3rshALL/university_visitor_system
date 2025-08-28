@@ -548,9 +548,13 @@ class ProfileSetupForm(forms.ModelForm):
         })
     )
     department = forms.ModelChoiceField(
-        queryset=Department.objects.order_by('name'), # Сортируем департаменты
+        queryset=Department.objects.only('id', 'name').order_by('name'), # Оптимизируем запрос
         label="Ваш департамент", required=True,
-        empty_label="Выберите департамент..." # Подсказка для пустого значения
+        empty_label="Выберите департамент...", # Подсказка для пустого значения
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'style': 'cursor: pointer;'
+        })
     )    
     class Meta:
         model = EmployeeProfile

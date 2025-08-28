@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}HTMX Demo - Visitor System{% endblock %}
+
+{% block content %}
+<div class="container-xl">
+    <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
+                        <path d="M12 7a5 5 0 1 1 -5 5l5 -5z"/>
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/>
+                    </svg>
+                    Демонстрация возможностей HTMX
+                </h2>
+                <div class="page-subtitle">
+                    Показать улучшения интеграции django-htmx
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <!-- Секция с живыми счетчиками -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">📊</span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">Живой счетчик</div>
+                                <div class="text-muted">
+                                    <span id="live-counter" 
+                                          hx-get="{% url 'get_counters_api' %}"
+                                          hx-trigger="every 3s"
+                                          hx-swap="innerHTML">{{ active_visits_count|default:0 }}</span> визитов
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Интерактивная форма с валидацией</h3>
+                    </div>
+                    <div class="card-body">
+                        <form hx-post="{% url 'register_guest' %}"
+                              hx-swap="outerHTML"
+                              hx-target="#form-container"
+                              hx-indicator="#form-spinner">
+                            {% csrf_token %}
+                            <div id="form-container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Имя гостя</label>
+                                            <input type="text" name="guest_name" class="form-control" 
+                                                   hx-trigger="keyup changed delay:500ms"
+                                                   hx-get="{% url 'employee_autocomplete' %}"
+                                                   hx-target="#suggestions"
+                                                   placeholder="Введите имя гостя">
+                                            <div id="suggestions" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Департамент</label>
+                                            <select name="department" class="form-select"
+                                                    hx-trigger="change"
+                                                    hx-get="{% url 'get_department_details' %}"
+                                                    hx-target="#dept-info">
+                                                <option value="">Выберите департамент</option>
+                                                {% for dept in departments %}
+                                                <option value="{{ dept.id }}">{{ dept.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <div id="dept-info" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span id="form-spinner" class="spinner-border spinner-border-sm me-2" style="display: none;"></span>
+                                        Зарегистрировать визит
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция с поиском и фильтрацией -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Поиск с автокомплитом</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" 
+                                       placeholder="Поиск по имени гостя..."
+                                       hx-get="{% url 'visit_history' %}"
+                                       hx-trigger="keyup changed delay:300ms"
+                                       hx-target="#search-results"
+                                       hx-indicator="#search-spinner"
+                                       hx-push-url="true">
+                            </div>
+                            <div class="col-md-4">
+                                <div id="search-spinner" class="text-center" style="display: none;">
+                                    <div class="spinner-border spinner-border-sm text-primary"></div>
+                                    Поиск...
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="search-results" class="mt-4">
+                            <!-- Результаты поиска загружаются сюда -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция с действиями и обратной связью -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Быстрые действия</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="btn-group-vertical w-100" role="group">
+                            <button type="button" class="btn btn-success"
+                                    hx-post="{% url 'register_guest' %}"
+                                    hx-trigger="click"
+                                    hx-confirm="Зарегистрировать тестовый визит?"
+                                    hx-swap="none">
+                                ✅ Быстрая регистрация
+                            </button>
+                            
+                            <button type="button" class="btn btn-warning"
+                                    hx-post="{% url 'get_counters_api' %}"
+                                    hx-trigger="click"
+                                    hx-swap="none">
+                                🔄 Обновить счетчики
+                            </button>
+                            
+                            <button type="button" class="btn btn-info"
+                                    onclick="window.HTMXUtils.showToast('Это тестовое уведомление!', 'info')">
+                                💬 Показать тост
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Автообновляемые данные</h3>
+                    </div>
+                    <div class="card-body">
+                        <div hx-get="{% url 'get_counters_api' %}"
+                             hx-trigger="every 5s"
+                             hx-swap="innerHTML"
+                             hx-indicator="#auto-update-spinner">
+                            <div class="text-muted">Загрузка статистики...</div>
+                        </div>
+                        
+                        <div id="auto-update-spinner" class="text-center mt-2" style="display: none;">
+                            <div class="spinner-grow spinner-grow-sm text-primary"></div>
+                            Обновление...
+                        </div>
+                        
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    onclick="window.HTMXUtils.stopPolling('#auto-update-container')">
+                                ⏸️ Остановить автообновление
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция с инфинитным скроллом -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">История визитов с ленивой загрузкой</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="visit-list">
+                            <!-- Первоначальные элементы -->
+                            {% for visit in recent_visits|slice:":5" %}
+                            <div class="d-flex align-items-center mb-2 p-2 border rounded">
+                                <div class="avatar avatar-sm bg-azure-lt me-3">
+                                    {{ visit.guest.full_name|slice:":2" }}
+                                </div>
+                                <div class="flex-fill">
+                                    <div class="font-weight-medium">{{ visit.guest.full_name }}</div>
+                                    <div class="text-muted small">{{ visit.entry_time|date:"d.m.Y H:i" }}</div>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-green">{{ visit.status }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Триггер для загрузки следующих элементов -->
+                        <div hx-get="{% url 'visit_history' %}?page=2"
+                             hx-trigger="revealed"
+                             hx-swap="afterend"
+                             hx-target="#visit-list"
+                             class="text-center mt-3">
+                            <div class="spinner-border spinner-border-sm text-primary"></div>
+                            Загрузка дополнительных записей...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для демонстрации -->
+<div class="modal" id="demo-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">HTMX в модальном окне</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" 
+                 hx-get="{% url 'visit_history' %}"
+                 hx-trigger="load"
+                 hx-swap="innerHTML">
+                <div class="text-center">
+                    <div class="spinner-border text-primary"></div>
+                    <div class="mt-2">Загрузка содержимого...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Демонстрация программного вызова тостов
+    setTimeout(function() {
+        if (window.HTMXUtils) {
+            window.HTMXUtils.showToast('Добро пожаловать в демо HTMX!', 'success');
+        }
+    }, 1000);
+    
+    // Обработчик для специфичных событий
+    document.addEventListener('htmx:afterSwap', function(event) {
+        console.log('HTMX: Содержимое обновлено', event.target);
+    });
+});
+</script>
+{% endblock %}
