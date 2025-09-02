@@ -242,6 +242,26 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-md-4 col-lg-3">
+                        <a href="{% url 'fullcalendar:calendar_view' %}" class="card card-link card-link-pop" hx-boost="false">
+                            <div class="card-body text-center">
+                                <div class="text-purple mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <rect x="4" y="5" width="16" height="16" rx="2"/>
+                                        <line x1="16" y1="3" x2="16" y2="7"/>
+                                        <line x1="8" y1="3" x2="8" y2="7"/>
+                                        <rect x="8" y="11" width="2" height="2"/>
+                                        <rect x="12" y="11" width="2" height="2"/>
+                                        <rect x="16" y="11" width="2" height="2"/>
+                                        <rect x="8" y="15" width="2" height="2"/>
+                                        <rect x="12" y="15" width="2" height="2"/>
+                                    </svg>
+                                </div>
+                                <div>Календарь событий</div>
+                            </div>
+                        </a>
+                    </div>
                     {% comment %}
                         <div class="col-md-4 col-lg-3">
                             <a href="{% url 'current_guests' %}" class="card card-link card-link-pop">
@@ -952,6 +972,24 @@
                             <div class="col">История всех визитов</div>
                         </div>
                     </a>
+                    <a href="{% url 'fullcalendar:calendar_view' %}" class="list-group-item list-group-item-action" hx-boost="false">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-purple" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <rect x="4" y="5" width="16" height="16" rx="2"/>
+                                    <line x1="16" y1="3" x2="16" y2="7"/>
+                                    <line x1="8" y1="3" x2="8" y2="7"/>
+                                    <rect x="8" y="11" width="2" height="2"/>
+                                    <rect x="12" y="11" width="2" height="2"/>
+                                    <rect x="16" y="11" width="2" height="2"/>
+                                    <rect x="8" y="15" width="2" height="2"/>
+                                    <rect x="12" y="15" width="2" height="2"/>
+                                </svg>
+                            </div>
+                            <div class="col">Календарь всех событий</div>
+                        </div>
+                    </a>
                     {% comment %}
                         <a href="{% url 'current_guests' %}" class="list-group-item list-group-item-action">
                             <div class="row align-items-center">
@@ -1078,10 +1116,28 @@
 {% block extra_scripts %}
 <script src="https://cdn.jsdelivr.net/npm/apexcharts" defer></script>
 {% load static %}
-<script>window.ApexCharts||document.write('<script src="{% static "js/vendor/apexcharts.min.js" %}">\x3C/script>')</script>
 <script>
+// Безопасная загрузка ApexCharts fallback
 document.addEventListener('DOMContentLoaded', function() {
-    // Данные для графика активности (замените фиктивными данными)
+    if (typeof ApexCharts === 'undefined') {
+        console.warn('ApexCharts failed to load from CDN, loading fallback...');
+        const fallbackScript = document.createElement('script');
+        fallbackScript.src = '{% static "js/vendor/apexcharts.min.js" %}';
+        fallbackScript.onload = function() {
+            console.log('ApexCharts fallback loaded successfully');
+            initializeCharts();
+        };
+        fallbackScript.onerror = function() {
+            console.error('ApexCharts fallback failed to load');
+        };
+        document.head.appendChild(fallbackScript);
+    } else {
+        initializeCharts();
+    }
+});
+
+function initializeCharts() {
+    // Данные для графика активности
     const visitData = {{ visit_chart_data|safe|default:"{}" }};
     
     // График активности визитов
@@ -1218,6 +1274,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const pieChart = new ApexCharts(document.querySelector("#visits-pie-chart"), pieChartOptions);
         pieChart.render();
     }
-});
+}
 </script>
 {% endblock %}

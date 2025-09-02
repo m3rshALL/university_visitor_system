@@ -1,103 +1,83 @@
-// Управление прелоадером
-let navigationTriggered = false;
-
-// Отмечаем навигацию только при явных действиях пользователя (внутренние ссылки/формы)
-document.addEventListener('click', function(e) {
-    const link = e.target && e.target.closest && e.target.closest('a[href]');
-    if (link) {
-        try {
-            const url = new URL(link.href, window.location.href);
-            if (url.origin === window.location.origin) {
-                navigationTriggered = true;
-            }
-        } catch(_) {}
-    }
-});
-document.addEventListener('submit', function() {
-    navigationTriggered = true;
-}, true);
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Измерение времени загрузки
-    const startTime = window.performance.timing.navigationStart;
-    const endTime = new Date().getTime();
-    const loadTime = endTime - startTime;
+// Простой и быстрый прелоадер без сложной логики
+(function() {
+    'use strict';
     
-    // Гарантируем минимальное время отображения прелоадера (минимум 700мс)
-    // чтобы он выглядел более естественно и не мигал при быстрой загрузке
-    const minPreloaderTime = 700; 
-    const timeToWait = loadTime < minPreloaderTime ? minPreloaderTime - loadTime : 0;
-    
-    // Показываем контент
-    const contentWrapper = document.querySelector('.content-wrapper');
-    if (contentWrapper) {
-        setTimeout(() => {
+    // Защита от повторной инициализации
+    if (window.simplePreloaderInit) return;
+    window.simplePreloaderInit = true;
+
+    function showContent() {
+        // Ищем правильный content wrapper
+        const contentWrapper = document.querySelector('.content-wrapper') || 
+                              document.querySelector('.page.content-wrapper') ||
+                              document.querySelector('.page');
+        if (contentWrapper) {
             contentWrapper.classList.add('loaded');
-        }, timeToWait);
+            contentWrapper.style.opacity = '1';
+            contentWrapper.style.visibility = 'visible';
+        }
+        
+        // Также показываем весь body
+        document.body.style.opacity = '1';
+        document.body.style.visibility = 'visible';
     }
-    
-    // Скрываем прелоадер
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        setTimeout(() => {
+
+    function hidePreloader() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
             preloader.classList.add('hidden');
             
-            // Полностью удаляем прелоадер после завершения анимации
+            // Удаляем через короткое время
             setTimeout(() => {
-                preloader.remove();
-            }, 500);
-        }, timeToWait);
-    }
-});
-
-// Показываем прелоадер при переходе на другую страницу
-window.addEventListener('beforeunload', function(event) {
-    // Не показываем прелоадер для внешних ссылок, только для навигации внутри сайта
-    // И не показываем при кнопке Назад/Вперед (navigationTriggered=false)
-    const target = event.target;
-    if (!navigationTriggered) {
-        return;
-    }
-    if (target && target.activeElement && target.activeElement.href) {
-        const href = target.activeElement.href;
-        if (href.indexOf(window.location.origin) !== 0) {
-            return; // Это внешняя ссылка, не показываем прелоадер
+                if (preloader && preloader.parentNode) {
+                    preloader.remove();
+                }
+            }, 300);
         }
     }
+
+    // Основная логика - показываем контент быстро
+    function initPage() {
+        console.log('Preloader: инициализация страницы');
+        
+        // Немедленно показываем контент
+        showContent();
+        
+        // Быстро скрываем прелоадер
+        setTimeout(() => {
+            hidePreloader();
+            console.log('Preloader: скрыт');
+        }, 100);
+    }
+
+    // Обработка HTMX событий
+    document.addEventListener('htmx:beforeSwap', function() {
+        console.log('Preloader: HTMX before swap - показываем контент');
+        showContent();
+    });
     
-    // При переходе на другую страницу показываем прелоадер снова
-    const existingPreloader = document.getElementById('preloader');
-      if (!existingPreloader) {
-        const preloader = document.createElement('div');        
-        preloader.id = 'preloader';
-        preloader.className = 'preloader';
-        preloader.innerHTML = `
-            <div class="spinner"></div>
-            <div class="preloader-text">Загрузка системы пропусков...</div>
-        `;
-        document.body.appendChild(preloader);
-    } else {
-        existingPreloader.classList.remove('hidden');
-    }
-    // Сбрасываем флаг
-    navigationTriggered = false;
-});
+    document.addEventListener('htmx:afterSwap', function() {
+        console.log('Preloader: HTMX after swap - финализация');
+        showContent();
+        hidePreloader();
+    });
 
-// При возврате по кнопке Назад/Вперед (bfcache) гарантируем скрытие прелоадера
-window.addEventListener('pageshow', function(event) {
-    try {
-        const navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
-        const navType = navEntries && navEntries[0] && navEntries[0].type;
-        if (event.persisted === true || navType === 'back_forward') {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                preloader.classList.add('hidden');
-                setTimeout(() => preloader.remove(), 300);
-            }
-            const contentWrapper = document.querySelector('.content-wrapper');
-            if (contentWrapper) {
-                contentWrapper.classList.add('loaded');
-            }
-        }
-    } catch(_) {}
-});
+    // Инициализация при готовности DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPage);
+    } else {
+        // Если DOM уже готов
+        console.log('Preloader: DOM уже готов');
+        initPage();
+    }
+
+    // Защита - принудительно показываем контент через короткое время
+    setTimeout(() => {
+        console.log('Preloader: принудительное показывание контента');
+        showContent();
+        hidePreloader();
+    }, 500);
+
+})();

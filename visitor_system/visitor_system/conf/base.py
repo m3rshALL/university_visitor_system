@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 	'departments',
 	'notifications',
 	'classroom_book',
+	'fullcalendar',
 	'egov_integration',
 	'realtime_dashboard',
 ]
@@ -76,7 +77,6 @@ MIDDLEWARE = [
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django_htmx.middleware.HtmxMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'guardian.backends.ObjectPermissionBackend',
 	'axes.middleware.AxesMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',

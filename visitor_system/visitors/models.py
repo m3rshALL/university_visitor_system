@@ -4,7 +4,7 @@ from django.contrib.auth.models import User # Стандартная модел�
 from departments.models import Department
 from django.utils import timezone
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
-from cryptography.fernet import Fernet, InvalidToken  
+from cryptography.fernet import Fernet, InvalidToken
 import base64
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured

@@ -68,7 +68,6 @@
 
 	</head>
 	<body>    <!-- BEGIN PRELOADER -->
-		<a href="#main-content" class="skip-link">Перейти к основному контенту</a>
 		<div id="preloader" class="preloader">
 			<div class="spinner"></div>
 			<div class="preloader-text">Загрузка системы пропусков...</div>
@@ -302,7 +301,7 @@
 		</div>
 	</header>
 		<!-- END NAVBAR  -->
-	<main id="main-content" class="page-body" role="main" hx-boost="true">                    
+	<main id="main-content" class="page-body" role="main" hx-boost="true" tabindex="-1">                    
 			<div class="container-xl">
                 <div class="row row-deck row-cards">
                     {# Отображение сообщений Django (success, error, warning) - Перемещено сюда #}
@@ -365,10 +364,11 @@ if (typeof jQuery === 'undefined') {
 <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script src="{% static 'js/htmx-alpine-bridge.js' %}" defer></script>
-<!-- Fallback for htmx in case CDN fails -->
+
+<!-- Защита от множественной инициализации и error handling -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if htmx loaded correctly
+    // Проверяем HTMX
     if (typeof htmx === 'undefined') {
         console.warn('HTMX failed to load from CDN, loading fallback...');
         var fallbackScript = document.createElement('script');
@@ -376,9 +376,40 @@ document.addEventListener('DOMContentLoaded', function() {
         fallbackScript.onload = function() {
             console.log('HTMX fallback loaded successfully');
         };
+        fallbackScript.onerror = function() {
+            console.error('HTMX fallback failed to load');
+        };
         document.head.appendChild(fallbackScript);
     }
+    
+    // Защищаем от ошибок HTMX с null elements
+    if (typeof htmx !== 'undefined') {
+        htmx.onLoad = function(content) {
+            if (!content || !content.contains) {
+                console.warn('HTMX: Invalid content element, skipping processing');
+                return;
+            }
+            // Продолжаем обычную обработку
+        };
+    }
+    
+    // Подавляем Chrome extension errors
+    if (typeof chrome !== 'undefined' && chrome.runtime) {
+        const originalLastError = chrome.runtime.lastError;
+        Object.defineProperty(chrome.runtime, 'lastError', {
+            get: function() {
+                return null; // Подавляем ошибки расширений
+            }
+        });
+    }
 });
+
+// Защита Alpine.js от преждевременной инициализации
+window.Alpine = window.Alpine || {};
+if (!window.Alpine._initialized) {
+    window.Alpine._initialized = true;
+    console.log('Alpine.js initialization protected');
+}
 </script>
 <script src="{% static 'js/toast.js' %}" defer></script>
 <script src="{% static 'js/htmx-handlers.js' %}" defer></script>

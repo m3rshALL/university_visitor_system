@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Тест календаря - Система визитов{% endblock %}
+
+{% block extra_css %}
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+<style>
+    .debug-info {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 20px 0;
+    }
+    #calendar {
+        min-height: 600px;
+        background: white;
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Тестовая страница календаря</h1>
+    
+    <div class="debug-info">
+        <h4>Отладочная информация:</h4>
+        <p>Страница загружена: <span id="page-loaded">❌</span></p>
+        <p>Alpine.js: <span id="alpine-loaded">❌</span></p>
+        <p>FullCalendar: <span id="fullcalendar-loaded">❌</span></p>
+        <p>API ответ: <span id="api-response">❌</span></p>
+        <button onclick="testAPI()" class="btn btn-primary">Тестировать API</button>
+    </div>
+    
+    <div id="calendar"></div>
+    
+    <div class="debug-info">
+        <h4>Логи:</h4>
+        <div id="debug-logs" style="font-family: monospace; background: #000; color: #0f0; padding: 10px; min-height: 100px;"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+<script>
+let debugLog = function(message) {
+    console.log(message);
+    const logDiv = document.getElementById('debug-logs');
+    if (logDiv) {
+        logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+};
+
+// Проверка загрузки страницы
+document.addEventListener('DOMContentLoaded', function() {
+    debugLog('✅ Страница загружена');
+    document.getElementById('page-loaded').innerHTML = '✅';
+    
+    // Проверка Alpine.js
+    if (typeof Alpine !== 'undefined') {
+        debugLog('✅ Alpine.js загружен');
+        document.getElementById('alpine-loaded').innerHTML = '✅';
+    } else {
+        debugLog('❌ Alpine.js не загружен');
+    }
+    
+    // Проверка FullCalendar
+    if (typeof FullCalendar !== 'undefined') {
+        debugLog('✅ FullCalendar загружен');
+        document.getElementById('fullcalendar-loaded').innerHTML = '✅';
+        initCalendar();
+    } else {
+        debugLog('❌ FullCalendar не загружен');
+    }
+});
+
+function initCalendar() {
+    try {
+        debugLog('Инициализация календаря...');
+        const calendarEl = document.getElementById('calendar');
+        
+        if (!calendarEl) {
+            debugLog('❌ Элемент календаря не найден');
+            return;
+        }
+        
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            locale: 'ru',
+            firstDay: 1,
+            height: 'auto',
+            events: function(fetchInfo, successCallback, failureCallback) {
+                debugLog('Загрузка событий...');
+                
+                fetch('/calendar/api/events/?start=' + fetchInfo.startStr + '&end=' + fetchInfo.endStr)
+                    .then(response => {
+                        debugLog('API ответ получен: ' + response.status);
+                        if (!response.ok) {
+                            throw new Error('HTTP ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        debugLog('✅ События загружены: ' + data.length + ' событий');
+                        document.getElementById('api-response').innerHTML = '✅ ' + data.length + ' событий';
+                        successCallback(data);
+                    })
+                    .catch(error => {
+                        debugLog('❌ Ошибка загрузки событий: ' + error.message);
+                        document.getElementById('api-response').innerHTML = '❌ ' + error.message;
+                        failureCallback(error);
+                    });
+            },
+            eventClick: function(info) {
+                debugLog('Клик по событию: ' + info.event.title);
+                alert('Событие: ' + info.event.title + '\nВремя: ' + info.event.start);
+            },
+            loading: function(isLoading) {
+                debugLog(isLoading ? 'Загрузка...' : 'Загрузка завершена');
+            }
+        });
+        
+        calendar.render();
+        debugLog('✅ Календарь отрендерен');
+        
+    } catch (error) {
+        debugLog('❌ Ошибка инициализации календаря: ' + error.message);
+    }
+}
+
+function testAPI() {
+    debugLog('Тестирование API...');
+    fetch('/calendar/api/events/')
+        .then(response => {
+            debugLog('API тест ответ: ' + response.status);
+            return response.text();
+        })
+        .then(data => {
+            debugLog('API тест данные: ' + data.substring(0, 200) + '...');
+        })
+        .catch(error => {
+            debugLog('API тест ошибка: ' + error.message);
+        });
+}
+
+// Обработка ошибок JavaScript
+window.addEventListener('error', function(e) {
+    debugLog('❌ JavaScript ошибка: ' + e.error.message + ' в ' + e.filename + ':' + e.lineno);
+});
+</script>
+{% endblock %}
