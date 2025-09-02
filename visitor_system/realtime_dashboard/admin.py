@@ -47,6 +47,7 @@ class RealtimeEventAdmin(admin.ModelAdmin):
     list_display = [
         'title', 'event_type', 'priority', 'user', 'is_read', 'created_at'
     ]
+    list_select_related = ('user', 'visit__guest')  # Оптимизация запросов
     list_filter = ['event_type', 'priority', 'is_read', 'created_at']
     search_fields = ['title', 'message', 'user__username']
     readonly_fields = ['created_at', 'data_formatted']
@@ -93,6 +94,7 @@ class DashboardWidgetAdmin(admin.ModelAdmin):
         'title', 'widget_type', 'position_info', 'size_info', 
         'is_active', 'refresh_interval', 'created_by'
     ]
+    list_select_related = ('created_by',)  # Оптимизация запросов
     list_filter = ['widget_type', 'is_active', 'created_at']
     search_fields = ['name', 'title', 'description']
     readonly_fields = ['created_at', 'updated_at', 'config_formatted']

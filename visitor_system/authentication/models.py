@@ -19,7 +19,12 @@ class Role(models.Model):
         (ADMIN, 'Admin'),
     ]
 
-    name = models.CharField(max_length=20, choices=ROLE_CHOICES, unique=True)
+    name = models.CharField(
+        max_length=20, 
+        choices=ROLE_CHOICES, 
+        unique=True,
+        db_index=True  # Индекс для быстрого поиска по роли
+    )
     group = models.OneToOneField(Group, on_delete=models.CASCADE, related_name='role_info')
 
     def __str__(self):

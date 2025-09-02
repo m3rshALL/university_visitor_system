@@ -81,19 +81,25 @@ class KeyBooking(models.Model):
         related_name='key_bookings',
         verbose_name='Преподаватель'
     )
-    start_time = models.DateTimeField(verbose_name='Время начала')
+    start_time = models.DateTimeField(
+        db_index=True,  # Индекс для сортировки и фильтрации
+        verbose_name='Время начала'
+    )
     end_time = models.DateTimeField(verbose_name='Время окончания')
     purpose = models.CharField(max_length=255, verbose_name='Цель')
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default='reserved',
+        db_index=True,  # Индекс для быстрой фильтрации по статусу
         verbose_name='Статус'
     )
     is_returned = models.BooleanField(default=False, verbose_name='Возвращен')
-    returned_at = models.DateTimeField(null=True, blank=True, verbose_name='Время возврата')
+    returned_at = models.DateTimeField(null=True, blank=True, 
+                                     verbose_name='Время возврата')
     is_cancelled = models.BooleanField(default=False, verbose_name='Отменен')
-    qr_code_token = models.CharField(max_length=100, unique=True, blank=True, null=True, verbose_name='Токен QR-кода')
+    qr_code_token = models.CharField(max_length=100, unique=True, blank=True, 
+                                   null=True, verbose_name='Токен QR-кода')
     notes = models.TextField(blank=True, verbose_name='Примечания')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -101,8 +107,28 @@ class KeyBooking(models.Model):
         verbose_name = 'Бронирование ключа'
         verbose_name_plural = 'Бронирования ключей'
         ordering = ['-start_time']
+        indexes = [
+            # Индексы для частых фильтраций и сортировок
+            models.Index(fields=['status'], name='keybooking_status_idx'),
+            models.Index(fields=['start_time'], name='keybooking_start_time_idx'),
+            models.Index(fields=['end_time'], name='keybooking_end_time_idx'),
+            models.Index(fields=['classroom'], name='keybooking_classroom_idx'),
+            models.Index(fields=['teacher'], name='keybooking_teacher_idx'),
+            # Составные индексы для комбинированных запросов
+            models.Index(fields=['status', 'start_time'],
+                         name='keybooking_status_start_idx'),
+            models.Index(fields=['classroom', 'start_time'],
+                         name='keybooking_classroom_start_idx'),
+            models.Index(fields=['teacher', 'start_time'],
+                         name='keybooking_teacher_start_idx'),
+            # Индекс для поиска активных бронирований
+            models.Index(fields=['is_returned', 'is_cancelled'],
+                         name='keybooking_active_idx'),
+        ]
+
     def __str__(self):
         return f"{self.classroom} ({self.start_time.strftime('%d.%m.%Y %H:%M')})"
+
     def save(self, *args, **kwargs):
         # Генерируем уникальный токен для QR-кода при создании
         if not self.qr_code_token:

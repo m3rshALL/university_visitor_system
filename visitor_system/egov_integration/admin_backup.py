@@ -1,3 +1,4 @@
+# egov_integration/admin.py
 from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
@@ -61,7 +62,7 @@ class DocumentVerificationAdmin(admin.ModelAdmin):
 @admin.register(EgovAPILog)
 class EgovAPILogAdmin(admin.ModelAdmin):
     list_display = [
-        'created_at', 'method', 'endpoint_short', 'response_status',
+        'created_at', 'method', 'endpoint_short', 'response_status', 
         'response_time_ms', 'user', 'success_indicator'
     ]
     list_select_related = ('user', 'verification')  # Оптимизация запросов
@@ -124,6 +125,7 @@ class EgovAPILogAdmin(admin.ModelAdmin):
 @admin.register(EgovSettings)
 class EgovSettingsAdmin(admin.ModelAdmin):
     list_display = ['name', 'description', 'is_encrypted', 'updated_at', 'updated_by']
+    list_select_related = ('updated_by',)  # Оптимизация запросов
     list_filter = ['is_encrypted', 'updated_at']
     search_fields = ['name', 'description']
     readonly_fields = ['updated_at']

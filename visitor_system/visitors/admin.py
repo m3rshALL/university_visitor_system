@@ -45,17 +45,22 @@ class GuestAdmin(admin.ModelAdmin):
 class VisitAdmin(admin.ModelAdmin):
     list_display = ('id', 'guest', 'employee', 'department', 'status', 'entry_time', 'expected_entry_time', 'exit_time', 'registered_by')
     list_filter = ('status', 'department', 'employee', ('entry_time', admin.DateFieldListFilter), ('expected_entry_time', admin.DateFieldListFilter))
-    search_fields = ('guest__full_name', 'guest__iin', 'employee__username', 'department__name', 'purpose')
-    list_select_related = ('guest', 'employee', 'department', 'registered_by')
+    search_fields = ('guest__full_name', 'guest__iin_hash', 'employee__username', 
+                     'department__name', 'purpose')
+    list_select_related = ('guest', 'employee', 'department', 'registered_by', 
+                           'visit_group')
+    list_prefetch_related = ('visit_group__visits',)  # Для групповых визитов
     autocomplete_fields = ('guest', 'employee', 'department', 'registered_by')
-    readonly_fields = ('entry_time', 'exit_time') # Время ставится через check-in/out
+    readonly_fields = ('entry_time', 'exit_time')  # Время ставится через check-in/out
     date_hierarchy = 'entry_time'
 
 @admin.register(StudentVisit)
 class StudentVisitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'guest', 'department', 'status', 'entry_time', 'exit_time', 'registered_by', 'student_id_number', 'student_group')
+    list_display = ('id', 'guest', 'department', 'status', 'entry_time', 'exit_time', 
+                    'registered_by', 'student_id_number', 'student_group')
     list_filter = ('status', 'department', ('entry_time', admin.DateFieldListFilter))
-    search_fields = ('guest__full_name', 'guest__iin', 'department__name', 'purpose', 'student_id_number', 'student_group')
+    search_fields = ('guest__full_name', 'guest__iin_hash', 'department__name', 
+                     'purpose', 'student_id_number', 'student_group')
     list_select_related = ('guest', 'department', 'registered_by')
     autocomplete_fields = ('guest', 'department', 'registered_by')
     readonly_fields = ('entry_time', 'exit_time')
@@ -64,29 +69,37 @@ class StudentVisitAdmin(admin.ModelAdmin):
 @admin.register(GuestInvitation)
 class GuestInvitationAdmin(admin.ModelAdmin):
     list_display = ('guest_full_name', 'employee', 'created_at', 'is_filled', 'is_registered', 'visit_time')
+    list_select_related = ('employee', 'visit')  # Оптимизация запросов
     search_fields = ('guest_full_name', 'guest_email', 'employee__username')
     list_filter = ('is_filled', 'is_registered', 'created_at')
+    autocomplete_fields = ('employee',)
 
 @admin.register(GroupInvitation)
 class GroupInvitationAdmin(admin.ModelAdmin):
     list_display = ('id', 'employee', 'department', 'purpose', 'visit_time', 'created_at', 'is_filled', 'is_registered')
+    list_select_related = ('employee', 'department')  # Оптимизация запросов
     search_fields = ('employee__username', 'purpose')
     list_filter = ('is_filled', 'is_registered', 'created_at', 'department')
+    autocomplete_fields = ('employee', 'department')
 
 @admin.register(GroupGuest)
 class GroupGuestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'group_invitation', 'full_name', 'email', 'phone_number', 'iin', 'is_filled', 'created_at')
+    list_display = ('id', 'group_invitation', 'full_name', 'email', 
+                    'phone_number', 'iin', 'is_filled', 'created_at')
+    list_select_related = ('group_invitation',)  # Оптимизация запросов
     search_fields = ('full_name', 'email', 'iin', 'group_invitation__id')
     list_filter = ('is_filled', 'created_at', 'group_invitation')
+    autocomplete_fields = ('group_invitation',)
 
 
 @admin.register(AuditLog)
 class AuditLogAdmin(admin.ModelAdmin):
     list_display = ('created_at', 'action', 'model', 'object_id', 'actor', 'ip_address')
+    list_select_related = ('actor',)  # Оптимизация запросов
     list_filter = ('action', 'model', 'created_at')
     search_fields = ('actor__username', 'object_id', 'ip_address')
-    readonly_fields = ('created_at', 'action', 'model', 'object_id', 'actor', 
-                      'ip_address', 'user_agent', 'path', 'method', 'changes', 'extra')
+    readonly_fields = ('created_at', 'action', 'model', 'object_id', 'actor',
+                       'ip_address', 'user_agent', 'path', 'method', 'changes', 'extra')
     date_hierarchy = 'created_at'
     
     def has_add_permission(self, request):

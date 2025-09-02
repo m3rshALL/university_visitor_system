@@ -7,11 +7,13 @@ class ClassroomAdmin(admin.ModelAdmin):
     list_display = ('number', 'building', 'floor', 'capacity', 'is_active')
     search_fields = ('number', 'building')
     list_filter = ('building', 'floor', 'is_active')
+    ordering = ('building', 'floor', 'number')
 
 
 @admin.register(ClassroomKey)
 class ClassroomKeyAdmin(admin.ModelAdmin):
     list_display = ('key_number', 'classroom', 'is_available')
+    list_select_related = ('classroom',)  # Оптимизация для получения данных аудитории
     search_fields = ('key_number', 'classroom__number')
     list_filter = ('is_available', 'classroom__building')
     autocomplete_fields = ('classroom',)
@@ -20,7 +22,10 @@ class ClassroomKeyAdmin(admin.ModelAdmin):
 @admin.register(KeyBooking)
 class KeyBookingAdmin(admin.ModelAdmin):
     list_display = ('classroom', 'teacher', 'start_time', 'end_time',
-                     'status', 'is_returned')
+                    'status', 'is_returned')
+    list_select_related = (
+        'classroom', 'key__classroom', 'teacher'
+    )  # Оптимизация запросов
     search_fields = ('classroom__number', 'teacher__username', 'teacher__email')
     list_filter = ('status', 'is_returned', 'is_cancelled', 'start_time')
     date_hierarchy = 'start_time'

@@ -3,8 +3,12 @@ from django.conf import settings
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=200, unique=True,
-                           verbose_name="Название департамента")
+    name = models.CharField(
+        max_length=200, 
+        unique=True,
+        db_index=True,  # Индекс для быстрого поиска по названию
+        verbose_name="Название департамента"
+    )
     description = models.TextField(blank=True, null=True,
                                   verbose_name="Описание")
     director = models.ForeignKey(
