@@ -124,3 +124,158 @@ def cleanup_old_audit_logs():
     except Exception as e:
         logger.error("Error in cleanup_old_audit_logs: %s", e)
         raise
+
+
+@shared_task(autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 3})
+def analyze_security_events():
+    """Анализирует события безопасности и отправляет алерты при подозрительной активности"""
+    now = timezone.now()
+    last_hour = now - timedelta(hours=1)
+    
+    try:
+        # Проверяем на аномальную активность
+        failed_logins = AuditLog.objects.filter(
+            action=AuditLog.ACTION_LOGIN_FAILED,
+            created_at__gte=last_hour
+        )
+        
+        # Группируем по IP
+        from django.db.models import Count
+        suspicious_ips = failed_logins.values('ip_address').annotate(
+            attempt_count=Count('id')
+        ).filter(attempt_count__gte=10)  # Более 10 неудачных попыток за час
+        
+        alerts = []
+        for ip_data in suspicious_ips:
+            ip = ip_data['ip_address']
+            count = ip_data['attempt_count']
+            
+            # Создаем запись об аномалии
+            AuditLog.objects.create(
+                action='security_alert',
+                model='SecurityEvent',
+                object_id=None,
+                actor=None,
+                ip_address=ip,
+                extra={
+                    'alert_type': 'suspicious_login_attempts',
+                    'attempt_count': count,
+                    'time_window': '1_hour',
+                    'threshold': 10
+                }
+            )
+            
+            alerts.append({
+                'type': 'suspicious_login_attempts',
+                'ip': ip,
+                'count': count
+            })
+        
+        # Проверяем на массовые операции от одного пользователя
+        bulk_actions = AuditLog.objects.filter(
+            action__in=[AuditLog.ACTION_CREATE, AuditLog.ACTION_UPDATE, AuditLog.ACTION_DELETE],
+            created_at__gte=last_hour
+        ).values('actor').annotate(
+            action_count=Count('id')
+        ).filter(action_count__gte=50)  # Более 50 действий за час
+        
+        for user_data in bulk_actions:
+            if user_data['actor']:
+                from django.contrib.auth import get_user_model
+                User = get_user_model()
+                try:
+                    user = User.objects.get(pk=user_data['actor'])
+                    AuditLog.objects.create(
+                        action='security_alert',
+                        model='SecurityEvent',
+                        object_id=None,
+                        actor=user,
+                        extra={
+                            'alert_type': 'bulk_operations',
+                            'action_count': user_data['action_count'],
+                            'time_window': '1_hour',
+                            'threshold': 50
+                        }
+                    )
+                    alerts.append({
+                        'type': 'bulk_operations',
+                        'user': user.username,
+                        'count': user_data['action_count']
+                    })
+                except User.DoesNotExist:
+                    pass
+        
+        if alerts:
+            logger.warning("Security alerts detected: %s", alerts)
+            # Здесь можно добавить отправку уведомлений администраторам
+        
+        return {
+            'analyzed_period': f"{last_hour.isoformat()} - {now.isoformat()}",
+            'alerts_count': len(alerts),
+            'alerts': alerts
+        }
+        
+    except Exception as e:
+        logger.error("Error in analyze_security_events: %s", e)
+        raise
+
+
+@shared_task(autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 3})
+def generate_audit_report():
+    """Генерирует ежедневный отчет по аудиту"""
+    now = timezone.now()
+    yesterday = now - timedelta(days=1)
+    
+    try:
+        # Статистика по действиям
+        actions_stats = {}
+        for action, _ in AuditLog.ACTION_CHOICES:
+            count = AuditLog.objects.filter(
+                action=action,
+                created_at__gte=yesterday,
+                created_at__lt=now
+            ).count()
+            actions_stats[action] = count
+        
+        # Топ активных пользователей
+        from django.db.models import Count
+        top_users = AuditLog.objects.filter(
+            created_at__gte=yesterday,
+            created_at__lt=now,
+            actor__isnull=False
+        ).values('actor__username').annotate(
+            action_count=Count('id')
+        ).order_by('-action_count')[:10]
+        
+        # Топ IP адресов
+        top_ips = AuditLog.objects.filter(
+            created_at__gte=yesterday,
+            created_at__lt=now,
+            ip_address__isnull=False
+        ).values('ip_address').annotate(
+            action_count=Count('id')
+        ).order_by('-action_count')[:10]
+        
+        report = {
+            'report_date': yesterday.date().isoformat(),
+            'total_events': sum(actions_stats.values()),
+            'actions_breakdown': actions_stats,
+            'top_users': list(top_users),
+            'top_ips': list(top_ips),
+        }
+        
+        # Сохраняем отчет как аудит событие
+        AuditLog.objects.create(
+            action='daily_report',
+            model='AuditReport',
+            object_id=yesterday.date().isoformat(),
+            actor=None,
+            extra=report
+        )
+        
+        logger.info("Generated daily audit report for %s", yesterday.date())
+        return report
+        
+    except Exception as e:
+        logger.error("Error in generate_audit_report: %s", e)
+        raise

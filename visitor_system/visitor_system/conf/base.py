@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 	'csp',
 	'channels',
 	'django_htmx',
+	'guardian',
 
 	'authentication',
 	'visitors',
@@ -75,6 +76,7 @@ MIDDLEWARE = [
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django_htmx.middleware.HtmxMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'guardian.backends.ObjectPermissionBackend',
 	'axes.middleware.AxesMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -162,9 +164,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = (
-	'axes.backends.AxesBackend',
-	'django.contrib.auth.backends.ModelBackend',
-	'allauth.account.auth_backends.AuthenticationBackend',
+    'axes.backends.AxesBackend',
+    'guardian.backends.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 SITE_ID = int(os.getenv('DJANGO_SITE_ID', '1'))

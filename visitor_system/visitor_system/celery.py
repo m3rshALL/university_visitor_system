@@ -31,6 +31,14 @@ app.conf.beat_schedule = {
         'task': 'visitors.tasks.cleanup_old_audit_logs',
         'schedule': crontab(hour=2, minute=0),  # Ежедневно в 2:00
     },
+    'analyze-security-events': {
+        'task': 'visitors.tasks.analyze_security_events',
+        'schedule': crontab(minute=0),  # Каждый час
+    },
+    'generate-audit-report': {
+        'task': 'visitors.tasks.generate_audit_report',
+        'schedule': crontab(hour=6, minute=0),  # Ежедневно в 6:00
+    },
     'send-daily-visit-summary': {
         'task': 'notifications.tasks.send_daily_visit_summary',
         'schedule': crontab(hour=18, minute=0),  # Ежедневно в 18:00

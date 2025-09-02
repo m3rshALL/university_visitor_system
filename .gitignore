@@ -124,3 +124,6 @@ yarn-error.log*
 # Temporary files
 *.tmp
 *.temp
+
+*.key
+echo "*.key\n*.pem\n*.p12\n.env" >> .gitignore

@@ -488,14 +488,35 @@ class AuditLog(models.Model):
     ACTION_CREATE = 'create'
     ACTION_UPDATE = 'update'
     ACTION_VIEW = 'view'
+    ACTION_DELETE = 'delete'
+    ACTION_LOGIN = 'login'
+    ACTION_LOGOUT = 'logout'
+    ACTION_LOGIN_FAILED = 'login_failed'
+    ACTION_ADMIN_CREATE = 'admin_create'
+    ACTION_ADMIN_UPDATE = 'admin_update'
+    ACTION_ADMIN_DELETE = 'admin_delete'
+    ACTION_PERMISSION_CHANGE = 'permission_change'
+    ACTION_EXPORT = 'export'
+    ACTION_BULK_OPERATION = 'bulk_operation'
+    
     ACTION_CHOICES = [
-        (ACTION_CREATE, 'create'),
-        (ACTION_UPDATE, 'update'),
-        (ACTION_VIEW, 'view'),
+        (ACTION_CREATE, 'Создание'),
+        (ACTION_UPDATE, 'Обновление'),
+        (ACTION_DELETE, 'Удаление'),
+        (ACTION_VIEW, 'Просмотр'),
+        (ACTION_LOGIN, 'Вход в систему'),
+        (ACTION_LOGOUT, 'Выход из системы'),
+        (ACTION_LOGIN_FAILED, 'Неудачный вход'),
+        (ACTION_ADMIN_CREATE, 'Создание в админке'),
+        (ACTION_ADMIN_UPDATE, 'Обновление в админке'),
+        (ACTION_ADMIN_DELETE, 'Удаление в админке'),
+        (ACTION_PERMISSION_CHANGE, 'Изменение прав'),
+        (ACTION_EXPORT, 'Экспорт данных'),
+        (ACTION_BULK_OPERATION, 'Массовая операция'),
     ]
 
     created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Время события')
-    action = models.CharField(max_length=16, choices=ACTION_CHOICES, verbose_name='Действие')
+    action = models.CharField(max_length=20, choices=ACTION_CHOICES, verbose_name='Действие')
     model = models.CharField(max_length=100, verbose_name='Модель')
     object_id = models.CharField(max_length=64, verbose_name='ID объекта')
     actor = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name='audit_events', verbose_name='Пользователь')

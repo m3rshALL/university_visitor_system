@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Guest, Visit, StudentVisit, EmployeeProfile, GuestInvitation, GroupInvitation, GroupGuest, AuditLog
+from .models import (
+    Guest, Visit, StudentVisit, EmployeeProfile, 
+    GuestInvitation, GroupInvitation, GroupGuest, AuditLog
+)
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
@@ -76,12 +79,26 @@ class GroupGuestAdmin(admin.ModelAdmin):
     search_fields = ('full_name', 'email', 'iin', 'group_invitation__id')
     list_filter = ('is_filled', 'created_at', 'group_invitation')
 
+
 @admin.register(AuditLog)
 class AuditLogAdmin(admin.ModelAdmin):
     list_display = ('created_at', 'action', 'model', 'object_id', 'actor', 'ip_address')
     list_filter = ('action', 'model', 'created_at')
-    search_fields = ('object_id', 'actor__username', 'ip_address', 'user_agent', 'path')
-    readonly_fields = ('created_at',)
+    search_fields = ('actor__username', 'object_id', 'ip_address')
+    readonly_fields = ('created_at', 'action', 'model', 'object_id', 'actor', 
+                      'ip_address', 'user_agent', 'path', 'method', 'changes', 'extra')
+    date_hierarchy = 'created_at'
+    
+    def has_add_permission(self, request):
+        return False  # Запрещаем создание аудит логов через админку
+    
+    def has_change_permission(self, request, obj=None):
+        return False  # Запрещаем редактирование аудит логов
+    
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser  # Только суперпользователь может удалять
+
+
 
 # Перерегистрация User
 User = get_user_model()

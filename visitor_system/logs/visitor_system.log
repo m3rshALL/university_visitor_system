@@ -22090,3 +22090,35 @@ WARNING 2025-08-28 16:40:24,421 log 33 139771331213056 Method Not Allowed (GET):
 WARNING 2025-08-28 16:40:28,152 log 33 139771331213056 Method Not Allowed (GET): /visitors/exit/group/93/
 WARNING 2025-08-28 16:40:29,610 log 33 139771331213056 Method Not Allowed (GET): /visitors/exit/group/93/
 INFO 2025-08-28 16:41:55,611 views 34 139770919384832 Get Employee Details Request: user_id=31
+INFO 2025-09-02 10:51:26,041 apps 25960 35852 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 10:51:26,042 apps 25960 35852 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:01:29,641 apps 23956 34108 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:01:29,642 apps 23956 34108 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:02:13,857 apps 31992 37392 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:02:13,858 apps 31992 37392 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:03:30,711 apps 39672 39468 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:03:30,712 apps 39672 39468 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:03:35,275 signals 39672 39468 Создан профиль для нового пользователя AnonymousUser
+INFO 2025-09-02 11:06:38,861 apps 36560 3880 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:06:38,862 apps 36560 3880 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:07:03,139 apps 39448 36384 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:07:03,140 apps 39448 36384 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:12:55,279 apps 768 39376 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:14:29,015 apps 27860 38140 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:14:29,018 apps 27860 38140 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:38:29,682 apps 39096 39848 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:38:29,686 apps 39096 39848 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:39:42,057 apps 37704 38040 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:39:42,059 apps 37704 38040 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:56:21,780 apps 39780 40316 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:56:21,783 apps 39780 40316 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 11:56:31,712 apps 28836 35040 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 11:56:31,713 apps 28836 35040 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 12:02:38,733 apps 11684 7712 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 12:02:38,734 apps 11684 7712 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 12:04:21,874 apps 40508 15460 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 12:04:21,876 apps 40508 15460 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 12:04:31,682 apps 28836 39512 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 12:04:31,684 apps 28836 39512 Notifications app ready: Prometheus counters available
+INFO 2025-09-02 12:04:47,048 apps 39028 21036 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-02 12:04:47,050 apps 39028 21036 Notifications app ready: Prometheus counters available
