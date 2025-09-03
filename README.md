@@ -154,27 +154,6 @@
 
 </div>
 
-### 🎥 Видео-демо
-
-> 🎬 **[Посмотреть демо](https://example.com/demo)** - Интерактивная демонстрация возможностей системы
-
-### 📸 Скриншоты
-
-<details>
-<summary>🖱️ Нажмите для просмотра скриншотов</summary>
-
-| Главная панель | Регистрация посетителя |
-|:--------------:|:---------------------:|
-| *Интуитивный дашборд с ключевой статистикой* | *Простая форма регистрации за 30 секунд* |
-
-| Отчеты и аналитика | Мобильная версия |
-|:------------------:|:----------------:|
-| *Детальная аналитика посещений* | *Адаптивный дизайн для всех устройств* |
-
-</details>
-
----
-
 ## 🏗️ Архитектура
 
 ### 🏛️ Архитектурная схема
@@ -1140,73 +1119,6 @@ def test_guest():
         phone_number='+77771234567'
     )
 ```
-
-### 🌐 E2E тестирование
-
-#### Selenium тесты
-
-```python
-# tests/e2e/test_visitor_registration.py
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-
-class VisitorRegistrationE2ETest(StaticLiveServerTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.selenium = webdriver.Chrome()
-        cls.selenium.implicitly_wait(10)
-
-    def test_visitor_registration_flow(self):
-        # Открытие страницы регистрации
-        self.selenium.get(f'{self.live_server_url}/register/')
-        
-        # Заполнение формы
-        name_input = self.selenium.find_element(By.NAME, 'full_name')
-        name_input.send_keys('Иванов Иван Иванович')
-        
-        # Подтверждение регистрации
-        submit_btn = self.selenium.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
-        submit_btn.click()
-        
-        # Проверка успешной регистрации
-        success_msg = self.selenium.find_element(By.CLASS_NAME, 'alert-success')
-        self.assertIn('успешно зарегистрирован', success_msg.text)
-```
-
-### ⚡ Производительность тестов
-
-#### Профилирование тестов
-
-```bash
-# Установка django-test-plus
-pip install django-test-plus
-
-# Профилирование медленных тестов
-python manage.py test --debug-mode --timer
-
-# Анализ запросов к БД
-python manage.py test --debug-sql
-```
-
-#### Оптимизация тестов
-
-```python
-# Использование транзакций для ускорения
-from django.test import TransactionTestCase
-
-class FastTestCase(TransactionTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        # Подготовка данных один раз для всего класса
-        
-    def setUp(self):
-        # Быстрая настройка для каждого теста
-        pass
-```
-
 ---
 
 ## 🚀 Развертывание
@@ -1258,180 +1170,6 @@ services:
 
 volumes:
   postgres_data:
-```
-
-#### ☸️ Kubernetes
-
-<details>
-<summary>📋 Kubernetes манифесты</summary>
-
-```yaml
-# k8s/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: visitor-system
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: visitor-system
-  template:
-    metadata:
-      labels:
-        app: visitor-system
-    spec:
-      containers:
-      - name: web
-        image: visitor-system:latest
-        ports:
-        - containerPort: 8000
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: visitor-system-secrets
-              key: database-url
-        - name: REDIS_URL
-          valueFrom:
-            secretKeyRef:
-              name: visitor-system-secrets
-              key: redis-url
-```
-
-```yaml
-# k8s/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: visitor-system-service
-spec:
-  selector:
-    app: visitor-system
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8000
-  type: LoadBalancer
-```
-
-</details>
-
-### ☁️ Облачные платформы
-
-#### 🔵 Heroku
-
-```bash
-# Создание приложения
-heroku create your-visitor-system
-
-# Добавление аддонов
-heroku addons:create heroku-postgresql:hobby-dev
-heroku addons:create heroku-redis:hobby-dev
-
-# Настройка переменных окружения
-heroku config:set DJANGO_SECRET_KEY=your-secret-key
-heroku config:set DJANGO_SETTINGS_MODULE=visitor_system.conf.prod
-
-# Деплой
-git push heroku main
-
-# Миграции
-heroku run python manage.py migrate
-heroku run python manage.py createsuperuser
-```
-
-#### 🟠 AWS ECS
-
-```json
-{
-  "family": "visitor-system",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": ["FARGATE"],
-  "cpu": "256",
-  "memory": "512",
-  "executionRoleArn": "arn:aws:iam::account:role/ecsTaskExecutionRole",
-  "containerDefinitions": [
-    {
-      "name": "web",
-      "image": "your-account.dkr.ecr.region.amazonaws.com/visitor-system:latest",
-      "portMappings": [
-        {
-          "containerPort": 8000,
-          "protocol": "tcp"
-        }
-      ],
-      "environment": [
-        {
-          "name": "DJANGO_SETTINGS_MODULE",
-          "value": "visitor_system.conf.prod"
-        }
-      ]
-    }
-  ]
-}
-```
-
-### 🔧 CI/CD Pipeline
-
-#### GitHub Actions
-
-```yaml
-# .github/workflows/deploy.yml
-name: Deploy to Production
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.13'
-        
-    - name: Install dependencies
-      run: |
-        pip install poetry
-        poetry install
-        
-    - name: Run tests
-      run: |
-        poetry run python manage.py test
-        
-    - name: Run security checks
-      run: |
-        poetry run bandit -r .
-        poetry run safety check
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Deploy to production
-      run: |
-        # Ваш скрипт деплоя
-        ./scripts/deploy.sh
 ```
 
 ### 📊 Мониторинг в продакшене
@@ -1556,53 +1294,6 @@ git push origin feature/your-feature-name
 # Создание Pull Request через GitHub UI
 ```
 
-#### 📝 Правила коммитов
-
-Используйте [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
-```
-
-Типы коммитов:
-- `feat`: новая функция
-- `fix`: исправление ошибки
-- `docs`: изменения в документации
-- `style`: форматирование, отсутствующие точки с запятой и т.д.
-- `refactor`: рефакторинг кода
-- `test`: добавление или изменение тестов
-- `chore`: изменения в процессе сборки или вспомогательных инструментах
-
-### 👥 Сообщество разработчиков
-
-#### 🎯 Роли в проекте
-
-| Роль | Ответственность |
-|------|----------------|
-| **Maintainer** | Общее управление проектом |
-| **Core Developer** | Основная разработка и ревью |
-| **Contributor** | Разработка функций и исправлений |
-| **Tester** | Тестирование и QA |
-| **Documentation** | Написание и поддержка документации |
-
-#### 📚 Ресурсы для разработчиков
-
-- 📖 [Wiki проекта](https://github.com/m3rshALL/university_visitor_system/wiki)
-- 💬 [Дискуссии](https://github.com/m3rshALL/university_visitor_system/discussions)
-- 🐛 [Трекер задач](https://github.com/m3rshALL/university_visitor_system/issues)
-- 🚀 [Проектная доска](https://github.com/m3rshALL/university_visitor_system/projects)
-
-#### 🏆 Признание вклада
-
-Все участники отмечаются в:
-- Файле [CONTRIBUTORS.md](CONTRIBUTORS.md)
-- Релизных заметках
-- Главной странице проекта
-
 ---
 
 ## 🗺️ Дорожная карта
@@ -1618,8 +1309,6 @@ git push origin feature/your-feature-name
 
 - [ ] **📱 Мобильное приложение**
   - Нативное Android/iOS приложение
-  - Push-уведомления
-  - Offline-режим
 
 - [ ] **🔗 Расширенные интеграции**
   - Интеграция с Microsoft Teams
@@ -1739,7 +1428,6 @@ git push origin feature/your-feature-name
 - 📧 Email уведомления
 - 📱 Push-уведомления (PWA)
 - 🔔 In-app уведомления
-- 📞 SMS (через внешние API)
 
 </details>
 
@@ -1810,23 +1498,7 @@ git push origin feature/your-feature-name
 
 #### 📧 Прямая поддержка
 - ✉️ **Email:** [maroccocombo@gmail.com](mailto:maroccocombo@gmail.com)
-- 📱 **Telegram:** [@SagatAkimbay](https://t.me/SagatAkimbay)
-- 🐦 **Twitter:** [@SagatAkimbay](https://twitter.com/SagatAkimbay)
-
-### 🏢 Коммерческая поддержка
-
-#### 💼 Услуги
-
-| Услуга | Описание | Стоимость |
-|--------|----------|-----------|
-| **Консультации** | Помощь с настройкой и внедрением | $50/час |
-| **Кастомизация** | Разработка специфичных функций | По договоренности |
-| **Обучение** | Обучение администраторов и пользователей | $200/день |
-| **Поддержка 24/7** | Круглосуточная техническая поддержка | $500/месяц |
-
-#### 📞 Контакты для бизнеса
-- 📧 **Business Email:** [business@visitor-system.com](mailto:business@visitor-system.com)
-- 📱 **WhatsApp Business:** [+7 777 123 45 67](https://wa.me/77771234567)
+- 📱 **Telegram:** [@SagatAkimbay](https://t.me/@annymars23)
 
 ### 🎓 Обучающие материалы
 
@@ -1835,24 +1507,6 @@ git push origin feature/your-feature-name
 - [Руководство пользователя](docs/user-guide.md)
 - [Руководство разработчика](docs/developer-guide.md)
 - [API документация](docs/api-reference.md)
-
-#### 🎬 Видео-контент
-- Установка и настройка (15 мин)
-- Ежедневная работа с системой (20 мин)
-- Создание отчетов (10 мин)
-- Администрирование пользователей (12 мин)
-
-### 🔄 Обновления и релизы
-
-#### 📢 Каналы уведомлений
-- 📧 [Список рассылки](https://groups.google.com/visitor-system-updates)
-- 🔔 [GitHub Releases](https://github.com/m3rshALL/university_visitor_system/releases)
-- 📱 [Telegram канал](https://t.me/visitor_system_updates)
-
-#### 🚀 График релизов
-- **Патчи (bugfix):** Еженедельно
-- **Минорные обновления:** Ежемесячно  
-- **Мажорные релизы:** Раз в квартал
 
 ---
 
@@ -1884,112 +1538,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### 🤝 Условия использования
-
-#### ✅ Разрешено
-- ✅ Коммерческое использование
-- ✅ Модификация
-- ✅ Распространение
-- ✅ Частное использование
-
-#### ❌ Ограничения
-- ❌ Ответственность автора
-- ❌ Гарантии
-
-#### 📋 Требования
-- 📋 Включение уведомления о лицензии
-- 📋 Включение уведомления об авторских правах
-
 ### 🏛️ Соответствие законодательству
 
 Система разработана с учетом требований:
 - 🇰🇿 **Казахстан:** Закон "О персональных данных"
-- 🇪🇺 **GDPR:** General Data Protection Regulation  
-- 🇺🇸 **CCPA:** California Consumer Privacy Act
-- 🇷🇺 **152-ФЗ:** О персональных данных
-
----
-
-## 👥 Команда проекта
-
-### 🏆 Основатель и ведущий разработчик
-
-<div align="center">
-
-<img src="https://via.placeholder.com/150x150/1f2937/ffffff?text=SA" alt="Sagat Akimbay" style="border-radius: 50%;"/>
-
-**Sagat Akimbay**  
-*Founder & Lead Developer*
-
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/annymars)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/sagat-akimbay)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:maroccocombo@gmail.com)
-
-*Senior Software Engineer с 7+ годами опыта в разработке enterprise-решений*
-
-</div>
-
-### 🎯 Специализация команды
-
-| Область | Экспертиза |
-|---------|------------|
-| **Backend Development** | Django, Python, PostgreSQL, Redis |
-| **Frontend Development** | HTML5, CSS3, JavaScript, Bootstrap |
-| **DevOps & Infrastructure** | Docker, Kubernetes, AWS, CI/CD |
-| **Security** | Data encryption, GDPR compliance, Audit |
-| **Performance** | Optimization, Caching, Monitoring |
-
-### 🌟 Достижения проекта
-
-<div align="center">
-
-| 📊 Метрика | 📈 Значение |
-|------------|-------------|
-| **⭐ GitHub Stars** | 50+ |
-| **🍴 Forks** | 15+ |
-| **👥 Contributors** | 5+ |
-| **🐛 Issues Closed** | 100+ |
-| **📦 Downloads** | 1,000+ |
-| **🏢 Active Installations** | 25+ |
-
-</div>
-
-### 🤝 Участники проекта
-
-Благодарим всех, кто вносит вклад в развитие проекта! 
-
-<a href="https://github.com/m3rshALL/university_visitor_system/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=m3rshALL/university_visitor_system" />
-</a>
-
----
-
-<div align="center">
-
-## 🎉 Спасибо за интерес к проекту!
-
-### 🌟 Если проект вам нравится, поставьте ⭐ на GitHub!
-
-[![Star History Chart](https://api.star-history.com/svg?repos=m3rshALL/university_visitor_system&type=Date)](https://star-history.com/#m3rshALL/university_visitor_system&Date)
-
----
-
-### 🚀 Готовы начать использовать систему?
-
-[📥 **Скачать проект**](https://github.com/m3rshALL/university_visitor_system/archive/main.zip) • [📖 **Документация**](https://github.com/m3rshALL/university_visitor_system/wiki) • [🎥 **Видео-демо**](https://youtube.com/demo-visitor-system)
-
----
-
-### 💝 Поддержать проект
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/sagatakimbay)
-[![Sponsor](https://img.shields.io/badge/Sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/annymars)
 
 ---
 
 **Создано с ❤️ для образовательных учреждений по всему миру**
-
-*Последнее обновление: {{ current_date }}*
 
 </div>
 
