@@ -3,7 +3,6 @@
 # 🏫 University Visitor Management System
 ### Современная система учета посетителей для образовательных учреждений
 
-<img src="https://via.placeholder.com/800x200/1f2937/ffffff?text=University+Visitor+System" alt="University Visitor System Banner" style="border-radius: 10px; margin: 20px 0;"/>
 
 [![Django](https://img.shields.io/badge/Django-5.2-092E20?style=for-the-badge&logo=django&logoColor=white)](https://djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.13+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
@@ -44,7 +43,6 @@
 - [🤝 Участие в разработке](#-участие-в-разработке)
 - [🗺️ Дорожная карта](#️-дорожная-карта)
 - [❓ FAQ](#-faq)
-- [💬 Поддержка](#-поддержка)
 - [📜 Лицензия](#-лицензия)
 
 ---
@@ -1479,34 +1477,6 @@ git push origin feature/your-feature-name
 - Планировщик автоматической генерации отчетов
 
 </details>
-
----
-
-## 💬 Поддержка
-
-### 🆘 Получение помощи
-
-#### 📚 Документация
-- 📖 [Официальная документация](https://github.com/m3rshALL/university_visitor_system/wiki)
-- 🎥 [Видео-туториалы](https://youtube.com/playlist/visitor-system-tutorials)
-- 📊 [Примеры использования](https://github.com/m3rshALL/university_visitor_system/tree/main/examples)
-
-#### 💬 Сообщество
-- 🗨️ [GitHub Discussions](https://github.com/m3rshALL/university_visitor_system/discussions) - Вопросы и обсуждения
-- 🐛 [Issues](https://github.com/m3rshALL/university_visitor_system/issues) - Баги и предложения
-- 💼 [LinkedIn](https://linkedin.com/in/sagat-akimbay) - Профессиональные вопросы
-
-#### 📧 Прямая поддержка
-- ✉️ **Email:** [maroccocombo@gmail.com](mailto:maroccocombo@gmail.com)
-- 📱 **Telegram:** [@SagatAkimbay](https://t.me/@annymars23)
-
-### 🎓 Обучающие материалы
-
-#### 📖 Руководства
-- [Руководство администратора](docs/admin-guide.md)
-- [Руководство пользователя](docs/user-guide.md)
-- [Руководство разработчика](docs/developer-guide.md)
-- [API документация](docs/api-reference.md)
 
 ---
 
