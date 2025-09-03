@@ -5,14 +5,29 @@ from django.template import TemplateDoesNotExist
 from django.core.mail import send_mail, BadHeaderError
 from django.contrib.auth.models import User, Group  # Добавляем Group
 from django.db import DatabaseError
+from django.utils import timezone
 from smtplib import SMTPException
+import json
+
+# WebPush imports
+try:
+    from webpush import send_user_notification
+    from webpush.models import PushInformation
+except ImportError:
+    send_user_notification = None
+    PushInformation = None
+
 try:
     from prometheus_client import Counter 
     EMAIL_SEND_TOTAL = Counter('email_send_total', 'Total email send attempts', ['kind'])
     EMAIL_SEND_FAILURES = Counter('email_send_failures_total', 'Total email send failures', ['kind'])
+    WEBPUSH_SEND_TOTAL = Counter('webpush_send_total', 'Total webpush send attempts')
+    WEBPUSH_SEND_FAILURES = Counter('webpush_send_failures_total', 'Total webpush send failures')
 except Exception:
     EMAIL_SEND_TOTAL = None
     EMAIL_SEND_FAILURES = None
+    WEBPUSH_SEND_TOTAL = None
+    WEBPUSH_SEND_FAILURES = None
 
 # Имя группы, члены которой будут получать уведомления о регистрации визитов
 SECURITY_NOTIFICATION_GROUP_NAME = "Security Notifications"  # Убедитесь, что это имя совпадает с созданным в админке
@@ -295,3 +310,187 @@ def send_new_visit_notification_to_security(visit_or_group_instance, visit_kind)
             "Ошибка при отправке уведомления о новом визите группе безопасности: %s",
             exc,
         )
+
+
+# WebPush функции
+
+def send_webpush_notification(user, title, body, data=None, badge=None, icon=None):
+    """
+    Отправка WebPush уведомления пользователю
+    
+    Args:
+        user: Django User объект
+        title: Заголовок уведомления
+        body: Текст уведомления
+        data: Дополнительные данные (dict)
+        badge: Значок для уведомления
+        icon: Иконка уведомления
+    
+    Returns:
+        dict: {
+            'success': bool,
+            'sent_count': int,
+            'errors': list
+        }
+    """
+    if not send_user_notification:
+        logger.warning("WebPush библиотека не установлена")
+        return {'success': False, 'sent_count': 0, 'errors': ['WebPush не настроен']}
+    
+    # Импортируем наши модели
+    from .models import WebPushSubscription, WebPushMessage
+    
+    # Получаем активные подписки пользователя
+    subscriptions = WebPushSubscription.objects.filter(
+        user=user,
+        is_active=True
+    )
+    
+    if not subscriptions.exists():
+        logger.info(f'У пользователя {user.username} нет активных WebPush подписок')
+        return {'success': True, 'sent_count': 0, 'errors': []}
+    
+    # Формируем payload
+    payload = {
+        'title': title,
+        'body': body,
+        'icon': icon or '/static/img/icons/icon-192x192.png',
+        'badge': badge or '/static/img/icons/badge.png',
+        'timestamp': int(timezone.now().timestamp() * 1000),
+    }
+    
+    if data:
+        payload['data'] = data
+    
+    sent_count = 0
+    errors = []
+    
+    # Отправляем уведомления всем подпискам
+    for subscription in subscriptions:
+        try:
+            if WEBPUSH_SEND_TOTAL:
+                WEBPUSH_SEND_TOTAL.inc()
+            
+            # Используем django-webpush для отправки
+            send_user_notification(
+                user=user,
+                payload=payload,
+                ttl=1000
+            )
+            
+            # Логируем успешную отправку
+            WebPushMessage.objects.create(
+                subscription=subscription,
+                title=title,
+                body=body,
+                success=True
+            )
+            
+            sent_count += 1
+            logger.info(f'WebPush уведомление отправлено пользователю {user.username}')
+            
+        except Exception as e:
+            if WEBPUSH_SEND_FAILURES:
+                WEBPUSH_SEND_FAILURES.inc()
+            
+            error_msg = str(e)
+            errors.append(error_msg)
+            
+            # Логируем ошибку
+            WebPushMessage.objects.create(
+                subscription=subscription,
+                title=title,
+                body=body,
+                success=False,
+                error_message=error_msg
+            )
+            
+            logger.error(
+                f'Ошибка отправки WebPush пользователю {user.username}: {error_msg}'
+            )
+            
+            # Если подписка недействительна, деактивируем её
+            if 'invalid' in error_msg.lower() or 'expired' in error_msg.lower():
+                subscription.is_active = False
+                subscription.save()
+                logger.info(f'Подписка {subscription.id} деактивирована из-за ошибки')
+    
+    success = sent_count > 0
+    return {
+        'success': success,
+        'sent_count': sent_count,
+        'errors': errors
+    }
+
+
+def send_webpush_to_multiple_users(users, title, body, data=None):
+    """
+    Отправка WebPush уведомлений нескольким пользователям
+    
+    Args:
+        users: QuerySet или список пользователей
+        title: Заголовок уведомления
+        body: Текст уведомления
+        data: Дополнительные данные
+    
+    Returns:
+        dict: Результат отправки
+    """
+    total_sent = 0
+    total_errors = []
+    
+    for user in users:
+        result = send_webpush_notification(user, title, body, data)
+        total_sent += result['sent_count']
+        total_errors.extend(result['errors'])
+    
+    return {
+        'success': total_sent > 0,
+        'sent_count': total_sent,
+        'errors': total_errors
+    }
+
+
+def create_notification_with_webpush(recipient, title, message,
+                                     notification_type='system',
+                                     send_push=True, **kwargs):
+    """
+    Создает уведомление в БД и опционально отправляет WebPush
+    
+    Args:
+        recipient: User объект
+        title: Заголовок
+        message: Сообщение
+        notification_type: Тип уведомления
+        send_push: Отправлять ли WebPush
+        **kwargs: Дополнительные поля для Notification
+    
+    Returns:
+        tuple: (notification_object, webpush_result)
+    """
+    from .models import Notification
+    
+    # Создаем уведомление в БД
+    notification = Notification.objects.create(
+        recipient=recipient,
+        title=title,
+        message=message,
+        notification_type=notification_type,
+        **kwargs
+    )
+    
+    webpush_result = None
+    if send_push:
+        # Отправляем WebPush
+        webpush_result = send_webpush_notification(
+            user=recipient,
+            title=title,
+            body=message,
+            data={
+                'notification_id': notification.id,
+                'type': notification_type,
+                'url': kwargs.get('action_url', ''),
+            }
+        )
+    
+    return notification, webpush_result

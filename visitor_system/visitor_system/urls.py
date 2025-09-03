@@ -72,6 +72,7 @@ urlpatterns = [
     #path('auth/', include('authentication.urls')), # URL для аутентификации
     path('accounts/', include('allauth.urls')), # URL для аутентификации через allauth
     path('visitors/', include('visitors.urls')), # URL для гостей и визитов
+    path('notifications/', include('notifications.urls')), # URL для уведомлений
     path('classroom-book/', include('classroom_book.urls', namespace='classroom_book')), # URL для бронирования аудиторий
     path('calendar/', include('fullcalendar.urls')), # URL для календаря событий
     path('egov/', include('egov_integration.urls')), # URL для интеграции с egov.kz

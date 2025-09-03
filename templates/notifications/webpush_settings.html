@@ -1,0 +1,153 @@
+{% load static %}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="ti ti-bell me-2"></i>
+            Push-уведомления
+        </h3>
+        <div class="card-actions">
+            <span id="webpush-status" class="badge bg-secondary">
+                Проверяется статус...
+            </span>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col">
+                <p class="text-muted mb-2">
+                    Получайте мгновенные уведомления о важных событиях прямо в браузере.
+                </p>
+                
+                <div id="webpush-support-message" style="display: none;">
+                    <div class="alert alert-warning">
+                        <i class="ti ti-alert-triangle me-2"></i>
+                        <strong>Push-уведомления не поддерживаются</strong><br>
+                        Ваш браузер не поддерживает push-уведомления или они отключены.
+                    </div>
+                </div>
+                
+                <div id="webpush-permission-message" style="display: none;">
+                    <div class="alert alert-info">
+                        <i class="ti ti-info-circle me-2"></i>
+                        <strong>Требуется разрешение</strong><br>
+                        Для получения уведомлений необходимо предоставить разрешение в браузере.
+                        <br><small>Нажмите кнопку ниже и разрешите уведомления во всплывающем окне браузера.</small>
+                    </div>
+                </div>
+                
+                <div id="webpush-blocked-message" style="display: none;">
+                    <div class="alert alert-warning">
+                        <i class="ti ti-lock me-2"></i>
+                        <strong>Уведомления заблокированы</strong><br>
+                        Уведомления заблокированы в настройках браузера. Для их включения:
+                        <ol class="mt-2 mb-0">
+                            <li>Нажмите на иконку замка/информации слева от адресной строки</li>
+                            <li>Выберите "Разрешить" для уведомлений</li>
+                            <li>Обновите страницу</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="btn-group" role="group">
+                    <button 
+                        id="webpush-subscribe-btn" 
+                        type="button" 
+                        class="btn btn-primary"
+                        style="display: none;"
+                    >
+                        <i class="ti ti-bell-plus me-2"></i>
+                        Включить уведомления
+                    </button>
+                    
+                    <button 
+                        id="webpush-unsubscribe-btn" 
+                        type="button" 
+                        class="btn btn-outline-danger"
+                        style="display: none;"
+                    >
+                        <i class="ti ti-bell-off me-2"></i>
+                        Отключить уведомления
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Дополнительная информация -->
+        <div class="mt-3">
+            <small class="text-muted">
+                <i class="ti ti-info-circle me-1"></i>
+                Уведомления помогут вам быть в курсе прибытия гостей, изменения статуса визитов и других важных событий.
+                Вы можете отключить их в любое время.
+            </small>
+        </div>
+        
+        <!-- Тестовая кнопка для администраторов -->
+        {% if user.is_staff %}
+        <div class="mt-3 border-top pt-3">
+            <h4 class="text-muted mb-2">Тестирование (только для администраторов)</h4>
+            <button 
+                id="webpush-test-btn" 
+                type="button" 
+                class="btn btn-outline-info btn-sm"
+                onclick="sendTestNotification()"
+            >
+                <i class="ti ti-send me-2"></i>
+                Отправить тестовое уведомление
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if user.is_staff %}
+<script>
+async function sendTestNotification() {
+    const btn = document.getElementById('webpush-test-btn');
+    const originalText = btn.innerHTML;
+    
+    try {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Отправляется...';
+        
+        const response = await fetch('/notifications/send-notification/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                              document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1] || ''
+            },
+            body: JSON.stringify({
+                title: 'Тестовое уведомление',
+                body: 'Это тестовое push-уведомление от системы пропусков AITU',
+                user_id: {{ user.id }}
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            if (window.showToast) {
+                window.showToast('Тестовое уведомление отправлено!', 'success');
+            } else {
+                alert('Тестовое уведомление отправлено!');
+            }
+        } else {
+            throw new Error(data.message || 'Ошибка отправки');
+        }
+        
+    } catch (error) {
+        console.error('Ошибка отправки тестового уведомления:', error);
+        if (window.showToast) {
+            window.showToast('Ошибка отправки: ' + error.message, 'error');
+        } else {
+            alert('Ошибка отправки: ' + error.message);
+        }
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
+}
+</script>
+{% endif %}

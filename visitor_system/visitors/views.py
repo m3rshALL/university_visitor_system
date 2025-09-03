@@ -175,6 +175,45 @@ def register_guest_view(request):
                             "Ошибка при вызове send_new_visit_notification_to_security для гостя: %s",
                             e,
                         )
+                    
+                    # Отправляем WebPush уведомления
+                    try:
+                        from notifications.utils import send_webpush_notification, send_webpush_to_multiple_users
+                        from django.contrib.auth.models import Group
+                        
+                        # WebPush принимающему сотруднику
+                        if visit.employee:
+                            send_webpush_notification(
+                                user=visit.employee,
+                                title=f"Новый визит: {visit.guest.full_name}",
+                                body=f"К вам {'зарегистрирован визит' if registration_type == 'later' else 'идет гость'}: {visit.guest.full_name}. Цель: {visit.purpose}",
+                                data={
+                                    'visit_id': visit.id,
+                                    'type': 'guest_visit',
+                                    'action': 'created'
+                                }
+                            )
+                        
+                        # WebPush службе безопасности
+                        try:
+                            security_group = Group.objects.get(name="Reception")
+                            security_users = security_group.user_set.filter(is_active=True)
+                            if security_users.exists():
+                                send_webpush_to_multiple_users(
+                                    users=security_users,
+                                    title="Новая регистрация визита",
+                                    body=f"Зарегистрирован {'будущий' if registration_type == 'later' else 'текущий'} визит: {visit.guest.full_name} к {visit.employee.get_full_name() if visit.employee else 'сотруднику'}",
+                                    data={
+                                        'visit_id': visit.id,
+                                        'type': 'security_notification',
+                                        'action': 'guest_registered'
+                                    }
+                                )
+                        except Group.DoesNotExist:
+                            logger.warning("Группа Reception не найдена для WebPush уведомлений")
+                        
+                    except Exception as e:
+                        logger.error("Ошибка отправки WebPush уведомлений при регистрации гостя: %s", e)
                     # --------------------------------------------
                     messages.success(request, f"Визит гостя {visit.guest.full_name} успешно зарегистрирован ({'сейчас' if registration_type == 'now' else 'заранее'})!")
                     if request.htmx:
@@ -695,6 +734,45 @@ def mark_guest_exit_view(request, visit_id):
         )
         logger.info("Поставлена задача на отправку уведомления о выходе для визита %s", visit_id)
 
+    # Отправляем WebPush уведомления о выходе
+    try:
+        from notifications.utils import send_webpush_notification, send_webpush_to_multiple_users
+        from django.contrib.auth.models import Group
+        
+        # WebPush принимающему сотруднику
+        if visit.employee:
+            send_webpush_notification(
+                user=visit.employee,
+                title=f"Гость покинул здание",
+                body=f"{visit.guest.full_name} покинул здание в {visit.exit_time.strftime('%H:%M')}",
+                data={
+                    'visit_id': visit.id,
+                    'type': 'guest_exit',
+                    'action': 'checked_out'
+                }
+            )
+        
+        # WebPush службе безопасности
+        try:
+            security_group = Group.objects.get(name="Reception")
+            security_users = security_group.user_set.filter(is_active=True)
+            if security_users.exists():
+                send_webpush_to_multiple_users(
+                    users=security_users,
+                    title="Выход гостя",
+                    body=f"{visit.guest.full_name} покинул здание в {visit.exit_time.strftime('%H:%M')}",
+                    data={
+                        'visit_id': visit.id,
+                        'type': 'security_notification',
+                        'action': 'guest_exit'
+                    }
+                )
+        except Group.DoesNotExist:
+            logger.warning("Группа Reception не найдена для WebPush уведомлений о выходе")
+            
+    except Exception as e:
+        logger.error("Ошибка отправки WebPush уведомлений при выходе гостя: %s", e)
+
     messages.success(request, f"Выход гостя '{visit.guest.full_name}' успешно зарегистрирован.")
     # HX: вернуть обновлённую таблицу
     if request.htmx:
@@ -766,6 +844,32 @@ def mark_student_exit_view(request, visit_id):
             )
         except Exception:
             logger.exception('Failed to write AuditLog for student exit')
+
+        # Отправляем WebPush уведомления о выходе студента
+        try:
+            from notifications.utils import send_webpush_to_multiple_users
+            from django.contrib.auth.models import Group
+            
+            # WebPush службе безопасности о выходе студента
+            try:
+                security_group = Group.objects.get(name="Reception")
+                security_users = security_group.user_set.filter(is_active=True)
+                if security_users.exists():
+                    send_webpush_to_multiple_users(
+                        users=security_users,
+                        title="Выход студента/абитуриента",
+                        body=f"Студент {visit.guest.full_name} покинул здание в {visit.exit_time.strftime('%H:%M')}",
+                        data={
+                            'visit_id': visit.id,
+                            'type': 'security_notification',
+                            'action': 'student_exit'
+                        }
+                    )
+            except Group.DoesNotExist:
+                logger.warning("Группа Reception не найдена для WebPush уведомлений о выходе студентов")
+                
+        except Exception as e:
+            logger.error("Ошибка отправки WebPush уведомлений при выходе студента: %s", e)
 
         messages.success(request, f"Выход посетителя '{visit.guest.full_name}' успешно зарегистрирован.")
         if request.htmx:
@@ -1342,6 +1446,32 @@ def register_student_visit_view(request):
                         "Ошибка при вызове send_new_visit_notification_to_security для студента: %s",
                         e,
                     )
+                
+                # Отправляем WebPush уведомления для студенческих визитов
+                try:
+                    from notifications.utils import send_webpush_to_multiple_users
+                    from django.contrib.auth.models import Group
+                    
+                    # WebPush службе безопасности о регистрации студента
+                    try:
+                        security_group = Group.objects.get(name="Reception")
+                        security_users = security_group.user_set.filter(is_active=True)
+                        if security_users.exists():
+                            send_webpush_to_multiple_users(
+                                users=security_users,
+                                title="Регистрация студента/абитуриента",
+                                body=f"Зарегистрирован визит студента: {student_visit.guest.full_name} в {student_visit.department.name if student_visit.department else 'университет'}",
+                                data={
+                                    'visit_id': student_visit.id,
+                                    'type': 'security_notification',
+                                    'action': 'student_registered'
+                                }
+                            )
+                    except Group.DoesNotExist:
+                        logger.warning("Группа Reception не найдена для WebPush уведомлений студентов")
+                        
+                except Exception as e:
+                    logger.error("Ошибка отправки WebPush уведомлений при регистрации студента: %s", e)
                 # --------------------------------------------
                 messages.success(request, f"Визит студента {student_visit.guest.full_name} успешно зарегистрирован!")
                 if request.htmx:

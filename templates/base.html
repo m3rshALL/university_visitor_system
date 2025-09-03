@@ -440,6 +440,11 @@ document.addEventListener('htmx:responseError', function (e) {
 
 
 
+<!-- WebPush Notifications -->
+{% if user.is_authenticated %}
+<script src="{% static 'js/webpush.js' %}" defer></script>
+{% endif %}
+
 {# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
 {% block extra_scripts %}{% endblock %}
 
@@ -461,4 +466,4 @@ if ('serviceWorker' in navigator) {
 
 </body>
 
-</html>
+</html>ы

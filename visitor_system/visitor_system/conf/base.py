@@ -4,7 +4,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 
-load_dotenv()
+# Загружаем .env файл из директории conf
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
 	'channels',
 	'django_htmx',
 	'guardian',
+	'webpush',
 
 	'authentication',
 	'visitors',
@@ -510,5 +513,14 @@ PWA_APP_FETCH_URL_PATTERNS = []
 PWA_SERVICE_WORKER_EXCLUDE_URLS = []
 PWA_DEBUG = DEBUG
 PWA_MANIFEST_FILENAME = 'manifest.json'
+
+
+# WebPush настройки
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": os.getenv('VAPID_PUBLIC_KEY', ''),
+    "VAPID_PRIVATE_KEY": os.getenv('VAPID_PRIVATE_KEY', ''),
+    "VAPID_ADMIN_EMAIL": os.getenv('VAPID_ADMIN_EMAIL', DEFAULT_FROM_EMAIL),
+    "GCM_API_KEY": os.getenv('GCM_API_KEY', ''),  # Для старых браузеров (optional)
+}
 
 

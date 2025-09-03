@@ -280,49 +280,185 @@ function isAsset(url) {
     return url.match(/\.(js|css|woff2?|ttf|eot)$/i);
 }
 
-// Обработка push-уведомлений (если поддерживается)
+// Обработка push-уведомлений
 self.addEventListener('push', event => {
-    if (!event.data) return;
+    console.log('Push-уведомление получено:', event);
     
-    // Получаем данные уведомления
-    const data = event.data.json();
+    if (!event.data) {
+        console.log('Push-уведомление без данных');
+        return;
+    }
     
-    // Показываем уведомление
-    const title = data.title || 'Система пропусков';
-    const options = {
-        body: data.body || 'Новое уведомление',
-        icon: data.icon || '/static/img/icons/icon-72x72.png',
-        badge: data.badge || '/static/img/icons/badge-72x72.png',
-        data: data.data || {}
-    };
-    
-    event.waitUntil(
-        self.registration.showNotification(title, options)
-    );
+    try {
+        // Получаем данные уведомления
+        const data = event.data.json();
+        console.log('Данные push-уведомления:', data);
+        
+        // Параметры уведомления
+        const title = data.title || 'Система пропусков AITU';
+        const options = {
+            body: data.body || 'Новое уведомление',
+            icon: data.icon || '/static/img/icons/icon-192x192.png',
+            badge: data.badge || '/static/img/icons/icon-72x72.png',
+            tag: data.tag || 'default',
+            timestamp: data.timestamp || Date.now(),
+            requireInteraction: data.requireInteraction || false,
+            silent: data.silent || false,
+            data: data.data || {},
+            actions: data.actions || []
+        };
+
+        // Добавляем действия для определенных типов уведомлений
+        if (data.data && data.data.type) {
+            switch (data.data.type) {
+                case 'visit_approved':
+                case 'guest_arrived':
+                    options.actions = [
+                        {
+                            action: 'view',
+                            title: 'Посмотреть',
+                            icon: '/static/img/icons/icon-72x72.png'
+                        },
+                        {
+                            action: 'dismiss',
+                            title: 'Закрыть'
+                        }
+                    ];
+                    break;
+                case 'booking_confirmed':
+                    options.actions = [
+                        {
+                            action: 'view_booking',
+                            title: 'Мои бронирования',
+                            icon: '/static/img/icons/icon-72x72.png'
+                        }
+                    ];
+                    break;
+            }
+        }
+        
+        // Показываем уведомление
+        event.waitUntil(
+            self.registration.showNotification(title, options)
+        );
+        
+    } catch (error) {
+        console.error('Ошибка обработки push-уведомления:', error);
+        
+        // Показываем базовое уведомление в случае ошибки
+        event.waitUntil(
+            self.registration.showNotification('Система пропусков AITU', {
+                body: 'Новое уведомление',
+                icon: '/static/img/icons/icon-192x192.png',
+                badge: '/static/img/icons/icon-72x72.png'
+            })
+        );
+    }
 });
 
 // Обработка клика по уведомлению
 self.addEventListener('notificationclick', event => {
+    console.log('Клик по уведомлению:', event);
+    
     event.notification.close();
     
-    // Получаем данные, привязанные к уведомлению
-    const data = event.notification.data;
-    const url = data.url || '/';
+    // Получаем данные уведомления
+    const data = event.notification.data || {};
+    const action = event.action;
+    
+    // Определяем URL для открытия
+    let targetUrl = '/';
+    
+    if (action === 'dismiss') {
+        // Просто закрываем уведомление
+        return;
+    }
+    
+    // Обработка действий
+    switch (action) {
+        case 'view':
+            targetUrl = data.url || '/visitors/history/';
+            break;
+        case 'view_booking':
+            targetUrl = '/classroom/my-bookings/';
+            break;
+        default:
+            // Обработка по типу уведомления
+            if (data.type) {
+                switch (data.type) {
+                    case 'visit_approved':
+                    case 'visit_denied':
+                    case 'guest_arrived':
+                        targetUrl = data.url || '/visitors/history/';
+                        break;
+                    case 'booking_confirmed':
+                    case 'booking_cancelled':
+                        targetUrl = '/classroom/my-bookings/';
+                        break;
+                    case 'system':
+                        targetUrl = data.url || '/';
+                        break;
+                    default:
+                        targetUrl = data.url || '/';
+                }
+            } else {
+                targetUrl = data.url || '/';
+            }
+    }
+    
+    console.log('Открываем URL:', targetUrl);
     
     // Открываем нужную страницу при клике на уведомление
     event.waitUntil(
-        clients.matchAll({ type: 'window' })
-            .then(windowClients => {
-                // Проверяем, есть ли открытые окна
-                for (let client of windowClients) {
-                    if (client.url === url && 'focus' in client) {
-                        return client.focus();
-                    }
+        clients.matchAll({ 
+            type: 'window',
+            includeUncontrolled: true 
+        }).then(windowClients => {
+            // Проверяем, есть ли открытые окна с нужным URL
+            for (let client of windowClients) {
+                if (client.url === targetUrl && 'focus' in client) {
+                    return client.focus();
                 }
-                // Если нет открытых окон, открываем новое
-                if (clients.openWindow) {
-                    return clients.openWindow(url);
+            }
+            
+            // Проверяем, есть ли открытые окна с тем же origin
+            for (let client of windowClients) {
+                if (client.url.startsWith(self.location.origin) && 'navigate' in client) {
+                    return client.navigate(targetUrl).then(() => client.focus());
                 }
-            })
+            }
+            
+            // Если нет подходящих окон, открываем новое
+            if (clients.openWindow) {
+                return clients.openWindow(targetUrl);
+            }
+        }).catch(error => {
+            console.error('Ошибка при открытии страницы:', error);
+            // Fallback: пробуем просто открыть новое окно
+            return clients.openWindow(targetUrl);
+        })
     );
+});
+
+// Обработка закрытия уведомления
+self.addEventListener('notificationclose', event => {
+    console.log('Уведомление закрыто:', event);
+    
+    // Можно отправить аналитику о закрытии уведомления
+    const data = event.notification.data || {};
+    if (data.notification_id) {
+        // Отправляем информацию о закрытии уведомления на сервер (опционально)
+        fetch('/notifications/track-close/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                notification_id: data.notification_id,
+                action: 'close'
+            })
+        }).catch(error => {
+            console.log('Не удалось отправить аналитику закрытия:', error);
+        });
+    }
 });
