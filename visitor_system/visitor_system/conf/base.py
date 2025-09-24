@@ -22,6 +22,17 @@ else:
 dev_hosts = {'127.0.0.1', 'localhost', 'testserver', '0.0.0.0', 'host.docker.internal'}
 if DEBUG:
     ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | dev_hosts)
+    # Добавляем поддержку ngrok доменов
+    ngrok_hosts = ['.ngrok-free.app', '.ngrok.io']
+    ALLOWED_HOSTS.extend(ngrok_hosts)
+    # Если есть конкретный ngrok домен, добавляем его
+    specific_ngrok_host = os.getenv('NGROK_DOMAIN', '').strip()
+    if specific_ngrok_host:
+        # Убираем схему если есть
+        if specific_ngrok_host.startswith(('http://', 'https://')):
+            specific_ngrok_host = specific_ngrok_host.split('://', 1)[1]
+        if specific_ngrok_host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(specific_ngrok_host)
 else:
     ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | {'testserver'})  # В проде добавим только testserver для тестов/CI
 INTERNAL_IPS = ['127.0.0.1']
@@ -282,10 +293,24 @@ USE_X_FORWARDED_HOST = True
 IIN_ENCRYPTION_KEY = os.getenv('IIN_ENCRYPTION_KEY', '')
 
 CSRF_TRUSTED_ORIGINS = [
-	*[
-		origin for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if origin
-	]
+	origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()
 ]
+
+# Добавляем ngrok домены для разработки в DEBUG режиме
+if DEBUG:
+	# Добавляем поддержку ngrok доменов
+	ngrok_domains = [
+		'https://*.ngrok-free.app',
+		'https://*.ngrok.io',
+	]
+	# Если есть конкретный домен в переменной окружения, добавляем его
+	specific_ngrok = os.getenv('NGROK_DOMAIN', '').strip()
+	if specific_ngrok:
+		if not specific_ngrok.startswith(('http://', 'https://')):
+			specific_ngrok = f'https://{specific_ngrok}'
+		CSRF_TRUSTED_ORIGINS.append(specific_ngrok)
+	
+	CSRF_TRUSTED_ORIGINS.extend(ngrok_domains)
 
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
