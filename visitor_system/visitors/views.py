@@ -153,6 +153,31 @@ def register_guest_view(request):
             else:
                 try:
                     visit = form.save(request.user, registration_type=registration_type)
+                    # Hikvision: поставить задачу на привязку FaceID (если приложение подключено)
+                    try:
+                        from hikvision_integration.models import HikAccessTask
+                        from hikvision_integration.tasks import enroll_face_task
+                        guest_obj = getattr(visit, 'guest', None)
+                        guest_id = getattr(guest_obj, 'id', None) or getattr(visit, 'guest_id', None)
+                        guest_name = getattr(guest_obj, 'full_name', None) or getattr(visit, 'guest_full_name', None) or 'Guest'
+                        payload = {
+                            'guest_id': guest_id,
+                            'name': guest_name,
+                            # TODO: добавить image_bytes и door_ids при появлении данных
+                        }
+                        task = HikAccessTask.objects.create(
+                            kind='enroll_face',
+                            payload=payload,
+                            status='queued',
+                            visit_id=visit.id,
+                            guest_id=guest_id,
+                        )
+                        try:
+                            enroll_face_task.delay(task.id)
+                        except Exception:
+                            logger.exception('Failed to enqueue enroll_face_task')
+                    except Exception:
+                        logger.exception('Hikvision enroll scheduling failed')
                     # Audit: create
                     try:
                         AuditLog.objects.create(
@@ -703,6 +728,25 @@ def mark_guest_exit_view(request, visit_id):
     visit.exit_time = timezone.now()
     visit.status = STATUS_CHECKED_OUT
     visit.save(update_fields=['exit_time', 'status']) # Обновляем только нужные поля
+    # Hikvision: снять доступ по выходу
+    try:
+        from hikvision_integration.models import HikAccessTask
+        from hikvision_integration.tasks import revoke_access_task
+        guest_obj = getattr(visit, 'guest', None)
+        guest_id = getattr(guest_obj, 'id', None) or getattr(visit, 'guest_id', None)
+        task = HikAccessTask.objects.create(
+            kind='revoke_access',
+            payload={'guest_id': guest_id},
+            status='queued',
+            visit_id=visit.id,
+            guest_id=guest_id,
+        )
+        try:
+            revoke_access_task.delay(task.id)
+        except Exception:
+            logger.exception('Failed to enqueue revoke_access_task')
+    except Exception:
+        logger.exception('Hikvision revoke scheduling failed')
     # Audit: update
     try:
         AuditLog.objects.create(

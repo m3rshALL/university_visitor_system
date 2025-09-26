@@ -151,7 +151,7 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-4 col-lg-3">
-                        <a href="{% url 'register_guest' %}" class="card card-link card-link-pop">
+                        <a href="{% url 'register_guest' %}" class="card card-link card-link-pop" hx-boost="false">
                             <div class="card-body text-center">
                                 <div class="text-primary mb-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -281,7 +281,7 @@
                         </div>
                     {% endcomment %}
                     <div class="col-md-4 col-lg-3">
-                        <a href="{% url 'visit_history' %}" class="card card-link card-link-pop">
+                        <a href="{% url 'visit_history' %}" class="card card-link card-link-pop" hx-boost="false">
                             <div class="card-body text-center">
                                 <div class="text-azure mb-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -866,7 +866,7 @@
             <div class="card-header">
                 <h3 class="card-title">Недавние визиты</h3>
                 <div class="card-actions">
-                    <a href="{% url 'visit_history' %}" class="btn btn-sm">
+                    <a href="{% url 'visit_history' %}" class="btn btn-sm" hx-boost="false">
                         Все визиты
                     </a>
                 </div>
@@ -967,7 +967,7 @@
                             <div class="col">Регистрация нового гостя</div>
                         </div>
                     </a>
-                    <a href="{% url 'visit_history' %}" class="list-group-item list-group-item-action">
+                    <a href="{% url 'visit_history' %}" class="list-group-item list-group-item-action" hx-boost="false">
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon text-info" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -1024,7 +1024,15 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Мои текущие гости (ожидают меня)</h3>
+                <div class="card-actions">
+                    <button type="button" class="btn btn-icon btn-sm" data-bs-toggle="collapse" data-bs-target="#collapse-my-current-guests" aria-expanded="false" aria-controls="collapse-my-current-guests" title="Свернуть/развернуть">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                </div>
             </div>
+            <div class="collapse" id="collapse-my-current-guests">
             <div class="card-body">
                 {% if my_current_guests %}
                     <div class="list-group"> {# Используем div вместо ul для лучшей структуры #}
@@ -1080,6 +1088,7 @@
                     </div>
                 {% endif %}
             </div>
+            </div>
         </div>
     </div>
     <div class="col-md-4"> {# Оставим этот блок для истории #}
@@ -1087,9 +1096,14 @@
             <div class="card-header">
                 <h3 class="card-title">Моя недавняя история визитов</h3>
                 <div class="card-actions">
-                    <a href="{% url 'visit_history' %}" class="btn btn-sm">Вся история</a>
+                    <button type="button" class="btn btn-icon btn-sm" data-bs-toggle="collapse" data-bs-target="#collapse-my-recent-history" aria-expanded="false" aria-controls="collapse-my-recent-history" title="Свернуть/развернуть">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
                 </div>
             </div>
+            <div class="collapse" id="collapse-my-recent-history">
             <div class="card-body">
                 {% if my_visit_history %}
                     <div class="divide-y">
@@ -1114,6 +1128,7 @@
                         <p class="empty-title text-muted">У вас еще нет записей в истории визитов</p>
                     </div>
                 {% endif %}
+            </div>
             </div>        
         </div>
     </div>

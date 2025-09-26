@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary" data-go-back data-back-url="{% url 'employee_dashboard' %}">
+                        <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary" data-go-back data-back-url="{% url 'employee_dashboard' %}" hx-boost="false">
                             <i class="bi bi-arrow-left me-2" aria-hidden="true"></i><span aria-hidden="true">Назад</span>
                             <span class="visually-hidden">Назад</span>
                         </a>
@@ -195,7 +195,7 @@
                 <div class="row sticky-submit">
                     <div class="col-md-12">
                         <div class="d-flex justify-content-between mt-3 mb-4">
-                            <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary">
+                            <a href="{% url 'employee_dashboard' %}" class="btn btn-outline-secondary" hx-boost="false">
                                 <i class="bi bi-x-circle me-2"></i>Отмена
                             </a>
                             <button type="submit" class="btn btn-primary" hx-indicator="#student-form-container">

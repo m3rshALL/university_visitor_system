@@ -74,9 +74,10 @@ urlpatterns = [
     path('visitors/', include('visitors.urls')), # URL для гостей и визитов
     path('notifications/', include('notifications.urls')), # URL для уведомлений
     path('classroom-book/', include('classroom_book.urls', namespace='classroom_book')), # URL для бронирования аудиторий
-    path('calendar/', include('fullcalendar.urls')), # URL для календаря событий
+    path('calendar/', include(('fullcalendar.urls', 'fullcalendar'), namespace='fullcalendar')), # URL для календаря событий
     path('egov/', include('egov_integration.urls')), # URL для интеграции с egov.kz
     path('dashboard/', include('realtime_dashboard.urls')), # URL для дашборда в реальном времени
+    path('hikvision/', include('hikvision_integration.urls', namespace='hikvision_integration')),
     # API schema & Swagger UI (если доступен drf-spectacular)
     *([
         path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

@@ -9,38 +9,25 @@
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
-    padding: 20px;
+    gap: 12px;
+    padding: 0;
 }
 
-.widget {
-    background: white;
+.card.widget {
+    background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    margin-top: 12px;
 }
 
-.widget:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+.card.widget:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
 }
 
-.widget-header {
-    display: flex;
-    justify-content: between;
-    align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-}
+/* Заголовок теперь использует .card-header, поэтому отдельные стили .widget-header не требуются */
 
-.widget-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
-}
+/* Заголовки берет .card-title */
 
 .widget-refresh {
     color: #666;
@@ -54,13 +41,15 @@
 
 .counter-widget {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
 }
 
-.counter-value {
-    font-size: 48px;
-    font-weight: bold;
-    margin: 15px 0;
-}
+.counter-value { font-size: 40px; font-weight: 700; margin: 10px 0; }
+.counter-value { line-height: 1; }
 
 .counter-label {
     font-size: 14px;
@@ -82,9 +71,7 @@
     color: #dc3545;
 }
 
-.chart-widget {
-    height: 300px;
-}
+.chart-widget { height: 280px; }
 
 .activity-feed {
     max-height: 400px;
@@ -224,79 +211,117 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div id="toast-root" class="toast-container"></div>
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3">
-                    <i class="fas fa-tachometer-alt me-2"></i>
-                    Дашборд в реальном времени
-                </h1>
-                <div class="d-flex align-items-center gap-2">
-                    <select id="filter-department" class="form-select form-select-sm" style="width:auto;">
-                        <option value="">Все департаменты</option>
-                    </select>
-                    <select id="filter-period" class="form-select form-select-sm" style="width:auto;">
-                        <option value="24h">Последние 24 часа</option>
-                        <option value="today">Сегодня</option>
-                        <option value="7d">7 дней</option>
-                        <option value="30d">30 дней</option>
-                    </select>
-                    <button class="btn btn-outline-secondary btn-sm" id="btn-export-csv">
-                        <i class="fas fa-file-csv me-1"></i>
-                        Экспорт CSV
-                    </button>
-                    <span class="badge bg-success me-2" id="connection-status">
-                        <i class="fas fa-wifi me-1"></i>
-                        Подключено
-                    </span>
-                    <button class="btn btn-outline-primary btn-sm" id="refresh-all-btn">
-                        <i class="fas fa-sync-alt me-1"></i>
-                        Обновить все
-                    </button>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-2 me-2 icon-tabler icons-tabler-outline icon-tabler-history" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 8l0 4l2 2" />
+                            <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                        </svg>
+                        Дашборд в реальном времени
+                    </h2>
                 </div>
             </div>
-            
-            {% if has_new_widgets %}
-            <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
-                <strong>Внимание!</strong> Добавлены новые виджеты. Если они не отображаются, 
-                <a href="?update_widgets=1&clear_cache=1" class="alert-link">нажмите сюда</a> для обновления дашборда.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endif %}
-            
-            {% if debug_mode %}
-                {% include "realtime_dashboard/debug_panel.html" %}
-            {% endif %}
         </div>
     </div>
-    
-    <div class="dashboard-grid" id="dashboard-grid">
-        {% for widget in widgets %}
-        <div class="widget grid-w-{{ widget.width }} grid-h-{{ widget.height }}" 
-             data-widget-id="{{ widget.id }}" 
-             data-widget-type="{{ widget.widget_type }}"
-             data-refresh-interval="{{ widget.refresh_interval }}"
-             data-metric="{{ widget.config.metric|default:'' }}">
-            
-            <div class="widget-header">
-                <h5 class="widget-title">{{ widget.title }}</h5>
-                <span class="widget-refresh" data-widget-id="{{ widget.id }}">
-                    <i class="fas fa-sync-alt"></i>
-                </span>
-            </div>
-            
-            <div class="widget-content" id="widget-content-{{ widget.id }}">
-                <div class="py-3" aria-hidden="true">
-                    <div class="skeleton skel-rect"></div>
-                    <div class="skel-line lg"></div>
-                    <div class="skel-line"></div>
-                    <div class="skel-line sm"></div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <div id="toast-root" class="toast-container"></div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-body p-3">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-auto">
+                                    <select id="filter-department" class="form-select form-select-sm">
+                                        <option value="">Все департаменты</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <select id="filter-period" class="form-select form-select-sm">
+                                        <option value="24h">Последние 24 часа</option>
+                                        <option value="today">Сегодня</option>
+                                        <option value="7d">7 дней</option>
+                                        <option value="30d">30 дней</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-outline-secondary btn-sm" id="btn-export-csv">
+                                        <i class="fas fa-file-csv me-1"></i>
+                                        Экспорт CSV
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="badge bg-success-lt" id="connection-status">
+                                        <i class="fas fa-wifi me-1"></i>
+                                        Подключено
+                                    </span>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-outline-primary btn-sm" id="refresh-all-btn">
+                                        <i class="fas fa-sync-alt me-1"></i>
+                                        Обновить все
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if has_new_widgets %}
+                    <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
+                        <strong>Внимание!</strong> Добавлены новые виджеты. Если они не отображаются,
+                        <a href="?update_widgets=1&clear_cache=1" class="alert-link">нажмите сюда</a> для обновления дашборда.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+
+                    {% if debug_mode %}
+                        {% include "realtime_dashboard/debug_panel.html" %}
+                    {% endif %}
                 </div>
             </div>
+
+            <div class="dashboard-grid" id="dashboard-grid">
+                {% for widget in widgets %}
+                <div class="card widget grid-w-{{ widget.width }} grid-h-{{ widget.height }}"
+                     data-widget-id="{{ widget.id }}"
+                     data-widget-type="{{ widget.widget_type }}"
+                     data-refresh-interval="{{ widget.refresh_interval }}"
+                     data-metric="{{ widget.config.metric|default:'' }}">
+                    <div class="card-header d-flex justify-content-between align-items-center py-2 px-3">
+                        <h5 class="card-title widget-title mb-0">{{ widget.title }}</h5>
+                        <div class="d-flex align-items-center gap-2">
+                            {% if widget.widget_type == 'activity_feed' or widget.widget_type == 'table' %}
+                            <button type="button" class="btn btn-icon btn-sm" data-bs-toggle="collapse" data-bs-target="#collapse-widget-{{ widget.id }}" aria-expanded="true" aria-controls="collapse-widget-{{ widget.id }}" title="Свернуть/развернуть">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            {% endif %}
+                            <span class="widget-refresh" data-widget-id="{{ widget.id }}" title="Обновить виджет">
+                                <i class="fas fa-sync-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="collapse-widget-{{ widget.id }}" class="collapse show">
+                        <div class="card-body widget-content p-3" id="widget-content-{{ widget.id }}">
+                            <div class="py-3" aria-hidden="true">
+                                <div class="skeleton skel-rect"></div>
+                                <div class="skel-line lg"></div>
+                                <div class="skel-line"></div>
+                                <div class="skel-line sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}
@@ -1155,7 +1180,8 @@ function renderCounterWidget(content, data) {
         label = 'Минут в среднем';
     }
     
-    const colorClass = config.color ? `color-${config.color}` : 'color-blue';
+    // Фикс стабильного цвета: всегда используем синий, игнорируем config.color из ответа
+    const colorClass = 'color-blue';
     
     content.innerHTML = `
         <div class="counter-widget">

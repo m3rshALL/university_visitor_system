@@ -73,6 +73,7 @@ INSTALLED_APPS = [
 	'fullcalendar',
 	'egov_integration',
 	'realtime_dashboard',
+	'hikvision_integration',
 ]
 
 # Подключаем drf_spectacular, только если пакет доступен
