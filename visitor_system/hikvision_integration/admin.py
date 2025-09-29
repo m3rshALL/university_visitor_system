@@ -1,5 +1,31 @@
 from django.contrib import admin
-from .models import HikDevice, HikFaceLibrary, HikPersonBinding, HikAccessTask, HikEventLog
+from .models import HikCentralServer, HikDevice, HikFaceLibrary, HikPersonBinding, HikAccessTask, HikEventLog
+
+
+@admin.register(HikCentralServer)
+class HikCentralServerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'base_url', 'integration_key', 'enabled', 'created_at')
+    list_filter = ('enabled',)
+    search_fields = ('name', 'base_url', 'integration_key')
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'base_url', 'enabled')
+        }),
+        ('Integration Partner', {
+            'fields': ('integration_key', 'integration_secret'),
+            'description': 'Учетные данные Integration Partner из HikCentral Professional'
+        }),
+        ('Пользователь HikCentral', {
+            'fields': ('username', 'password'),
+            'description': 'Учетные данные пользователя для доступа к HikCentral'
+        }),
+        ('Токен доступа', {
+            'fields': ('access_token', 'token_expires_at'),
+            'classes': ('collapse',),
+            'description': 'Автоматически управляемые поля для OAuth2 токена'
+        }),
+    )
+    readonly_fields = ('access_token', 'token_expires_at', 'created_at', 'updated_at')
 
 
 @admin.register(HikDevice)

@@ -1,11 +1,28 @@
 from celery import shared_task
 from django.utils import timezone
-from .models import HikAccessTask, HikDevice, HikPersonBinding
-from .services import HikSession, ensure_person, upload_face, assign_access, revoke_access
+from django.conf import settings
+from .models import HikAccessTask, HikDevice, HikPersonBinding, HikCentralServer
+from .services import (
+    HikSession,
+    ensure_person,
+    upload_face,
+    assign_access,
+    revoke_access,
+    HikCentralSession,
+    ensure_person_hikcentral,
+    upload_face_hikcentral,
+    assign_access_hikcentral,
+    revoke_access_hikcentral,
+)
 
 
-def _get_session(device: HikDevice) -> HikSession:
-    return HikSession(device.host, device.port, device.username, device.password, device.verify_ssl)
+def _get_device_session(device: HikDevice) -> HikSession:
+    return HikSession(device)
+
+
+def _get_hikcentral_session() -> HikCentralSession | None:
+    server = HikCentralServer.objects.filter(enabled=True).first()
+    return HikCentralSession(server) if server else None
 
 
 @shared_task(queue='hikvision')
@@ -20,7 +37,9 @@ def enroll_face_task(task_id: int) -> None:
         device = task.device or HikDevice.objects.filter(enabled=True, is_primary=True).first()
         if not device:
             raise RuntimeError('No active HikDevice configured')
-        session = _get_session(device)
+        use_hikcentral = True  # включаем HikCentral по умолчанию
+        hc_session = _get_hikcentral_session() if use_hikcentral else None
+        session = _get_device_session(device)
         payload = task.payload or {}
         employee_no = str(payload.get('employee_no') or payload.get('guest_id') or task.guest_id)
         name = payload.get('name') or 'Guest'
@@ -32,13 +51,22 @@ def enroll_face_task(task_id: int) -> None:
         if isinstance(image_bytes, str):
             image_bytes = image_bytes.encode('utf-8')
 
-        person_id = ensure_person(session, employee_no, name, valid_from, valid_to)
+        if hc_session:
+            person_id = ensure_person_hikcentral(hc_session, employee_no, name, valid_from, valid_to)
+        else:
+            person_id = ensure_person(session, employee_no, name, valid_from, valid_to)
         face_id = ''
         if image_bytes:
-            face_id = upload_face(session, face_lib_id, image_bytes, person_id)
+            if hc_session:
+                face_id = upload_face_hikcentral(hc_session, face_lib_id, image_bytes, person_id)
+            else:
+                face_id = upload_face(session, face_lib_id, image_bytes, person_id)
         # Двери по умолчанию — из конфигурации устройства
         door_ids = payload.get('door_ids') or (device.doors_json if isinstance(device.doors_json, list) else [])
-        assign_access(session, person_id, door_ids, valid_from, valid_to)
+        if hc_session:
+            assign_access_hikcentral(hc_session, person_id, door_ids, valid_from, valid_to)
+        else:
+            assign_access(session, person_id, door_ids, valid_from, valid_to)
         HikPersonBinding.objects.update_or_create(
             guest_id=task.guest_id or 0,
             device=device,
@@ -72,7 +100,9 @@ def revoke_access_task(task_id: int) -> None:
         device = task.device or HikDevice.objects.filter(enabled=True, is_primary=True).first()
         if not device:
             raise RuntimeError('No active HikDevice configured')
-        session = _get_session(device)
+        use_hikcentral = True
+        hc_session = _get_hikcentral_session() if use_hikcentral else None
+        session = _get_device_session(device)
         payload = task.payload or {}
         person_id = payload.get('person_id') or ''
         if not person_id:
@@ -82,7 +112,10 @@ def revoke_access_task(task_id: int) -> None:
         if not person_id:
             raise RuntimeError('person_id not found for revoke')
         door_ids = payload.get('door_ids') or (device.doors_json if isinstance(device.doors_json, list) else [])
-        revoke_access(session, person_id, door_ids)
+        if hc_session:
+            revoke_access_hikcentral(hc_session, person_id, door_ids)
+        else:
+            revoke_access(session, person_id, door_ids)
         HikPersonBinding.objects.filter(guest_id=task.guest_id, device=device).update(status='revoked')
         task.status = 'success'
         task.last_error = ''

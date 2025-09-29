@@ -549,4 +549,16 @@ WEBPUSH_SETTINGS = {
     "GCM_API_KEY": os.getenv('GCM_API_KEY', ''),  # Для старых браузеров (optional)
 }
 
+# Настройки HikCentral Artemis-клиента
+HIKCENTRAL_STAGE = os.getenv('HIKCENTRAL_STAGE', '')  # например: 'RELEASE' или ''
+HIKCENTRAL_INCLUDE_DATE = os.getenv('HIKCENTRAL_INCLUDE_DATE', 'false').lower() == 'true'
+HIKCENTRAL_DEBUG_SIGN = os.getenv('HIKCENTRAL_DEBUG_SIGN', 'false').lower() == 'true'
+
+# HikCentral Professional Integration Partner настройки
+HIKCENTRAL_BASE_URL = os.getenv('HIKCENTRAL_BASE_URL', 'https://your-hikcentral-server.com') # URL вашего HikCentral сервера
+HIKCENTRAL_INTEGRATION_KEY = os.getenv('HIKCENTRAL_INTEGRATION_KEY', '12281453') # Integration Partner Key
+HIKCENTRAL_INTEGRATION_SECRET = os.getenv('HIKCENTRAL_INTEGRATION_SECRET', 'wZFhg7ZkoYCTRF3JiwPi') # Integration Partner Secret
+HIKCENTRAL_USERNAME = os.getenv('HIKCENTRAL_USERNAME', 'admin') # Пользователь HikCentral
+HIKCENTRAL_PASSWORD = os.getenv('HIKCENTRAL_PASSWORD', 'DctvCnjznm20!') # Пароль HikCentral
+
 

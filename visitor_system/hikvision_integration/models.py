@@ -2,6 +2,28 @@ from django.db import models
 from django.conf import settings
 
 
+class HikCentralServer(models.Model):
+    """Сервер HikCentral Professional"""
+    name = models.CharField(max_length=100, verbose_name="Название сервера")
+    base_url = models.URLField(verbose_name="URL сервера")
+    integration_key = models.CharField(max_length=100, verbose_name="Integration Partner Key")
+    integration_secret = models.CharField(max_length=200, verbose_name="Integration Partner Secret")
+    username = models.CharField(max_length=128, verbose_name="Пользователь")
+    password = models.CharField(max_length=256, verbose_name="Пароль")
+    access_token = models.TextField(blank=True, null=True, verbose_name="Access Token")
+    token_expires_at = models.DateTimeField(blank=True, null=True, verbose_name="Токен истекает")
+    enabled = models.BooleanField(default=True, verbose_name="Включен")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.name} ({self.base_url})"
+
+    class Meta:
+        verbose_name = "Сервер HikCentral"
+        verbose_name_plural = "Серверы HikCentral"
+
+
 class HikDevice(models.Model):
     name = models.CharField(max_length=100)
     host = models.CharField(max_length=255)
@@ -67,7 +89,3 @@ class HikEventLog(models.Model):
     occurred_at = models.DateTimeField()
     resolved_visit_id = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
-from django.db import models
-
-# Create your models here.

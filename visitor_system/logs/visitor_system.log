@@ -37398,3 +37398,317 @@ INFO 2025-09-26 19:49:18,985 autoreload 72392 75256 D:\university_visitor_system
 INFO 2025-09-26 19:49:22,419 apps 72632 75552 AXES: BEGIN version 6.5.2, blocking by username or ip_address
 INFO 2025-09-26 19:49:22,421 apps 72632 75552 Notifications app ready: Prometheus counters available
 INFO 2025-09-26 19:49:22,429 autoreload 72632 75552 Watching for file changes with StatReloader
+INFO 2025-09-29 10:19:28,519 apps 18040 28412 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:19:28,534 apps 18040 28412 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:21:32,949 apps 31768 31140 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:21:32,951 apps 31768 31140 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:21:55,271 apps 31992 32364 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:21:55,272 apps 31992 32364 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:22:05,837 apps 17540 33608 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:22:05,838 apps 17540 33608 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:22:19,845 apps 26524 31264 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:22:19,846 apps 26524 31264 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:22:24,254 services 26524 31264 Testing connection to Hikvision device 10.200.2.0
+INFO 2025-09-29 10:22:24,254 services 26524 31264 HikSession initialized for 10.200.2.0
+ERROR 2025-09-29 10:22:24,271 services 26524 31264 Hikvision API request failed: 401 Client Error: Unauthorized for url: http://10.200.2.0:80/ISAPI/System/deviceInfo
+ERROR 2025-09-29 10:22:24,361 services 26524 31264 Failed to test connection to device 10.200.2.0: 401 Client Error: Unauthorized for url: http://10.200.2.0:80/ISAPI/System/deviceInfo
+INFO 2025-09-29 10:22:24,363 services 26524 31264 Testing connection to Hikvision device 10.200.2.1
+INFO 2025-09-29 10:22:24,364 services 26524 31264 HikSession initialized for 10.200.2.1
+ERROR 2025-09-29 10:22:24,418 services 26524 31264 Hikvision API request failed: 401 Client Error: Unauthorized for url: http://10.200.2.1:80/ISAPI/System/deviceInfo
+ERROR 2025-09-29 10:22:24,419 services 26524 31264 Failed to test connection to device 10.200.2.1: 401 Client Error: Unauthorized for url: http://10.200.2.1:80/ISAPI/System/deviceInfo
+INFO 2025-09-29 10:22:24,420 services 26524 31264 Testing connection to Hikvision device 10.1.18.50
+INFO 2025-09-29 10:22:24,420 services 26524 31264 HikSession initialized for 10.1.18.50
+ERROR 2025-09-29 10:22:34,424 services 26524 31264 Hikvision API request failed: HTTPConnectionPool(host='10.1.18.50', port=80): Max retries exceeded with url: /ISAPI/System/deviceInfo (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000001F864FB5F90>, 'Connection to 10.1.18.50 timed out. (connect timeout=10)'))
+ERROR 2025-09-29 10:22:34,426 services 26524 31264 Failed to test connection to device 10.1.18.50: HTTPConnectionPool(host='10.1.18.50', port=80): Max retries exceeded with url: /ISAPI/System/deviceInfo (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000001F864FB5F90>, 'Connection to 10.1.18.50 timed out. (connect timeout=10)'))
+INFO 2025-09-29 10:22:34,427 services 26524 31264 Testing connection to Hikvision device 10.1.18.47
+INFO 2025-09-29 10:22:34,427 services 26524 31264 HikSession initialized for 10.1.18.47
+ERROR 2025-09-29 10:22:34,469 services 26524 31264 Hikvision API request failed: 401 Client Error: Unauthorized for url: http://10.1.18.47:80/ISAPI/System/deviceInfo
+ERROR 2025-09-29 10:22:34,471 services 26524 31264 Failed to test connection to device 10.1.18.47: 401 Client Error: Unauthorized for url: http://10.1.18.47:80/ISAPI/System/deviceInfo
+INFO 2025-09-29 10:31:08,460 apps 31412 33092 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:31:08,462 apps 31412 33092 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:31:27,623 apps 14136 31636 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:31:27,625 apps 14136 31636 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:31:37,263 apps 30240 33684 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:31:37,265 apps 30240 33684 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:31:41,658 services 30240 33684 Testing connection to Hikvision device 10.200.2.0
+INFO 2025-09-29 10:31:41,658 services 30240 33684 HikSession initialized for 10.200.2.0
+ERROR 2025-09-29 10:31:43,691 services 30240 33684 Hikvision API request failed: ('Connection aborted.', ConnectionResetError(10054, 'Удаленный хост принудительно разорвал существующее подключение', None, 10054, None))
+ERROR 2025-09-29 10:31:43,755 services 30240 33684 Failed to test connection to device 10.200.2.0: ('Connection aborted.', ConnectionResetError(10054, 'Удаленный хост принудительно разорвал существующее подключение', None, 10054, None))
+INFO 2025-09-29 10:31:43,756 services 30240 33684 Testing connection to Hikvision device 10.200.2.1
+INFO 2025-09-29 10:31:43,756 services 30240 33684 HikSession initialized for 10.200.2.1
+ERROR 2025-09-29 10:31:45,791 services 30240 33684 Hikvision API request failed: ('Connection aborted.', ConnectionResetError(10054, 'Удаленный хост принудительно разорвал существующее подключение', None, 10054, None))
+ERROR 2025-09-29 10:31:45,792 services 30240 33684 Failed to test connection to device 10.200.2.1: ('Connection aborted.', ConnectionResetError(10054, 'Удаленный хост принудительно разорвал существующее подключение', None, 10054, None))
+INFO 2025-09-29 10:31:45,793 services 30240 33684 Testing connection to Hikvision device 10.1.18.50
+INFO 2025-09-29 10:31:45,794 services 30240 33684 HikSession initialized for 10.1.18.50
+ERROR 2025-09-29 10:31:55,809 services 30240 33684 Hikvision API request failed: HTTPSConnectionPool(host='10.1.18.50', port=8000): Max retries exceeded with url: /ISAPI/System/deviceInfo (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001C64B1FBC50>, 'Connection to 10.1.18.50 timed out. (connect timeout=10)'))
+ERROR 2025-09-29 10:31:55,810 services 30240 33684 Failed to test connection to device 10.1.18.50: HTTPSConnectionPool(host='10.1.18.50', port=8000): Max retries exceeded with url: /ISAPI/System/deviceInfo (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001C64B1FBC50>, 'Connection to 10.1.18.50 timed out. (connect timeout=10)'))
+INFO 2025-09-29 10:31:55,811 services 30240 33684 Testing connection to Hikvision device 10.1.18.47
+INFO 2025-09-29 10:31:55,811 services 30240 33684 HikSession initialized for 10.1.18.47
+ERROR 2025-09-29 10:31:57,836 services 30240 33684 Hikvision API request failed: ('Connection aborted.', ConnectionResetError(10054, 'Удаленный хост принудительно разорвал существующее подключение', None, 10054, None))
+ERROR 2025-09-29 10:31:57,837 services 30240 33684 Failed to test connection to device 10.1.18.47: ('Connection aborted.', ConnectionResetError(10054, 'Удаленный хост принудительно разорвал существующее подключение', None, 10054, None))
+INFO 2025-09-29 10:34:22,145 apps 21372 12996 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:34:22,147 apps 21372 12996 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:34:31,281 apps 17624 31732 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:34:31,282 apps 17624 31732 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:34:35,788 services 17624 31732 Testing connection to Hikvision device 10.200.2.0
+INFO 2025-09-29 10:34:35,788 services 17624 31732 HikSession initialized for 10.200.2.0
+ERROR 2025-09-29 10:34:35,815 services 17624 31732 Hikvision API request failed: 401 Client Error: Unauthorized for url: http://10.200.2.0:80/ISAPI/System/deviceInfo
+ERROR 2025-09-29 10:34:35,874 services 17624 31732 Failed to test connection to device 10.200.2.0: 401 Client Error: Unauthorized for url: http://10.200.2.0:80/ISAPI/System/deviceInfo
+INFO 2025-09-29 10:34:35,876 services 17624 31732 Testing connection to Hikvision device 10.200.2.1
+INFO 2025-09-29 10:34:35,876 services 17624 31732 HikSession initialized for 10.200.2.1
+ERROR 2025-09-29 10:34:35,893 services 17624 31732 Hikvision API request failed: 401 Client Error: Unauthorized for url: http://10.200.2.1:80/ISAPI/System/deviceInfo
+ERROR 2025-09-29 10:34:35,894 services 17624 31732 Failed to test connection to device 10.200.2.1: 401 Client Error: Unauthorized for url: http://10.200.2.1:80/ISAPI/System/deviceInfo
+INFO 2025-09-29 10:34:35,895 services 17624 31732 Testing connection to Hikvision device 10.1.18.47
+INFO 2025-09-29 10:34:35,895 services 17624 31732 HikSession initialized for 10.1.18.47
+ERROR 2025-09-29 10:34:35,945 services 17624 31732 Hikvision API request failed: 401 Client Error: Unauthorized for url: http://10.1.18.47:80/ISAPI/System/deviceInfo
+ERROR 2025-09-29 10:34:35,947 services 17624 31732 Failed to test connection to device 10.1.18.47: 401 Client Error: Unauthorized for url: http://10.1.18.47:80/ISAPI/System/deviceInfo
+INFO 2025-09-29 10:38:56,699 apps 29244 33248 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:38:56,701 apps 29244 33248 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:39:06,388 apps 29804 30640 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:39:06,390 apps 29804 30640 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:39:28,516 apps 33392 32588 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:39:28,518 apps 33392 32588 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:39:32,922 services 33392 32588 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 10:39:32,923 services 33392 32588 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 10:39:34,026 services 33392 32588 Failed to get HikCentral access token: HTTPSConnectionPool(host='your-hikcentral-server.com', port=443): Max retries exceeded with url: /artemis-uaa/oauth/token (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000235D3B7EBA0>: Failed to resolve 'your-hikcentral-server.com' ([Errno 11001] getaddrinfo failed)"))
+ERROR 2025-09-29 10:39:34,085 services 33392 32588 Failed to test connection to HikCentral server HikCentral Professional: HTTPSConnectionPool(host='your-hikcentral-server.com', port=443): Max retries exceeded with url: /artemis-uaa/oauth/token (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000235D3B7EBA0>: Failed to resolve 'your-hikcentral-server.com' ([Errno 11001] getaddrinfo failed)"))
+INFO 2025-09-29 10:40:50,897 apps 35792 33896 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:40:50,899 apps 35792 33896 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:41:00,489 apps 28404 26052 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:41:00,491 apps 28404 26052 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:41:04,988 services 28404 26052 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 10:41:04,988 services 28404 26052 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 10:41:05,013 services 28404 26052 Failed to get HikCentral access token: HTTPSConnectionPool(host='10.1.18.29', port=444): Max retries exceeded with url: /artemis-uaa/oauth/token (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1028)')))
+ERROR 2025-09-29 10:41:05,073 services 28404 26052 Failed to test connection to HikCentral server HikCentral Professional: HTTPSConnectionPool(host='10.1.18.29', port=444): Max retries exceeded with url: /artemis-uaa/oauth/token (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1028)')))
+INFO 2025-09-29 10:41:30,872 apps 33896 35828 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:41:30,874 apps 33896 35828 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:41:35,294 services 33896 35828 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 10:41:35,295 services 33896 35828 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 10:41:35,314 services 33896 35828 Failed to get HikCentral access token: HTTPSConnectionPool(host='10.1.18.29', port=444): Max retries exceeded with url: /artemis-uaa/oauth/token (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1028)')))
+ERROR 2025-09-29 10:41:35,383 services 33896 35828 Failed to test connection to HikCentral server HikCentral Professional: HTTPSConnectionPool(host='10.1.18.29', port=444): Max retries exceeded with url: /artemis-uaa/oauth/token (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate (_ssl.c:1028)')))
+INFO 2025-09-29 10:41:46,694 apps 34768 34240 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:41:46,695 apps 34768 34240 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:41:51,084 services 34768 34240 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 10:41:51,084 services 34768 34240 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 10:41:51,122 services 34768 34240 Failed to get HikCentral access token: 'access_token'
+ERROR 2025-09-29 10:41:51,181 services 34768 34240 Failed to test connection to HikCentral server HikCentral Professional: 'access_token'
+INFO 2025-09-29 10:48:44,578 apps 32220 35400 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:48:44,579 apps 32220 35400 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:48:54,317 apps 1544 18028 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 10:48:54,319 apps 1544 18028 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 10:48:58,695 services 1544 18028 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 10:48:58,696 services 1544 18028 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 10:48:58,729 services 1544 18028 Failed to get HikCentral access token: 'access_token'
+ERROR 2025-09-29 10:48:58,789 services 1544 18028 Failed to test connection to HikCentral server HikCentral Professional: 'access_token'
+INFO 2025-09-29 11:45:46,119 apps 27380 43944 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 11:45:46,122 apps 27380 43944 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 11:45:59,382 apps 42068 43144 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 11:45:59,384 apps 42068 43144 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 11:46:06,237 apps 43980 43148 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 11:46:06,238 apps 43980 43148 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 11:46:08,626 services 43980 43148 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 11:46:08,627 services 43980 43148 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 11:46:18,653 services 43980 43148 Failed to get HikCentral access token: HTTPSConnectionPool(host='127.0.0.1', port=8208): Read timed out. (read timeout=10)
+ERROR 2025-09-29 11:46:18,714 services 43980 43148 Failed to test connection to HikCentral server HikCentral Professional: HTTPSConnectionPool(host='127.0.0.1', port=8208): Read timed out. (read timeout=10)
+INFO 2025-09-29 11:47:04,373 apps 43524 43600 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 11:47:04,376 apps 43524 43600 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 11:47:06,903 services 43524 43600 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 11:47:06,903 services 43524 43600 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 11:47:36,929 services 43524 43600 Failed to get HikCentral access token: HTTPSConnectionPool(host='127.0.0.1', port=8208): Read timed out. (read timeout=30)
+ERROR 2025-09-29 11:47:36,989 services 43524 43600 Failed to test connection to HikCentral server HikCentral Professional: HTTPSConnectionPool(host='127.0.0.1', port=8208): Read timed out. (read timeout=30)
+INFO 2025-09-29 12:25:49,195 apps 49876 45920 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:25:49,197 apps 49876 45920 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:25:51,799 services 49876 45920 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 12:25:51,800 services 49876 45920 HikCentralSession initialized for HikCentral Professional
+ERROR 2025-09-29 12:26:06,820 services 49876 45920 HikCentral API request failed: HTTPSConnectionPool(host='127.0.0.1', port=8208): Read timed out. (read timeout=15)
+ERROR 2025-09-29 12:26:06,879 services 49876 45920 Failed to test connection to HikCentral server HikCentral Professional: HTTPSConnectionPool(host='127.0.0.1', port=8208): Read timed out. (read timeout=15)
+INFO 2025-09-29 12:28:35,606 apps 48984 49316 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:28:35,608 apps 48984 49316 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:28:49,559 apps 47420 49964 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:28:49,560 apps 47420 49964 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:28:51,926 services 47420 49964 Testing connection to HikCentral server HikCentral Professional
+INFO 2025-09-29 12:28:51,927 services 47420 49964 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:28:53,262 services 47420 49964 HikCentral server HikCentral Professional connection successful
+INFO 2025-09-29 12:31:58,352 apps 49436 43148 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:31:58,354 apps 49436 43148 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:32:00,683 services 49436 43148 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:34:16,286 apps 43472 45192 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:34:16,288 apps 43472 45192 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:34:18,693 services 43472 45192 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:35:18,114 apps 47252 48236 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:35:18,116 apps 47252 48236 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:35:20,481 services 47252 48236 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:35:39,897 apps 48680 45968 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:35:39,898 apps 48680 45968 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:35:42,248 services 48680 45968 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:37:06,645 apps 43820 1088 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:37:06,647 apps 43820 1088 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:37:09,021 services 43820 1088 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:38:43,701 apps 46952 49940 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:38:43,703 apps 46952 49940 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:38:46,107 services 46952 49940 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:39:21,720 apps 44100 44132 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:39:21,722 apps 44100 44132 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:39:24,234 services 44100 44132 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:40:18,474 apps 49932 48776 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:40:18,476 apps 49932 48776 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:40:20,908 services 49932 48776 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:42:04,747 apps 44632 49480 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:42:04,749 apps 44632 49480 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:42:07,227 services 44632 49480 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:42:20,315 apps 45412 47300 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:42:20,317 apps 45412 47300 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:42:22,682 services 45412 47300 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:42:53,880 apps 48836 47412 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:42:53,882 apps 48836 47412 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:42:56,275 services 48836 47412 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:50:10,717 apps 38312 45528 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:50:10,719 apps 38312 45528 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:50:18,694 apps 45900 42732 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:50:18,697 apps 45900 42732 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:50:21,271 services 45900 42732 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:53:16,678 apps 36616 18024 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:53:16,679 apps 36616 18024 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:53:19,063 services 36616 18024 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 12:55:00,711 apps 50700 22860 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:55:00,713 apps 50700 22860 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:55:01,921 apps 52064 51780 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:55:01,923 apps 52064 51780 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:55:01,932 autoreload 52064 51780 Watching for file changes with StatReloader
+INFO 2025-09-29 12:55:27,483 basehttp 52064 41060 "GET / HTTP/1.1" 200 117578
+INFO 2025-09-29 12:55:27,512 basehttp 52064 41060 "GET /static/css/preloader.css HTTP/1.1" 304 0
+INFO 2025-09-29 12:55:27,592 basehttp 52064 41060 "GET /static/js/webpush.js HTTP/1.1" 304 0
+INFO 2025-09-29 12:55:27,595 basehttp 52064 41060 "GET /static/js/preloader.js HTTP/1.1" 304 0
+INFO 2025-09-29 12:55:28,210 basehttp 52064 41060 "GET /notifications/get-public-key/ HTTP/1.1" 200 105
+INFO 2025-09-29 12:55:28,732 basehttp 52064 5624 "GET /manifest.json HTTP/1.1" 200 1341
+INFO 2025-09-29 12:55:30,426 basehttp 52064 41060 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:55:30,602 attempts 52064 41060 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-09-29 06:55:30.596263+00:00
+INFO 2025-09-29 12:55:30,603 database 52064 41060 AXES: Successful logout by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36", path_info: "/accounts/logout/"}.
+INFO 2025-09-29 12:55:30,610 basehttp 52064 41060 "POST /accounts/logout/ HTTP/1.1" 302 0
+INFO 2025-09-29 12:55:30,615 basehttp 52064 41060 "GET / HTTP/1.1" 302 0
+INFO 2025-09-29 12:55:30,657 basehttp 52064 41060 "GET /accounts/login?next=/ HTTP/1.1" 301 0
+INFO 2025-09-29 12:55:30,729 basehttp 52064 41760 "GET /accounts/login/?next=/ HTTP/1.1" 200 6393
+WARNING 2025-09-29 12:55:31,626 log 52064 41760 Not Found: /favicon.ico
+WARNING 2025-09-29 12:55:31,627 basehttp 52064 41760 "GET /favicon.ico HTTP/1.1" 404 7011
+INFO 2025-09-29 12:55:33,194 basehttp 52064 41760 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:55:34,922 basehttp 52064 41760 "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-09-29 12:55:35,055 basehttp 52064 41760 "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4497
+INFO 2025-09-29 12:55:35,081 basehttp 52064 41760 "GET /static/admin/css/base.css HTTP/1.1" 200 22154
+INFO 2025-09-29 12:55:35,082 basehttp 52064 51044 "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-09-29 12:55:35,089 basehttp 52064 51044 "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-09-29 12:55:35,091 basehttp 52064 41760 "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2025-09-29 12:55:35,094 basehttp 52064 41760 "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2025-09-29 12:55:35,094 basehttp 52064 51044 "GET /static/admin/css/responsive.css HTTP/1.1" 200 16632
+INFO 2025-09-29 12:55:35,107 basehttp 52064 41760 "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-09-29 12:55:35,111 basehttp 52064 51044 "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2025-09-29 12:55:36,704 basehttp 52064 51044 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:55:42,332 attempts 52064 51044 AXES: Cleaned up 0 expired access attempts from database that were older than 2025-09-29 06:55:42.028747+00:00
+INFO 2025-09-29 12:55:42,333 database 52064 51044 AXES: Successful login by {username: "********************", ip_address: "********************", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36", path_info: "/admin/login/"}.
+INFO 2025-09-29 12:55:42,337 basehttp 52064 51044 "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-09-29 12:55:42,523 basehttp 52064 51044 "GET /admin/ HTTP/1.1" 200 39169
+INFO 2025-09-29 12:55:42,544 basehttp 52064 51044 "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-09-29 12:55:42,561 basehttp 52064 51044 "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-09-29 12:55:42,561 basehttp 52064 41760 "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-09-29 12:55:42,561 basehttp 52064 49236 "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-09-29 12:55:44,241 basehttp 52064 49236 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:13,535 basehttp 52064 49236 "GET /admin/hikvision_integration/hikaccesstask/ HTTP/1.1" 200 33693
+INFO 2025-09-29 12:56:13,618 basehttp 52064 38804 "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-09-29 12:56:13,618 basehttp 52064 49236 "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+INFO 2025-09-29 12:56:13,618 basehttp 52064 41760 "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-09-29 12:56:13,618 basehttp 52064 46512 "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-09-29 12:56:13,619 basehttp 52064 44824 "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-09-29 12:56:13,624 basehttp 52064 38804 "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-09-29 12:56:13,651 basehttp 52064 41760 "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-09-29 12:56:13,651 basehttp 52064 49236 "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-09-29 12:56:13,664 basehttp 52064 46512 "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-09-29 12:56:13,682 basehttp 52064 44824 "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2025-09-29 12:56:13,687 basehttp 52064 44824 "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO 2025-09-29 12:56:13,755 basehttp 52064 51044 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:13,777 basehttp 52064 51044 "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2025-09-29 12:56:15,373 basehttp 52064 51044 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:15,481 basehttp 52064 51044 "GET /admin/hikvision_integration/hikdevice/ HTTP/1.1" 200 37985
+INFO 2025-09-29 12:56:15,501 basehttp 52064 51044 "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2025-09-29 12:56:15,550 basehttp 52064 44824 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:17,088 basehttp 52064 44824 "GET /admin/hikvision_integration/hikeventlog/ HTTP/1.1" 200 33863
+INFO 2025-09-29 12:56:17,166 basehttp 52064 44824 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:17,242 basehttp 52064 44824 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:17,868 basehttp 52064 44824 "GET /admin/hikvision_integration/hikfacelibrary/ HTTP/1.1" 200 36474
+INFO 2025-09-29 12:56:17,916 basehttp 52064 44824 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:19,264 basehttp 52064 44824 "GET /admin/hikvision_integration/hikpersonbinding/ HTTP/1.1" 200 33890
+INFO 2025-09-29 12:56:19,325 basehttp 52064 44824 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:19,590 basehttp 52064 44824 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:19,987 basehttp 52064 44824 "GET /admin/hikvision_integration/hikcentralserver/ HTTP/1.1" 200 36044
+INFO 2025-09-29 12:56:20,056 basehttp 52064 44824 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:21,688 basehttp 52064 44824 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:23,180 basehttp 52064 44824 "GET /admin/hikvision_integration/hikcentralserver/1/change/ HTTP/1.1" 200 39989
+INFO 2025-09-29 12:56:23,199 basehttp 52064 44824 "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+INFO 2025-09-29 12:56:23,199 basehttp 52064 46512 "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-09-29 12:56:23,214 basehttp 52064 46512 "GET /static/admin/css/widgets.css HTTP/1.1" 200 11991
+INFO 2025-09-29 12:56:23,218 basehttp 52064 46512 "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-09-29 12:56:23,239 basehttp 52064 51044 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:24,863 basehttp 52064 51044 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:32,373 basehttp 52064 51044 "POST /admin/hikvision_integration/hikcentralserver/1/change/ HTTP/1.1" 302 0
+INFO 2025-09-29 12:56:32,417 basehttp 52064 51044 "GET /admin/hikvision_integration/hikcentralserver/ HTTP/1.1" 200 36336
+INFO 2025-09-29 12:56:32,471 basehttp 52064 51044 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:33,714 basehttp 52064 51044 "GET /admin/hikvision_integration/hikcentralserver/1/change/ HTTP/1.1" 200 39989
+INFO 2025-09-29 12:56:33,786 basehttp 52064 51044 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 12:56:34,087 basehttp 52064 51044 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:35,480 basehttp 52064 51044 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 12:56:48,161 autoreload 52064 51780 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
+INFO 2025-09-29 12:56:49,980 apps 50672 43084 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 12:56:49,982 apps 50672 43084 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 12:56:49,992 autoreload 50672 43084 Watching for file changes with StatReloader
+INFO 2025-09-29 12:57:11,967 basehttp 50672 47612 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 13:29:46,331 basehttp 50672 52308 "POST /admin/hikvision_integration/hikcentralserver/1/change/ HTTP/1.1" 302 0
+INFO 2025-09-29 13:29:46,515 basehttp 50672 52308 "GET /admin/hikvision_integration/hikcentralserver/ HTTP/1.1" 200 36336
+INFO 2025-09-29 13:29:46,579 basehttp 50672 52308 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 13:29:48,010 basehttp 50672 52308 "GET /admin/hikvision_integration/hikcentralserver/1/change/ HTTP/1.1" 200 39989
+INFO 2025-09-29 13:29:48,094 basehttp 50672 52308 "GET /admin/jsi18n/ HTTP/1.1" 200 17546
+INFO 2025-09-29 13:29:48,353 basehttp 50672 52308 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 13:29:49,729 basehttp 50672 52308 "GET /serviceworker.js HTTP/1.1" 200 20054
+INFO 2025-09-29 13:32:51,431 autoreload 50672 43084 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
+INFO 2025-09-29 13:32:53,493 apps 55152 58308 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 13:32:53,495 apps 55152 58308 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 13:32:53,504 autoreload 55152 58308 Watching for file changes with StatReloader
+INFO 2025-09-29 13:59:44,752 autoreload 55152 58308 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-09-29 13:59:46,842 apps 54984 57492 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 13:59:46,844 apps 54984 57492 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 13:59:46,855 autoreload 54984 57492 Watching for file changes with StatReloader
+INFO 2025-09-29 14:00:20,311 autoreload 54984 57492 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-09-29 14:00:22,532 apps 25888 56740 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 14:00:22,533 apps 25888 56740 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 14:00:22,542 autoreload 25888 56740 Watching for file changes with StatReloader
+INFO 2025-09-29 16:03:05,052 autoreload 25888 56740 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-09-29 16:03:06,984 apps 54388 68940 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 16:03:06,986 apps 54388 68940 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 16:03:06,995 autoreload 54388 68940 Watching for file changes with StatReloader
+INFO 2025-09-29 16:03:12,473 autoreload 54388 68940 D:\university_visitor_system\visitor_system\visitor_system\conf\base.py changed, reloading.
+INFO 2025-09-29 16:03:14,232 apps 69836 64500 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 16:03:14,234 apps 69836 64500 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 16:03:14,242 autoreload 69836 64500 Watching for file changes with StatReloader
+INFO 2025-09-29 16:04:28,128 apps 55512 41864 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 16:04:28,130 apps 55512 41864 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 16:04:30,646 services 55512 41864 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 16:04:48,196 apps 70212 71424 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 16:04:48,197 apps 70212 71424 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 16:04:50,646 services 70212 71424 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 16:10:52,787 apps 70108 72556 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 16:10:52,789 apps 70108 72556 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 16:10:55,170 services 70108 72556 HikCentralSession initialized for HikCentral Professional
+INFO 2025-09-29 16:22:21,451 autoreload 69836 64500 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
+INFO 2025-09-29 16:22:23,885 apps 68648 67052 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 16:22:23,888 apps 68648 67052 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 16:22:23,901 autoreload 68648 67052 Watching for file changes with StatReloader
+INFO 2025-09-29 16:30:21,399 autoreload 68648 67052 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
+INFO 2025-09-29 16:30:23,039 apps 65116 66536 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 16:30:23,042 apps 65116 66536 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 16:30:23,055 autoreload 65116 66536 Watching for file changes with StatReloader
+INFO 2025-09-29 18:04:54,648 autoreload 65116 66536 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
+INFO 2025-09-29 18:04:57,492 apps 81196 81072 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 18:04:57,494 apps 81196 81072 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 18:04:57,504 autoreload 81196 81072 Watching for file changes with StatReloader
+INFO 2025-09-29 18:05:04,585 autoreload 81196 81072 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
+INFO 2025-09-29 18:05:06,768 apps 79152 82080 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 18:05:06,771 apps 79152 82080 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 18:05:06,792 autoreload 79152 82080 Watching for file changes with StatReloader
+INFO 2025-09-29 18:05:32,226 autoreload 79152 82080 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
