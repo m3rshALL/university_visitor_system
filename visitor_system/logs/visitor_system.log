@@ -37712,3 +37712,6 @@ INFO 2025-09-29 18:05:06,768 apps 79152 82080 AXES: BEGIN version 6.5.2, blockin
 INFO 2025-09-29 18:05:06,771 apps 79152 82080 Notifications app ready: Prometheus counters available
 INFO 2025-09-29 18:05:06,792 autoreload 79152 82080 Watching for file changes with StatReloader
 INFO 2025-09-29 18:05:32,226 autoreload 79152 82080 D:\university_visitor_system\visitor_system\hikvision_integration\models.py changed, reloading.
+INFO 2025-09-29 18:05:34,491 apps 77448 83840 AXES: BEGIN version 6.5.2, blocking by username or ip_address
+INFO 2025-09-29 18:05:34,493 apps 77448 83840 Notifications app ready: Prometheus counters available
+INFO 2025-09-29 18:05:34,502 autoreload 77448 83840 Watching for file changes with StatReloader
