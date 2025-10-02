@@ -43,6 +43,10 @@ app.conf.beat_schedule = {
         'task': 'notifications.tasks.send_daily_visit_summary',
         'schedule': crontab(hour=18, minute=0),  # Ежедневно в 18:00
     },
+    'monitor-guest-passages': {
+        'task': 'hikvision_integration.tasks.monitor_guest_passages_task',
+        'schedule': crontab(minute='*/10'),  # Каждые 10 минут
+    },
 }
 
 app.conf.timezone = 'Asia/Almaty'

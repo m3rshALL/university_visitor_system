@@ -561,4 +561,18 @@ HIKCENTRAL_INTEGRATION_SECRET = os.getenv('HIKCENTRAL_INTEGRATION_SECRET', 'wZFh
 HIKCENTRAL_USERNAME = os.getenv('HIKCENTRAL_USERNAME', 'admin') # Пользователь HikCentral
 HIKCENTRAL_PASSWORD = os.getenv('HIKCENTRAL_PASSWORD', 'DctvCnjznm20!') # Пароль HikCentral
 
+# Настройки организации для гостей в HikCentral
+HIKCENTRAL_DEFAULT_ORG_INDEX = os.getenv('HIKCENTRAL_DEFAULT_ORG_INDEX', '')  # ID организации по умолчанию для гостей
+HIKCENTRAL_FORCE_ORG = os.getenv('HIKCENTRAL_FORCE_ORG', 'false').lower() == 'true'  # Принудительно применять org при обновлении
+HIKCENTRAL_ORG_NAME = os.getenv('HIKCENTRAL_ORG_NAME', 'Visitor Management')  # Название организации для поиска
+
+# Access Control настройки для гостей
+HIKCENTRAL_GUEST_ACCESS_GROUP_ID = os.getenv('HIKCENTRAL_GUEST_ACCESS_GROUP_ID', '7')  # ID группы "Visitors Access"
+HIKCENTRAL_ACCESS_END_TIME = os.getenv('HIKCENTRAL_ACCESS_END_TIME', '22:00')  # Время окончания доступа (по умолчанию 22:00)
+
+# ГИБРИДНЫЙ РЕЖИМ: Person через HCP, Face через ISAPI
+# НЕ ПОДДЕРЖИВАЕТСЯ устройствами - они управляются через HCP и отвечают "notSupport" на ISAPI face upload
+# Используем только HCP для загрузки лиц (через Face Recognition API с faceGroupIndexCode)
+HIKCENTRAL_USE_ISAPI_FOR_FACE = os.getenv('HIKCENTRAL_USE_ISAPI_FOR_FACE', 'False').lower() == 'true'
+
 

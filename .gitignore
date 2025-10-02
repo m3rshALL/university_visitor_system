@@ -127,3 +127,7 @@ yarn-error.log*
 
 *.key
 echo "*.key\n*.pem\n*.p12\n.env" >> .gitignore
+
+.cursor/rules/
+.cursor/
+.cursor/*

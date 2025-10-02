@@ -156,14 +156,16 @@ def register_guest_view(request):
                     # Hikvision: поставить задачу на привязку FaceID (если приложение подключено)
                     try:
                         from hikvision_integration.models import HikAccessTask
-                        from hikvision_integration.tasks import enroll_face_task
+                        from hikvision_integration.tasks import (
+                            enroll_face_task,
+                            assign_access_level_task,
+                        )
                         guest_obj = getattr(visit, 'guest', None)
                         guest_id = getattr(guest_obj, 'id', None) or getattr(visit, 'guest_id', None)
                         guest_name = getattr(guest_obj, 'full_name', None) or getattr(visit, 'guest_full_name', None) or 'Guest'
                         payload = {
                             'guest_id': guest_id,
                             'name': guest_name,
-                            # TODO: добавить image_bytes и door_ids при появлении данных
                         }
                         task = HikAccessTask.objects.create(
                             kind='enroll_face',
@@ -172,10 +174,21 @@ def register_guest_view(request):
                             visit_id=visit.id,
                             guest_id=guest_id,
                         )
-                        try:
-                            enroll_face_task.delay(task.id)
-                        except Exception:
-                            logger.exception('Failed to enqueue enroll_face_task')
+                        # ВАЖНО: Сразу после фиксации транзакции запускаем синхронно, чтобы данные попали в HCP немедленно
+                        transaction.on_commit(lambda: enroll_face_task(task.id))
+                        
+                        # Создаем task для назначения access level
+                        access_task = HikAccessTask.objects.create(
+                            kind='assign_access',
+                            payload=payload,
+                            status='queued',
+                            visit_id=visit.id,
+                            guest_id=guest_id,
+                        )
+                        # Запускаем после enroll_face
+                        transaction.on_commit(
+                            lambda: assign_access_level_task(access_task.id)
+                        )
                     except Exception:
                         logger.exception('Hikvision enroll scheduling failed')
                     # Audit: create
@@ -2160,6 +2173,12 @@ def finalize_guest_invitation(request, pk):
                         email=invitation.guest_email,
                         phone_number=invitation.guest_phone,
                     )
+                    # Переносим загруженное в приглашении фото в профиль гостя
+                    try:
+                        if getattr(invitation, 'guest_photo', None):
+                            guest.photo = invitation.guest_photo
+                    except Exception:
+                        logger.exception('Не удалось перенести фото из приглашения в профиль гостя')
                     if raw_iin:
                         try:
                             guest.iin = raw_iin  # setter зашифрует и проставит хэш
@@ -2177,19 +2196,81 @@ def finalize_guest_invitation(request, pk):
                     guest.full_name = invitation.guest_full_name
                     guest.email = invitation.guest_email
                     guest.phone_number = invitation.guest_phone
-                    guest.save(update_fields=['full_name', 'email', 'phone_number'])
+                    # Если у приглашения есть фото, а у гостя нет — перенесём
+                    try:
+                        if getattr(invitation, 'guest_photo', None) and not getattr(guest, 'photo', None):
+                            guest.photo = invitation.guest_photo
+                            guest.save(update_fields=['full_name', 'email', 'phone_number', 'photo'])
+                        else:
+                            guest.save(update_fields=['full_name', 'email', 'phone_number'])
+                    except Exception:
+                        logger.exception('Не удалось обновить фото гостя из приглашения')
 
-                # Создаём визит
+                # Безопасно определяем департамент (FK не может быть NULL)
+                from departments.models import Department
+                emp_profile = getattr(invitation.employee, 'employee_profile', None)
+                dept = getattr(emp_profile, 'department', None)
+                if dept is None:
+                    dept = Department.objects.order_by('id').first()
+                if dept is None:
+                    messages.error(request, "Не найден отдел для сотрудника. Обратитесь к администратору для настройки отделов.")
+                    return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
+
                 visit = Visit.objects.create(
                     guest=guest,
                     employee=invitation.employee,
-                    department=getattr(invitation.employee.employee_profile, 'department', None),
+                    department=dept,
                     purpose='Гостевой визит по приглашению',
                     expected_entry_time=invitation.visit_time,
                     registered_by=request.user,
-                    employee_contact_phone=getattr(invitation.employee.employee_profile, 'phone_number', None),
+                    employee_contact_phone=getattr(emp_profile, 'phone_number', None),
                     consent_acknowledged=True,
                 )
+
+                # Hikvision: немедленно привязать FaceID для визита,
+                # созданного из приглашения
+                try:
+                    from hikvision_integration.models import HikAccessTask
+                    from hikvision_integration.tasks import enroll_face_task, assign_access_level_task
+                    guest_obj = getattr(visit, 'guest', None)
+                    guest_id = (
+                        getattr(guest_obj, 'id', None)
+                        or getattr(visit, 'guest_id', None)
+                    )
+                    guest_name = (
+                        getattr(guest_obj, 'full_name', None)
+                        or getattr(visit, 'guest_full_name', None)
+                        or 'Guest'
+                    )
+                    payload = {
+                        'guest_id': guest_id,
+                        'name': guest_name,
+                        # при необходимости можно добавить image_bytes/door_ids
+                    }
+                    task = HikAccessTask.objects.create(
+                        kind='enroll_face',
+                        payload=payload,
+                        status='queued',
+                        visit_id=visit.id,
+                        guest_id=guest_id,
+                    )
+                    # Гарантируем запуск сразу после фиксации транзакции
+                    transaction.on_commit(lambda: enroll_face_task(task.id))
+                    
+                    # Создаем task для назначения access level
+                    access_task = HikAccessTask.objects.create(
+                        kind='assign_access',
+                        payload=payload,
+                        status='queued',
+                        visit_id=visit.id,
+                        guest_id=guest_id,
+                    )
+                    # Запускаем после enroll_face
+                    transaction.on_commit(lambda: assign_access_level_task(access_task.id))
+                except Exception:
+                    logger.exception(
+                        'Hikvision enroll scheduling failed (invitation finalize)'
+                    )
 
                 # Помечаем приглашение как зарегистрированное
                 invitation.is_registered = True
@@ -2199,14 +2280,30 @@ def finalize_guest_invitation(request, pk):
                 # Отправляем email после фиксации транзакции
                 if invitation.guest_email:
                     subject_guest = "Ваш визит зарегистрирован"
+                    emp_name = (
+                        invitation.employee.get_full_name()
+                        or invitation.employee.username
+                    )
+                    visit_time_str = (
+                        invitation.visit_time.strftime('%Y-%m-%d %H:%M')
+                        if invitation.visit_time
+                        else '-'
+                    )
+                    phone_str = invitation.guest_phone or '-'
+                    line1 = f"Здравствуйте, {invitation.guest_full_name}!\n\n"
+                    line2 = (
+                        f"Ваш визит к {emp_name} ({invitation.employee.email}) "
+                        f"зарегистрирован на {visit_time_str}.\n"
+                    )
+                    line3 = (
+                        f"Если у вас возникнут вопросы, свяжитесь с сотрудником "
+                        f"по телефону: {phone_str}.\n"
+                    )
                     message_guest = (
-                        f"Здравствуйте, {invitation.guest_full_name}!\n\n"
-                        f"Ваш визит к {invitation.employee.get_full_name() or invitation.employee.username} "
-                        f"({invitation.employee.email}) зарегистрирован на "
-                        f"{invitation.visit_time.strftime('%Y-%m-%d %H:%M') if invitation.visit_time else '-'}.\n"
-                        f"Если у вас возникнут вопросы, свяжитесь с сотрудником по телефону: {invitation.guest_phone or '-'}.\n"
+                        line1 + line2 + line3 +
                         "Спасибо, что воспользовались нашей системой."
                     )
+
                     def _send():
                         try:
                             send_mail(
@@ -2227,20 +2324,32 @@ def finalize_guest_invitation(request, pk):
                 messages.success(request, 'Визит успешно зарегистрирован.')
                 return redirect('employee_dashboard')
             else:
-                return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
+                return render(
+                    request,
+                    'visitors/guest_invitation_finalize.html',
+                    {'form': form, 'invitation': invitation},
+                )
     # GET
-    invitation = get_object_or_404(GuestInvitation, pk=pk, is_filled=True, is_registered=False)
+    invitation = get_object_or_404(
+        GuestInvitation, pk=pk, is_filled=True, is_registered=False
+    )
     form = GuestInvitationFinalizeForm(instance=invitation)
-    return render(request, 'visitors/guest_invitation_finalize.html', {'form': form, 'invitation': invitation})
+    return render(
+        request,
+        'visitors/guest_invitation_finalize.html',
+        {'form': form, 'invitation': invitation},
+    )
 # --------------------------------------------------
+
 
 def cached_static_serve(request, path, **kwargs):
     return cache_control(
         max_age=86400,  # 1 day in seconds
-        immutable=True, 
-        public=True
+        immutable=True,
+        public=True,
     )(serve_static)(request, path, **kwargs)
     
+
 def manifest_json_view(request):
     """
     Serve the manifest.json file with proper content type and encoding
@@ -2281,9 +2390,11 @@ def manifest_json_view(request):
         }
         return JsonResponse(manifest_data)
 
+
 def service_worker_view(request):
-    """
-    Serve the service worker file with UTF-8 encoding to avoid encoding issues on Windows.
+    """Serve the service worker file.
+
+    Uses UTF-8 to avoid encoding issues on Windows.
     """
     # Path to the service worker file
     service_worker_path = settings.PWA_SERVICE_WORKER_PATH
@@ -2296,13 +2407,17 @@ def service_worker_view(request):
             )
     else:
         # Return an empty service worker if the file doesn't exist
-        return HttpResponse("// Service worker not found", content_type="application/javascript")
+        return HttpResponse(
+            "// Service worker not found",
+            content_type="application/javascript",
+        )
 
 @login_required
+
 def create_group_invitation_view(request):
-    """
-    Генерирует ссылку для группового визита без параметров группы (департамент, цель, время).
-    Параметры группы будут заданы позже при регистрации группового визита.
+    """Создает ссылку для группового визита без параметров группы.
+
+    Параметры (департамент, цель, время) задаются позже при регистрации визита.
     """
     # Создаем приглашение сразу с токеном без запроса параметров группы
     group_invitation = GroupInvitation.objects.create(
@@ -2311,7 +2426,9 @@ def create_group_invitation_view(request):
     )
     
     # Генерируем ссылку для гостей
-    link = request.build_absolute_uri(reverse('group_invitation_fill', args=[str(group_invitation.token)]))
+    link = request.build_absolute_uri(
+        reverse('group_invitation_fill', args=[str(group_invitation.token)])
+    )
     
     # Показываем ссылку пользователю
     context = {
@@ -2334,8 +2451,12 @@ def group_invitation_fill_view(request, token):
         can_delete=False
     )
         
-    if request.method == 'POST':        
-        formset = GroupGuestFormSet(request.POST, request.FILES, queryset=group_invitation.guests.all())
+    if request.method == 'POST':
+        formset = GroupGuestFormSet(
+            request.POST,
+            request.FILES,
+            queryset=group_invitation.guests.all(),
+        )
         # Получаем данные о визите из формы
         visit_time_raw = request.POST.get('visit_time')
         purpose = request.POST.get('purpose')

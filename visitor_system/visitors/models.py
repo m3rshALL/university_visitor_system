@@ -202,6 +202,41 @@ class Visit(models.Model):
         verbose_name="Гость проинформирован об обработке ПДн"
     )
     # ------------------------------------------------
+    
+    # --- Поля для отслеживания проходов через турникет ---
+    access_granted = models.BooleanField(
+        default=False,
+        verbose_name="Доступ предоставлен в HCP"
+    )
+    access_revoked = models.BooleanField(
+        default=False,
+        verbose_name="Доступ отозван"
+    )
+    first_entry_detected = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="Первый проход (вход)"
+    )
+    first_exit_detected = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="Первый проход (выход)"
+    )
+    entry_count = models.IntegerField(
+        default=0,
+        verbose_name="Количество проходов (вход)"
+    )
+    exit_count = models.IntegerField(
+        default=0,
+        verbose_name="Количество проходов (выход)"
+    )
+    hikcentral_person_id = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        verbose_name="ID персоны в HikCentral"
+    )
+    # ------------------------------------------------
 
     def is_active(self):
         """Проверяет, находится ли гость еще в здании (статус CHECKED_IN)."""
