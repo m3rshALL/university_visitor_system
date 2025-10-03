@@ -437,7 +437,8 @@ def assign_access_level_task(self, task_id: int) -> None:
         person_status = person_info.get('status')
         person_end_time = person_info.get('endTime')
         
-        if person_status != 1:
+        # FIX: status может отсутствовать в API response - проверяем только если есть
+        if person_status is not None and person_status != 1:
             raise RuntimeError(
                 f'Person {person_id} is not active (status={person_status}). '
                 f'Cannot assign access level.'
@@ -464,10 +465,18 @@ def assign_access_level_task(self, task_id: int) -> None:
                     person_end_time, parse_exc
                 )
         
-        logger.info(
-            "HikCentral: Person %s validation passed (status=%s, endTime=%s)",
-            person_id, person_status, person_end_time
-        )
+        # Логируем результат проверки
+        if person_status is None:
+            logger.info(
+                "HikCentral: Person %s validation passed "
+                "(status not returned by API, endTime=%s)",
+                person_id, person_end_time
+            )
+        else:
+            logger.info(
+                "HikCentral: Person %s validation passed (status=%s, endTime=%s)",
+                person_id, person_status, person_end_time
+            )
         
         # Получаем access_group_id из settings
         access_group_id = getattr(
