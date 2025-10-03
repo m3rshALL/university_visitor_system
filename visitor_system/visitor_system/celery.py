@@ -45,7 +45,7 @@ app.conf.beat_schedule = {
     },
     'monitor-guest-passages': {
         'task': 'hikvision_integration.tasks.monitor_guest_passages_task',
-        'schedule': crontab(minute='*/10'),  # Каждые 10 минут
+        'schedule': crontab(minute='*/5'),  # Каждые 5 минут (для авто check-in/out)
     },
 }
 

@@ -32,7 +32,8 @@ from urllib.parse import urlparse
 
 from django.contrib.auth.models import Group # Импорт модели группы пользователей
 from django.db.models import Count
-from itertools import chain
+from itertools import chain as itertools_chain  # Переименуем для избежания конфликта
+from celery import chain  # Для цепочки задач Celery
 from operator import attrgetter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
@@ -131,7 +132,7 @@ def combine_visit_lists(official_visits_qs, student_visits_qs):
 
     # Объединяем и сортируем списки визитов
     combined_list = sorted(
-        chain(official_visits_qs.iterator(), student_visits_qs.iterator()),
+        itertools_chain(official_visits_qs.iterator(), student_visits_qs.iterator()),
         key=get_sort_key,
         reverse=True  # Самые свежие (по фактическому или планируемому входу) - вверху
     )
@@ -160,6 +161,7 @@ def register_guest_view(request):
                             enroll_face_task,
                             assign_access_level_task,
                         )
+                        
                         guest_obj = getattr(visit, 'guest', None)
                         guest_id = getattr(guest_obj, 'id', None) or getattr(visit, 'guest_id', None)
                         guest_name = getattr(guest_obj, 'full_name', None) or getattr(visit, 'guest_full_name', None) or 'Guest'
@@ -174,8 +176,6 @@ def register_guest_view(request):
                             visit_id=visit.id,
                             guest_id=guest_id,
                         )
-                        # ВАЖНО: Сразу после фиксации транзакции запускаем синхронно, чтобы данные попали в HCP немедленно
-                        transaction.on_commit(lambda: enroll_face_task(task.id))
                         
                         # Создаем task для назначения access level
                         access_task = HikAccessTask.objects.create(
@@ -185,10 +185,19 @@ def register_guest_view(request):
                             visit_id=visit.id,
                             guest_id=guest_id,
                         )
-                        # Запускаем после enroll_face
-                        transaction.on_commit(
-                            lambda: assign_access_level_task(access_task.id)
+                        
+                        # FIX #2: Используем chain для последовательного выполнения
+                        # enroll_face_task СНАЧАЛА создаёт person, ПОТОМ assign_access_level_task назначает доступ
+                        # Запускаем сразу после создания задач (они уже в БД)
+                        logger.info(
+                            f'About to send Celery chain for visit {visit.id}, '
+                            f'enroll_task {task.id}, access_task {access_task.id}'
                         )
+                        result = chain(
+                            enroll_face_task.s(task.id),
+                            assign_access_level_task.si(access_task.id)
+                        ).apply_async(queue='hikvision')
+                        logger.info(f'Celery chain sent, result ID: {result.id}')
                     except Exception:
                         logger.exception('Hikvision enroll scheduling failed')
                     # Audit: create
@@ -402,7 +411,7 @@ def current_guests_view(request):
         return visit.entry_time
 
     combined_list = sorted(
-        chain(current_official_visits, current_student_visits),
+        itertools_chain(current_official_visits, current_student_visits),
         key=safe_entry_time_key,  # Используем безопасную функцию-ключ
         reverse=True  # Самые недавние вверху
     )
@@ -609,7 +618,7 @@ def visit_history_view(request):
 
     # Объединяем все три типа визитов в один список
     combined_list = sorted(
-        chain(official_visits_qs, student_visits_qs, group_visits_qs),
+        itertools_chain(official_visits_qs, student_visits_qs, group_visits_qs),
         key=get_sort_key, # Используем функцию ключа
         reverse=True # Самые свежие - вверху
     )# ---------------------------------------------
@@ -1219,7 +1228,7 @@ def employee_dashboard_view(request):
     for v in recent_official_visits: v.visit_kind = 'official'
     for v in recent_student_visits: v.visit_kind = 'student'    # Объединяем и сортируем по времени входа (самые новые вверху)
     recent_visits = sorted(
-        chain(recent_official_visits, recent_student_visits),
+        itertools_chain(recent_official_visits, recent_student_visits),
         key=attrgetter('entry_time'),
         reverse=True
     )[:10]  # Берем только 10 самых недавних визитов
@@ -1656,7 +1665,7 @@ def export_visits_xlsx(request):
         return relevant_time if relevant_time else very_old_time
 
     combined_list = sorted(
-        chain(official_visits_qs, student_visits_qs),
+        itertools_chain(official_visits_qs, student_visits_qs),
         key=get_sort_key,
         reverse=True
     )
@@ -2232,6 +2241,7 @@ def finalize_guest_invitation(request, pk):
                 try:
                     from hikvision_integration.models import HikAccessTask
                     from hikvision_integration.tasks import enroll_face_task, assign_access_level_task
+                    
                     guest_obj = getattr(visit, 'guest', None)
                     guest_id = (
                         getattr(guest_obj, 'id', None)
@@ -2254,8 +2264,6 @@ def finalize_guest_invitation(request, pk):
                         visit_id=visit.id,
                         guest_id=guest_id,
                     )
-                    # Гарантируем запуск сразу после фиксации транзакции
-                    transaction.on_commit(lambda: enroll_face_task(task.id))
                     
                     # Создаем task для назначения access level
                     access_task = HikAccessTask.objects.create(
@@ -2265,8 +2273,18 @@ def finalize_guest_invitation(request, pk):
                         visit_id=visit.id,
                         guest_id=guest_id,
                     )
-                    # Запускаем после enroll_face
-                    transaction.on_commit(lambda: assign_access_level_task(access_task.id))
+                    
+                    # FIX #2: Chain tasks для последовательного выполнения
+                    # Запускаем сразу после создания задач (они уже в БД)
+                    logger.info(
+                        f'[FINALIZE] About to send Celery chain for visit {visit.id}, '
+                        f'enroll_task {task.id}, access_task {access_task.id}'
+                    )
+                    result = chain(
+                        enroll_face_task.s(task.id),
+                        assign_access_level_task.si(access_task.id)
+                    ).apply_async(queue='hikvision')
+                    logger.info(f'[FINALIZE] Celery chain sent, result ID: {result.id}')
                 except Exception:
                     logger.exception(
                         'Hikvision enroll scheduling failed (invitation finalize)'

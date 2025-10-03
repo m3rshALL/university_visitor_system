@@ -236,6 +236,15 @@ class Visit(models.Model):
         null=True,
         verbose_name="ID персоны в HikCentral"
     )
+    # FIX #7: Tracking notification sent status
+    entry_notification_sent = models.BooleanField(
+        default=False,
+        verbose_name="Уведомление о входе отправлено"
+    )
+    exit_notification_sent = models.BooleanField(
+        default=False,
+        verbose_name="Уведомление о выходе отправлено"
+    )
     # ------------------------------------------------
 
     def is_active(self):

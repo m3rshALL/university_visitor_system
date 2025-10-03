@@ -33,6 +33,24 @@ def auto_close_expired_visits():
                 visit.exit_time = now
                 visit.save(update_fields=['status', 'exit_time'])
                 
+                # FIX #4: Отзываем доступ в HikCentral при автоматическом закрытии
+                if visit.access_granted and not visit.access_revoked:
+                    try:
+                        from hikvision_integration.tasks import revoke_access_level_task
+                        revoke_access_level_task.apply_async(
+                            args=[visit.id],
+                            countdown=5  # Задержка 5 секунд после сохранения
+                        )
+                        logger.info(
+                            'HikCentral: Scheduled access revoke for auto-closed visit %s',
+                            visit.id
+                        )
+                    except Exception as revoke_exc:
+                        logger.warning(
+                            'Failed to schedule access revoke for visit %s: %s',
+                            visit.id, revoke_exc
+                        )
+                
                 # Создаем audit log
                 try:
                     AuditLog.objects.create(

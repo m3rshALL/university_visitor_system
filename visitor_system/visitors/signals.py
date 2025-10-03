@@ -50,27 +50,35 @@ UserModel = get_user_model()
 def notify_on_visit_creation(instance, created, **kwargs):
     """Отправляет уведомление при создании нового Visit."""
     from notifications.tasks import send_visit_notification_task
+    from django.db import transaction
     if created: # Отправляем только при СОЗДАНИИ записи
         import logging
         logging.getLogger(__name__).info(
             "Создан Visit ID: %s, запуск задачи уведомления...", instance.id
         )
-        # Запускаем асинхронную задачу
-        send_visit_notification_task.delay(instance.id, 'official')
+        # Запускаем асинхронную задачу ПОСЛЕ коммита транзакции
+        transaction.on_commit(
+            lambda: send_visit_notification_task.delay(instance.id, 'official')
+        )
 # ----------------------------------
+
+
 
 # --- Обработчик для модели StudentVisit ---
 @receiver(post_save, sender='visitors.StudentVisit')
 def notify_on_student_visit_creation(instance, created, **kwargs):
     """Отправляет уведомление при создании нового StudentVisit."""
     from notifications.tasks import send_visit_notification_task
-    if created: # Отправляем только при СОЗДАНИИ записи
+    from django.db import transaction
+    if created:  # Отправляем только при СОЗДАНИИ записи
         import logging
         logging.getLogger(__name__).info(
             "Создан StudentVisit ID: %s, запуск задачи уведомления...", instance.id
         )
-        # Запускаем асинхронную задачу
-        send_visit_notification_task.delay(instance.id, 'student')
+        # Запускаем асинхронную задачу ПОСЛЕ коммита транзакции
+        transaction.on_commit(
+            lambda: send_visit_notification_task.delay(instance.id, 'student')
+        )
 # ---------------------------------------
 
 # Этот приемник будет срабатывать КАЖДЫЙ раз после сохранения объекта User
@@ -133,3 +141,98 @@ def create_or_update_employee_profile(instance, created, **kwargs):
     # except AttributeError:
     #      # У пользователя может не быть socialaccount_set
     #      pass
+
+
+# FIX #5: Автоматический отзыв доступа при изменении статуса визита
+@receiver(post_save, sender=Visit)
+def revoke_access_on_status_change(instance: Visit, created: bool, **kwargs):
+    """
+    Автоматически отзывает доступ в HikCentral при:
+    - Отмене визита (status='CANCELLED')
+    - Завершении визита (status='CHECKED_OUT')
+    
+    Запускает revoke_access_level_task только если:
+    - Визит не новый (created=False)
+    - Доступ был выдан (access_granted=True)
+    - Доступ еще не отозван (access_revoked=False)
+    - Статус изменен на CANCELLED или CHECKED_OUT
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    # Игнорируем новые визиты
+    if created:
+        return
+    
+    # Проверяем условия для отзыва доступа
+    if instance.status in ['CANCELLED', 'CHECKED_OUT']:
+        if instance.access_granted and not instance.access_revoked:
+            try:
+                from hikvision_integration.tasks import revoke_access_level_task
+                revoke_access_level_task.apply_async(
+                    args=[instance.id],
+                    countdown=5  # Задержка 5 секунд
+                )
+                logger.info(
+                    'HikCentral: Scheduled access revoke for visit %s (status=%s)',
+                    instance.id, instance.status
+                )
+            except Exception as exc:
+                logger.warning(
+                    'Failed to schedule access revoke for visit %s: %s',
+                    instance.id, exc
+                )
+
+
+# FIX #8: Обновление validity в HikCentral при изменении времени визита
+@receiver(post_save, sender=Visit)
+def update_hikcentral_validity_on_time_change(instance: Visit, created: bool, **kwargs):
+    """
+    Обновляет validity персоны в HikCentral при изменении expected_exit_time.
+    
+    Запускает задачу update_person_validity_task только если:
+    - Визит не новый (created=False)
+    - Доступ был выдан (access_granted=True)
+    - Доступ не отозван (access_revoked=False)
+    - expected_exit_time изменился
+    """
+    import logging
+    from django.db.models import signals
+    
+    logger = logging.getLogger(__name__)
+    
+    # Игнорируем новые визиты
+    if created:
+        return
+    
+    # Проверяем, что доступ активен
+    if not instance.access_granted or instance.access_revoked:
+        return
+    
+    # Проверяем, изменился ли expected_exit_time
+    # Для этого нужно получить старое значение из базы
+    try:
+        old_instance = Visit.objects.only('expected_exit_time').get(pk=instance.pk)
+        if old_instance.expected_exit_time == instance.expected_exit_time:
+            return  # Время не изменилось
+        
+        # Время изменилось - запускаем обновление validity
+        try:
+            from hikvision_integration.tasks import update_person_validity_task
+            update_person_validity_task.apply_async(
+                args=[instance.id],
+                countdown=5
+            )
+            logger.info(
+                'HikCentral: Scheduled validity update for visit %s '
+                '(new exit time: %s)',
+                instance.id, instance.expected_exit_time
+            )
+        except Exception as exc:
+            logger.warning(
+                'Failed to schedule validity update for visit %s: %s',
+                instance.id, exc
+            )
+    except Visit.DoesNotExist:
+        # Может произойти при первом сохранении
+        pass

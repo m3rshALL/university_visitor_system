@@ -43,16 +43,85 @@ class GuestAdmin(admin.ModelAdmin):
 
 @admin.register(Visit)
 class VisitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'guest', 'employee', 'department', 'status', 'entry_time', 'expected_entry_time', 'exit_time', 'registered_by')
-    list_filter = ('status', 'department', 'employee', ('entry_time', admin.DateFieldListFilter), ('expected_entry_time', admin.DateFieldListFilter))
+    list_display = ('id', 'guest', 'employee', 'department', 'status', 'entry_time', 'expected_entry_time', 'exit_time', 'registered_by', 'access_granted', 'access_revoked')
+    list_filter = ('status', 'department', 'employee', ('entry_time', admin.DateFieldListFilter), ('expected_entry_time', admin.DateFieldListFilter), 'access_granted', 'access_revoked')
     search_fields = ('guest__full_name', 'guest__iin_hash', 'employee__username', 
                      'department__name', 'purpose')
     list_select_related = ('guest', 'employee', 'department', 'registered_by', 
                            'visit_group')
     list_prefetch_related = ('visit_group__visits',)  # Для групповых визитов
     autocomplete_fields = ('guest', 'employee', 'department', 'registered_by')
-    readonly_fields = ('entry_time', 'exit_time')  # Время ставится через check-in/out
+    readonly_fields = ('entry_time', 'exit_time', 'access_granted', 'access_revoked', 
+                       'first_entry_detected', 'first_exit_detected', 
+                       'entry_count', 'exit_count', 'hikcentral_person_id',
+                       'entry_notification_sent', 'exit_notification_sent')
     date_hierarchy = 'entry_time'
+    
+    # FIX #14: Admin actions для ручного управления доступом
+    actions = ['revoke_access_action', 'view_passage_history_action']
+    
+    @admin.action(description='Отозвать доступ в HikCentral')
+    def revoke_access_action(self, request, queryset):
+        """Вручную отзывает доступ для выбранных визитов"""
+        from hikvision_integration.tasks import revoke_access_level_task
+        
+        revoked_count = 0
+        skipped_count = 0
+        
+        for visit in queryset:
+            if visit.access_granted and not visit.access_revoked:
+                try:
+                    revoke_access_level_task.apply_async(args=[visit.id], countdown=2)
+                    revoked_count += 1
+                except Exception as e:
+                    self.message_user(
+                        request,
+                        f'Ошибка при отзыве доступа для визита {visit.id}: {e}',
+                        level='error'
+                    )
+            else:
+                skipped_count += 1
+        
+        if revoked_count > 0:
+            self.message_user(
+                request,
+                f'Запланирован отзыв доступа для {revoked_count} визитов. '
+                f'Пропущено: {skipped_count}.',
+                level='success'
+            )
+        else:
+            self.message_user(
+                request,
+                'Нет визитов с активным доступом для отзыва.',
+                level='warning'
+            )
+    
+    @admin.action(description='Просмотр истории проходов')
+    def view_passage_history_action(self, request, queryset):
+        """Показывает историю проходов для выбранных визитов"""
+        messages = []
+        
+        for visit in queryset:
+            msg = (
+                f"Визит #{visit.id} ({visit.guest}): "
+                f"Входов={visit.entry_count}, Выходов={visit.exit_count}, "
+                f"Первый вход={visit.first_entry_detected or 'нет'}, "
+                f"Первый выход={visit.first_exit_detected or 'нет'}"
+            )
+            messages.append(msg)
+        
+        if messages:
+            self.message_user(
+                request,
+                '\n'.join(messages),
+                level='info'
+            )
+        else:
+            self.message_user(
+                request,
+                'Нет данных о проходах.',
+                level='warning'
+            )
 
 @admin.register(StudentVisit)
 class StudentVisitAdmin(admin.ModelAdmin):

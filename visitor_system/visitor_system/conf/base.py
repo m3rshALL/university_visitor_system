@@ -559,7 +559,7 @@ HIKCENTRAL_BASE_URL = os.getenv('HIKCENTRAL_BASE_URL', 'https://your-hikcentral-
 HIKCENTRAL_INTEGRATION_KEY = os.getenv('HIKCENTRAL_INTEGRATION_KEY', '12281453') # Integration Partner Key
 HIKCENTRAL_INTEGRATION_SECRET = os.getenv('HIKCENTRAL_INTEGRATION_SECRET', 'wZFhg7ZkoYCTRF3JiwPi') # Integration Partner Secret
 HIKCENTRAL_USERNAME = os.getenv('HIKCENTRAL_USERNAME', 'admin') # Пользователь HikCentral
-HIKCENTRAL_PASSWORD = os.getenv('HIKCENTRAL_PASSWORD', 'DctvCnjznm20!') # Пароль HikCentral
+HIKCENTRAL_PASSWORD = os.getenv('HIKCENTRAL_PASSWORD', ']iI)@JnT{CQl') # Пароль HikCentral
 
 # Настройки организации для гостей в HikCentral
 HIKCENTRAL_DEFAULT_ORG_INDEX = os.getenv('HIKCENTRAL_DEFAULT_ORG_INDEX', '')  # ID организации по умолчанию для гостей

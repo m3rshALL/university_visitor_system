@@ -169,6 +169,22 @@ class HikCentralSession:
             logger.error(f"HikCentral API request failed: {e}")
             raise
 
+    def get(self, endpoint: str, params: Dict = None) -> requests.Response:
+        """GET request with AK/SK signature."""
+        return self._make_request('GET', endpoint, data=None, params=params)
+
+    def post(
+        self, endpoint: str, json: Dict = None, params: Dict = None
+    ) -> requests.Response:
+        """POST request with AK/SK signature."""
+        return self._make_request('POST', endpoint, data=json, params=params)
+
+    def put(
+        self, endpoint: str, json: Dict = None, params: Dict = None
+    ) -> requests.Response:
+        """PUT request with AK/SK signature."""
+        return self._make_request('PUT', endpoint, data=json, params=params)
+
     def _make_multipart_request(self, method: str, endpoint: str, files: Dict, fields: Dict = None, params: Dict = None) -> requests.Response:
         """Выполняет multipart/form-data запрос с подписью AK/SK.
         
@@ -1125,11 +1141,14 @@ def upload_face_hikcentral(session: HikCentralSession, face_lib_id: str, image_b
             'faceData': image_base64  # Используем faceData, а не personPhoto!
         }
         
+        logger.info("HikCentral: Sending payload with personId=%s, faceData length=%d chars",
+                   person_id, len(image_base64))
+        
         # РАБОЧИЙ endpoint: /person/face/update!
         face_resp = session._make_request('POST', '/artemis/api/resource/v1/person/face/update', data=update_payload)
         face_json = face_resp.json()
         
-        logger.info("HikCentral: person/single/update response code=%s msg=%s", 
+        logger.info("HikCentral: person/face/update response code=%s msg=%s",
                    face_json.get('code'), face_json.get('msg'))
         
         if face_json.get('code') != '0':
@@ -1738,3 +1757,76 @@ def get_door_events(
         return {}
 
 
+def get_person_hikcentral(session, person_id: str) -> dict:
+    """
+    FIX #10: Получает информацию о персоне из HikCentral.
+    
+    Args:
+        session: HikCentralSession объект
+        person_id: ID персоны в HikCentral
+    
+    Returns:
+        dict: Данные персоны если найдена, иначе {}
+        Содержит поля: personId, personName, startTime, endTime, status, и т.д.
+    
+    Example response:
+        {
+            "personId": "8512",
+            "personName": "Guest Name",
+            "startTime": "2025-10-03T09:00:00+00:00",
+            "endTime": "2025-10-03T22:00:00+00:00",
+            "status": 1,  # 1=active, 0=inactive
+            ...
+        }
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Используем POST /person/personId/personInfo для получения данных персоны
+        payload = {'personId': str(person_id)}
+        
+        resp = session.post(
+            '/artemis/api/resource/v1/person/personId/personInfo',
+            json=payload
+        )
+        
+        if resp.status_code != 200:
+            logger.error(
+                "HikCentral: Failed to get person %s: status=%d",
+                person_id, resp.status_code
+            )
+            return {}
+        
+        result = resp.json()
+        if result.get('code') != '0':
+            logger.warning(
+                "HikCentral: Person %s not found or error: code=%s, msg=%s",
+                person_id, result.get('code'), result.get('msg')
+            )
+            return {}
+        
+        # Ответ содержит данные персоны напрямую в поле 'data'
+        data = result.get('data', {})
+        
+        if not data or not data.get('personId'):
+            logger.warning("HikCentral: Person %s not found in results", person_id)
+            return {}
+        
+        logger.info(
+            "HikCentral: Found person %s (status=%s, endTime=%s)",
+            person_id,
+            data.get('status'),
+            data.get('endTime')
+        )
+        
+        return data
+        
+    except Exception as e:
+        logger.error(
+            "HikCentral: Failed to get person %s: %s",
+            person_id, e
+        )
+        import traceback
+        traceback.print_exc()
+        return {}

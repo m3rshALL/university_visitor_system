@@ -46,6 +46,79 @@ def send_exit_notification(recipient_email, subject, message):
 
 
 @shared_task(autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 3})
+def send_passage_notification_task(visit_id: int, passage_type: str):
+    """
+    FIX #7: Отправляет уведомление о проходе гостя (вход/выход).
+    
+    Args:
+        visit_id: ID визита
+        passage_type: 'entry' или 'exit'
+    """
+    try:
+        from visitors.models import Visit
+        from django.utils import timezone
+        
+        visit = Visit.objects.select_related('guest', 'employee').filter(
+            id=visit_id
+        ).first()
+        
+        if not visit:
+            logger.warning("send_passage_notification_task: Visit %s not found", visit_id)
+            return
+        
+        if not visit.employee or not visit.employee.email:
+            logger.warning(
+                "send_passage_notification_task: No employee email for visit %s",
+                visit_id
+            )
+            return
+        
+        guest_name = visit.guest.full_name if visit.guest else visit.guest_full_name or 'Гость'
+        
+        if passage_type == 'entry':
+            subject = f"Гость прошел через турникет (вход) - {guest_name}"
+            event_time = visit.first_entry_detected
+            action = "вошел в здание"
+        else:  # exit
+            subject = f"Гость прошел через турникет (выход) - {guest_name}"
+            event_time = visit.first_exit_detected
+            action = "вышел из здания"
+        
+        time_str = event_time.strftime('%d.%m.%Y %H:%M:%S') if event_time else 'неизвестно'
+        
+        message = f"""
+Уведомление о проходе гостя:
+
+Гость: {guest_name}
+Действие: {action}
+Время: {time_str}
+Визит ID: {visit.id}
+
+Посещает: {visit.employee.get_full_name() or visit.employee.username}
+Цель визита: {visit.purpose or 'Не указана'}
+
+Это автоматическое уведомление от системы контроля доступа.
+        """
+        
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[visit.employee.email],
+            fail_silently=False
+        )
+        
+        logger.info(
+            "Passage notification (%s) sent for visit %s to %s",
+            passage_type, visit_id, visit.employee.email
+        )
+        
+    except Exception as e:
+        logger.error("Error sending passage notification: %s", e)
+        raise
+
+
+@shared_task(autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={'max_retries': 3})
 def send_daily_visit_summary():
     """Отправляет ежедневную сводку по визитам"""
     from django.utils import timezone
