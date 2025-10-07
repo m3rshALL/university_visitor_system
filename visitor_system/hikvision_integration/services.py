@@ -359,10 +359,31 @@ class HikSession:
         return self._make_request('PUT', path, data=data)
 
 
-def ensure_person(session: HikSession, employee_no: str, name: str, valid_from: Optional[str], valid_to: Optional[str]) -> str:
-    """Создает или обновляет пользователя в системе Hikvision через ISAPI"""
+# ============================================================================
+# DEPRECATED: Old ISAPI Methods (Legacy)
+# Эти методы устарели и используются только для совместимости со старыми
+# устройствами без HikCentral Professional.
+# Для современных систем используйте HikCentral OpenAPI методы:
+# - ensure_person_hikcentral() вместо ensure_person()
+# - upload_face_hikcentral() вместо upload_face()
+# - assign_access_hikcentral() вместо assign_access()
+# - revoke_access_hikcentral() вместо revoke_access()
+# ============================================================================
+
+
+def ensure_person(session: HikSession, employee_no: str, name: str,
+                  valid_from: Optional[str], valid_to: Optional[str]) -> str:
+    """DEPRECATED: Старый метод ISAPI. Используйте ensure_person_hikcentral().
+
+    Создает или обновляет пользователя в системе Hikvision через ISAPI.
+    Используется только для устройств без HikCentral Professional.
+    """
+    logger.warning(
+        "DEPRECATED: Using legacy ISAPI method ensure_person(). "
+        "Consider upgrading to HikCentral Professional."
+    )
     logger.info(f"Hikvision: Ensuring person {name} ({employee_no}) via ISAPI")
-    
+
     # Формируем XML для создания/обновления пользователя
     person_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <UserInfo>
@@ -374,45 +395,67 @@ def ensure_person(session: HikSession, employee_no: str, name: str, valid_from: 
     <Valid>
         <enable>true</enable>
         <beginTime>{valid_from or datetime.now().strftime('%Y-%m-%dT%H:%M:%S')}</beginTime>
-        <endTime>{valid_to or (datetime.now().replace(year=datetime.now().year + 1)).strftime('%Y-%m-%dT%H:%M:%S')}</endTime>
+        <endTime>{valid_to or (datetime.now().replace(
+            year=datetime.now().year + 1
+        )).strftime('%Y-%m-%dT%H:%M:%S')}</endTime>
     </Valid>
 </UserInfo>"""
-    
+
     try:
         # Проверяем, существует ли пользователь
-        check_response = session.get(f'/ISAPI/AccessControl/UserInfo/{employee_no}')
-        
+        check_response = session.get(
+            f'/ISAPI/AccessControl/UserInfo/{employee_no}'
+        )
+
         if check_response.status_code == 200:
             # Пользователь существует, обновляем
-            response = session.put(f'/ISAPI/AccessControl/UserInfo/{employee_no}', data=person_xml)
+            response = session.put(
+                f'/ISAPI/AccessControl/UserInfo/{employee_no}',
+                data=person_xml
+            )
             logger.info(f"Hikvision: Updated existing person {employee_no}")
         else:
             # Пользователь не существует, создаем
-            response = session.post('/ISAPI/AccessControl/UserInfo', data=person_xml)
+            response = session.post(
+                '/ISAPI/AccessControl/UserInfo',
+                data=person_xml
+            )
             logger.info(f"Hikvision: Created new person {employee_no}")
-        
+
         return employee_no
-        
+
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to ensure person {employee_no}: {e}")
         # Возвращаем employee_no как person_id даже при ошибке
         return employee_no
 
 
-def upload_face(session: HikSession, face_lib_id: str, image_bytes: bytes, person_id: str) -> str:
-    """Загружает фото лица в библиотеку лиц Hikvision через ISAPI.
-    
-    Сначала пытается загрузить фото напрямую к персоне через /ISAPI/Intelligent/FDLib/picture,
-    затем пробует старый метод через FaceDataRecord если первый не сработал.
+def upload_face(session: HikSession, face_lib_id: str,
+                image_bytes: bytes, person_id: str) -> str:
+    """DEPRECATED: Старый метод ISAPI. Используйте upload_face_hikcentral().
+
+    Загружает фото лица в библиотеку лиц Hikvision через ISAPI.
+    Используется только для устройств без HikCentral Professional.
+
+    Сначала пытается загрузить фото напрямую к персоне через
+    /ISAPI/Intelligent/FDLib/picture, затем пробует старый метод через
+    FaceDataRecord если первый не сработал.
     """
-    logger.info(f"Hikvision ISAPI: Uploading face for person {person_id} to library {face_lib_id}")
-    
+    logger.warning(
+        "DEPRECATED: Using legacy ISAPI method upload_face(). "
+        "Consider upgrading to HikCentral Professional."
+    )
+    logger.info(
+        f"Hikvision ISAPI: Uploading face for person {person_id} "
+        f"to library {face_lib_id}"
+    )
+
     try:
         # Метод 1: Прямая загрузка фото к персоне (современный ISAPI)
         # Multipart form-data с бинарным изображением
         import io
         from requests_toolbelt.multipart.encoder import MultipartEncoder
-        
+
         # Создаем multipart с изображением
         multipart_data = MultipartEncoder(
             fields={
@@ -423,24 +466,38 @@ def upload_face(session: HikSession, face_lib_id: str, image_bytes: bytes, perso
                 )
             }
         )
-        
+
         # Пытаемся загрузить через /ISAPI/Intelligent/FDLib/picture
         headers = {'Content-Type': multipart_data.content_type}
-        url = f'/ISAPI/Intelligent/FDLib/FaceDataRecord/picture?format=json&FDID={face_lib_id}&faceID={person_id}'
-        
+        url = (
+            f'/ISAPI/Intelligent/FDLib/FaceDataRecord/picture?'
+            f'format=json&FDID={face_lib_id}&faceID={person_id}'
+        )
+
         try:
-            response = session._make_request('PUT', url, data=multipart_data.to_string(), headers=headers)
+            response = session._make_request(
+                'PUT', url, data=multipart_data.to_string(), headers=headers
+            )
             if response.status_code in [200, 201]:
-                logger.info(f"Hikvision ISAPI: Successfully uploaded face via PUT /picture for person {person_id}")
+                logger.info(
+                    f"Hikvision ISAPI: Successfully uploaded face via "
+                    f"PUT /picture for person {person_id}"
+                )
                 return f"face_{person_id}"
             else:
-                logger.warning(f"Hikvision ISAPI: PUT /picture returned status {response.status_code}, trying POST method")
+                logger.warning(
+                    f"Hikvision ISAPI: PUT /picture returned status "
+                    f"{response.status_code}, trying POST method"
+                )
         except Exception as e:
-            logger.warning(f"Hikvision ISAPI: PUT /picture failed ({e}), trying POST method")
-        
+            logger.warning(
+                f"Hikvision ISAPI: PUT /picture failed ({e}), "
+                f"trying POST method"
+            )
+
         # Метод 2: POST с base64 (старый метод, fallback)
         image_base64 = base64.b64encode(image_bytes).decode('utf-8')
-        
+
         # XML payload для FaceDataRecord
         face_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <FaceDataRecord>
@@ -449,36 +506,73 @@ def upload_face(session: HikSession, face_lib_id: str, image_bytes: bytes, perso
     <faceID>{person_id}</faceID>
     <faceData>{image_base64}</faceData>
 </FaceDataRecord>"""
-        
-        response = session.post('/ISAPI/Intelligent/FDLib/FaceDataRecord', data=face_xml)
-        
+
+        response = session.post(
+            '/ISAPI/Intelligent/FDLib/FaceDataRecord', data=face_xml
+        )
+
         if response.status_code in [200, 201]:
-            logger.info(f"Hikvision ISAPI: Successfully uploaded face via POST XML for person {person_id}")
+            logger.info(
+                f"Hikvision ISAPI: Successfully uploaded face via "
+                f"POST XML for person {person_id}"
+            )
             return f"face_{person_id}"
         else:
-            logger.warning(f"Hikvision ISAPI: Face upload XML returned status {response.status_code}")
+            logger.warning(
+                f"Hikvision ISAPI: Face upload XML returned status "
+                f"{response.status_code}"
+            )
             # Пробуем альтернативный endpoint
-            response_alt = session.post(f'/ISAPI/Intelligent/FDLib/FDSetUp/picture?format=json&FDID={face_lib_id}', 
-                                       data=image_bytes,
-                                       headers={'Content-Type': 'application/octet-stream'})
+            response_alt = session.post(
+                f'/ISAPI/Intelligent/FDLib/FDSetUp/picture?'
+                f'format=json&FDID={face_lib_id}',
+                data=image_bytes,
+                headers={'Content-Type': 'application/octet-stream'}
+            )
             if response_alt.status_code in [200, 201]:
-                logger.info(f"Hikvision ISAPI: Successfully uploaded via FDSetUp/picture for person {person_id}")
+                logger.info(
+                    f"Hikvision ISAPI: Successfully uploaded via "
+                    f"FDSetUp/picture for person {person_id}"
+                )
                 return f"face_{person_id}"
-            
+
             return f"face_{person_id}_status_{response.status_code}"
-            
+
     except Exception as e:
-        logger.error(f"Hikvision ISAPI: Failed to upload face for person {person_id}: {e}")
+        logger.error(
+            f"Hikvision ISAPI: Failed to upload face for person "
+            f"{person_id}: {e}"
+        )
         return f"face_{person_id}_error"
 
 
-def assign_access(session: HikSession, person_id: str, door_ids: List[str], valid_from: Optional[str], valid_to: Optional[str]) -> None:
-    """Назначает доступ к дверям для пользователя через ISAPI"""
-    logger.info(f"Hikvision: Assigning access for person {person_id} to doors {door_ids}")
-    
+def assign_access(session: HikSession, person_id: str, door_ids: List[str],
+                  valid_from: Optional[str], valid_to: Optional[str]) -> None:
+    """DEPRECATED: Старый метод ISAPI. Используйте assign_access_hikcentral().
+
+    Назначает доступ к дверям для пользователя через ISAPI.
+    Используется только для устройств без HikCentral Professional.
+    """
+    logger.warning(
+        "DEPRECATED: Using legacy ISAPI method assign_access(). "
+        "Consider upgrading to HikCentral Professional."
+    )
+    logger.info(
+        f"Hikvision: Assigning access for person {person_id} "
+        f"to doors {door_ids}"
+    )
+
     try:
         for door_id in door_ids:
             # Формируем XML для назначения прав доступа
+            begin_time = (
+                valid_from or datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+            )
+            end_time = (
+                valid_to or (datetime.now().replace(
+                    year=datetime.now().year + 1
+                )).strftime('%Y-%m-%dT%H:%M:%S')
+            )
             access_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <DoorRight>
     <employeeNo>{person_id}</employeeNo>
@@ -486,38 +580,72 @@ def assign_access(session: HikSession, person_id: str, door_ids: List[str], vali
     <planTemplateNo>1</planTemplateNo>
     <valid>
         <enable>true</enable>
-        <beginTime>{valid_from or datetime.now().strftime('%Y-%m-%dT%H:%M:%S')}</beginTime>
-        <endTime>{valid_to or (datetime.now().replace(year=datetime.now().year + 1)).strftime('%Y-%m-%dT%H:%M:%S')}</endTime>
+        <beginTime>{begin_time}</beginTime>
+        <endTime>{end_time}</endTime>
     </valid>
 </DoorRight>"""
-            
-            response = session.post('/ISAPI/AccessControl/DoorRight', data=access_xml)
-            
+
+            response = session.post(
+                '/ISAPI/AccessControl/DoorRight', data=access_xml
+            )
+
             if response.status_code in [200, 201]:
-                logger.info(f"Hikvision: Successfully assigned access for person {person_id} to door {door_id}")
+                logger.info(
+                    f"Hikvision: Successfully assigned access for person "
+                    f"{person_id} to door {door_id}"
+                )
             else:
-                logger.warning(f"Hikvision: Access assignment returned status {response.status_code} for door {door_id}")
-                
+                logger.warning(
+                    f"Hikvision: Access assignment returned status "
+                    f"{response.status_code} for door {door_id}"
+                )
+
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to assign access for person {person_id}: {e}")
 
 
-def revoke_access(session: HikSession, person_id: str, door_ids: List[str]) -> None:
-    """Отзывает доступ к дверям для пользователя через ISAPI"""
-    logger.info(f"Hikvision: Revoking access for person {person_id} from doors {door_ids}")
-    
+def revoke_access(session: HikSession, person_id: str,
+                  door_ids: List[str]) -> None:
+    """DEPRECATED: Старый метод ISAPI. Используйте revoke_access_hikcentral().
+
+    Отзывает доступ к дверям для пользователя через ISAPI.
+    Используется только для устройств без HikCentral Professional.
+    """
+    logger.warning(
+        "DEPRECATED: Using legacy ISAPI method revoke_access(). "
+        "Consider upgrading to HikCentral Professional."
+    )
+    logger.info(
+        f"Hikvision: Revoking access for person {person_id} "
+        f"from doors {door_ids}"
+    )
+
     try:
         for door_id in door_ids:
             # Удаляем права доступа
-            response = session._make_request('DELETE', f'/ISAPI/AccessControl/DoorRight/{person_id}/{door_id}')
-            
+            response = session._make_request(
+                'DELETE',
+                f'/ISAPI/AccessControl/DoorRight/{person_id}/{door_id}'
+            )
+
             if response.status_code in [200, 204]:
-                logger.info(f"Hikvision: Successfully revoked access for person {person_id} from door {door_id}")
+                logger.info(
+                    f"Hikvision: Successfully revoked access for person "
+                    f"{person_id} from door {door_id}"
+                )
             else:
-                logger.warning(f"Hikvision: Access revocation returned status {response.status_code} for door {door_id}")
-                
+                logger.warning(
+                    f"Hikvision: Access revocation returned status "
+                    f"{response.status_code} for door {door_id}"
+                )
+
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to revoke access for person {person_id}: {e}")
+
+
+# ============================================================================
+# End of DEPRECATED ISAPI Methods
+# ============================================================================
 
 
 def find_org_by_name(session: HikCentralSession, org_name: str) -> Optional[str]:
@@ -1408,78 +1536,6 @@ def test_device_connection(device: HikDevice) -> Dict[str, Any]:
             'host': device.host,
             'error': str(e)
         }
-
-
-def visitor_registerment(session: HikCentralSession, payload: Dict[str, Any]) -> Dict[str, Any]:
-    """Создать/зарегистрировать визитёра: POST /artemis/api/visitor/v1/registerment"""
-    try:
-        resp = session._make_request('POST', '/artemis/api/visitor/v1/registerment', data=payload)
-        return resp.json()
-    except requests.exceptions.RequestException as e:
-        logger.error("visitor_registerment failed: %s", e)
-        raise
-
-
-def visitor_update(session: HikCentralSession, payload: Dict[str, Any]) -> Dict[str, Any]:
-    """Изменить визит: POST /artemis/api/visitor/v1/registerment/update"""
-    try:
-        resp = session._make_request('POST', '/artemis/api/visitor/v1/registerment/update', data=payload)
-        return resp.json()
-    except requests.exceptions.RequestException as e:
-        logger.error("visitor_update failed: %s", e)
-        raise
-
-
-def visitor_out(session: HikCentralSession, payload: Dict[str, Any]) -> Dict[str, Any]:
-    """Отметить выход визитёра: POST /artemis/api/visitor/v1/visitor/out
-    Ожидается минимум { 'personId': '...' } или другой идентификатор согласно конфигурации HCP.
-    """
-    try:
-        resp = session._make_request('POST', '/artemis/api/visitor/v1/visitor/out', data=payload)
-        return resp.json()
-    except requests.exceptions.RequestException as e:
-        logger.error("visitor_out failed: %s", e)
-        raise
-
-
-def visitor_auth_reapplication(session: HikCentralSession, person_id: str) -> Dict[str, Any]:
-    """Триггер применения настроек на устройства: POST /artemis/api/visitor/v1/auth/reapplication"""
-    try:
-        resp = session._make_request('POST', '/artemis/api/visitor/v1/auth/reapplication', data={'personId': str(person_id)})
-        return resp.json()
-    except requests.exceptions.RequestException as e:
-        logger.error("visitor_auth_reapplication failed: %s", e)
-        raise
-
-
-def visitor_auth_result(
-    session: HikCentralSession,
-    person_id: str,
-    result_type: int = 2,
-    start_time: Optional[str] = None,
-    end_time: Optional[str] = None,
-) -> Dict[str, Any]:
-    """Статус применения прав: POST /artemis/api/acs/v1/auth/applicationResult"""
-    from datetime import datetime, timedelta
-    if not start_time or not end_time:
-        now = datetime.now()
-        start_time = (now - timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%S')
-        end_time = (now + timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%S')
-    payload = {
-        'pageNo': 1,
-        'pageSize': 10,
-        'type': result_type,
-        'applicationResultType': result_type,
-        'startTime': start_time,
-        'endTime': end_time,
-        'personId': str(person_id),
-    }
-    try:
-        resp = session._make_request('POST', '/artemis/api/acs/v1/auth/applicationResult', data=payload)
-        return resp.json()
-    except requests.exceptions.RequestException as e:
-        logger.error("visitor_auth_result failed: %s", e)
-        raise
 
 
 def assign_access_level_to_person(
