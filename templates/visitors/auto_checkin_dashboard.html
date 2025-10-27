@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard - Автоматические действия{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chart-line me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3v18h18" /><path d="M20 18v3" /><path d="M16 16v5" /><path d="M12 13v8" /><path d="M8 16v5" /><path d="M3 11l6 -6l4 4l7 -7" /></svg>
+                        Автоматические действия
+                    </h2>
+                    <div class="page-subtitle">
+                        <span class="text-muted">{{ period_label }}</span>
+                    </div>
+                </div>
+                <div class="col-auto ms-auto">
+                    <div class="btn-list">
+                        <a href="?period=today" class="btn {% if period == 'today' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                            Сегодня
+                        </a>
+                        <a href="?period=week" class="btn {% if period == 'week' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                            7 дней
+                        </a>
+                        <a href="?period=month" class="btn {% if period == 'month' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                            30 дней
+                        </a>
+                        
+                        <!-- Export Buttons -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-icon btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Экспорт">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 15v-12" /><path d="M18 9l-6 6l-6 -6" /><path d="M4 17h16" /><path d="M4 20h16" /></svg>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'export_auto_checkin_pdf' %}?days={{ days }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-danger" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
+                                    Скачать PDF
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'export_auto_checkin_excel' %}?days={{ days }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-success" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>
+                                    Скачать Excel
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <!-- Stats Cards -->
+            <div class="row row-deck row-cards mb-3">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Автоматических входов</div>
+                                <div class="ms-auto lh-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+                                </div>
+                            </div>
+                            <div class="h1 mb-0 mt-1">{{ checkin_count }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Автоматических выходов</div>
+                                <div class="ms-auto lh-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-blue" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>
+                                </div>
+                            </div>
+                            <div class="h1 mb-0 mt-1">{{ checkout_count }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Инцидентов</div>
+                                <div class="ms-auto lh-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-orange" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+                                </div>
+                            </div>
+                            <div class="h1 mb-0 mt-1">{{ incidents_count }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Гостей в здании</div>
+                                <div class="ms-auto lh-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-cyan" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+                                </div>
+                            </div>
+                            <div class="h1 mb-0 mt-1">{{ guests_inside }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="row row-cards mb-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">График проходов через турникеты</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 300px;">
+                                <canvas id="passagesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two columns -->
+            <div class="row row-cards">
+                <!-- Recent Actions -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M9 12l2 2l4 -4" /></svg>
+                                Последние автоматические действия
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            {% if recent_actions %}
+                                <div class="list-group list-group-flush">
+                                    {% for action in recent_actions %}
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="avatar {% if 'check-in' in action.changes.reason %}bg-green{% else %}bg-red{% endif %}">
+                                                    {% if 'check-in' in action.changes.reason %}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+                                                    {% else %}
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="text-truncate">
+                                                    <strong>
+                                                        {% if 'check-in' in action.changes.reason %}
+                                                            Check-in
+                                                        {% else %}
+                                                            Checkout
+                                                        {% endif %}
+                                                    </strong>
+                                                    - Визит #{{ action.object_id }}
+                                                </div>
+                                                <div class="text-muted small">{{ action.changes.reason }}</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="text-muted small">{{ action.created_at|date:"H:i:s" }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="empty">
+                                    <div class="empty-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /></svg>
+                                    </div>
+                                    <p class="empty-title">Нет данных</p>
+                                    <p class="empty-subtitle text-muted">Нет автоматических действий за выбранный период</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Incidents -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-orange" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+                                Недавние аномалии
+                            </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            {% if recent_incidents %}
+                                <div class="list-group list-group-flush">
+                                    {% for incident in recent_incidents %}
+                                    <div class="list-group-item">
+                                        <div class="row">
+                                            <div class="col">
+                                                <span class="badge 
+                                                    {% if incident.severity == 'critical' %}bg-red
+                                                    {% elif incident.severity == 'high' %}bg-orange
+                                                    {% elif incident.severity == 'medium' %}bg-yellow
+                                                    {% else %}bg-green{% endif %}">
+                                                    {{ incident.get_severity_display }}
+                                                </span>
+                                                <div class="mt-2">
+                                                    <strong>{{ incident.get_incident_type_display }}</strong>
+                                                </div>
+                                                <div class="text-muted small mt-1">
+                                                    {{ incident.visit.guest.full_name }}
+                                                </div>
+                                                <div class="text-muted small">
+                                                    {{ incident.detected_at|date:"d.m.Y H:i" }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{% url 'security_incidents_dashboard' %}" class="btn btn-link">
+                                        Все инциденты
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /><path d="M13 18l6 -6" /><path d="M13 6l6 6" /></svg>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="empty p-4">
+                                    <div class="empty-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+                                    </div>
+                                    <p class="empty-title">Аномалий не обнаружено!</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incident Stats -->
+            {% if incident_stats %}
+            <div class="row row-cards mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M21 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M3 6m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 6m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M21 6m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M3 18m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 18m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M21 18m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                                Статистика инцидентов по типам
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% for stat in incident_stats %}
+                                <div class="col-md-4 mb-3">
+                                    <div class="card card-sm">
+                                        <div class="card-body">
+                                            <div class="h2 mb-2">{{ stat.count }}</div>
+                                            <div class="text-muted">
+                                                {% if stat.incident_type == 'exit_without_entry' %}Выход без входа
+                                                {% elif stat.incident_type == 'long_stay' %}Долгое пребывание
+                                                {% elif stat.incident_type == 'suspicious_time' %}Подозрительное время
+                                                {% elif stat.incident_type == 'multiple_failed_access' %}Неудачные попытки
+                                                {% elif stat.incident_type == 'repeated_exit_entry' %}Частые входы/выходы
+                                                {% else %}Другое
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('passagesChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ hourly_labels|safe }},
+            datasets: [{
+                label: 'Check-ins',
+                data: {{ checkin_data|safe }},
+                borderColor: 'rgb(40, 167, 69)',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4,
+                fill: true
+            }, {
+                label: 'Checkouts',
+                data: {{ checkout_data|safe }},
+                borderColor: 'rgb(220, 53, 69)',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'График проходов через турникеты'
+                },
+                legend: {
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+

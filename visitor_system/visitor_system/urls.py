@@ -75,7 +75,6 @@ urlpatterns = [
     path('notifications/', include('notifications.urls')), # URL для уведомлений
     path('classroom-book/', include('classroom_book.urls', namespace='classroom_book')), # URL для бронирования аудиторий
     path('calendar/', include(('fullcalendar.urls', 'fullcalendar'), namespace='fullcalendar')), # URL для календаря событий
-    path('egov/', include('egov_integration.urls')), # URL для интеграции с egov.kz
     path('dashboard/', include('realtime_dashboard.urls')), # URL для дашборда в реальном времени
     path('hikvision/', include('hikvision_integration.urls', namespace='hikvision_integration')),
     # API schema & Swagger UI (если доступен drf-spectacular)
@@ -107,6 +106,7 @@ urlpatterns = [
     # Healthcheck
     path('healthz', healthz_view, name='healthz'),
     path('healthz/celery', healthz_celery_view, name='healthz_celery'),
+    path('health/', visitor_views.health_check, name='health_check'),  # Детальный health check
     # Временный маршрут для тестирования ИИН (удален после проверки)
     # path('test-iin/', test_iin_view, name='test_iin'),
     path('sentry-debug/', trigger_error),

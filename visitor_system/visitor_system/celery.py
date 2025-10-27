@@ -1,9 +1,14 @@
 # visitor_system/celery.py
 import os
+
 from celery import Celery  # type: ignore  # pylint: disable=import-error
+from celery.schedules import crontab
 
 # Устанавливаем модуль настроек из окружения (по умолчанию dev)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.getenv('DJANGO_SETTINGS_MODULE', 'visitor_system.conf.dev'))
+os.environ.setdefault(
+    'DJANGO_SETTINGS_MODULE',
+    os.getenv('DJANGO_SETTINGS_MODULE', 'visitor_system.conf.dev'),
+)
 
 app = Celery('visitor_system')
 app.config_from_object('django.conf:settings', namespace='CELERY')
@@ -16,7 +21,6 @@ except ImportError:
     pass
 
 # Настройка Celery Beat для периодических задач
-from celery.schedules import crontab
 
 app.conf.beat_schedule = {
     'auto-close-expired-visits': {
@@ -46,6 +50,11 @@ app.conf.beat_schedule = {
     'monitor-guest-passages': {
         'task': 'hikvision_integration.tasks.monitor_guest_passages_task',
         'schedule': crontab(minute='*/5'),  # Каждые 5 минут (для авто check-in/out)
+    },
+    'backup-database': {
+        'task': 'visitors.tasks.backup_database_task',
+        'schedule': crontab(hour=3, minute=0),  # Ежедневно в 3:00
+        'kwargs': {'upload_to_s3': False},  # Измените на True если настроен S3
     },
 }
 

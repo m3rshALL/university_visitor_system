@@ -1,0 +1,157 @@
+{% load django_htmx %}
+{% load static pwa %} 
+{% load iin_filters %}
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function(){
+        try {
+            var saved = localStorage.getItem('theme');
+            var theme = saved ? saved : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            var s = document.createElement('style');
+            s.innerHTML = theme === 'dark' ? 'html{background-color:#0e0f12;}' : 'html{background-color:#ffffff;}';
+            document.head.appendChild(s);
+        } catch (e) {}
+    })();
+    </script>
+    <title>{% block title %}Система пропусков Университета{% endblock %}</title>
+
+    {# --- Подключение CSS --- #}
+    
+    {# Tabler CSS#}
+    <link rel="stylesheet" href="{% static 'tabler/css/tabler.css' %}"/>
+    <link rel="stylesheet" href="{% static 'tabler/css/tabler-flags.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-socials.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-payments.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-vendors.css' %}"/>
+	<link rel="stylesheet" href="{% static 'tabler/css/tabler-marketing.css' %}"/>
+
+	{# --- ВСТАВКА КОДА GOOGLE FONTS --- #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" fetchpriority="high">
+    {# ---------------------------------- #}    
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
+	<style>
+		/* Toasts */
+		.toast-container{position:fixed;right:1rem;bottom:1rem;z-index:1080;display:flex;flex-direction:column;gap:.5rem}
+		.toast-item{border-radius:.5rem;padding:.5rem .75rem;box-shadow:0 2px 8px rgba(0,0,0,.08);opacity:.98;transition:opacity .25s ease,transform .25s ease}
+		.toast-item.hide{opacity:0;transform:translateY(6px)}
+		.toast-dot{width:.5rem;height:.5rem;border-radius:50%;background:currentColor;opacity:.6}
+		/* Sticky submit bar */
+		.sticky-submit{position:sticky;bottom:0;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-top:1px solid rgba(0,0,0,.06);padding:.5rem;z-index:500}
+		@media (min-width: 768px){.sticky-submit{position:static;background:transparent;border:0;padding:0}}
+		/* Focus visible for keyboard users */
+		:focus-visible{outline:3px solid #206bc4;outline-offset:2px}
+		/* HTMX indicator */
+		.is-loading{opacity:.6;pointer-events:none}
+		[aria-busy="true"]{cursor:progress}
+		/* Skeleton placeholder */
+		.skeleton{position:relative;overflow:hidden;background-color:#f3f4f6}
+		.skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background-image:linear-gradient(90deg,rgba(255,255,255,0) 0,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 100%);animation:shimmer 1.2s infinite}
+		@keyframes shimmer{100%{transform:translateX(100%)}}
+		/* Smooth state transitions */
+		.card,.btn,.form-control,.form-select,.table{transition:background-color .2s ease,opacity .2s ease,box-shadow .2s ease}
+		/* Larger tap targets on mobile */
+		@media (max-width: 576px){
+			.btn{min-height:44px}
+			input,select,textarea{min-height:44px}
+		}
+		/* Clean layout styles */
+		body {
+			background-color: #f8fafc;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 1rem;
+		}
+		.clean-container {
+			width: 100%;
+			max-width: 900px; /* было 600px: расширяем форму по просьбе пользователя */
+		}
+		@media (min-width: 1400px){
+			.clean-container{ max-width: 1100px; }
+		}
+	</style>
+
+    <link rel="apple-touch-icon" href="{% static 'img/icons/apple-touch-icon.png' %}">
+
+    {% block extra_head %}
+	{% endblock %}
+	{% progressive_web_app_meta %}
+	<link rel="manifest" href="{% url 'manifest' %}">
+
+</head>
+<body>
+	<!-- BEGIN GLOBAL THEME SCRIPT -->
+	<script src="{% static 'tabler/js/tabler-theme.js' %}"></script>
+	<!-- END GLOBAL THEME SCRIPT -->
+
+	<!-- Глобальный спиннер для HTMX -->
+	<div id="global-spinner" style="display: none;" class="position-fixed top-0 end-0 m-3" aria-hidden="true">
+		<div class="spinner-border spinner-border-sm text-primary" role="status">
+			<span class="visually-hidden">Загрузка...</span>
+		</div>
+	</div>
+
+	<div class="clean-container">
+		{% block content %}
+		{% endblock %}
+	</div>
+
+	<!-- Toast Container -->
+	<div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+	{# --- Подключение JS --- #}
+	
+	{# Tabler JS #}
+	<script src="{% static 'tabler/js/tabler.js' %}" defer></script>
+	
+	{# HTMX #}
+	<script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
+	
+	{# Custom JS #}
+	<script src="{% static 'js/main.js' %}" defer></script>
+
+	{# Dark mode toggle script #}
+	<script>
+		// Dark mode toggle functionality
+		const toggleTheme = () => {
+			const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+			const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+			document.documentElement.setAttribute('data-bs-theme', newTheme);
+			localStorage.setItem('theme', newTheme);
+		};
+
+		// Load saved theme or use system preference
+		const savedTheme = localStorage.getItem('theme');
+		if (savedTheme) {
+			document.documentElement.setAttribute('data-bs-theme', savedTheme);
+		} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			document.documentElement.setAttribute('data-bs-theme', 'dark');
+		}
+
+		// Listen for system theme changes
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+			if (!localStorage.getItem('theme')) {
+				document.documentElement.setAttribute('data-bs-theme', e.matches ? 'dark' : 'light');
+			}
+		});
+	</script>
+
+{# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
+{% block extra_scripts %}{% endblock %}
+
+<!-- Preloader -->
+<script src="{% static 'js/preloader.js' %}" defer></script>
+<!-- End Offline mode handler -->
+
+</body>
+</html>

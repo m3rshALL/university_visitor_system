@@ -48,6 +48,9 @@ django-webpush = "^0.3.6"
 pywebpush = "^2.0.3"
 py-vapid = "^1.9.2"
 requests-toolbelt = "^1.0.0"
+concurrent-log-handler = "^0.9.28"
+reportlab = "^4.2.2"
+pandas = "^2.2.0"
 
 
 [tool.poetry.group.dev.dependencies]

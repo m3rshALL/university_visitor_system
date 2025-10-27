@@ -2,6 +2,12 @@ from django.urls import path
 from . import views
 #from .views import create_group_invitation_view, group_invitation_fill_view, group_visit_card_view
 from .views import qr_scan_view, qr_resolve_view, qr_code_view
+from .dashboards import auto_checkin_dashboard, security_incidents_dashboard, hikcentral_dashboard
+from .exports import (
+    export_auto_checkin_pdf, export_auto_checkin_excel,
+    export_security_incidents_pdf, export_security_incidents_excel,
+    export_hikcentral_pdf, export_hikcentral_excel
+)
 from rest_framework.views import APIView  
 from rest_framework.response import Response  
 from rest_framework.throttling import AnonRateThrottle 
@@ -69,6 +75,19 @@ urlpatterns = [
         'throttle_classes': [AnonRateThrottle],
         'post': lambda self, request, *args, **kwargs: Response({'detail': 'use form endpoint'}, status=400)
     }).as_view(), name='qr_resolve_api'),
+    
+    # --- Dashboards ---
+    path('dashboards/auto-checkin/', auto_checkin_dashboard, name='auto_checkin_dashboard'),
+    path('dashboards/security-incidents/', security_incidents_dashboard, name='security_incidents_dashboard'),
+    path('dashboards/hikcentral/', hikcentral_dashboard, name='hikcentral_dashboard'),
+    
+    # --- Dashboard Exports ---
+    path('dashboards/auto-checkin/export/pdf/', export_auto_checkin_pdf, name='export_auto_checkin_pdf'),
+    path('dashboards/auto-checkin/export/excel/', export_auto_checkin_excel, name='export_auto_checkin_excel'),
+    path('dashboards/security-incidents/export/pdf/', export_security_incidents_pdf, name='export_security_incidents_pdf'),
+    path('dashboards/security-incidents/export/excel/', export_security_incidents_excel, name='export_security_incidents_excel'),
+    path('dashboards/hikcentral/export/pdf/', export_hikcentral_pdf, name='export_hikcentral_pdf'),
+    path('dashboards/hikcentral/export/excel/', export_hikcentral_excel, name='export_hikcentral_excel'),
 ]
 
 # DRF API маршруты регистрируются на уровне корневого urls.py (prefix /api/v1/)

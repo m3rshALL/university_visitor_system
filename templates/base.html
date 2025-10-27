@@ -2,10 +2,22 @@
 {% load static pwa %} 
 {% load iin_filters %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function(){
+        try {
+            var saved = localStorage.getItem('theme');
+            var theme = saved ? saved : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            var s = document.createElement('style');
+            s.innerHTML = theme === 'dark' ? 'html{background-color:#0e0f12;}' : 'html{background-color:#ffffff;}';
+            document.head.appendChild(s);
+        } catch (e) {}
+    })();
+    </script>
     {% comment %}
 		<meta name="theme-color" content="#206bc4"> <!-- Должен совпадать с theme_color в manifest.json -->
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -108,6 +120,19 @@
     	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-2"><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
     Source code
     </a>
+    
+    <!-- Dark Mode Toggle -->
+    <button class="btn btn-icon" id="theme-toggle" title="Переключить тему">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-sun theme-icon-light" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-moon theme-icon-dark" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+        </svg>
+    </button>
 
 	{% comment %}
 		<a href="#" class="btn btn-6" target="_blank" rel="noreferrer">
@@ -456,8 +481,6 @@ document.addEventListener('htmx:responseError', function (e) {
 {# Блок для дополнительных JS файлов и скриптов из дочерних шаблонов #}
 {% block extra_scripts %}{% endblock %}
 
-<!-- egov.kz Integration -->
-<script src="{% static 'js/egov-integration.js' %}" defer></script>
 
 <!-- Preloader -->
 <script src="{% static 'js/preloader.js' %}" defer></script>
@@ -470,6 +493,74 @@ if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('{% url 'serviceworker' %}');
 	});
 }
+</script>
+
+<!-- Dark Mode Toggle Script -->
+<script>
+(function() {
+    'use strict';
+    
+    const THEME_KEY = 'theme';
+    const THEME_LIGHT = 'light';
+    const THEME_DARK = 'dark';
+    
+    const htmlElement = document.documentElement;
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const lightIcon = document.querySelector('.theme-icon-light');
+    const darkIcon = document.querySelector('.theme-icon-dark');
+    
+    // Загрузка сохраненной темы из localStorage
+    function loadTheme() {
+        const savedTheme = localStorage.getItem(THEME_KEY);
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Используем сохраненную тему, иначе системные предпочтения
+        const theme = savedTheme || (prefersDark ? THEME_DARK : THEME_LIGHT);
+        setTheme(theme, false);
+    }
+    
+    // Установка темы
+    function setTheme(theme, save = true) {
+        htmlElement.setAttribute('data-bs-theme', theme);
+        
+        // Обновление видимости иконок
+        if (theme === THEME_DARK) {
+            lightIcon.style.display = 'none';
+            darkIcon.style.display = 'block';
+        } else {
+            lightIcon.style.display = 'block';
+            darkIcon.style.display = 'none';
+        }
+        
+        // Сохранение в localStorage
+        if (save) {
+            localStorage.setItem(THEME_KEY, theme);
+        }
+    }
+    
+    // Переключение темы
+    function toggleTheme() {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === THEME_LIGHT ? THEME_DARK : THEME_LIGHT;
+        setTheme(newTheme);
+    }
+    
+    // Event listener для кнопки
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+    
+    // Загрузка темы при загрузке страницы
+    loadTheme();
+    
+    // Слушаем изменения системных предпочтений
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        // Только если пользователь не выбрал тему вручную
+        if (!localStorage.getItem(THEME_KEY)) {
+            setTheme(e.matches ? THEME_DARK : THEME_LIGHT, false);
+        }
+    });
+})();
 </script>
 
 </body>

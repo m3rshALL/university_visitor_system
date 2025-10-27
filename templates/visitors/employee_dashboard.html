@@ -262,6 +262,67 @@
                             </div>
                         </a>
                     </div>
+                    
+                    <!-- NEW: Dashboards -->
+                    {% if perms.visitors.view_visit %}
+                    <div class="col-md-4 col-lg-3">
+                        <a href="{% url 'auto_checkin_dashboard' %}" class="card card-link card-link-pop" hx-boost="false">
+                            <div class="card-body text-center">
+                                <div class="text-success mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chart-line" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M3 3v18h18" />
+                                        <path d="M20 18v3" />
+                                        <path d="M16 16v5" />
+                                        <path d="M12 13v8" />
+                                        <path d="M8 16v5" />
+                                        <path d="M3 11l6 -6l4 4l7 -7" />
+                                    </svg>
+                                </div>
+                                <div>Автоматические действия</div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    {% if perms.visitors.view_securityincident %}
+                    <div class="col-md-4 col-lg-3">
+                        <a href="{% url 'security_incidents_dashboard' %}" class="card card-link card-link-pop" hx-boost="false">
+                            <div class="card-body text-center">
+                                <div class="text-danger mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-triangle" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M12 9v4" />
+                                        <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                        <path d="M12 16h.01" />
+                                    </svg>
+                                </div>
+                                <div>Security Incidents</div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    {% if perms.visitors.view_visit %}
+                    <div class="col-md-4 col-lg-3">
+                        <a href="{% url 'hikcentral_dashboard' %}" class="card card-link card-link-pop" hx-boost="false">
+                            <div class="card-body text-center">
+                                <div class="text-info mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plug-connected" width="32" height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z" />
+                                        <path d="M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5z" />
+                                        <path d="M3 21l2.5 -2.5" />
+                                        <path d="M18.5 5.5l2.5 -2.5" />
+                                        <path d="M10 11l-2 2" />
+                                        <path d="M13 14l-2 2" />
+                                    </svg>
+                                </div>
+                                <div>HikCentral Dashboard</div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
                     {% comment %}
                         <div class="col-md-4 col-lg-3">
                             <a href="{% url 'current_guests' %}" class="card card-link card-link-pop">
@@ -479,7 +540,7 @@
                                     {% if visit.visit_kind == 'group' %}
                                         <span class="badge bg-green-lt">В здании</span>
                                     {% else %}
-                                        <form action="{% url 'mark_visit_exit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
+                                        <form action="{% url 'check_out_visit' visit_kind=visit.visit_kind visit_id=visit.id %}" method="post" class="d-inline">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-warning btn-sm" title="Отметить выход">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

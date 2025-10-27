@@ -185,54 +185,85 @@ def revoke_access_on_status_change(instance: Visit, created: bool, **kwargs):
 
 
 # FIX #8: Обновление validity в HikCentral при изменении времени визита
-@receiver(post_save, sender=Visit)
+# ОТКЛЮЧЕНО: Поле expected_exit_time не существует в модели Visit
+# Функционал update_person_validity_task может вызываться вручную при необходимости
+# @receiver(post_save, sender=Visit)
 def update_hikcentral_validity_on_time_change(instance: Visit, created: bool, **kwargs):
     """
-    Обновляет validity персоны в HikCentral при изменении expected_exit_time.
+    ОТКЛЮЧЕНО: Обновление validity в HikCentral при изменении времени визита.
     
-    Запускает задачу update_person_validity_task только если:
-    - Визит не новый (created=False)
-    - Доступ был выдан (access_granted=True)
-    - Доступ не отозван (access_revoked=False)
-    - expected_exit_time изменился
+    Причина: Поле expected_exit_time не существует в модели Visit.
+    Задача update_person_validity_task использует HIKCENTRAL_ACCESS_END_TIME из settings.
     """
-    import logging
-    from django.db.models import signals
-    
-    logger = logging.getLogger(__name__)
-    
-    # Игнорируем новые визиты
-    if created:
-        return
-    
-    # Проверяем, что доступ активен
-    if not instance.access_granted or instance.access_revoked:
-        return
-    
-    # Проверяем, изменился ли expected_exit_time
-    # Для этого нужно получить старое значение из базы
+    pass
+
+
+# ==================== CACHE INVALIDATION SIGNALS ====================
+
+from django.core.cache import cache
+import logging
+
+cache_logger = logging.getLogger(__name__)
+
+
+@receiver(post_save, sender='visitors.SecurityIncident')
+def invalidate_security_incidents_cache(sender, instance, **kwargs):
+    """
+    Очистка кэша Security Incidents Dashboard при создании/обновлении инцидента.
+    """
     try:
-        old_instance = Visit.objects.only('expected_exit_time').get(pk=instance.pk)
-        if old_instance.expected_exit_time == instance.expected_exit_time:
-            return  # Время не изменилось
+        # Очищаем все варианты cache keys для security incidents dashboard
+        cache_pattern = 'dashboard:incidents:*'
         
-        # Время изменилось - запускаем обновление validity
+        # Т.к. Redis не поддерживает wildcard delete в django-redis напрямую,
+        # очищаем основные варианты фильтров
+        filters = [
+            ('active', '', ''),
+            ('all', '', ''),
+            ('resolved', '', ''),
+            ('false_alarm', '', ''),
+        ]
+        
+        for status, severity, type_ in filters:
+            cache_key = f'dashboard:incidents:{status}:{severity}:{type_}'
+            cache.delete(cache_key)
+        
+        # Также очищаем auto_checkin dashboard т.к. там показываются incidents
+        cache.delete_pattern('dashboard:auto_checkin:*')
+        
+        cache_logger.debug(f'Cache invalidated for SecurityIncident #{instance.id}')
+    except Exception as e:
+        cache_logger.error(f'Error invalidating security incidents cache: {e}')
+
+
+@receiver(post_save, sender='visitors.Visit')
+def invalidate_visit_cache(sender, instance, **kwargs):
+    """
+    Очистка кэша Auto Check-in Dashboard при создании/обновлении визита.
+    """
+    try:
+        # Очищаем auto_checkin dashboard для всех периодов
+        periods = ['today', 'week', 'month']
+        for period in periods:
+            cache.delete_pattern(f'dashboard:auto_checkin:{period}:*')
+        
+        # Также очищаем hikcentral dashboard
+        cache.delete('dashboard:hikcentral:status')
+        
+        cache_logger.debug(f'Cache invalidated for Visit #{instance.id}')
+    except Exception as e:
+        cache_logger.error(f'Error invalidating visit cache: {e}')
+
+
+@receiver(post_save, sender='visitors.AuditLog')
+def invalidate_auditlog_cache(sender, instance, **kwargs):
+    """
+    Очистка кэша Auto Check-in Dashboard при добавлении audit log записи.
+    """
+    # Только для автоматических check-in/out действий
+    if instance.user_agent == 'HikCentral FaceID System':
         try:
-            from hikvision_integration.tasks import update_person_validity_task
-            update_person_validity_task.apply_async(
-                args=[instance.id],
-                countdown=5
-            )
-            logger.info(
-                'HikCentral: Scheduled validity update for visit %s '
-                '(new exit time: %s)',
-                instance.id, instance.expected_exit_time
-            )
-        except Exception as exc:
-            logger.warning(
-                'Failed to schedule validity update for visit %s: %s',
-                instance.id, exc
-            )
-    except Visit.DoesNotExist:
-        # Может произойти при первом сохранении
-        pass
+            cache.delete_pattern('dashboard:auto_checkin:*')
+            cache_logger.debug(f'Cache invalidated for AuditLog #{instance.id}')
+        except Exception as e:
+            cache_logger.error(f'Error invalidating auditlog cache: {e}')

@@ -297,3 +297,58 @@ def generate_audit_report():
     except Exception as e:
         logger.error("Error in generate_audit_report: %s", e)
         raise
+
+
+@shared_task(bind=True, max_retries=3)
+def backup_database_task(self, upload_to_s3=False):
+    """
+    Celery task для автоматического резервного копирования базы данных.
+    
+    Args:
+        upload_to_s3: Загружать ли backup в S3 (требует настройки AWS)
+    
+    Returns:
+        dict: Информация о созданном backup
+    """
+    import logging
+    from django.core.management import call_command
+    from io import StringIO
+    
+    logger = logging.getLogger(__name__)
+    
+    try:
+        logger.info('Starting automated database backup task')
+        
+        # Создаём StringIO буфер для захвата вывода команды
+        out = StringIO()
+        
+        # Вызываем management command
+        args = []
+        if upload_to_s3:
+            args.append('--s3')
+        
+        call_command('backup_database', *args, stdout=out)
+        
+        output = out.getvalue()
+        logger.info(f'Database backup completed: {output}')
+        
+        return {
+            'status': 'success',
+            'output': output,
+            'upload_to_s3': upload_to_s3
+        }
+        
+    except Exception as exc:
+        logger.error(f'Database backup failed: {exc}', exc_info=True)
+        
+        # Retry с exponential backoff
+        if self.request.retries < self.max_retries:
+            countdown = 300 * (2 ** self.request.retries)  # 5min, 10min, 20min
+            logger.warning(
+                f'Retrying backup task in {countdown}s '
+                f'(attempt {self.request.retries + 1}/{self.max_retries})'
+            )
+            raise self.retry(exc=exc, countdown=countdown)
+        else:
+            logger.error('Max retries reached for backup task')
+            raise

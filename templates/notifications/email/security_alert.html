@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Alert</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .header .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .content {
+            background: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-top: none;
+        }
+        .alert-box {
+            background: white;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .alert-box.warning {
+            border-left-color: #ffc107;
+        }
+        .alert-box.info {
+            border-left-color: #17a2b8;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #6c757d;
+        }
+        .info-value {
+            text-align: right;
+        }
+        .severity-critical {
+            color: #dc3545;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .severity-high {
+            color: #fd7e14;
+            font-weight: bold;
+        }
+        .severity-medium {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .severity-low {
+            color: #28a745;
+        }
+        .description {
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="icon">🚨</div>
+        <h1>Security Alert</h1>
+        <p>Обнаружен инцидент безопасности</p>
+    </div>
+    
+    <div class="content">
+        <div class="alert-box">
+            <div class="info-row">
+                <span class="info-label">Тип инцидента:</span>
+                <span class="info-value"><strong>{{ incident.get_incident_type_display }}</strong></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Уровень важности:</span>
+                <span class="info-value severity-{{ incident.severity }}">{{ incident.get_severity_display }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Статус:</span>
+                <span class="info-value">{{ incident.get_status_display }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Время обнаружения:</span>
+                <span class="info-value">{{ incident.detected_at|date:"Y-m-d H:i:s" }}</span>
+            </div>
+        </div>
+        
+        <div class="alert-box info">
+            <h3 style="margin-top: 0;">Информация о визите</h3>
+            <div class="info-row">
+                <span class="info-label">Гость:</span>
+                <span class="info-value">{{ guest.full_name }}</span>
+            </div>
+            {% if visit.employee %}
+            <div class="info-row">
+                <span class="info-label">Принимающий:</span>
+                <span class="info-value">{{ visit.employee.get_full_name }}</span>
+            </div>
+            {% endif %}
+            {% if visit.department %}
+            <div class="info-row">
+                <span class="info-label">Департамент:</span>
+                <span class="info-value">{{ visit.department.name }}</span>
+            </div>
+            {% endif %}
+            <div class="info-row">
+                <span class="info-label">ID визита:</span>
+                <span class="info-value">#{{ visit.id }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Статус визита:</span>
+                <span class="info-value">{{ visit.get_status_display }}</span>
+            </div>
+        </div>
+        
+        <div class="description">
+            <h3 style="margin-top: 0;">Описание инцидента</h3>
+            <p>{{ incident.description }}</p>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="{{ site_url }}/admin/visitors/securityincident/{{ incident.id }}/change/" class="button">
+                Открыть в админ-панели
+            </a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Это автоматическое уведомление от системы учета посетителей.</p>
+        <p>Пожалуйста, проверьте инцидент и примите необходимые меры.</p>
+        <p style="margin-top: 20px; color: #999;">
+            {{ site_url }}
+        </p>
+    </div>
+</body>
+</html>
+

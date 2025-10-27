@@ -11,7 +11,7 @@ from .services import (
     revoke_access,
     HikCentralSession,
     ensure_person_hikcentral,
-    upload_face_hikcentral_multipart,
+    upload_face_hikcentral,
 )
 
 
@@ -22,9 +22,16 @@ def _get_device_session(device: HikDevice) -> HikSession:
     return HikSession(device)
 
 
-def _get_hikcentral_session() -> HikCentralSession | None:
-    server = HikCentralServer.objects.filter(enabled=True).first()
-    return HikCentralSession(server) if server else None
+def _get_hikcentral_server():
+    """Получает активный HikCentral сервер для создания сессии.
+    
+    Возвращает server object вместо сессии, чтобы сессию можно было
+    создать в контексте 'with' statement для автоматического закрытия.
+    
+    Returns:
+        HikCentralServer instance или None
+    """
+    return HikCentralServer.objects.filter(enabled=True).first()
 
 
 @shared_task(queue='hikvision')
@@ -47,8 +54,8 @@ def enroll_face_task(task_id: int) -> None:
             getattr(device, 'id', None),
             getattr(device, 'name', None),
         )
-        hc_session = _get_hikcentral_session()
-        logger.info("Hik enroll: hc_session=%s", bool(hc_session))
+        hc_server = _get_hikcentral_server()
+        logger.info("Hik enroll: hc_server=%s", bool(hc_server))
         session = _get_device_session(device)
         payload = task.payload or {}
         employee_no = str(
@@ -157,16 +164,19 @@ def enroll_face_task(task_id: int) -> None:
             employee_no,
             name,
         )
-        if hc_session:
-            # Через HCP: создаём/обновляем персону; используем personCode=employee_no,
-            # получаем реальный personId
-            person_id = ensure_person_hikcentral(
-                hc_session,
-                employee_no,
-                name,
-                valid_from,
-                valid_to,
-            )
+        
+        # Используем context manager для автоматического закрытия сессии
+        if hc_server:
+            with HikCentralSession(hc_server) as hc_session:
+                # Через HCP: создаём/обновляем персону; используем personCode=employee_no,
+                # получаем реальный personId
+                person_id = ensure_person_hikcentral(
+                    hc_session,
+                    employee_no,
+                    name,
+                    valid_from,
+                    valid_to,
+                )
         else:
             person_id = ensure_person(session, employee_no, name, valid_from, valid_to)
         logger.info("Hik enroll: ensure_person done person_id=%s", person_id)
@@ -192,7 +202,7 @@ def enroll_face_task(task_id: int) -> None:
             # Это обходит проблему с Face Group в HCP
             use_isapi_for_face = getattr(settings, 'HIKCENTRAL_USE_ISAPI_FOR_FACE', False)
             
-            if use_isapi_for_face and hc_session:
+            if use_isapi_for_face and hc_server:
                 # Person создан в HCP, но фото загружаем НАПРЯМУЮ на устройства через ISAPI
                 logger.info("Hik enroll: Using HYBRID approach - face via ISAPI to all devices")
                 try:
@@ -221,20 +231,19 @@ def enroll_face_task(task_id: int) -> None:
                     # Если ISAPI не работает, можем попробовать HCP (хотя он не работает)
                     face_id = ''
                     
-            elif hc_session:
-                # HCP multipart upload (РЕКОМЕНДУЕМЫЙ метод)
+            elif hc_server:
+                # HCP JSON upload (оптимизированный метод) с context manager
                 try:
-                    logger.info("Hik enroll: Trying multipart upload for HCP")
-                    face_id = upload_face_hikcentral_multipart(
-                        hc_session,
-                        face_lib_id,
-                        image_bytes,
-                        person_id,
-                    )
-                    logger.info("Hik enroll: Multipart upload result: %s", face_id)
+                    with HikCentralSession(hc_server) as hc_session:
+                        face_id = upload_face_hikcentral(
+                            hc_session,
+                            face_lib_id,
+                            image_bytes,
+                            person_id,
+                        )
+                        logger.info("Hik enroll: Upload result: %s", face_id)
                 except Exception as e:
-                    logger.error("Hik enroll: HCP multipart upload failed: %s", e)
-                    # Fallback уже встроен в upload_face_hikcentral_multipart
+                    logger.error("Hik enroll: HCP upload failed: %s", e)
                     face_id = ''
             else:
                 # Полностью ISAPI подход (старый код)
@@ -250,13 +259,9 @@ def enroll_face_task(task_id: int) -> None:
             device.doors_json if isinstance(device.doors_json, list) else []
         )
         logger.info("Hik enroll: assign/reapply start doors=%s", door_ids)
-        if hc_session:
-            # Через Visitor API триггерим применение
-            try:
-                visitor_auth_reapplication(hc_session, person_id)
-            except Exception:
-                logger.exception("Hik enroll: reapplication failed, continue")
-        else:
+        # Для HikCentral reapplication выполняется в assign_access_level_task
+        # Для legacy ISAPI назначаем доступ напрямую
+        if not hc_session:
             assign_access(session, person_id, door_ids, valid_from, valid_to)
         logger.info("Hik enroll: assign/reapply done")
 
@@ -313,7 +318,7 @@ def revoke_access_task(task_id: int) -> None:
         ).first()
         if not device:
             raise RuntimeError('No active HikDevice configured')
-        hc_session = _get_hikcentral_session()
+        hc_server = _get_hikcentral_server()
         session = _get_device_session(device)
         payload = task.payload or {}
         person_id = payload.get('person_id') or ''
@@ -328,13 +333,9 @@ def revoke_access_task(task_id: int) -> None:
         door_ids = payload.get('door_ids') or (
             device.doors_json if isinstance(device.doors_json, list) else []
         )
-        if hc_session:
-            # Через Visitor API отметим выход
-            try:
-                visitor_out(hc_session, {'personId': str(person_id)})
-            except Exception:
-                logger.exception("Hik revoke: visitor_out failed, continue")
-        else:
+        # Для HikCentral отзыв выполняется в revoke_access_level_task
+        # Для legacy ISAPI отзываем доступ напрямую
+        if not hc_server:
             revoke_access(session, person_id, door_ids)
         HikPersonBinding.objects.filter(
             guest_id=task.guest_id, device=device
@@ -377,9 +378,9 @@ def assign_access_level_task(self, task_id: int) -> None:
     task.save(update_fields=['status', 'attempts'])
     
     try:
-        hc_session = _get_hikcentral_session()
-        if not hc_session:
-            raise RuntimeError('No HikCentral session available')
+        hc_server = _get_hikcentral_server()
+        if not hc_server:
+            raise RuntimeError('No HikCentral server available')
         
         # Получаем person_id
         payload = task.payload or {}
@@ -418,82 +419,84 @@ def assign_access_level_task(self, task_id: int) -> None:
                 f'guest_id={task.guest_id}, visit_id={task.visit_id}'
             )
         
-        # FIX #10: Проверяем существование и validity персоны перед назначением доступа
-        from .services import get_person_hikcentral
-        from datetime import datetime
-        
-        person_info = get_person_hikcentral(hc_session, str(person_id))
-        
-        if not person_info:
-            raise RuntimeError(
-                f'Person {person_id} not found in HikCentral. '
-                f'Cannot assign access level.'
-            )
-        
-        # Проверяем validity персоны
-        person_status = person_info.get('status')
-        person_end_time = person_info.get('endTime')
-        
-        # FIX: status может отсутствовать в API response - проверяем только если есть
-        if person_status is not None and person_status != 1:
-            raise RuntimeError(
-                f'Person {person_id} is not active (status={person_status}). '
-                f'Cannot assign access level.'
-            )
-        
-        # Проверяем, что персона не истекла
-        if person_end_time:
-            try:
-                from dateutil.parser import parse
-                end_datetime = parse(person_end_time)
-                from django.utils import timezone
-                if timezone.is_naive(end_datetime):
-                    end_datetime = timezone.make_aware(end_datetime)
-                
-                now = timezone.now()
-                if end_datetime < now:
-                    raise RuntimeError(
-                        f'Person {person_id} validity expired at {person_end_time}. '
-                        f'Cannot assign access level.'
-                    )
-            except Exception as parse_exc:
-                logger.warning(
-                    "Could not parse person endTime %s: %s",
-                    person_end_time, parse_exc
+        # Используем context manager для сессии HikCentral
+        with HikCentralSession(hc_server) as hc_session:
+            # FIX #10: Проверяем существование и validity персоны перед назначением доступа
+            from .services import get_person_hikcentral
+            from datetime import datetime
+            
+            person_info = get_person_hikcentral(hc_session, str(person_id))
+            
+            if not person_info:
+                raise RuntimeError(
+                    f'Person {person_id} not found in HikCentral. '
+                    f'Cannot assign access level.'
                 )
-        
-        # Логируем результат проверки
-        if person_status is None:
-            logger.info(
-                "HikCentral: Person %s validation passed "
-                "(status not returned by API, endTime=%s)",
-                person_id, person_end_time
+            
+            # Проверяем validity персоны
+            person_status = person_info.get('status')
+            person_end_time = person_info.get('endTime')
+            
+            # FIX: status может отсутствовать в API response - проверяем только если есть
+            if person_status is not None and person_status != 1:
+                raise RuntimeError(
+                    f'Person {person_id} is not active (status={person_status}). '
+                    f'Cannot assign access level.'
+                )
+            
+            # Проверяем, что персона не истекла
+            if person_end_time:
+                try:
+                    from dateutil.parser import parse
+                    end_datetime = parse(person_end_time)
+                    from django.utils import timezone
+                    if timezone.is_naive(end_datetime):
+                        end_datetime = timezone.make_aware(end_datetime)
+                    
+                    now = timezone.now()
+                    if end_datetime < now:
+                        raise RuntimeError(
+                            f'Person {person_id} validity expired at {person_end_time}. '
+                            f'Cannot assign access level.'
+                        )
+                except Exception as parse_exc:
+                    logger.warning(
+                        "Could not parse person endTime %s: %s",
+                        person_end_time, parse_exc
+                    )
+            
+            # Логируем результат проверки
+            if person_status is None:
+                logger.info(
+                    "HikCentral: Person %s validation passed "
+                    "(status not returned by API, endTime=%s)",
+                    person_id, person_end_time
+                )
+            else:
+                logger.info(
+                    "HikCentral: Person %s validation passed (status=%s, endTime=%s)",
+                    person_id, person_status, person_end_time
+                )
+            
+            # Получаем access_group_id из settings
+            access_group_id = getattr(
+                settings,
+                'HIKCENTRAL_GUEST_ACCESS_GROUP_ID',
+                '7'  # Default: "Visitors Access"
             )
-        else:
+            
             logger.info(
-                "HikCentral: Person %s validation passed (status=%s, endTime=%s)",
-                person_id, person_status, person_end_time
+                "HikCentral: Assigning access group %s to person %s",
+                access_group_id, person_id
             )
-        
-        # Получаем access_group_id из settings
-        access_group_id = getattr(
-            settings,
-            'HIKCENTRAL_GUEST_ACCESS_GROUP_ID',
-            '7'  # Default: "Visitors Access"
-        )
-        
-        logger.info(
-            "HikCentral: Assigning access group %s to person %s",
-            access_group_id, person_id
-        )
-        
-        # Назначаем access level
-        success = assign_access_level_to_person(
-            hc_session,
-            str(person_id),
-            str(access_group_id),
-            access_type=1  # Access Control type
-        )
+            
+            # Назначаем access level
+            success = assign_access_level_to_person(
+                hc_session,
+                str(person_id),
+                str(access_group_id),
+                access_type=1  # Access Control type
+            )
         
         if not success:
             raise RuntimeError('Failed to assign access level')
@@ -615,10 +618,10 @@ def revoke_access_level_task(self, visit_id: int) -> None:
             )
             return
         
-        # Получаем HikCentral session
-        hc_session = _get_hikcentral_session()
-        if not hc_session:
-            raise RuntimeError('No HikCentral session available')
+        # Получаем HikCentral server
+        hc_server = _get_hikcentral_server()
+        if not hc_server:
+            raise RuntimeError('No HikCentral server available')
         
         # Получаем access_group_id
         access_group_id = getattr(
@@ -632,13 +635,14 @@ def revoke_access_level_task(self, visit_id: int) -> None:
             access_group_id, person_id, visit_id
         )
         
-        # Отзываем access level
-        success = revoke_access_level_from_person(
-            hc_session,
-            str(person_id),
-            str(access_group_id),
-            access_type=1
-        )
+        # Отзываем access level с использованием context manager
+        with HikCentralSession(hc_server) as hc_session:
+            success = revoke_access_level_from_person(
+                hc_session,
+                str(person_id),
+                str(access_group_id),
+                access_type=1
+            )
         
         if not success:
             raise RuntimeError('Failed to revoke access level')
@@ -729,15 +733,54 @@ def monitor_guest_passages_task() -> None:
         
         logger.info("HikCentral: Monitoring %d active visits", active_visits.count())
         
-        hc_session = _get_hikcentral_session()
-        if not hc_session:
-            logger.error("HikCentral: No session available for monitoring")
+        hc_server = _get_hikcentral_server()
+        if not hc_server:
+            logger.error("HikCentral: No server available for monitoring")
             return
         
         # Временной диапазон: последние 5 минут (для оперативного авто check-in/out)
         now = timezone.now()
         start_time = now - timedelta(minutes=5)
         
+        # Используем context manager для автоматического закрытия сессии
+        with HikCentralSession(hc_server) as hc_session:
+            # ОПТИМИЗАЦИЯ: Батчинг - ОДИН запрос для ВСЕХ гостей вместо 100-500 запросов
+            # Получаем ВСЕ события за последние 5 минут (без фильтра по person_id)
+            logger.info("HikCentral: Fetching ALL door events (batched query)")
+            all_events_data = get_door_events(
+                hc_session,
+                person_id=None,  # ← БЕЗ фильтра! Получаем все события
+                person_name=None,
+                start_time=start_time.isoformat(),
+                end_time=now.isoformat(),
+                door_index_codes=None,
+                event_type=None,
+                page_no=1,
+                page_size=1000  # Увеличенный размер для батчинга
+            )
+        
+        if not all_events_data or 'data' not in all_events_data:
+            logger.info("HikCentral: No door events data returned")
+            return
+        
+        all_events = all_events_data['data'].get('list', [])
+        logger.info("HikCentral: Received %d total door events", len(all_events))
+        
+        # Группируем события по personId для быстрого доступа
+        events_by_person = {}
+        for event in all_events:
+            pid = event.get('personId')
+            if pid:
+                if pid not in events_by_person:
+                    events_by_person[pid] = []
+                events_by_person[pid].append(event)
+        
+        logger.info(
+            "HikCentral: Events grouped for %d persons",
+            len(events_by_person)
+        )
+        
+        # Обрабатываем каждый визит с уже загруженными событиями
         for visit in active_visits:
             try:
                 if not visit.hikcentral_person_id:
@@ -749,29 +792,14 @@ def monitor_guest_passages_task() -> None:
                 
                 person_id = str(visit.hikcentral_person_id)
                 
-                # Получаем события проходов
-                # event_type: 1 - вход, 2 - выход (согласно документации)
-                events_data = get_door_events(
-                    hc_session,
-                    person_id=person_id,
-                    person_name=None,  # Можно использовать имя для фильтрации
-                    start_time=start_time.isoformat(),
-                    end_time=now.isoformat(),
-                    door_index_codes=None,  # None = все двери
-                    event_type=None,  # None = все типы событий
-                    page_no=1,
-                    page_size=100
-                )
+                # Получаем события для этого гостя из предзагруженных данных
+                events = events_by_person.get(person_id, [])
                 
-                if not events_data or 'list' not in events_data:
-                    continue
-                
-                events = events_data.get('list', [])
                 if not events:
                     continue
                 
                 logger.info(
-                    "Visit %s: Found %d door events in last 10 minutes",
+                    "Visit %s: Found %d door events in last 5 minutes",
                     visit.id, len(events)
                 )
                 
@@ -926,6 +954,38 @@ def monitor_guest_passages_task() -> None:
                                 "(no entry detected). Possible anomaly or backdoor exit.",
                                 visit.id
                             )
+                            
+                            # Создаем SecurityIncident
+                            try:
+                                from visitors.models import SecurityIncident
+                                incident, created = SecurityIncident.objects.get_or_create(
+                                    visit=visit,
+                                    incident_type=SecurityIncident.INCIDENT_EXIT_WITHOUT_ENTRY,
+                                    defaults={
+                                        'description': f'Обнаружен выход через турникет без предварительного входа. '
+                                                      f'Exit time: {first_exit_time.strftime("%Y-%m-%d %H:%M:%S")}. '
+                                                      f'Возможная аномалия или выход через другой путь.',
+                                        'severity': SecurityIncident.SEVERITY_HIGH,
+                                        'metadata': {
+                                            'exit_time': first_exit_time.isoformat(),
+                                            'exit_count': new_exits,
+                                            'current_status': visit.status
+                                        }
+                                    }
+                                )
+                                if created:
+                                    logger.warning(
+                                        "Visit %s: SecurityIncident created (EXIT_WITHOUT_ENTRY)",
+                                        visit.id
+                                    )
+                                    # Планируем отправку alert
+                                    from .utils import send_security_alert_async
+                                    send_security_alert_async(incident.id)
+                            except Exception as incident_exc:
+                                logger.error(
+                                    "Visit %s: Failed to create SecurityIncident: %s",
+                                    visit.id, incident_exc
+                                )
                     
                     visit.save(update_fields=[
                         'entry_count', 'exit_count',
@@ -975,6 +1035,95 @@ def monitor_guest_passages_task() -> None:
                             logger.warning(
                                 "Visit %s: Failed to schedule exit notification: %s",
                                 visit.id, notif_exc
+                            )
+                
+                # АНОМАЛИЯ: Долгое пребывание (LONG_STAY)
+                if visit.status == 'CHECKED_IN' and visit.entry_time:
+                    # Проверяем сколько времени гость в здании
+                    time_inside = now - visit.entry_time
+                    max_stay_hours = getattr(settings, 'MAX_GUEST_STAY_HOURS', 8)
+                    
+                    if time_inside.total_seconds() > max_stay_hours * 3600:
+                        # Гость в здании слишком долго
+                        logger.warning(
+                            "Visit %s: ⚠️ LONG_STAY detected. Guest inside for %.1f hours",
+                            visit.id, time_inside.total_seconds() / 3600
+                        )
+                        
+                        # Проверяем, нет ли уже такого инцидента
+                        try:
+                            from visitors.models import SecurityIncident
+                            incident, created = SecurityIncident.objects.get_or_create(
+                                visit=visit,
+                                incident_type=SecurityIncident.INCIDENT_LONG_STAY,
+                                defaults={
+                                    'description': f'Гость находится в здании более {max_stay_hours} часов. '
+                                                  f'Entry time: {visit.entry_time.strftime("%Y-%m-%d %H:%M:%S")}. '
+                                                  f'Время пребывания: {time_inside.total_seconds() / 3600:.1f} часов.',
+                                    'severity': SecurityIncident.SEVERITY_MEDIUM,
+                                    'metadata': {
+                                        'entry_time': visit.entry_time.isoformat(),
+                                        'hours_inside': time_inside.total_seconds() / 3600,
+                                        'max_allowed_hours': max_stay_hours
+                                    }
+                                }
+                            )
+                            if created:
+                                logger.warning(
+                                    "Visit %s: SecurityIncident created (LONG_STAY)",
+                                    visit.id
+                                )
+                                # Планируем отправку alert
+                                from .utils import send_security_alert_async
+                                send_security_alert_async(incident.id)
+                        except Exception as incident_exc:
+                            logger.error(
+                                "Visit %s: Failed to create LONG_STAY incident: %s",
+                                visit.id, incident_exc
+                            )
+                
+                # АНОМАЛИЯ: Доступ в нерабочее время (SUSPICIOUS_TIME)
+                if visit.status == 'CHECKED_IN' and visit.entry_time:
+                    entry_hour = visit.entry_time.hour
+                    work_start = getattr(settings, 'WORK_HOURS_START', 6)
+                    work_end = getattr(settings, 'WORK_HOURS_END', 22)
+                    
+                    if entry_hour < work_start or entry_hour >= work_end:
+                        # Вход в нерабочее время
+                        logger.warning(
+                            "Visit %s: ⚠️ SUSPICIOUS_TIME detected. Entry at %02d:00 (work hours: %02d:00-%02d:00)",
+                            visit.id, entry_hour, work_start, work_end
+                        )
+                        
+                        try:
+                            from visitors.models import SecurityIncident
+                            incident, created = SecurityIncident.objects.get_or_create(
+                                visit=visit,
+                                incident_type=SecurityIncident.INCIDENT_SUSPICIOUS_TIME,
+                                defaults={
+                                    'description': f'Доступ в нерабочее время ({entry_hour:02d}:00). '
+                                                  f'Рабочие часы: {work_start:02d}:00-{work_end:02d}:00. '
+                                                  f'Entry time: {visit.entry_time.strftime("%Y-%m-%d %H:%M:%S")}.',
+                                    'severity': SecurityIncident.SEVERITY_MEDIUM,
+                                    'metadata': {
+                                        'entry_time': visit.entry_time.isoformat(),
+                                        'entry_hour': entry_hour,
+                                        'work_hours': f'{work_start:02d}:00-{work_end:02d}:00'
+                                    }
+                                }
+                            )
+                            if created:
+                                logger.warning(
+                                    "Visit %s: SecurityIncident created (SUSPICIOUS_TIME)",
+                                    visit.id
+                                )
+                                # Планируем отправку alert
+                                from .utils import send_security_alert_async
+                                send_security_alert_async(incident.id)
+                        except Exception as incident_exc:
+                            logger.error(
+                                "Visit %s: Failed to create SUSPICIOUS_TIME incident: %s",
+                                visit.id, incident_exc
                             )
                 
                 # ВАРИАНТ В: Блокируем после первого выхода
@@ -1090,29 +1239,25 @@ def update_person_validity_task(self, visit_id: int) -> None:
             )
             return
         
-        # Получаем HikCentral session
-        hc_session = _get_hikcentral_session()
-        if not hc_session:
-            raise RuntimeError('No HikCentral session available')
+        # Получаем HikCentral server
+        hc_server = _get_hikcentral_server()
+        if not hc_server:
+            raise RuntimeError('No HikCentral server available')
         
         # Формируем новое время окончания validity
-        if visit.expected_exit_time:
-            # Используем expected_exit_time из визита
-            end_datetime = visit.expected_exit_time
-        else:
-            # Fallback: используем HIKCENTRAL_ACCESS_END_TIME
-            access_end_time_str = getattr(
-                settings,
-                'HIKCENTRAL_ACCESS_END_TIME',
-                '22:00'
-            )
-            access_end_time = datetime.strptime(access_end_time_str, '%H:%M').time()
-            
-            from django.utils import timezone
-            now = timezone.now()
-            end_datetime = timezone.make_aware(
-                datetime.combine(now.date(), access_end_time)
-            )
+        # Используем HIKCENTRAL_ACCESS_END_TIME из настроек
+        access_end_time_str = getattr(
+            settings,
+            'HIKCENTRAL_ACCESS_END_TIME',
+            '22:00'
+        )
+        access_end_time = datetime.strptime(access_end_time_str, '%H:%M').time()
+        
+        from django.utils import timezone
+        now = timezone.now()
+        end_datetime = timezone.make_aware(
+            datetime.combine(now.date(), access_end_time)
+        )
         
         # Формат времени для HikCentral API
         end_time_str = end_datetime.strftime('%Y-%m-%dT%H:%M:%S+00:00')
@@ -1122,47 +1267,49 @@ def update_person_validity_task(self, visit_id: int) -> None:
             person_id, end_time_str, visit_id
         )
         
-        # Обновляем персону через PUT /person/personUpdate
-        # Используем минимальный набор полей для обновления
-        update_payload = {
-            'personId': str(person_id),
-            'endTime': end_time_str,
-        }
-        
-        resp = hc_session.put(
-            '/artemis/api/resource/v1/person/personUpdate',
-            json=update_payload
-        )
-        
-        if resp.status_code != 200:
-            raise RuntimeError(
-                f'Failed to update person validity: {resp.status_code} - {resp.text}'
+        # Используем context manager для автоматического закрытия сессии
+        with HikCentralSession(hc_server) as hc_session:
+            # Обновляем персону через PUT /person/personUpdate
+            # Используем минимальный набор полей для обновления
+            update_payload = {
+                'personId': str(person_id),
+                'endTime': end_time_str,
+            }
+            
+            resp = hc_session.put(
+                '/artemis/api/resource/v1/person/personUpdate',
+                json=update_payload
             )
-        
-        result = resp.json()
-        if result.get('code') != '0':
-            raise RuntimeError(
-                f'Failed to update person validity: code={result.get("code")}, '
-                f'msg={result.get("msg")}'
+            
+            if resp.status_code != 200:
+                raise RuntimeError(
+                    f'Failed to update person validity: {resp.status_code} - {resp.text}'
+                )
+            
+            result = resp.json()
+            if result.get('code') != '0':
+                raise RuntimeError(
+                    f'Failed to update person validity: code={result.get("code")}, '
+                    f'msg={result.get("msg")}'
+                )
+            
+            # Применяем изменения на устройства через reapplication API
+            # Это важно, чтобы новое время validity применилось на турникетах
+            reapp_resp = hc_session.post(
+                '/artemis/api/visitor/v1/auth/reapplication'
             )
-        
-        # Применяем изменения на устройства через reapplication API
-        # Это важно, чтобы новое время validity применилось на турникетах
-        reapp_resp = hc_session.post(
-            '/artemis/api/visitor/v1/auth/reapplication'
-        )
-        
-        if reapp_resp.status_code == 200:
-            logger.info(
-                "HikCentral: Successfully applied validity update to devices "
-                "for person %s",
-                person_id
-            )
-        else:
-            logger.warning(
-                "HikCentral: Reapplication returned %d for person %s",
-                reapp_resp.status_code, person_id
-            )
+            
+            if reapp_resp.status_code == 200:
+                logger.info(
+                    "HikCentral: Successfully applied validity update to devices "
+                    "for person %s",
+                    person_id
+                )
+            else:
+                logger.warning(
+                    "HikCentral: Reapplication returned %d for person %s",
+                    reapp_resp.status_code, person_id
+                )
         
         logger.info(
             "HikCentral: Successfully updated validity for person %s (visit %s)",
@@ -1187,5 +1334,41 @@ def update_person_validity_task(self, visit_id: int) -> None:
                 "HikCentral: Max retries reached for update_person_validity_task, "
                 "visit_id=%s",
                 visit_id
+            )
+
+
+@shared_task(bind=True, max_retries=3)
+def send_security_alert_task(self, incident_id: int):
+    """
+    Celery task для отправки security alert по email.
+    
+    Args:
+        incident_id: ID SecurityIncident
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    try:
+        logger.info(f"Sending security alert for incident {incident_id}")
+        
+        from .utils import send_security_alert_sync
+        send_security_alert_sync(incident_id)
+        
+        logger.info(f"Security alert sent successfully for incident {incident_id}")
+        
+    except Exception as exc:
+        logger.error(f"Failed to send security alert for incident {incident_id}: {exc}")
+        
+        # Retry с exponential backoff
+        if self.request.retries < self.max_retries:
+            countdown = 60 * (2 ** self.request.retries)  # 60s, 120s, 240s
+            logger.warning(
+                f"Retrying send_security_alert_task in {countdown}s "
+                f"(attempt {self.request.retries + 1}/{self.max_retries})"
+            )
+            raise self.retry(exc=exc, countdown=countdown)
+        else:
+            logger.error(
+                f"Max retries reached for send_security_alert_task, incident_id={incident_id}"
             )
 

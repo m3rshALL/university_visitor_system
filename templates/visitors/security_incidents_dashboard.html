@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Security Incidents Dashboard{% endblock %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-triangle me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+                        Security Incidents
+                    </h2>
+                </div>
+                <div class="col-auto ms-auto">
+                    <div class="btn-list">
+                        <!-- Export Buttons -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-icon btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Экспорт">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 15v-12" /><path d="M18 9l-6 6l-6 -6" /><path d="M4 17h16" /><path d="M4 20h16" /></svg>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'export_security_incidents_pdf' %}?days={{ days|default:30 }}&status={{ status }}&incident_type={{ incident_type }}&severity={{ severity }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-danger" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 17h6" /><path d="M9 13h6" /></svg>
+                                    Скачать PDF
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'export_security_incidents_excel' %}?days={{ days|default:30 }}&status={{ status }}&incident_type={{ incident_type }}&severity={{ severity }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-success" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>
+                                    Скачать Excel
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <!-- Stats Cards -->
+            <div class="row row-deck row-cards mb-3">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Всего инцидентов</div>
+                            </div>
+                            <div class="h1 mb-0 mt-1">{{ total_incidents }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Активных инцидентов</div>
+                                <div class="ms-auto lh-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+                                </div>
+                            </div>
+                            <div class="h1 mb-0 mt-1">{{ active_incidents }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Критических</div>
+                                <div class="ms-auto lh-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+                                </div>
+                            </div>
+                            <div class="h1 mb-0 mt-1">{{ critical_incidents }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats by Type and Severity -->
+            <div class="row row-cards mb-3">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">По типам инцидентов</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            {% if type_stats %}
+                                <div class="list-group list-group-flush">
+                                    {% for stat in type_stats %}
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                {% if stat.incident_type == 'exit_without_entry' %}Выход без входа
+                                                {% elif stat.incident_type == 'long_stay' %}Долгое пребывание
+                                                {% elif stat.incident_type == 'suspicious_time' %}Подозрительное время
+                                                {% elif stat.incident_type == 'multiple_failed_access' %}Неудачные попытки
+                                                {% elif stat.incident_type == 'repeated_exit_entry' %}Частые входы/выходы
+                                                {% else %}Другое
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="badge bg-primary">{{ stat.count }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="card-body">
+                                    <p class="text-muted mb-0">Нет данных</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">По уровню важности</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            {% if severity_stats %}
+                                <div class="list-group list-group-flush">
+                                    {% for stat in severity_stats %}
+                                    <div class="list-group-item">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <span class="badge 
+                                                    {% if stat.severity == 'critical' %}bg-red
+                                                    {% elif stat.severity == 'high' %}bg-orange
+                                                    {% elif stat.severity == 'medium' %}bg-yellow
+                                                    {% else %}bg-green{% endif %}">
+                                                    {% if stat.severity == 'critical' %}Критический
+                                                    {% elif stat.severity == 'high' %}Высокий
+                                                    {% elif stat.severity == 'medium' %}Средний
+                                                    {% else %}Низкий
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="badge bg-primary">{{ stat.count }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="card-body">
+                                    <p class="text-muted mb-0">Нет данных</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z" /></svg>
+                        Фильтры
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="statusFilter" class="form-label">Статус</label>
+                            <select class="form-select" id="statusFilter" name="status">
+                                <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Активные</option>
+                                <option value="all" {% if status_filter == 'all' %}selected{% endif %}>Все</option>
+                                <option value="resolved" {% if status_filter == 'resolved' %}selected{% endif %}>Решенные</option>
+                                <option value="false_alarm" {% if status_filter == 'false_alarm' %}selected{% endif %}>Ложные тревоги</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="severityFilter" class="form-label">Уровень важности</label>
+                            <select class="form-select" id="severityFilter" name="severity">
+                                <option value="">Все</option>
+                                {% for value, label in severity_levels %}
+                                <option value="{{ value }}" {% if severity_filter == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="typeFilter" class="form-label">Тип инцидента</label>
+                            <select class="form-select" id="typeFilter" name="type">
+                                <option value="">Все</option>
+                                {% for value, label in incident_types %}
+                                <option value="{{ value }}" {% if type_filter == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                                Применить фильтры
+                            </button>
+                            <a href="{% url 'security_incidents_dashboard' %}" class="btn btn-outline-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                                Сбросить
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Incidents Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /></svg>
+                        Список инцидентов
+                    </h3>
+                </div>
+                {% if incidents %}
+                    <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Тип</th>
+                                    <th>Severity</th>
+                                    <th>Статус</th>
+                                    <th>Гость</th>
+                                    <th>Визит</th>
+                                    <th>Обнаружено</th>
+                                    <th>Назначен</th>
+                                    <th class="w-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for incident in incidents %}
+                                <tr>
+                                    <td class="text-muted">#{{ incident.id }}</td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 150px;">
+                                            {{ incident.get_incident_type_display }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if incident.severity == 'critical' %}bg-red
+                                            {% elif incident.severity == 'high' %}bg-orange
+                                            {% elif incident.severity == 'medium' %}bg-yellow
+                                            {% else %}bg-green{% endif %}">
+                                            {{ incident.get_severity_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if incident.status == 'new' %}bg-cyan
+                                            {% elif incident.status == 'investigating' %}bg-yellow
+                                            {% elif incident.status == 'resolved' %}bg-green
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ incident.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 150px;">
+                                            {{ incident.visit.guest.full_name }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'visit_detail' incident.visit.id %}" target="_blank" class="text-reset">
+                                            #{{ incident.visit.id }}
+                                        </a>
+                                    </td>
+                                    <td class="text-muted">
+                                        {{ incident.detected_at|date:"d.m.Y H:i" }}
+                                    </td>
+                                    <td>
+                                        {% if incident.assigned_to %}
+                                            <div class="text-truncate" style="max-width: 100px;">
+                                                {{ incident.assigned_to.get_full_name }}
+                                            </div>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="/admin/visitors/securityincident/{{ incident.id }}/change/" 
+                                           class="btn btn-sm btn-primary" 
+                                           target="_blank">
+                                            Открыть
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% if incidents|length >= 100 %}
+                    <div class="card-footer">
+                        <div class="alert alert-info mb-0">
+                            Показаны первые 100 записей. Используйте фильтры для уточнения результатов.
+                        </div>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+                        </div>
+                        <p class="empty-title">Инцидентов не найдено</p>
+                        <p class="empty-subtitle text-muted">Отличная работа! Аномалий в системе нет.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

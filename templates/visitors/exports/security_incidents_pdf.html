@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Incidents Report</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1.5cm;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 9pt;
+            color: #333;
+            line-height: 1.3;
+        }
+        
+        h1 {
+            color: #d63939;
+            font-size: 18pt;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #d63939;
+            padding-bottom: 5px;
+        }
+        
+        h2 {
+            color: #206bc4;
+            font-size: 12pt;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .meta {
+            font-size: 8pt;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+        
+        .stat-value {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #d63939;
+        }
+        
+        .stat-label {
+            font-size: 8pt;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 8pt;
+        }
+        
+        table thead {
+            background-color: #f3f5f7;
+        }
+        
+        table th {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 2px solid #d63939;
+            font-weight: bold;
+            font-size: 8pt;
+        }
+        
+        table td {
+            padding: 5px 6px;
+            border-bottom: 1px solid #e6e9ec;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 7pt;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .badge-critical {
+            background-color: #d63939;
+            color: white;
+        }
+        
+        .badge-high {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .badge-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-low {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .badge-new {
+            background-color: #d63939;
+            color: white;
+        }
+        
+        .badge-investigating {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        .badge-resolved {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .badge-false-alarm {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            padding-top: 8px;
+            border-top: 1px solid #ddd;
+            font-size: 7pt;
+            color: #666;
+            text-align: center;
+        }
+        
+        .description-cell {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚨 Security Incidents Report</h1>
+        <div class="meta">
+            <strong>Период:</strong> {{ data.start_date|date:"d.m.Y H:i" }} - {{ data.end_date|date:"d.m.Y H:i" }} ({{ data.days }} дней)<br>
+            <strong>Сгенерировано:</strong> {{ generated_at|date:"d.m.Y H:i:s" }}<br>
+            <strong>Сотрудник:</strong> {{ generated_by }}
+        </div>
+    </div>
+    
+    <h2>📊 Общая статистика</h2>
+    <div class="stats-grid">
+        <div class="stat-box">
+            <div class="stat-value">{{ data.stats.total }}</div>
+            <div class="stat-label">Всего инцидентов</div>
+        </div>
+        {% for stat in data.stats.by_severity %}
+        <div class="stat-box">
+            <div class="stat-value">{{ stat.count }}</div>
+            <div class="stat-label">{{ stat.severity|upper }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <h2>📋 Детальный список инцидентов</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 10%;">Дата</th>
+                <th style="width: 12%;">Тип инцидента</th>
+                <th style="width: 8%;">Уровень</th>
+                <th style="width: 8%;">Статус</th>
+                <th style="width: 12%;">Гость</th>
+                <th style="width: 12%;">Принимающий</th>
+                <th style="width: 10%;">Департамент</th>
+                <th style="width: 20%;">Описание</th>
+                <th style="width: 8%;">Назначен</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for incident in data.incidents %}
+            <tr>
+                <td>{{ incident.detected_at|date:"d.m.y H:i" }}</td>
+                <td>{{ incident.get_incident_type_display }}</td>
+                <td>
+                    {% if incident.severity == 'critical' %}
+                    <span class="badge badge-critical">CRITICAL</span>
+                    {% elif incident.severity == 'high' %}
+                    <span class="badge badge-high">HIGH</span>
+                    {% elif incident.severity == 'medium' %}
+                    <span class="badge badge-medium">MEDIUM</span>
+                    {% else %}
+                    <span class="badge badge-low">LOW</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if incident.status == 'new' %}
+                    <span class="badge badge-new">Новый</span>
+                    {% elif incident.status == 'investigating' %}
+                    <span class="badge badge-investigating">Расследуется</span>
+                    {% elif incident.status == 'resolved' %}
+                    <span class="badge badge-resolved">Решен</span>
+                    {% else %}
+                    <span class="badge badge-false-alarm">Ложная тревога</span>
+                    {% endif %}
+                </td>
+                <td>{{ incident.visit.guest.full_name|default:"-" }}</td>
+                <td>{{ incident.visit.employee.get_full_name|default:"-" }}</td>
+                <td>{{ incident.visit.department.name|default:"-" }}</td>
+                <td class="description-cell">{{ incident.description|truncatewords:15 }}</td>
+                <td>{{ incident.assigned_to.get_full_name|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" style="text-align: center; color: #999; padding: 20px;">
+                    Нет инцидентов за выбранный период
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="footer">
+        <p><strong>КОНФИДЕНЦИАЛЬНО</strong> | Автоматически сгенерировано Системой Пропусков Университета</p>
+        <p>Данный документ содержит конфиденциальную информацию. Распространение без разрешения запрещено.</p>
+    </div>
+</body>
+</html>
+

@@ -3,15 +3,39 @@ import importlib.util as _importlib_util
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
+from django.core.exceptions import ImproperlyConfigured
 
 # Загружаем .env файл из директории conf
-env_path = Path(__file__).parent / '.env'
-load_dotenv(dotenv_path=env_path)
+env_dir = Path(__file__).parent
+for candidate in ('.env', '.env.local'):
+    env_path = env_dir / candidate
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path, override=False)
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-insecure-placeholder')
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
+
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'dev-insecure-placeholder'
+    else:
+        raise ImproperlyConfigured('DJANGO_SECRET_KEY must be set when DEBUG=False')
+
+def get_config(name: str, default: str = '', *, required_in_production: bool = False) -> str:
+	"""Чтение значения из переменных окружения с проверкой для прод-окружения."""
+	value = os.getenv(name, default)
+	if required_in_production and not value and not DEBUG:
+		raise ImproperlyConfigured(f'{name} must be set when DEBUG=False')
+	return value
+
+
+def get_bool(name: str, default: bool) -> bool:
+	value = os.getenv(name)
+	if value is None:
+		return default
+	return value.strip().lower() in {'1', 'true', 'yes', 'on'}
 
 _allowed_hosts_raw = os.getenv('DJANGO_ALLOWED_HOSTS', '').strip()
 if _allowed_hosts_raw:
@@ -35,6 +59,10 @@ if DEBUG:
             ALLOWED_HOSTS.append(specific_ngrok_host)
 else:
     ALLOWED_HOSTS = list(set(ALLOWED_HOSTS) | {'testserver'})  # В проде добавим только testserver для тестов/CI
+if not DEBUG and not ALLOWED_HOSTS:
+	# ALLOWED_HOSTS must be explicitly configured in production
+	raise ImproperlyConfigured('DJANGO_ALLOWED_HOSTS must be set when DEBUG=False')
+
 INTERNAL_IPS = ['127.0.0.1']
 
 INSTALLED_APPS = [
@@ -71,7 +99,6 @@ INSTALLED_APPS = [
 	'notifications',
 	'classroom_book',
 	'fullcalendar',
-	'egov_integration',
 	'realtime_dashboard',
 	'hikvision_integration',
 ]
@@ -369,9 +396,9 @@ LOGGING = {
 		},
 		'file': {
 			'level': 'INFO',
-			'class': 'logging.handlers.RotatingFileHandler',
+			'class': 'concurrent_log_handler.ConcurrentRotatingFileHandler',
 			'filename': str(LOGS_DIR / 'visitor_system.log'),
-			'maxBytes': 1024 * 1024 * 5,
+			'maxBytes': 1024 * 1024 * 5,  # 5 MB
 			'backupCount': 5,
 			'formatter': 'verbose',
 			'encoding': 'utf-8',
@@ -435,14 +462,16 @@ try:
             pass
         return event
 
-    sentry_sdk.init(
-        dsn="https://68d9a3f5d154cedfd60afd8e7d1091a7@o4509905057873921.ingest.de.sentry.io/4509905060364368",
-        integrations=[DjangoIntegration(), CeleryIntegration()],
-        send_default_pii=False,
-        traces_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')),
-        environment=os.getenv('SENTRY_ENV', 'dev'),
-        before_send=_before_send,
-    )
+    sentry_dsn = os.getenv('SENTRY_DSN')
+    if sentry_dsn:
+        sentry_sdk.init(
+            dsn=sentry_dsn,
+            integrations=[DjangoIntegration(), CeleryIntegration()],
+            send_default_pii=False,
+            traces_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', '0.0')),
+            environment=os.getenv('SENTRY_ENV', 'dev'),
+            before_send=_before_send,
+        )
 except Exception:
     pass
 
@@ -555,11 +584,11 @@ HIKCENTRAL_INCLUDE_DATE = os.getenv('HIKCENTRAL_INCLUDE_DATE', 'false').lower() 
 HIKCENTRAL_DEBUG_SIGN = os.getenv('HIKCENTRAL_DEBUG_SIGN', 'false').lower() == 'true'
 
 # HikCentral Professional Integration Partner настройки
-HIKCENTRAL_BASE_URL = os.getenv('HIKCENTRAL_BASE_URL', 'https://your-hikcentral-server.com') # URL вашего HikCentral сервера
-HIKCENTRAL_INTEGRATION_KEY = os.getenv('HIKCENTRAL_INTEGRATION_KEY', '12281453') # Integration Partner Key
-HIKCENTRAL_INTEGRATION_SECRET = os.getenv('HIKCENTRAL_INTEGRATION_SECRET', 'wZFhg7ZkoYCTRF3JiwPi') # Integration Partner Secret
-HIKCENTRAL_USERNAME = os.getenv('HIKCENTRAL_USERNAME', 'admin') # Пользователь HikCentral
-HIKCENTRAL_PASSWORD = os.getenv('HIKCENTRAL_PASSWORD', ']iI)@JnT{CQl') # Пароль HikCentral
+HIKCENTRAL_BASE_URL = get_config('HIKCENTRAL_BASE_URL', required_in_production=True) # URL вашего HikCentral сервера
+HIKCENTRAL_INTEGRATION_KEY = get_config('HIKCENTRAL_INTEGRATION_KEY', required_in_production=True) # Integration Partner Key
+HIKCENTRAL_INTEGRATION_SECRET = get_config('HIKCENTRAL_INTEGRATION_SECRET', required_in_production=True) # Integration Partner Secret
+HIKCENTRAL_USERNAME = get_config('HIKCENTRAL_USERNAME', required_in_production=True) # Пользователь HikCentral
+HIKCENTRAL_PASSWORD = get_config('HIKCENTRAL_PASSWORD', required_in_production=True) # Пароль HikCentral
 
 # Настройки организации для гостей в HikCentral
 HIKCENTRAL_DEFAULT_ORG_INDEX = os.getenv('HIKCENTRAL_DEFAULT_ORG_INDEX', '')  # ID организации по умолчанию для гостей

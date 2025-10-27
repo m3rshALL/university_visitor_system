@@ -581,3 +581,156 @@ class AuditLog(models.Model):
 
     def __str__(self) -> str:  # type: ignore[override]
         return f"{self.created_at.isoformat()} {self.action} {self.model}:{self.object_id} by {getattr(self.actor, 'username', '-') }"
+
+
+# --- Модель для хранения security incidents (аномалий) ---
+class SecurityIncident(models.Model):
+    """
+    Модель для хранения security incidents и аномалий в системе.
+    
+    Используется для автоматической детекции и мониторинга:
+    - Выход без входа (exit_without_entry)
+    - Долгое пребывание (long_stay)
+    - Подозрительное время доступа (suspicious_time)
+    - Многократные неудачные попытки (multiple_failed_access)
+    """
+    
+    # Типы инцидентов
+    INCIDENT_EXIT_WITHOUT_ENTRY = 'exit_without_entry'
+    INCIDENT_LONG_STAY = 'long_stay'
+    INCIDENT_SUSPICIOUS_TIME = 'suspicious_time'
+    INCIDENT_MULTIPLE_FAILED_ACCESS = 'multiple_failed_access'
+    INCIDENT_REPEATED_EXIT_ENTRY = 'repeated_exit_entry'
+    INCIDENT_OTHER = 'other'
+    
+    INCIDENT_TYPE_CHOICES = [
+        (INCIDENT_EXIT_WITHOUT_ENTRY, 'Выход без входа'),
+        (INCIDENT_LONG_STAY, 'Долгое пребывание'),
+        (INCIDENT_SUSPICIOUS_TIME, 'Доступ в нерабочее время'),
+        (INCIDENT_MULTIPLE_FAILED_ACCESS, 'Многократные неудачные попытки'),
+        (INCIDENT_REPEATED_EXIT_ENTRY, 'Частые входы/выходы'),
+        (INCIDENT_OTHER, 'Другое'),
+    ]
+    
+    # Severity levels
+    SEVERITY_LOW = 'low'
+    SEVERITY_MEDIUM = 'medium'
+    SEVERITY_HIGH = 'high'
+    SEVERITY_CRITICAL = 'critical'
+    
+    SEVERITY_CHOICES = [
+        (SEVERITY_LOW, 'Низкий'),
+        (SEVERITY_MEDIUM, 'Средний'),
+        (SEVERITY_HIGH, 'Высокий'),
+        (SEVERITY_CRITICAL, 'Критический'),
+    ]
+    
+    # Статусы
+    STATUS_NEW = 'new'
+    STATUS_INVESTIGATING = 'investigating'
+    STATUS_RESOLVED = 'resolved'
+    STATUS_FALSE_ALARM = 'false_alarm'
+    
+    STATUS_CHOICES = [
+        (STATUS_NEW, 'Новый'),
+        (STATUS_INVESTIGATING, 'Расследуется'),
+        (STATUS_RESOLVED, 'Решен'),
+        (STATUS_FALSE_ALARM, 'Ложная тревога'),
+    ]
+    
+    # Поля
+    visit = models.ForeignKey(
+        'Visit',
+        on_delete=models.CASCADE,
+        related_name='security_incidents',
+        verbose_name='Визит'
+    )
+    incident_type = models.CharField(
+        max_length=50,
+        choices=INCIDENT_TYPE_CHOICES,
+        db_index=True,
+        verbose_name='Тип инцидента'
+    )
+    severity = models.CharField(
+        max_length=20,
+        choices=SEVERITY_CHOICES,
+        default=SEVERITY_MEDIUM,
+        db_index=True,
+        verbose_name='Уровень важности'
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=STATUS_NEW,
+        db_index=True,
+        verbose_name='Статус'
+    )
+    description = models.TextField(
+        verbose_name='Описание'
+    )
+    detected_at = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+        verbose_name='Время обнаружения'
+    )
+    resolved_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Время решения'
+    )
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='assigned_incidents',
+        verbose_name='Назначен сотруднику'
+    )
+    resolution_notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Заметки по решению'
+    )
+    alert_sent = models.BooleanField(
+        default=False,
+        verbose_name='Alert отправлен'
+    )
+    alert_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Время отправки alert'
+    )
+    metadata = models.JSONField(
+        null=True,
+        blank=True,
+        verbose_name='Дополнительные данные'
+    )
+    
+    class Meta:
+        verbose_name = 'Security инцидент'
+        verbose_name_plural = 'Security инциденты'
+        ordering = ['-detected_at']
+        indexes = [
+            Index(fields=['-detected_at'], name='incident_detected_idx'),
+            Index(fields=['incident_type', '-detected_at'], name='incident_type_date_idx'),
+            Index(fields=['severity', 'status'], name='incident_severity_status_idx'),
+        ]
+    
+    def __str__(self):
+        return f"{self.get_incident_type_display()} - {self.visit.guest.full_name} ({self.detected_at.strftime('%Y-%m-%d %H:%M')})"
+    
+    def mark_resolved(self, notes=''):
+        """Пометить инцидент как решенный."""
+        self.status = self.STATUS_RESOLVED
+        self.resolved_at = timezone.now()
+        if notes:
+            self.resolution_notes = notes
+        self.save()
+    
+    def mark_false_alarm(self, notes=''):
+        """Пометить как ложную тревогу."""
+        self.status = self.STATUS_FALSE_ALARM
+        self.resolved_at = timezone.now()
+        if notes:
+            self.resolution_notes = notes
+        self.save()

@@ -2653,3 +2653,112 @@ def mark_group_exit_view(request, visit_id):
             "Произошла непредвиденная ошибка при отметке выхода группы."
         )
         return redirect(request.META.get('HTTP_REFERER', 'visit_history'))
+
+
+# --- Health Check Endpoint ---
+def health_check(request):
+    """
+    Эндпоинт для проверки состояния системы.
+    
+    Проверяет:
+    - Подключение к PostgreSQL
+    - Подключение к Redis
+    - Активность Celery workers
+    
+    Returns:
+        JsonResponse: Детальный статус каждого компонента
+        HTTP 200 если всё OK, HTTP 503 если есть проблемы
+    """
+    from django.http import JsonResponse
+    from django.db import connection
+    from django.core.cache import cache
+    from django.utils import timezone
+    import logging
+    
+    logger = logging.getLogger(__name__)
+    
+    health_status = {
+        'status': 'healthy',
+        'timestamp': timezone.now().isoformat(),
+        'checks': {}
+    }
+    
+    # 1. Проверка PostgreSQL
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT 1')
+            cursor.fetchone()
+        health_status['checks']['database'] = {
+            'status': 'ok',
+            'type': 'postgresql'
+        }
+    except Exception as e:
+        health_status['status'] = 'unhealthy'
+        health_status['checks']['database'] = {
+            'status': 'error',
+            'error': str(e)
+        }
+        logger.error(f'Database health check failed: {e}')
+    
+    # 2. Проверка Redis
+    try:
+        # Пытаемся записать и прочитать значение
+        test_key = 'health_check_test'
+        test_value = 'ok'
+        cache.set(test_key, test_value, 10)
+        retrieved_value = cache.get(test_key)
+        
+        if retrieved_value == test_value:
+            health_status['checks']['redis'] = {
+                'status': 'ok',
+                'type': 'redis'
+            }
+        else:
+            health_status['status'] = 'unhealthy'
+            health_status['checks']['redis'] = {
+                'status': 'error',
+                'error': 'Failed to retrieve test value'
+            }
+    except Exception as e:
+        health_status['status'] = 'unhealthy'
+        health_status['checks']['redis'] = {
+            'status': 'error',
+            'error': str(e)
+        }
+        logger.error(f'Redis health check failed: {e}')
+    
+    # 3. Проверка Celery workers
+    try:
+        from celery import current_app
+        
+        # Проверяем активные workers
+        inspect = current_app.control.inspect()
+        active_workers = inspect.active()
+        
+        if active_workers:
+            worker_count = len(active_workers)
+            health_status['checks']['celery'] = {
+                'status': 'ok',
+                'workers': worker_count,
+                'worker_names': list(active_workers.keys())
+            }
+        else:
+            health_status['status'] = 'unhealthy'
+            health_status['checks']['celery'] = {
+                'status': 'warning',
+                'message': 'No active workers detected'
+            }
+            logger.warning('Celery health check: no active workers')
+            
+    except Exception as e:
+        health_status['status'] = 'unhealthy'
+        health_status['checks']['celery'] = {
+            'status': 'error',
+            'error': str(e)
+        }
+        logger.error(f'Celery health check failed: {e}')
+    
+    # Определяем HTTP статус код
+    status_code = 200 if health_status['status'] == 'healthy' else 503
+    
+    return JsonResponse(health_status, status=status_code)

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Check-in Dashboard Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 10pt;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        h1 {
+            color: #206bc4;
+            font-size: 18pt;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #206bc4;
+            padding-bottom: 5px;
+        }
+        
+        h2 {
+            color: #206bc4;
+            font-size: 14pt;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .meta {
+            font-size: 9pt;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 30%;
+        }
+        
+        .stat-value {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #206bc4;
+        }
+        
+        .stat-label {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 9pt;
+        }
+        
+        table thead {
+            background-color: #f3f5f7;
+        }
+        
+        table th {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 2px solid #206bc4;
+            font-weight: bold;
+        }
+        
+        table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #e6e9ec;
+        }
+        
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 8pt;
+            font-weight: bold;
+        }
+        
+        .badge-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .badge-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 8pt;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Auto Check-in Dashboard Report</h1>
+        <div class="meta">
+            <strong>Период:</strong> {{ data.start_date|date:"d.m.Y H:i" }} - {{ data.end_date|date:"d.m.Y H:i" }} ({{ data.days }} дней)<br>
+            <strong>Сгенерировано:</strong> {{ generated_at|date:"d.m.Y H:i:s" }}<br>
+            <strong>Сотрудник:</strong> {{ generated_by }}
+        </div>
+    </div>
+    
+    <h2>📈 Статистика</h2>
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-value">{{ data.total_auto_checkins }}</div>
+            <div class="stat-label">Автоматических входов</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value">{{ data.total_auto_checkouts }}</div>
+            <div class="stat-label">Автоматических выходов</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-value">{{ data.incidents|length }}</div>
+            <div class="stat-label">Аномалий обнаружено</div>
+        </div>
+    </div>
+    
+    <h2>✅ Автоматические Check-ins (последние 100)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата/Время</th>
+                <th>Гость</th>
+                <th>Принимающий</th>
+                <th>Департамент</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data.auto_checkins %}
+            <tr>
+                <td>{{ entry.timestamp|date:"d.m.Y H:i:s" }}</td>
+                <td>{{ entry.guest }}</td>
+                <td>{{ entry.employee }}</td>
+                <td>{{ entry.department }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: #999;">Нет данных</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="page-break-before: always;"></div>
+    
+    <h2>🚪 Автоматические Check-outs (последние 100)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата/Время</th>
+                <th>Гость</th>
+                <th>Принимающий</th>
+                <th>Департамент</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data.auto_checkouts %}
+            <tr>
+                <td>{{ entry.timestamp|date:"d.m.Y H:i:s" }}</td>
+                <td>{{ entry.guest }}</td>
+                <td>{{ entry.employee }}</td>
+                <td>{{ entry.department }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: #999;">Нет данных</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="page-break-before: always;"></div>
+    
+    <h2>🚨 Security Incidents (последние 50)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Тип</th>
+                <th>Уровень</th>
+                <th>Гость</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for incident in data.incidents %}
+            <tr>
+                <td>{{ incident.detected_at|date:"d.m.Y H:i" }}</td>
+                <td>{{ incident.get_incident_type_display }}</td>
+                <td>
+                    {% if incident.severity == 'critical' %}
+                    <span class="badge badge-danger">{{ incident.get_severity_display }}</span>
+                    {% elif incident.severity == 'high' %}
+                    <span class="badge badge-danger">{{ incident.get_severity_display }}</span>
+                    {% elif incident.severity == 'medium' %}
+                    <span class="badge badge-warning">{{ incident.get_severity_display }}</span>
+                    {% else %}
+                    <span class="badge badge-success">{{ incident.get_severity_display }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ incident.visit.guest.full_name|default:"-" }}</td>
+                <td>{{ incident.get_status_display }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: #999;">Нет аномалий</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="footer">
+        <p>Автоматически сгенерировано Системой Пропусков Университета</p>
+        <p>Конфиденциальный документ. Только для служебного пользования.</p>
+    </div>
+</body>
+</html>
+

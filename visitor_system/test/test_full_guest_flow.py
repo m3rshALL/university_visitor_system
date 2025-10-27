@@ -57,7 +57,6 @@ def test_guest_registration():
         guest=guest,
         purpose="Test Visit",
         expected_entry_time=timezone.now(),
-        expected_exit_time=timezone.now() + timezone.timedelta(hours=2),
         status='SCHEDULED'
     )
     

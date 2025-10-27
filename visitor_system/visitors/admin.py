@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import (
     Guest, Visit, StudentVisit, EmployeeProfile, 
-    GuestInvitation, GroupInvitation, GroupGuest, AuditLog
+    GuestInvitation, GroupInvitation, GroupGuest, AuditLog,
+    SecurityIncident
 )
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -180,6 +181,63 @@ class AuditLogAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser  # Только суперпользователь может удалять
 
+
+@admin.register(SecurityIncident)
+class SecurityIncidentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'incident_type', 'severity', 'status', 'visit', 
+                    'guest_name', 'detected_at', 'alert_sent', 'assigned_to')
+    list_select_related = ('visit__guest', 'assigned_to')
+    list_filter = ('incident_type', 'severity', 'status', 'alert_sent', 
+                   'detected_at', 'assigned_to')
+    search_fields = ('visit__guest__full_name', 'description', 
+                     'resolution_notes', 'visit__id')
+    readonly_fields = ('detected_at', 'alert_sent_at')
+    date_hierarchy = 'detected_at'
+    autocomplete_fields = ('visit', 'assigned_to')
+    
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('visit', 'incident_type', 'severity', 'status', 
+                      'description', 'detected_at')
+        }),
+        ('Управление инцидентом', {
+            'fields': ('assigned_to', 'resolution_notes', 'resolved_at')
+        }),
+        ('Alerts', {
+            'fields': ('alert_sent', 'alert_sent_at')
+        }),
+        ('Дополнительно', {
+            'fields': ('metadata',),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    @admin.display(description='Гость', ordering='visit__guest__full_name')
+    def guest_name(self, obj):
+        return obj.visit.guest.full_name if obj.visit and obj.visit.guest else '-'
+    
+    actions = ['mark_as_resolved', 'mark_as_false_alarm', 'assign_to_me']
+    
+    @admin.action(description='Пометить как решенный')
+    def mark_as_resolved(self, request, queryset):
+        count = 0
+        for incident in queryset:
+            incident.mark_resolved(notes=f'Решен администратором {request.user.username}')
+            count += 1
+        self.message_user(request, f'Помечено как решенных: {count}')
+    
+    @admin.action(description='Пометить как ложная тревога')
+    def mark_as_false_alarm(self, request, queryset):
+        count = 0
+        for incident in queryset:
+            incident.mark_false_alarm(notes=f'Ложная тревога (проверено {request.user.username})')
+            count += 1
+        self.message_user(request, f'Помечено как ложных тревог: {count}')
+    
+    @admin.action(description='Назначить мне')
+    def assign_to_me(self, request, queryset):
+        count = queryset.update(assigned_to=request.user, status=SecurityIncident.STATUS_INVESTIGATING)
+        self.message_user(request, f'Назначено вам: {count}')
 
 
 # Перерегистрация User

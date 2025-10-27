@@ -16,6 +16,26 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logger = logging.getLogger(__name__)
 
 
+def escape_xml(text: str) -> str:
+    """
+    Экранирует спецсимволы XML для предотвращения XML injection.
+    
+    Args:
+        text: Строка для экранирования
+        
+    Returns:
+        Безопасная строка для использования в XML
+        
+    Example:
+        >>> escape_xml("O'Reilly & Associates")
+        "O&apos;Reilly &amp; Associates"
+    """
+    if not text:
+        return ''
+    import xml.sax.saxutils as saxutils
+    return saxutils.escape(str(text))
+
+
 class HikCentralSession:
     """Сессия для работы с HikCentral Professional OpenAPI (AK/SK подпись Artemis)."""
 
@@ -24,7 +44,30 @@ class HikCentralSession:
         self.base_url = server.base_url.rstrip('/')
         self.session = requests.Session()
         self.session.verify = False  # Самоподписанные сертификаты
+        
+        # Настройка connection pool для оптимальной производительности
+        from requests.adapters import HTTPAdapter
+        adapter = HTTPAdapter(
+            pool_connections=50,  # Количество connection pools
+            pool_maxsize=50,      # Максимальный размер каждого pool
+            max_retries=3,        # Автоматические retry для сетевых ошибок
+            pool_block=False      # Не блокировать при исчерпании pool
+        )
+        self.session.mount('http://', adapter)
+        self.session.mount('https://', adapter)
+        
         logger.info(f"HikCentralSession initialized for {server.name}")
+    
+    def __enter__(self):
+        """Context manager entry - возвращает self для использования в with statement."""
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit - автоматически закрывает сессию для предотвращения memory leak."""
+        if self.session:
+            self.session.close()
+            logger.debug(f"HikCentralSession closed for {self.server.name}")
+        return False  # Не подавляем exceptions
 
     @staticmethod
     def _calc_content_md5(body_bytes: bytes | None) -> str:
@@ -80,6 +123,11 @@ class HikCentralSession:
 
     def _make_request(self, method: str, endpoint: str, data: Dict = None, params: Dict = None) -> requests.Response:
         """Выполняет запрос к HikCentral OpenAPI с подписью AK/SK."""
+        # Rate limiting для предотвращения перегрузки HCP сервера
+        from .rate_limiter import get_rate_limiter
+        rate_limiter = get_rate_limiter()
+        rate_limiter.acquire()
+        
         # Собираем URL и URI+query
         from urllib.parse import urlencode
         url = f"{self.base_url}{endpoint}"
@@ -147,27 +195,48 @@ class HikCentralSession:
         if content_md5:
             headers['Content-MD5'] = content_md5
 
-        try:
-            if getattr(settings, 'HIKCENTRAL_DEBUG_SIGN', False):
-                logger.debug('[Artemis] stringToSign=%s', string_to_sign)
-                logger.debug('[Artemis] headers=%s', headers)
-            if method.upper() == 'GET':
-                response = self.session.get(url, headers=headers, params=params, timeout=15)
-            elif method.upper() == 'POST':
-                response = self.session.post(url, headers=headers, params=params, data=body_bytes, timeout=20)
-            elif method.upper() == 'PUT':
-                response = self.session.put(url, headers=headers, params=params, data=body_bytes, timeout=20)
-            elif method.upper() == 'DELETE':
-                response = self.session.delete(url, headers=headers, params=params, timeout=15)
-            else:
-                raise ValueError(f"Unsupported HTTP method: {method}")
+        max_retries_429 = 3
+        for retry_attempt in range(max_retries_429):
+            try:
+                if getattr(settings, 'HIKCENTRAL_DEBUG_SIGN', False):
+                    logger.debug('[Artemis] stringToSign=%s', string_to_sign)
+                    logger.debug('[Artemis] headers=%s', headers)
+                if method.upper() == 'GET':
+                    response = self.session.get(url, headers=headers, params=params, timeout=15)
+                elif method.upper() == 'POST':
+                    response = self.session.post(url, headers=headers, params=params, data=body_bytes, timeout=20)
+                elif method.upper() == 'PUT':
+                    response = self.session.put(url, headers=headers, params=params, data=body_bytes, timeout=20)
+                elif method.upper() == 'DELETE':
+                    response = self.session.delete(url, headers=headers, params=params, timeout=15)
+                else:
+                    raise ValueError(f"Unsupported HTTP method: {method}")
 
-            response.raise_for_status()
-            return response
+                response.raise_for_status()
+                return response
 
-        except requests.exceptions.RequestException as e:
-            logger.error(f"HikCentral API request failed: {e}")
-            raise
+            except requests.exceptions.HTTPError as e:
+                # Специальная обработка HTTP 429 (Rate Limit Exceeded)
+                if e.response.status_code == 429:
+                    retry_after = int(e.response.headers.get('Retry-After', 60))
+                    if retry_attempt < max_retries_429 - 1:
+                        logger.warning(
+                            "HCP rate limit exceeded (429), retry after %d seconds (attempt %d/%d)",
+                            retry_after, retry_attempt + 1, max_retries_429
+                        )
+                        import time
+                        time.sleep(retry_after)
+                        continue  # Retry
+                    else:
+                        logger.error("HCP rate limit exceeded, max retries reached")
+                        raise
+                else:
+                    # Другие HTTP ошибки - не retry
+                    logger.error(f"HikCentral HTTP error {e.response.status_code}: {e}")
+                    raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"HikCentral API request failed: {e}")
+                raise
 
     def get(self, endpoint: str, params: Dict = None) -> requests.Response:
         """GET request with AK/SK signature."""
@@ -184,128 +253,6 @@ class HikCentralSession:
     ) -> requests.Response:
         """PUT request with AK/SK signature."""
         return self._make_request('PUT', endpoint, data=json, params=params)
-
-    def _make_multipart_request(self, method: str, endpoint: str, files: Dict, fields: Dict = None, params: Dict = None) -> requests.Response:
-        """Выполняет multipart/form-data запрос с подписью AK/SK.
-        
-        Args:
-            method: HTTP метод (POST, PUT)
-            endpoint: API endpoint
-            files: Словарь файлов {'field_name': ('filename', bytes, 'mime_type')}
-            fields: Дополнительные поля формы (опционально)
-            params: Query параметры (опционально)
-            
-        Returns:
-            Response object
-            
-        Example:
-            session._make_multipart_request(
-                'POST',
-                '/artemis/api/common/v1/picture/upload',
-                files={'file': ('photo.jpg', image_bytes, 'image/jpeg')},
-                fields={'type': '1'}
-            )
-        """
-        from urllib.parse import urlencode
-        from requests_toolbelt.multipart.encoder import MultipartEncoder
-        
-        logger.info(f"HikCentral: Making multipart request to {endpoint}")
-        
-        # Собираем URL и URI+query
-        url = f"{self.base_url}{endpoint}"
-        query_str = urlencode(params or {}, doseq=True)
-        uri_with_query = endpoint + (f"?{query_str}" if query_str else '')
-        
-        # Создаём multipart payload
-        multipart_fields = {}
-        if fields:
-            multipart_fields.update(fields)
-        if files:
-            for field_name, file_tuple in files.items():
-                # file_tuple: (filename, bytes, mime_type)
-                import io
-                if isinstance(file_tuple[1], bytes):
-                    multipart_fields[field_name] = (file_tuple[0], io.BytesIO(file_tuple[1]), file_tuple[2])
-                else:
-                    multipart_fields[field_name] = file_tuple
-        
-        multipart = MultipartEncoder(fields=multipart_fields)
-        body_bytes = multipart.to_string()
-        
-        # Content-Type для multipart включает boundary
-        content_type = multipart.content_type
-        content_md5 = self._calc_content_md5(body_bytes)
-        accept = 'application/json'
-        
-        # Управляем включением Date через настройки
-        import time, uuid, email.utils
-        date_hdr = email.utils.formatdate(usegmt=True) if getattr(settings, 'HIKCENTRAL_INCLUDE_DATE', False) else None
-        x_ca_timestamp = str(int(time.time() * 1000))
-        x_ca_nonce = str(uuid.uuid4())
-        
-        # Заголовки для подписи
-        headers_for_sign = {
-            'x-ca-key': self.server.integration_key,
-            'x-ca-timestamp': x_ca_timestamp,
-            'x-ca-nonce': x_ca_nonce,
-        }
-        stage = getattr(settings, 'HIKCENTRAL_STAGE', '')
-        if stage:
-            headers_for_sign['x-ca-stage'] = stage
-        
-        signed_names, headers_block = self._canonical_headers(headers_for_sign)
-        
-        # Строка для подписи
-        string_to_sign = self._build_string_to_sign(
-            method=method,
-            accept=accept,
-            content_md5=content_md5,
-            content_type=content_type,
-            date_hdr=date_hdr,
-            headers_block=headers_block,
-            uri_with_query=uri_with_query,
-        )
-        signature = self._sign(string_to_sign)
-        
-        # Финальные заголовки
-        headers = {
-            'Accept': accept,
-            'Content-Type': content_type,
-            'Content-MD5': content_md5,
-            'X-Ca-Key': self.server.integration_key,
-            'X-Ca-Timestamp': x_ca_timestamp,
-            'X-Ca-Nonce': x_ca_nonce,
-            'X-Ca-Signature-Headers': signed_names,
-            'X-Ca-Signature': signature,
-            'X-Requested-With': 'XMLHttpRequest',
-        }
-        if date_hdr:
-            headers['Date'] = date_hdr
-        if stage:
-            headers['X-Ca-Stage'] = stage
-        
-        try:
-            if getattr(settings, 'HIKCENTRAL_DEBUG_SIGN', False):
-                logger.debug('[Artemis Multipart] stringToSign=%s', string_to_sign)
-                logger.debug('[Artemis Multipart] headers=%s', headers)
-                logger.debug('[Artemis Multipart] body size=%d', len(body_bytes))
-            
-            if method.upper() == 'POST':
-                response = self.session.post(url, headers=headers, params=params, data=body_bytes, timeout=30)
-            elif method.upper() == 'PUT':
-                response = self.session.put(url, headers=headers, params=params, data=body_bytes, timeout=30)
-            else:
-                raise ValueError(f"Multipart only supports POST/PUT, got: {method}")
-            
-            response.raise_for_status()
-            return response
-            
-        except requests.exceptions.RequestException as e:
-            logger.error(f"HikCentral multipart request failed: {e}")
-            if hasattr(e, 'response') and e.response is not None:
-                logger.error(f"Response status: {e.response.status_code}")
-                logger.error(f"Response body: {e.response.text[:500]}")
-            raise
 
 
 class HikSession:
@@ -384,20 +331,20 @@ def ensure_person(session: HikSession, employee_no: str, name: str,
     )
     logger.info(f"Hikvision: Ensuring person {name} ({employee_no}) via ISAPI")
 
-    # Формируем XML для создания/обновления пользователя
+    # Формируем XML для создания/обновления пользователя (с защитой от XML injection)
     person_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <UserInfo>
-    <employeeNo>{employee_no}</employeeNo>
-    <name>{name}</name>
+    <employeeNo>{escape_xml(employee_no)}</employeeNo>
+    <name>{escape_xml(name)}</name>
     <userType>normal</userType>
     <localRight>1</localRight>
     <maxOpenDoorTime>0</maxOpenDoorTime>
     <Valid>
         <enable>true</enable>
-        <beginTime>{valid_from or datetime.now().strftime('%Y-%m-%dT%H:%M:%S')}</beginTime>
-        <endTime>{valid_to or (datetime.now().replace(
+        <beginTime>{escape_xml(valid_from or datetime.now().strftime('%Y-%m-%dT%H:%M:%S'))}</beginTime>
+        <endTime>{escape_xml(valid_to or (datetime.now().replace(
             year=datetime.now().year + 1
-        )).strftime('%Y-%m-%dT%H:%M:%S')}</endTime>
+        )).strftime('%Y-%m-%dT%H:%M:%S'))}</endTime>
     </Valid>
 </UserInfo>"""
 
@@ -451,59 +398,15 @@ def upload_face(session: HikSession, face_lib_id: str,
     )
 
     try:
-        # Метод 1: Прямая загрузка фото к персоне (современный ISAPI)
-        # Multipart form-data с бинарным изображением
-        import io
-        from requests_toolbelt.multipart.encoder import MultipartEncoder
-
-        # Создаем multipart с изображением
-        multipart_data = MultipartEncoder(
-            fields={
-                'FaceDataRecord': (
-                    'face.jpg',
-                    io.BytesIO(image_bytes),
-                    'image/jpeg'
-                )
-            }
-        )
-
-        # Пытаемся загрузить через /ISAPI/Intelligent/FDLib/picture
-        headers = {'Content-Type': multipart_data.content_type}
-        url = (
-            f'/ISAPI/Intelligent/FDLib/FaceDataRecord/picture?'
-            f'format=json&FDID={face_lib_id}&faceID={person_id}'
-        )
-
-        try:
-            response = session._make_request(
-                'PUT', url, data=multipart_data.to_string(), headers=headers
-            )
-            if response.status_code in [200, 201]:
-                logger.info(
-                    f"Hikvision ISAPI: Successfully uploaded face via "
-                    f"PUT /picture for person {person_id}"
-                )
-                return f"face_{person_id}"
-            else:
-                logger.warning(
-                    f"Hikvision ISAPI: PUT /picture returned status "
-                    f"{response.status_code}, trying POST method"
-                )
-        except Exception as e:
-            logger.warning(
-                f"Hikvision ISAPI: PUT /picture failed ({e}), "
-                f"trying POST method"
-            )
-
-        # Метод 2: POST с base64 (старый метод, fallback)
+        # Метод 1: POST с base64 через XML
         image_base64 = base64.b64encode(image_bytes).decode('utf-8')
 
-        # XML payload для FaceDataRecord
+        # XML payload для FaceDataRecord (с защитой от XML injection)
         face_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <FaceDataRecord>
     <faceLibType>blackFD</faceLibType>
-    <FDID>{face_lib_id}</FDID>
-    <faceID>{person_id}</faceID>
+    <FDID>{escape_xml(face_lib_id)}</FDID>
+    <faceID>{escape_xml(person_id)}</faceID>
     <faceData>{image_base64}</faceData>
 </FaceDataRecord>"""
 
@@ -573,15 +476,16 @@ def assign_access(session: HikSession, person_id: str, door_ids: List[str],
                     year=datetime.now().year + 1
                 )).strftime('%Y-%m-%dT%H:%M:%S')
             )
+            # Формируем XML с защитой от XML injection
             access_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <DoorRight>
-    <employeeNo>{person_id}</employeeNo>
-    <doorNo>{door_id}</doorNo>
+    <employeeNo>{escape_xml(person_id)}</employeeNo>
+    <doorNo>{escape_xml(door_id)}</doorNo>
     <planTemplateNo>1</planTemplateNo>
     <valid>
         <enable>true</enable>
-        <beginTime>{begin_time}</beginTime>
-        <endTime>{end_time}</endTime>
+        <beginTime>{escape_xml(begin_time)}</beginTime>
+        <endTime>{escape_xml(end_time)}</endTime>
     </valid>
 </DoorRight>"""
 
@@ -1033,157 +937,9 @@ def upload_face_with_validation(session: HikCentralSession, image_bytes: bytes, 
         logger.info("HikCentral: Face upload with validation completed successfully!")
         return True
         
-    except Exception as e:
-        logger.error("HikCentral: Failed to upload face with validation: %s", e)
-        import traceback
-        traceback.print_exc()
+    except Exception:
+        logger.exception("HikCentral: Failed to upload face with validation")
         return False
-
-
-def upload_face_hikcentral_multipart(session: HikCentralSession, face_lib_id: str, image_bytes: bytes, person_id: str) -> str:
-    """Загрузка фото через multipart/form-data upload (РЕКОМЕНДУЕМЫЙ МЕТОД).
-    
-    Использует правильный REST-подход с multipart/form-data для загрузки файлов.
-    
-    Процесс:
-    1. Загружаем фото на /common/v1/picture/upload (получаем picUri)
-    2. Привязываем picUri к Person через /person/single/update
-    3. Применяем изменения на устройства
-    
-    Args:
-        session: Сессия HikCentral
-        face_lib_id: Не используется (для совместимости)
-        image_bytes: Байты изображения
-        person_id: ID Person в HCP
-        
-    Returns:
-        faceId/picUri загруженного фото
-    """
-    logger.info("HikCentral: Uploading face via multipart for person %s (size: %d bytes)", person_id, len(image_bytes))
-    
-    try:
-        # Шаг 1: Получаем информацию о Person
-        logger.info("HikCentral: Step 1 - Getting person info")
-        person_resp = session._make_request('POST', '/artemis/api/resource/v1/person/personId/personInfo', data={
-            'personId': str(person_id)
-        })
-        person_json = person_resp.json()
-        
-        if not (isinstance(person_json, dict) and person_json.get('code') == '0' and person_json.get('data')):
-            logger.error("HikCentral: Failed to get person info: %s", person_json.get('msg'))
-            return f"face_{person_id}"
-            
-        person_data = person_json['data']
-        person_name = person_data.get('personName', 'Guest')
-        org_index = person_data.get('orgIndexCode', '1')
-        logger.info("HikCentral: Person: %s (org=%s)", person_name, org_index)
-        
-        # Шаг 2: Оптимизируем изображение
-        logger.info("HikCentral: Step 2 - Optimizing image")
-        from PIL import Image
-        import io
-        
-        try:
-            img = Image.open(io.BytesIO(image_bytes))
-            if img.mode != 'RGB':
-                img = img.convert('RGB')
-            max_size = (800, 800)
-            if img.width > max_size[0] or img.height > max_size[1]:
-                img.thumbnail(max_size, Image.Resampling.LANCZOS)
-            buffer = io.BytesIO()
-            img.save(buffer, format='JPEG', quality=85, optimize=True)
-            image_bytes = buffer.getvalue()
-            logger.info("HikCentral: Image optimized: %d bytes", len(image_bytes))
-        except Exception as e:
-            logger.warning("HikCentral: Failed to optimize image, using original: %s", e)
-        
-        # Шаг 3: Загружаем фото через multipart
-        logger.info("HikCentral: Step 3 - Uploading photo via multipart")
-        
-        # Пробуем разные endpoints по приоритету
-        endpoints = [
-            '/artemis/api/common/v1/picture/upload',
-            '/artemis/api/resource/v1/person/photo',
-        ]
-        
-        pic_uri = None
-        for endpoint in endpoints:
-            try:
-                logger.info("HikCentral: Trying endpoint %s", endpoint)
-                upload_resp = session._make_multipart_request(
-                    'POST',
-                    endpoint,
-                    files={'file': ('photo.jpg', image_bytes, 'image/jpeg')},
-                    fields={'type': '1'} if 'common' in endpoint else {'personId': str(person_id)}
-                )
-                
-                upload_json = upload_resp.json()
-                logger.info("HikCentral: Upload response code=%s msg=%s", upload_json.get('code'), upload_json.get('msg'))
-                
-                if upload_json.get('code') == '0':
-                    # Успешная загрузка
-                    data = upload_json.get('data', {})
-                    pic_uri = data.get('picUri', '') if isinstance(data, dict) else ''
-                    
-                    if pic_uri:
-                        logger.info("HikCentral: Successfully uploaded photo, picUri=%s", pic_uri)
-                        break
-                    else:
-                        logger.warning("HikCentral: Upload success but no picUri in response")
-                else:
-                    logger.warning("HikCentral: Upload failed with code=%s msg=%s", upload_json.get('code'), upload_json.get('msg'))
-                    
-            except Exception as e:
-                logger.warning("HikCentral: Endpoint %s failed: %s", endpoint, e)
-                continue
-        
-        # Если не получили picUri, возвращаемся к старому методу
-        if not pic_uri:
-            logger.warning("HikCentral: All multipart endpoints failed, falling back to JSON method")
-            return upload_face_hikcentral(session, face_lib_id, image_bytes, person_id)
-        
-        # Шаг 4: Привязываем фото к Person
-        logger.info("HikCentral: Step 4 - Linking photo to Person")
-        
-        update_payload = {
-            'personId': str(person_id),
-            'personName': person_name,
-            'orgIndexCode': str(org_index),
-            'personPhoto': {
-                'picUri': pic_uri
-            }
-        }
-        
-        update_resp = session._make_request('POST', '/artemis/api/resource/v1/person/single/update', data=update_payload)
-        update_json = update_resp.json()
-        logger.info("HikCentral: Link photo response code=%s msg=%s", update_json.get('code'), update_json.get('msg'))
-        
-        if update_json.get('code') != '0':
-            logger.error("HikCentral: Failed to link photo to Person: %s", update_json.get('msg'))
-            return f"face_{person_id}"
-        
-        # Шаг 5: Применяем изменения на устройства
-        try:
-            logger.info("HikCentral: Step 5 - Applying changes to devices")
-            reapply_resp = session._make_request('POST', '/artemis/api/visitor/v1/auth/reapplication', data={
-                'personIds': [str(person_id)]
-            })
-            reapply_json = reapply_resp.json()
-            logger.info("HikCentral: auth/reapplication response code=%s msg=%s",
-                       reapply_json.get('code'), reapply_json.get('msg'))
-        except Exception as e:
-            logger.warning("HikCentral: Failed to apply changes to devices: %s", e)
-        
-        logger.info("HikCentral: Multipart face upload completed successfully for person %s", person_id)
-        return pic_uri
-        
-    except Exception as e:
-        logger.error("HikCentral: Multipart upload failed for %s: %s", person_id, e)
-        import traceback
-        traceback.print_exc()
-        # Fallback к старому методу
-        logger.info("HikCentral: Falling back to JSON upload method")
-        return upload_face_hikcentral(session, face_lib_id, image_bytes, person_id)
 
 
 def upload_face_hikcentral(session: HikCentralSession, face_lib_id: str, image_bytes: bytes, person_id: str) -> str:
@@ -1303,10 +1059,8 @@ def upload_face_hikcentral(session: HikCentralSession, face_lib_id: str, image_b
     except requests.exceptions.RequestException as e:
         logger.error("HikCentral: Failed to upload face for %s: %s", person_id, e)
         return f"face_{person_id}"
-    except Exception as e:
-        logger.error("HikCentral: Unexpected error uploading face for %s: %s", person_id, e)
-        import traceback
-        traceback.print_exc()
+    except Exception:
+        logger.exception("HikCentral: Unexpected error uploading face for %s", person_id)
         return f"face_{person_id}"
 
 
@@ -1352,55 +1106,22 @@ def upload_face_isapi(device, person_code: str, image_bytes: bytes) -> bool:
         True если успешно, False если ошибка
     """
     from requests.auth import HTTPDigestAuth
-    import io
     
     logger.info(f"ISAPI: Uploading face for person {person_code} to device {device.name} ({device.host})")
     
     try:
         auth = HTTPDigestAuth(device.username, device.password)
         
-        # Метод 1: Multipart PUT с бинарным изображением
-        try:
-            from requests_toolbelt.multipart.encoder import MultipartEncoder
-            
-            multipart_data = MultipartEncoder(
-                fields={
-                    'FaceDataRecord': (
-                        'face.jpg',
-                        io.BytesIO(image_bytes),
-                        'image/jpeg'
-                    )
-                }
-            )
-            
-            url = f"http://{device.host}/ISAPI/Intelligent/FDLib/FaceDataRecord/picture?FDID=1&faceID={person_code}"
-            response = requests.put(
-                url,
-                data=multipart_data,
-                auth=auth,
-                headers={'Content-Type': multipart_data.content_type},
-                timeout=30
-            )
-            
-            logger.info(f"ISAPI: Method 1 (PUT multipart) response: {response.status_code}")
-            if response.status_code in [200, 201]:
-                logger.info(f"ISAPI: Successfully uploaded face for {person_code} to {device.name} via PUT multipart")
-                return True
-            else:
-                logger.warning(f"ISAPI: Method 1 failed with {response.status_code}")
-                logger.warning(f"ISAPI: Full response: {response.text}")
-        except Exception as e:
-            logger.warning(f"ISAPI: Method 1 (PUT multipart) failed: {e}")
-        
-        # Метод 2: POST XML с base64 в теге <faceData>
+        # Метод 1: POST XML с base64 в теге <faceData>
         try:
             image_base64 = base64.b64encode(image_bytes).decode('utf-8')
             
+            # XML с защитой от injection
             xml_payload = f'''<?xml version="1.0" encoding="UTF-8"?>
 <FaceDataRecord>
     <faceLibType>blackFD</faceLibType>
     <FDID>1</FDID>
-    <faceID>{person_code}</faceID>
+    <faceID>{escape_xml(person_code)}</faceID>
     <faceData>{image_base64}</faceData>
 </FaceDataRecord>'''
             
@@ -1413,16 +1134,16 @@ def upload_face_isapi(device, person_code: str, image_bytes: bytes) -> bool:
                 timeout=30
             )
             
-            logger.info(f"ISAPI: Method 2 (POST XML faceData) response: {response.status_code}")
+            logger.info(f"ISAPI: Method 1 (POST XML faceData) response: {response.status_code}")
             if response.status_code in [200, 201]:
                 logger.info(f"ISAPI: Successfully uploaded face for {person_code} to {device.name} via POST XML")
                 return True
             else:
-                logger.warning(f"ISAPI: Method 2 failed with {response.status_code}: {response.text[:200]}")
+                logger.warning(f"ISAPI: Method 1 failed with {response.status_code}: {response.text[:200]}")
         except Exception as e:
-            logger.warning(f"ISAPI: Method 2 (POST XML) failed: {e}")
+            logger.warning(f"ISAPI: Method 1 (POST XML) failed: {e}")
         
-        # Метод 3: Binary POST к FDSetUp/picture
+        # Метод 2: Binary POST к FDSetUp/picture
         try:
             url = f"http://{device.host}/ISAPI/Intelligent/FDLib/FDSetUp/picture?FDID=1"
             response = requests.post(
@@ -1433,14 +1154,14 @@ def upload_face_isapi(device, person_code: str, image_bytes: bytes) -> bool:
                 timeout=30
             )
             
-            logger.info(f"ISAPI: Method 3 (Binary POST) response: {response.status_code}")
+            logger.info(f"ISAPI: Method 2 (Binary POST) response: {response.status_code}")
             if response.status_code in [200, 201]:
                 logger.info(f"ISAPI: Successfully uploaded face for {person_code} to {device.name} via Binary POST")
                 return True
             else:
-                logger.warning(f"ISAPI: Method 3 failed with {response.status_code}: {response.text[:200]}")
+                logger.warning(f"ISAPI: Method 2 failed with {response.status_code}: {response.text[:200]}")
         except Exception as e:
-            logger.warning(f"ISAPI: Method 3 (Binary POST) failed: {e}")
+            logger.warning(f"ISAPI: Method 2 (Binary POST) failed: {e}")
         
         # Все методы провалились
         logger.error(f"ISAPI: All upload methods failed for {device.name}")
@@ -1456,10 +1177,8 @@ def upload_face_isapi(device, person_code: str, image_bytes: bytes) -> bool:
     except requests.exceptions.ConnectionError:
         logger.error(f"ISAPI: Connection error to {device.name}")
         return False
-    except Exception as e:
-        logger.error(f"ISAPI: Unexpected error uploading to {device.name}: {e}")
-        import traceback
-        traceback.print_exc()
+    except Exception:
+        logger.exception("ISAPI: Unexpected error uploading to %s", device.name)
         return False
 
 
@@ -1623,13 +1342,11 @@ def assign_access_level_to_person(
         )
         return True
         
-    except Exception as e:
-        logger.error(
-            "HikCentral: Failed to assign access level to person %s: %s",
-            person_id, e
+    except Exception:
+        logger.exception(
+            "HikCentral: Failed to assign access level to person %s",
+            person_id
         )
-        import traceback
-        traceback.print_exc()
         return False
 
 
@@ -1711,13 +1428,11 @@ def revoke_access_level_from_person(
         )
         return True
         
-    except Exception as e:
-        logger.error(
-            "HikCentral: Failed to revoke access level from person %s: %s",
-            person_id, e
+    except Exception:
+        logger.exception(
+            "HikCentral: Failed to revoke access level from person %s",
+            person_id
         )
-        import traceback
-        traceback.print_exc()
         return False
 
 
@@ -1803,13 +1518,8 @@ def get_door_events(
         
         return result
         
-    except Exception as e:
-        logger.error(
-            "HikCentral: Failed to get door events: %s",
-            e
-        )
-        import traceback
-        traceback.print_exc()
+    except Exception:
+        logger.exception("HikCentral: Failed to get door events")
         return {}
 
 
@@ -1878,11 +1588,9 @@ def get_person_hikcentral(session, person_id: str) -> dict:
         
         return data
         
-    except Exception as e:
-        logger.error(
-            "HikCentral: Failed to get person %s: %s",
-            person_id, e
+    except Exception:
+        logger.exception(
+            "HikCentral: Failed to get person %s",
+            person_id
         )
-        import traceback
-        traceback.print_exc()
         return {}
