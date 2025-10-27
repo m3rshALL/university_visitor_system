@@ -109,7 +109,6 @@ urlpatterns = [
     path('health/', visitor_views.health_check, name='health_check'),  # Детальный health check
     # Временный маршрут для тестирования ИИН (удален после проверки)
     # path('test-iin/', test_iin_view, name='test_iin'),
-    path('sentry-debug/', trigger_error),
 ]
 
 # DRF routers (API v1)
@@ -125,11 +124,15 @@ if _api_import_ok:
     drf_router.register(r'student_visits', StudentVisitViewSet,
                         basename='api-student-visits')
     urlpatterns += [path('api/v1/', include((drf_router.urls, 'api'),
+
                                             namespace='api_v1'))]
 
-
-# Добавляем маршруты для статических и медиа файлов в режиме DEBUG
 if settings.DEBUG:
+    urlpatterns.append(path('sentry-debug/', trigger_error))
+
+
+if settings.DEBUG:
+    # Добавляем маршруты для статических и медиа файлов в режиме DEBUG
     # Keep media files as they were
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,44 +1,60 @@
-# Этап 1: Установка зависимостей
-FROM python:3.12-slim-bullseye
+# syntax=docker/dockerfile:1
 
-# Установка системных зависимостей
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    postgresql-client \
-    build-essential \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+FROM python:3.12-slim-bullseye AS builder
 
-# Устанавливаем переменные окружения
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    # Убедимся, что pip не создает кеш
-    PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on
+ENV POETRY_VERSION=1.8.3 \
+    POETRY_NO_INTERACTION=1 \
+    PIP_NO_CACHE_DIR=on \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Копируем только файлы зависимостей для кеширования этого слоя
-COPY pyproject.toml poetry.lock* /app/
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Установка Poetry
-RUN pip install poetry==1.7.1 \
-    && poetry config virtualenvs.create false
+COPY pyproject.toml poetry.lock* ./
 
-# Устанавливаем зависимости из poetry.lock
-RUN poetry lock --no-interaction --no-ansi \
-    && poetry install --only main --no-interaction --no-ansi
+RUN pip install --no-cache-dir "poetry==${POETRY_VERSION}" \
+    && poetry export --only main --without-hashes -f requirements.txt -o requirements.txt
 
-# Копируем весь код проекта
-COPY . /app/
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:${PATH}"
 
-RUN python -m pip list | grep Django || echo "Django не найден в списке пакетов!"
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Используем проектный entrypoint (исполняет переданную команду)
+FROM python:3.12-slim-bullseye AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH="/opt/venv/bin:${PATH}" \
+    APP_DIR=/app
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    libpq5 \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/* \
+    && addgroup --system app && adduser --system --ingroup app --home /app app
+
+COPY --from=builder /opt/venv /opt/venv
+
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Открываем порт, на котором будет работать веб-приложение
-EXPOSE 8000
+COPY visitor_system visitor_system
+COPY templates templates
+COPY grafana grafana
 
-# Используем entrypoint скрипт по умолчанию, но команду передаём из docker-compose
+RUN chown -R app:app /app
+
+USER app
+
+EXPOSE 8000
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["gunicorn", "visitor_system.asgi:application", "-k", "uvicorn.workers.UvicornWorker", "-w", "2", "-b", "0.0.0.0:8000"]

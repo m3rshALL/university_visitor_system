@@ -1,4 +1,4 @@
-import base64
+﻿import base64
 import logging
 from typing import Any, Dict, List, Optional
 import requests
@@ -10,7 +10,6 @@ from .models import HikDevice, HikCentralServer
 import urllib3
 
 # Отключаем предупреждения SSL для самоподписанных сертификатов
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 logger = logging.getLogger(__name__)
@@ -43,7 +42,18 @@ class HikCentralSession:
         self.server = server
         self.base_url = server.base_url.rstrip('/')
         self.session = requests.Session()
-        self.session.verify = False  # Самоподписанные сертификаты
+        ca_bundle = getattr(settings, 'HIKCENTRAL_CA_BUNDLE', '').strip()
+        verify_tls = getattr(settings, 'HIKCENTRAL_VERIFY_TLS', not settings.DEBUG)
+        if ca_bundle:
+            self.session.verify = ca_bundle
+        else:
+            self.session.verify = verify_tls
+        if not self.session.verify:
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            logger.warning(
+                'HikCentralSession for %s started with TLS verification disabled',
+                server.name
+            )
         
         # Настройка connection pool для оптимальной производительности
         from requests.adapters import HTTPAdapter

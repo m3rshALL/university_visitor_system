@@ -370,10 +370,31 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 
-LOGS_DIR = Path(os.getenv('DJANGO_LOGS_DIR', BASE_DIR / 'logs'))
-LOGS_DIR.mkdir(parents=True, exist_ok=True)
+DJANGO_LOG_TO_STDOUT = get_bool('DJANGO_LOG_TO_STDOUT', default=True)
 
-DJANGO_LOG_TO_STDOUT = os.getenv('DJANGO_LOG_TO_STDOUT', 'False').lower() == 'true'
+LOGS_DIR = None
+handlers_config = {
+	'console': {
+		'level': 'DEBUG',
+		'class': 'logging.StreamHandler',
+		'formatter': 'simple',
+	},
+}
+default_handlers = ['console']
+
+if not DJANGO_LOG_TO_STDOUT:
+	LOGS_DIR = Path(os.getenv('DJANGO_LOGS_DIR', BASE_DIR / 'logs'))
+	LOGS_DIR.mkdir(parents=True, exist_ok=True)
+	handlers_config['file'] = {
+		'level': 'INFO',
+		'class': 'concurrent_log_handler.ConcurrentRotatingFileHandler',
+		'filename': str(LOGS_DIR / 'visitor_system.log'),
+		'maxBytes': 1024 * 1024 * 5,  # 5 MB
+		'backupCount': 5,
+		'formatter': 'verbose',
+		'encoding': 'utf-8',
+	}
+	default_handlers.append('file')
 
 LOGGING = {
 	'version': 1,
@@ -388,55 +409,40 @@ LOGGING = {
 			'style': '{',
 		},
 	},
-	'handlers': {
-		'console': {
-			'level': 'DEBUG',
-			'class': 'logging.StreamHandler',
-			'formatter': 'simple',
-		},
-		'file': {
-			'level': 'INFO',
-			'class': 'concurrent_log_handler.ConcurrentRotatingFileHandler',
-			'filename': str(LOGS_DIR / 'visitor_system.log'),
-			'maxBytes': 1024 * 1024 * 5,  # 5 MB
-			'backupCount': 5,
-			'formatter': 'verbose',
-			'encoding': 'utf-8',
-		},
-	},
+	'handlers': handlers_config,
 	'loggers': {
 		'': {
-			'handlers': ['console'] if DJANGO_LOG_TO_STDOUT else ['console', 'file'],
+			'handlers': default_handlers,
 			'level': 'INFO',
 			'propagate': True,
 		},
 		'django': {
-			'handlers': ['console'] if DJANGO_LOG_TO_STDOUT else ['console', 'file'],
+			'handlers': default_handlers,
 			'level': 'INFO',
 			'propagate': False,
 		},
 		'visitors': {
-			'handlers': ['console'] if DJANGO_LOG_TO_STDOUT else ['console', 'file'],
+			'handlers': default_handlers,
 			'level': 'DEBUG',
 			'propagate': False,
 		},
 		'notifications': {
-			'handlers': ['console'] if DJANGO_LOG_TO_STDOUT else ['console', 'file'],
+			'handlers': default_handlers,
 			'level': 'DEBUG',
 			'propagate': False,
 		},
 		'celery': {
-			'handlers': ['console'] if DJANGO_LOG_TO_STDOUT else ['console', 'file'],
+			'handlers': default_handlers,
 			'level': 'INFO',
 			'propagate': True,
 		},
 		'redis': {
-			'handlers': ['console'] if DJANGO_LOG_TO_STDOUT else ['console', 'file'],
+			'handlers': default_handlers,
 			'level': 'WARNING',
 			'propagate': False,
 		},
 		'django_redis': {
-			'handlers': ['console'] if DJANGO_LOG_TO_STDOUT else ['console', 'file'],
+			'handlers': default_handlers,
 			'level': 'WARNING',
 			'propagate': False,
 		},
@@ -589,6 +595,11 @@ HIKCENTRAL_INTEGRATION_KEY = get_config('HIKCENTRAL_INTEGRATION_KEY', required_i
 HIKCENTRAL_INTEGRATION_SECRET = get_config('HIKCENTRAL_INTEGRATION_SECRET', required_in_production=True) # Integration Partner Secret
 HIKCENTRAL_USERNAME = get_config('HIKCENTRAL_USERNAME', required_in_production=True) # Пользователь HikCentral
 HIKCENTRAL_PASSWORD = get_config('HIKCENTRAL_PASSWORD', required_in_production=True) # Пароль HikCentral
+HIKCENTRAL_VERIFY_TLS = get_bool('HIKCENTRAL_VERIFY_TLS', default=not DEBUG)
+HIKCENTRAL_CA_BUNDLE = get_config('HIKCENTRAL_CA_BUNDLE', '')
+
+if not DEBUG and not HIKCENTRAL_VERIFY_TLS:
+    raise ImproperlyConfigured('HIKCENTRAL_VERIFY_TLS must stay enabled in production')
 
 # Настройки организации для гостей в HikCentral
 HIKCENTRAL_DEFAULT_ORG_INDEX = os.getenv('HIKCENTRAL_DEFAULT_ORG_INDEX', '')  # ID организации по умолчанию для гостей
